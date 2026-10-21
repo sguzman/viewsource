@@ -61,3 +61,31 @@ The companion saved-page folder is absent, so referenced scripts, complete CSS r
 - **E-008:** Sensitive state-presence classification, without values.
 
 All listed observations are **observed_static**. Live behavior, backend implementation, and whole-site completeness remain unknown. Existing tasks in the per-version queues record further required analysis.
+
+## Static analysis continuation
+
+### Streaming application architecture (E-009, E-010)
+
+Four inline scripts interact with a React Router streaming controller, either enqueueing serialized route-loader payloads or closing a stream. A separate set of streaming-boundary DOM replacement helpers is consistent with React's incremental server-rendered content machinery. This identifies **source-level mechanisms**, not a verified live sequence of requests or successful hydration. No serialized route payload content is included in the public analysis, because the payloads contain account- or conversation-linked values.
+
+The page's script-element count must not be mistaken for the application-code size: the large JSON block is data, and several executable wrappers merely embed serialized state. The missing referenced script file prevents module-level reconstruction.
+
+### Session-specific launch pathway (E-011)
+
+An early bootstrap script inspects a browser location fragment and uses session storage to carry transient launch-related state. This is a source-level observation of a pathway, not a demonstration that the pathway was exercised in the captured session. Fragment values and stored contents are excluded.
+
+### Scope-specific environment (E-012)
+
+The document root includes desktop application attributes identifying a Codex Linux browser environment. This is a material scope qualifier: a saved ChatGPT page observed in one application window may differ from other browsers, operating systems, login states, plans, and presentation surfaces. The captured attribute names justify the classification, but identifying values are unnecessary to publish.
+
+### Controls and interactive hooks (E-013, E-006)
+
+The single saved DOM contains fifteen anchor elements, four file inputs, and 102 buttons. Three file-input elements advertise multiple selection, and one has a capture attribute; actual file selection or submission was not tested. Seventy \`aria-expanded\` attributes, five \`aria-controls\` attributes, and 108 \`data-state\` attributes indicate multiple declarative state and accessibility hooks. They are not evidence of successful keyboard navigation or fully correct accessibility.
+
+### Captured CSS behavior (E-014)
+
+Four inline \`@media\` rules are visible: two reduced-motion rules, one hover-related rule, and one width-related rule. These supplement the light/dark theme tokens and browser appearance bootstrap described above. Computed styles and rules in the twenty-five unavailable external stylesheets remain unverified.
+
+### Queue resolution for this pass
+
+The captured HTML's document structure, script-element inventory (including code/data distinctions), and head metadata inventory have been analyzed within **this capture's scope**. Navigation, responsiveness, component architecture, client-state evolution, assets, performance, live service behavior and security implications remain partial or pending as indicated in the machine-readable record. A successful static inventory never constitutes proof of runtime operation.

@@ -18,7 +18,7 @@
       "profile": "markup",
       "queue": "structure",
       "title": "DOM hierarchy and semantic regions",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-intake"
       ]
@@ -42,7 +42,7 @@
       "profile": "scripts",
       "queue": "scripts",
       "title": "Script inventory and loading order",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-intake"
       ]
@@ -154,7 +154,7 @@
       "profile": "metadata",
       "queue": "metadata",
       "title": "Metadata, canonical signals and discoverability",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-markup"
       ]

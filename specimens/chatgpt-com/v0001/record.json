@@ -9,21 +9,21 @@
   "status": "researching",
   "coverage": {
     "intake": "analyzed",
-    "markup": "partial",
-    "navigation": "pending",
-    "scripts": "partial",
+    "markup": "analyzed",
+    "navigation": "partial",
+    "scripts": "analyzed",
     "modules": "pending",
     "styles": "partial",
-    "responsive": "pending",
+    "responsive": "partial",
     "assets": "partial",
     "interaction": "partial",
     "state": "partial",
     "services": "pending",
     "accessibility": "partial",
-    "metadata": "partial",
+    "metadata": "analyzed",
     "performance": "pending",
     "security": "partial",
-    "architecture": "pending",
+    "architecture": "partial",
     "comparison": "not_observable",
     "review": "pending"
   },
@@ -316,6 +316,105 @@
       "properties": {
         "publication_restriction": "publish_only_sanitized_technical_abstractions"
       }
+    },
+    {
+      "id": "router-stream",
+      "kind": "ClientState",
+      "name": "Streamed route-loader payloads",
+      "description": "Inline scripts append serialized route state to the React Router stream controller; payload data is excluded.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-009",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "transport": "inline_script_enqueue",
+        "scripts_with_stream_calls": 4,
+        "content": "excluded"
+      }
+    },
+    {
+      "id": "react-boundaries",
+      "kind": "Interaction",
+      "name": "React streamed content boundaries",
+      "description": "The saved document includes React streaming placeholders and inline DOM boundary replacement helpers; actual hydration success was not observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-010",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "scripts_containing_boundary_helpers": 3
+      }
+    },
+    {
+      "id": "native-launch",
+      "kind": "ClientState",
+      "name": "Launch-context bootstrap",
+      "description": "A separate early script reads transient browser session storage and inspects location hash fields for a launch workflow; no values were retained.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-011",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "uses_session_storage": true,
+        "reads_location_fragment": true
+      }
+    },
+    {
+      "id": "capture-env",
+      "kind": "Metadata",
+      "name": "Desktop-flavored capture context",
+      "description": "Root data attributes identify a Codex Linux browser context in this specimen. The environment may not match other browser views.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-012",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "desktop_context_markers": true,
+        "generalizable_to_all_site_visits": false
+      }
+    },
+    {
+      "id": "upload-inputs",
+      "kind": "Form",
+      "name": "File selection markup",
+      "description": "All four input elements in the saved document have file type; three include multiple-selection attributes and one includes a capture attribute. Runtime availability is untested.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-013",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "file_inputs": 4,
+        "multiple_attributes": 3,
+        "capture_attributes": 1
+      }
+    },
+    {
+      "id": "media-queries",
+      "kind": "StyleSheet",
+      "name": "Captured inline media queries",
+      "description": "The inline CSS contains four media-query declarations, including reduced-motion, hover/pointer, and width-sensitive rules.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-014",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "inline_media_rule_count": 4,
+        "reduced_motion_rule_count": 2,
+        "hover_rule_count": 1,
+        "max_width_rule_count": 1
+      }
     }
   ],
   "relationships": [
@@ -516,6 +615,116 @@
         "evidence_ref": "E-008",
         "source_scope": "saved_page"
       }
+    },
+    {
+      "from": "page",
+      "to": "router-stream",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-009",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-scripts",
+      "to": "router-stream",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-009",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "react-boundaries",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-010",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-scripts",
+      "to": "react-boundaries",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-010",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-scripts",
+      "to": "native-launch",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-011",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "capture-env",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-012",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "form",
+      "to": "upload-inputs",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-013",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "shell",
+      "to": "upload-inputs",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-013",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-css",
+      "to": "media-queries",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-014",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "media-queries",
+      "to": "accessibility",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-014",
+        "source_scope": "saved_page"
+      }
     }
   ],
   "findings": [
@@ -596,6 +805,86 @@
         "evidence_class": "observed_static",
         "confidence": "high",
         "evidence_ref": "E-008",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-009",
+      "statement": "Four inline scripts interact with a React Router stream controller to enqueue or close serialized route-loader data. Some payload-bearing scripts contain private state, which was not published.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-009",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-010",
+      "statement": "React streaming boundary replacement helpers occur in three script elements and are consistent with streamed server-rendered content. The saved file does not prove successful hydration or runtime rendering.",
+      "evidence": {
+        "evidence_class": "inferred_static",
+        "confidence": "medium",
+        "evidence_ref": "E-010",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-011",
+      "statement": "One early bootstrap script references sessionStorage and location fragments for a transient launch workflow; these data are environment-specific and were not captured in public outputs.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-011",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-012",
+      "statement": "Root attributes identify a Codex Linux desktop browser capture context, so the observed UI structure should not be generalized to all ChatGPT browser environments.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-012",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-013",
+      "statement": "Four file-type input elements are present, including three with multiple-selection attributes and one with a capture attribute. Successful upload behavior was not tested.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-013",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-014",
+      "statement": "The inline CSS contains four @media rules: two reduced-motion rules, one hover-related rule, and one width-related rule. External stylesheets remain unavailable.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-014",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-015",
+      "statement": "The snapshot has fifteen anchor elements; this does not establish the site's full route graph, which requires broader capture scope.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-016",
+      "statement": "The saved DOM has seventy aria-expanded attributes, five aria-controls attributes, and 108 data-state attributes. These describe static accessibility/state hooks and do not verify runtime transitions.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
         "source_scope": "saved_page"
       }
     }
