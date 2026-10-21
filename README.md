@@ -27,6 +27,8 @@ From repository root (Python 3.10+, standard library only):
 python3 scripts/viewsource.py queue example --origin https://example.org
 python3 scripts/viewsource.py process example --input /path/to/saved-page.zip
 python3 scripts/viewsource.py status
+python3 scripts/work_queue.py ready --specimen example
+python3 scripts/static_census.py --slug example --version 1 --input /path/to/saved-page.zip
 python3 scripts/validate.py
 python3 -m unittest discover -s tests -v
 ~~~
@@ -46,6 +48,8 @@ The intake input path must point **outside** the repository. It is read only. Fo
 | [docs/](docs/RESEARCH.md) | Research, evidence, limitations, and versioning procedures |
 | [scripts/](scripts/) | Offline intake and validation |
 | [tarium.json](tarium.json) | Independent public-project resource manifest |
+
+See [static census](docs/STATIC-CENSUS.md) for a private, content-free structural summary and [queue guide](queues/README.md) for dependency-aware work scheduling.
 
 ## What analysis covers
 

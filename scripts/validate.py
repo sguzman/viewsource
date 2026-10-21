@@ -120,6 +120,18 @@ def validate() -> list[str]:
         ver = t["version"]
         require(name in by_specimen and ver in by_specimen.get(name, {}).get("versions", []), f"Task missing specimen/version: {t['id']}")
         require(t["status"] in STATES, f"Invalid task state: {t['id']}")
+        if t["status"] == "done":
+            refs = t.get("evidence_refs", [])
+            require(bool(refs), f"Completed task lacks evidence refs: {t['id']}")
+            require(len(refs) == len(set(refs)), f"Duplicate task evidence refs: {t['id']}")
+            record_path = ROOT / "specimens" / name / f"v{ver:04d}" / "record.json"
+            if record_path.is_file():
+                evidence_ids = {
+                    f["evidence"].get("evidence_ref")
+                    for f in read(f"specimens/{name}/v{ver:04d}/record.json")["findings"]
+                }
+                require(set(refs) <= evidence_ids, f"Completed task has ungrounded evidence ref: {t['id']}")
+
         require(t["profile"] in profile_by_id, f"Unknown task profile: {t['id']}")
         require(t["id"] == f"{name}-v{ver:04d}-{t['profile']}", f"Bad task ID: {t['id']}")
         if t["profile"] in profile_by_id:

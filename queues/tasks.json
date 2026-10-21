@@ -9,7 +9,11 @@
       "queue": "intake",
       "title": "Scope and evidence characterization",
       "status": "done",
-      "depends_on": []
+      "depends_on": [],
+      "evidence_refs": [
+        "E-001",
+        "E-008"
+      ]
     },
     {
       "id": "chatgpt-com-v0001-markup",
@@ -21,6 +25,11 @@
       "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-intake"
+      ],
+      "evidence_refs": [
+        "E-002",
+        "E-006",
+        "E-013"
       ]
     },
     {
@@ -45,6 +54,12 @@
       "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-intake"
+      ],
+      "evidence_refs": [
+        "E-003",
+        "E-009",
+        "E-010",
+        "E-011"
       ]
     },
     {
@@ -157,6 +172,10 @@
       "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-markup"
+      ],
+      "evidence_refs": [
+        "E-001",
+        "E-012"
       ]
     },
     {
