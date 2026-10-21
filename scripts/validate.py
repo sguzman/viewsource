@@ -1,0 +1,171 @@
+#!/usr/bin/env python3
+"""Stdlib validation of Viewsource's version, ontology, queue and gallery references."""
+from __future__ import annotations
+
+from collections import Counter
+import json
+from pathlib import Path
+import re
+import sys
+
+ROOT = Path(__file__).resolve().parents[1]
+SLUG = re.compile(r"^[a-z][a-z0-9-]{1,47}$")
+STATES = {"queued", "in_progress", "blocked", "not_observable", "done"}
+EVIDENCE_CLASSES = {"observed_static", "inferred_static", "observed_live", "external_source", "unknown"}
+COVERAGE = {"pending", "partial", "analyzed", "not_observable"}
+
+
+def read(path: str) -> dict:
+    return json.loads((ROOT / path).read_text(encoding="utf-8"))
+
+
+def validate() -> list[str]:
+    errors = []
+    def require(condition: bool, description: str) -> None:
+        if not condition:
+            errors.append(description)
+
+    manifest = read("tarium.json")
+    require(manifest["project"] == "viewsource", "Manifest project identity")
+    require(manifest["membership"] == "unregistered", "Membership is not centrally authorized here")
+    for group in ("ontology", "gallery"):
+        for path in manifest[group].values():
+            require((ROOT / path).is_file(), f"Manifest missing resource: {path}")
+
+    model = read("ontology/ontology.json")
+    require(model["ontology_version"] == "1.0.0", "Unexpected ontology version")
+    kinds = model["component_kinds"]
+    relations = model["relations"]
+    require(len(kinds) == len(set(kinds)), "Duplicate component kinds")
+    require(len(relations) == len(set(relations)), "Duplicate relation kinds")
+
+    profiles = read("queues/profiles.json")["profiles"]
+    ids = [p["id"] for p in profiles]
+    require(len(ids) == len(set(ids)), "Duplicate task profile")
+    profile_by_id = {p["id"]: p for p in profiles}
+    for p in profiles:
+        require(p["queue"] and p["title"], f"Empty profile details: {p['id']}")
+        for dep in p["depends_on"]:
+            require(dep in profile_by_id and dep != p["id"], f"Invalid profile dependency: {p['id']} -> {dep}")
+    def visits(node: str, seen: set[str], visiting: set[str]) -> None:
+        if node in visiting:
+            errors.append("Cyclic research profile dependency")
+            return
+        if node in seen:
+            return
+        visiting.add(node)
+        for dep in profile_by_id[node]["depends_on"]:
+            if dep in profile_by_id:
+                visits(dep, seen, visiting)
+        visiting.remove(node)
+        seen.add(node)
+    seen = set()
+    for profile in ids:
+        visits(profile, seen, set())
+
+    specimens = read("specimens/index.json")["specimens"]
+    require(len({s["id"] for s in specimens}) == len(specimens), "Duplicate specimen IDs")
+    require(len({s["origin"] for s in specimens}) == len(specimens), "Duplicate specimen origins")
+    require([s["id"] for s in specimens] == sorted(s["id"] for s in specimens), "Specimens must be sorted")
+    by_specimen = {s["id"]: s for s in specimens}
+    record_paths = set()
+    for specimen in specimens:
+        slug = specimen["id"]
+        require(bool(SLUG.fullmatch(slug)) and not slug.endswith("-"), f"Invalid specimen slug: {slug}")
+        versions = specimen["versions"]
+        require(versions == list(range(1, len(versions) + 1)), f"Noncontiguous versions: {slug}")
+        require(specimen["current_version"] == len(versions), f"Incorrect current version: {slug}")
+        require(specimen["status"] in {"queued", "processed", "researching", "reviewed"}, f"Bad specimen status: {slug}")
+        for version in versions:
+            directory = f"specimens/{slug}/v{version:04d}"
+            record_paths.add(directory + "/record.json")
+            require((ROOT / directory / "analysis.md").is_file(), f"Missing dossier: {directory}")
+            if not (ROOT / directory / "record.json").is_file():
+                errors.append(f"Missing version record: {directory}")
+                continue
+            record = read(directory + "/record.json")
+            require(record["format_version"] == 1, f"Record format: {directory}")
+            require(record["ontology_version"] == model["ontology_version"], f"Record ontology version: {directory}")
+            require(record["specimen_id"] == slug and record["version"] == version, f"Version ID mismatch: {directory}")
+            require(record["previous_version"] == (version - 1 if version > 1 else None), f"Previous version mismatch: {directory}")
+            require(record["capture_scope"] in {"saved_page", "saved_archive"}, f"Invalid capture scope: {directory}")
+            require(record["status"] in {"processed", "researching", "reviewed"}, f"Invalid record status: {directory}")
+            require(set(record["coverage"]) == set(ids), f"Coverage keys do not match profiles: {directory}")
+            require(set(record["coverage"].values()) <= COVERAGE, f"Invalid coverage: {directory}")
+            components = record["components"]
+            component_ids = {c["id"] for c in components}
+            require(len(component_ids) == len(components), f"Repeated component ID: {directory}")
+            for component in components:
+                require(component["kind"] in kinds, f"Unknown component type: {directory}")
+                require(isinstance(component["properties"], dict), f"Invalid component properties: {directory}")
+                check_evidence(component["evidence"], require, directory)
+            for relation in record["relationships"]:
+                require(relation["from"] in component_ids and relation["to"] in component_ids, f"Dangling component relation: {directory}")
+                require(relation["predicate"] in relations, f"Invalid relation predicate: {directory}")
+                check_evidence(relation["evidence"], require, directory)
+            findings = record["findings"]
+            require(len({f["id"] for f in findings}) == len(findings), f"Duplicate finding IDs: {directory}")
+            for finding in findings:
+                check_evidence(finding["evidence"], require, directory)
+
+    disk_records = {p.relative_to(ROOT).as_posix() for p in (ROOT / "specimens").glob("*/v*/record.json")}
+    require(disk_records == record_paths, "Unregistered version record or missing record")
+
+    tasks = read("queues/tasks.json")["tasks"]
+    tasks_by_id = {t["id"]: t for t in tasks}
+    require(len(tasks_by_id) == len(tasks), "Duplicate task IDs")
+    task_groups = Counter((t["specimen_id"], t["version"], t["profile"]) for t in tasks)
+    for t in tasks:
+        name = t["specimen_id"]
+        ver = t["version"]
+        require(name in by_specimen and ver in by_specimen.get(name, {}).get("versions", []), f"Task missing specimen/version: {t['id']}")
+        require(t["status"] in STATES, f"Invalid task state: {t['id']}")
+        require(t["profile"] in profile_by_id, f"Unknown task profile: {t['id']}")
+        require(t["id"] == f"{name}-v{ver:04d}-{t['profile']}", f"Bad task ID: {t['id']}")
+        if t["profile"] in profile_by_id:
+            profile = profile_by_id[t["profile"]]
+            require(t["queue"] == profile["queue"], f"Queue mismatch: {t['id']}")
+            expected = {f"{name}-v{ver:04d}-{dep}" for dep in profile["depends_on"]}
+            require(set(t["depends_on"]) == expected, f"Dependency mismatch: {t['id']}")
+        for dep in t["depends_on"]:
+            require(dep in tasks_by_id, f"Dangling task dependency: {t['id']}")
+    for specimen in specimens:
+        for version in specimen["versions"]:
+            for profile in ids:
+                require(task_groups[(specimen["id"], version, profile)] == 1, f"Missing profile task: {specimen['id']} v{version} {profile}")
+
+    gallery = read("gallery/index.json")
+    require(gallery["format_version"] == 1, "Gallery format")
+    require(len({item["id"] for item in gallery["entries"]}) == len(gallery["entries"]), "Duplicate gallery item")
+    for item in gallery["entries"]:
+        require(item["specimen_id"] in by_specimen, f"Gallery entry missing specimen: {item['id']}")
+        require((ROOT / item["path"]).is_file(), f"Gallery entry points to missing artifact: {item['id']}")
+        require(bool(item.get("provenance")) and bool(item.get("license")), f"Gallery rights missing: {item['id']}")
+    return errors
+
+
+def check_evidence(e: dict, require, origin: str) -> None:
+    require(e["evidence_class"] in EVIDENCE_CLASSES, f"Invalid evidence class: {origin}")
+    require(e["confidence"] in {"high", "medium", "low", "unknown"}, f"Invalid confidence: {origin}")
+    if e["evidence_class"] not in {"unknown"}:
+        require(bool(e.get("evidence_ref")), f"Missing evidence reference: {origin}")
+    if e["evidence_class"] == "unknown":
+        require(e["confidence"] == "unknown", f"Unknown class must have unknown confidence: {origin}")
+
+
+def main() -> int:
+    try:
+        issues = validate()
+    except (OSError, KeyError, TypeError, ValueError, json.JSONDecodeError) as exc:
+        print(f"Validation failed: {exc}", file=sys.stderr)
+        return 1
+    if issues:
+        for issue in sorted(set(issues)):
+            print(issue, file=sys.stderr)
+        return 1
+    print("Viewsource ontology, specimen references, gallery and research task graph: valid")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
