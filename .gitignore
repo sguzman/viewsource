@@ -147,3 +147,23 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+
+# Viewsource: all specimen evidence and captures stay outside version control.
+.work/
+captures/
+capture/
+downloads/
+download/
+raw/
+evidence/
+browser-profile/
+*.zip
+*.mhtml
+*.warc
+*.har
+*.sqlite
+*.db
+*.html.gz
+__pycache__/
+*.py[cod]
+.pytest_cache/
