@@ -1,4 +1,14 @@
 {
   "format_version": 1,
-  "specimens": []
+  "specimens": [
+    {
+      "id": "chatgpt-com",
+      "origin": "https://chatgpt.com",
+      "status": "researching",
+      "current_version": 1,
+      "versions": [
+        1
+      ]
+    }
+  ]
 }

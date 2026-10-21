@@ -1,0 +1,611 @@
+{
+  "format_version": 1,
+  "ontology_version": "1.0.0",
+  "specimen_id": "chatgpt-com",
+  "version": 1,
+  "capture_scope": "saved_page",
+  "processed_at": "2026-10-21T21:56:57.196Z",
+  "previous_version": null,
+  "status": "researching",
+  "coverage": {
+    "intake": "analyzed",
+    "markup": "partial",
+    "navigation": "pending",
+    "scripts": "partial",
+    "modules": "pending",
+    "styles": "partial",
+    "responsive": "pending",
+    "assets": "partial",
+    "interaction": "partial",
+    "state": "partial",
+    "services": "pending",
+    "accessibility": "partial",
+    "metadata": "partial",
+    "performance": "pending",
+    "security": "partial",
+    "architecture": "pending",
+    "comparison": "not_observable",
+    "review": "pending"
+  },
+  "components": [
+    {
+      "id": "page",
+      "kind": "Page",
+      "name": "Saved ChatGPT conversation page",
+      "description": "One captured authenticated ChatGPT interface page, not a complete site crawl.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-001",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "scope": "single_saved_document"
+      }
+    },
+    {
+      "id": "shell",
+      "kind": "DOMRegion",
+      "name": "Application shell",
+      "description": "Page-level semantic containers include header, navigation, main, and aside regions.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "header_count": 2,
+        "nav_count": 2,
+        "main_count": 1,
+        "aside_count": 2
+      }
+    },
+    {
+      "id": "navigation",
+      "kind": "DOMRegion",
+      "name": "Navigation and sidebar regions",
+      "description": "Saved DOM includes navigation containers and application sidebar attributes.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      },
+      "properties": {}
+    },
+    {
+      "id": "content",
+      "kind": "DOMRegion",
+      "name": "Main conversation content",
+      "description": "A main region and nested interface elements are present in the captured DOM; conversation payload is excluded from published output.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      },
+      "properties": {}
+    },
+    {
+      "id": "external-script",
+      "kind": "Script",
+      "name": "Referenced client JavaScript resource",
+      "description": "One script tag references an external saved-page JavaScript resource; its bytes were not supplied.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-003",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_count": 1,
+        "source_available": false
+      }
+    },
+    {
+      "id": "inline-scripts",
+      "kind": "Script",
+      "name": "Inline executable scripts",
+      "description": "Ten executable inline script elements occur alongside one non-executable JSON script element.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-003",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "inline_executable_script_count": 10,
+        "inline_executable_characters": 17447
+      }
+    },
+    {
+      "id": "bootstrap-json",
+      "kind": "ClientState",
+      "name": "Embedded application state payload",
+      "description": "One application/json script element stores large serialized page state; its contents are excluded from the public dossier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-003",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "script_type": "application/json",
+        "approximately_bytes": 556788,
+        "public_contents": "excluded"
+      }
+    },
+    {
+      "id": "theme-init",
+      "kind": "Script",
+      "name": "Early appearance initialization",
+      "description": "Inline client code selects light or dark styling using explicit preference or a media query and conditionally reads locally cached appearance settings.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-004",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "theme_modes": [
+          "light",
+          "dark",
+          "system-preference"
+        ],
+        "uses_local_storage": true
+      }
+    },
+    {
+      "id": "linked-css",
+      "kind": "StyleSheet",
+      "name": "Referenced stylesheets",
+      "description": "The HTML links to 25 separate stylesheet files, none included with the uploaded document.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-005",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_count": 25,
+        "source_available": false
+      }
+    },
+    {
+      "id": "inline-css",
+      "kind": "StyleSheet",
+      "name": "Inline CSS blocks",
+      "description": "Fourteen inline style elements provide theme rules, utility/icon rules, and component styling.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-005",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "inline_style_element_count": 14,
+        "inline_characters": 52192
+      }
+    },
+    {
+      "id": "theme-tokens",
+      "kind": "DesignToken",
+      "name": "Appearance tokens",
+      "description": "CSS custom properties define visible light and dark palettes and user-interface colors.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-005",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "mechanism": "CSS custom properties"
+      }
+    },
+    {
+      "id": "svg-icons",
+      "kind": "Asset",
+      "name": "SVG markup",
+      "description": "Inline SVG elements are present in the saved markup; independently referenced site assets were not provided.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "inline_svg_element_count": 131
+      }
+    },
+    {
+      "id": "controls",
+      "kind": "Interaction",
+      "name": "User-interface control markup",
+      "description": "A substantial set of button elements exists in the static DOM; event outcomes were not tested.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "button_element_count": 102
+      }
+    },
+    {
+      "id": "form",
+      "kind": "Form",
+      "name": "Form markup",
+      "description": "One form element and four input elements are visible in the saved document; submit behavior is unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "form_element_count": 1,
+        "input_element_count": 4
+      }
+    },
+    {
+      "id": "accessibility",
+      "kind": "AccessibilityFeature",
+      "name": "Accessibility annotations",
+      "description": "The saved HTML uses ARIA labels, roles and labelled-by references; compliance and keyboard behavior were not tested.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "aria_label_attribute_count": 127,
+        "role_attribute_count": 113,
+        "aria_labelledby_attribute_count": 13
+      }
+    },
+    {
+      "id": "saved-assets",
+      "kind": "Dependency",
+      "name": "Companion saved-page resources",
+      "description": "Relative links refer to 25 stylesheet files, one script file, and one image file absent from this submitted standalone document.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-007",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "missing_referenced_files": {
+          "stylesheet": 25,
+          "script": 1,
+          "image": 1
+        }
+      }
+    },
+    {
+      "id": "metadata",
+      "kind": "Metadata",
+      "name": "Document and viewport metadata",
+      "description": "The head contains viewport and referrer metadata, favicons, and a document title; private title text is omitted.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-001",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "viewport_metadata": true,
+        "referrer_metadata": true,
+        "favicon_links": true
+      }
+    },
+    {
+      "id": "privacy",
+      "kind": "SecuritySignal",
+      "name": "Account-linked snapshot data",
+      "description": "Root attributes and embedded serialized state contain session-specific identifiers or conversational context; no values are published.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-008",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "publication_restriction": "publish_only_sanitized_technical_abstractions"
+      }
+    }
+  ],
+  "relationships": [
+    {
+      "from": "page",
+      "to": "shell",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "shell",
+      "to": "navigation",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "shell",
+      "to": "content",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "external-script",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-003",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "inline-scripts",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-003",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "bootstrap-json",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-003",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "linked-css",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-005",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "inline-css",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-005",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-css",
+      "to": "theme-tokens",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-005",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-scripts",
+      "to": "theme-init",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-004",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "theme-init",
+      "to": "theme-tokens",
+      "predicate": "updates",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-004",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "svg-icons",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "shell",
+      "to": "controls",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "shell",
+      "to": "form",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "shell",
+      "to": "accessibility",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "saved-assets",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-007",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "metadata",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-001",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "privacy",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-008",
+        "source_scope": "saved_page"
+      }
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-001",
+      "statement": "The supplied evidence is a single saved HTML snapshot of a ChatGPT conversation interface; it does not represent a full site crawl.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-001",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-002",
+      "statement": "The static page contains navigation, main-content, header, and aside containers with extensive button and SVG markup.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-002",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-003",
+      "statement": "Twelve script elements are present: one external JavaScript reference, ten executable inline scripts, and one application/json data element.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-003",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-004",
+      "statement": "An inline appearance bootstrap checks theme preferences and browser color-scheme signals and refers to locally cached appearance configuration.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-004",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-005",
+      "statement": "Twenty-five linked stylesheets and fourteen inline style elements are present, with visible light and dark appearance tokens.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-005",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-006",
+      "statement": "The static DOM includes 102 buttons, 131 inline SVG elements, and 127 aria-label attributes; interactive behavior and accessibility quality remain unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-006",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-007",
+      "statement": "The standalone HTML points to a missing companion resource directory containing CSS, JavaScript, and image references. This limits source-level analysis of those dependencies.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-007",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-008",
+      "statement": "The captured document includes account-linked and conversation-related state; raw values, full serialized data, and source excerpts must not be published.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-008",
+        "source_scope": "saved_page"
+      }
+    }
+  ],
+  "limitations": [
+    "The input is a single HTML document from an authenticated session; it is not a representative whole-site crawl.",
+    "The saved-page companion directory was not supplied, so referenced stylesheet, JavaScript, and image file contents are unavailable.",
+    "One large embedded application/json payload may contain account-linked or conversation content and was not copied into public artifacts.",
+    "DOM markup and source references do not prove live behavior, remote API responses, backend implementation, browser compatibility, or security properties.",
+    "The capture date is not independently established by server evidence; processed_at records the local specimen intake.",
+    "First internal version: no previous capture exists for comparison."
+  ]
+}

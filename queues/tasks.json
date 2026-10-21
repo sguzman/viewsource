@@ -1,4 +1,237 @@
 {
   "format_version": 1,
-  "tasks": []
+  "tasks": [
+    {
+      "id": "chatgpt-com-v0001-intake",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "intake",
+      "queue": "intake",
+      "title": "Scope and evidence characterization",
+      "status": "done",
+      "depends_on": []
+    },
+    {
+      "id": "chatgpt-com-v0001-markup",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "markup",
+      "queue": "structure",
+      "title": "DOM hierarchy and semantic regions",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-intake"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-navigation",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "navigation",
+      "queue": "navigation",
+      "title": "Routes, links, and navigation model",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0001-markup"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-scripts",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "scripts",
+      "queue": "scripts",
+      "title": "Script inventory and loading order",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-intake"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-modules",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "modules",
+      "queue": "scripts",
+      "title": "Modules, frameworks, build and dependency clues",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0001-scripts"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-styles",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "styles",
+      "queue": "styling",
+      "title": "Stylesheet inventory and design system",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-intake",
+        "chatgpt-com-v0001-markup"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-responsive",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "responsive",
+      "queue": "styling",
+      "title": "Responsive rules and layout states",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0001-styles"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-assets",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "assets",
+      "queue": "assets",
+      "title": "Asset, font, icon and media roles",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-intake"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "interaction",
+      "queue": "behavior",
+      "title": "Events, controls, forms and interaction model",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-markup",
+        "chatgpt-com-v0001-scripts"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-state",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "state",
+      "queue": "state",
+      "title": "Client state, storage and lifecycle",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-interaction",
+        "chatgpt-com-v0001-scripts"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-services",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "services",
+      "queue": "network",
+      "title": "Static API and third-party service references",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0001-scripts"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-accessibility",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "accessibility",
+      "queue": "accessibility",
+      "title": "Semantics and accessibility inspection",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-markup",
+        "chatgpt-com-v0001-styles"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-metadata",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "metadata",
+      "queue": "metadata",
+      "title": "Metadata, canonical signals and discoverability",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-markup"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-performance",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "performance",
+      "queue": "performance",
+      "title": "Loading, resource and rendering performance clues",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0001-scripts",
+        "chatgpt-com-v0001-styles",
+        "chatgpt-com-v0001-assets"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-security",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "security",
+      "queue": "security",
+      "title": "Security and privacy-relevant static signals",
+      "status": "in_progress",
+      "depends_on": [
+        "chatgpt-com-v0001-scripts",
+        "chatgpt-com-v0001-services"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-architecture",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "architecture",
+      "queue": "architecture",
+      "title": "Cross-cutting component relationships",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0001-markup",
+        "chatgpt-com-v0001-modules",
+        "chatgpt-com-v0001-styles",
+        "chatgpt-com-v0001-services"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-comparison",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "comparison",
+      "queue": "evolution",
+      "title": "Differences from prior captured version",
+      "status": "not_observable",
+      "depends_on": [
+        "chatgpt-com-v0001-architecture"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0001-review",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "profile": "review",
+      "queue": "quality",
+      "title": "Evidence audit, limitations and publication review",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0001-navigation",
+        "chatgpt-com-v0001-responsive",
+        "chatgpt-com-v0001-assets",
+        "chatgpt-com-v0001-state",
+        "chatgpt-com-v0001-accessibility",
+        "chatgpt-com-v0001-metadata",
+        "chatgpt-com-v0001-performance",
+        "chatgpt-com-v0001-security",
+        "chatgpt-com-v0001-comparison"
+      ]
+    }
+  ]
 }
