@@ -1,0 +1,17 @@
+name: Repository checks
+on:
+  push:
+  pull_request:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check ontology and queue consistency
+        run: python3 scripts/validate.py
+      - name: Exercise offline capture workflow
+        run: python3 -m unittest discover -s tests -v
+      - name: Check tracked publication boundaries
+        run: python3 scripts/publication_guard.py
