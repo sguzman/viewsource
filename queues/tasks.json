@@ -18,7 +18,7 @@
       "profile": "markup",
       "queue": "structure",
       "title": "DOM hierarchy and semantic regions",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-intake"
       ]
@@ -42,7 +42,7 @@
       "profile": "scripts",
       "queue": "scripts",
       "title": "Script inventory and loading order",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-intake"
       ]
@@ -66,7 +66,7 @@
       "profile": "styles",
       "queue": "styling",
       "title": "Stylesheet inventory and design system",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-intake",
         "chatgpt-com-v0001-markup"
@@ -91,7 +91,7 @@
       "profile": "assets",
       "queue": "assets",
       "title": "Asset, font, icon and media roles",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-intake"
       ]
@@ -103,7 +103,7 @@
       "profile": "interaction",
       "queue": "behavior",
       "title": "Events, controls, forms and interaction model",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-markup",
         "chatgpt-com-v0001-scripts"
@@ -116,7 +116,7 @@
       "profile": "state",
       "queue": "state",
       "title": "Client state, storage and lifecycle",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-interaction",
         "chatgpt-com-v0001-scripts"
@@ -141,7 +141,7 @@
       "profile": "accessibility",
       "queue": "accessibility",
       "title": "Semantics and accessibility inspection",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-markup",
         "chatgpt-com-v0001-styles"
@@ -154,7 +154,7 @@
       "profile": "metadata",
       "queue": "metadata",
       "title": "Metadata, canonical signals and discoverability",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-markup"
       ]
@@ -180,7 +180,7 @@
       "profile": "security",
       "queue": "security",
       "title": "Security and privacy-relevant static signals",
-      "status": "in_progress",
+      "status": "queued",
       "depends_on": [
         "chatgpt-com-v0001-scripts",
         "chatgpt-com-v0001-services"
