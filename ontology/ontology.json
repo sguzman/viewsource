@@ -1,0 +1,368 @@
+{
+  "format_version": 1,
+  "ontology_version": "1.0.0",
+  "project": "viewsource",
+  "purpose": "Evidence-aware structural and behavioral research on captured websites",
+  "entities": [
+    {
+      "name": "Website",
+      "identity": "specimen slug",
+      "attributes": [
+        "origin",
+        "status",
+        "versions"
+      ]
+    },
+    {
+      "name": "CaptureVersion",
+      "identity": "specimen slug + internal sequence",
+      "attributes": [
+        "capture_scope",
+        "processed_at",
+        "previous_version",
+        "limitations"
+      ]
+    },
+    {
+      "name": "Page",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "DOMRegion",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Script",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "StyleSheet",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "DesignToken",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Asset",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Font",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Route",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Interaction",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Form",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "ClientState",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Storage",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "APIReference",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "ExternalService",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Dependency",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "AccessibilityFeature",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Metadata",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "PerformanceSignal",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "SecuritySignal",
+      "identity": "version-scoped component ID",
+      "attributes": [
+        "kind",
+        "name",
+        "description",
+        "evidence_class",
+        "confidence",
+        "evidence_ref",
+        "properties"
+      ]
+    },
+    {
+      "name": "Finding",
+      "identity": "version-scoped finding ID",
+      "attributes": [
+        "statement",
+        "evidence_class",
+        "confidence",
+        "evidence_ref"
+      ]
+    },
+    {
+      "name": "Task",
+      "identity": "specimen-version-topic task ID",
+      "attributes": [
+        "queue",
+        "status",
+        "dependencies",
+        "title"
+      ]
+    }
+  ],
+  "component_kinds": [
+    "Page",
+    "DOMRegion",
+    "Script",
+    "StyleSheet",
+    "DesignToken",
+    "Asset",
+    "Font",
+    "Route",
+    "Interaction",
+    "Form",
+    "ClientState",
+    "Storage",
+    "APIReference",
+    "ExternalService",
+    "Dependency",
+    "AccessibilityFeature",
+    "Metadata",
+    "PerformanceSignal",
+    "SecuritySignal"
+  ],
+  "relations": [
+    "contains",
+    "references",
+    "loads",
+    "styles",
+    "renders",
+    "triggers",
+    "updates",
+    "stores",
+    "requests",
+    "depends_on",
+    "navigates_to",
+    "inherits_from",
+    "associated_with"
+  ],
+  "evidence_classes": [
+    "observed_static",
+    "inferred_static",
+    "observed_live",
+    "external_source",
+    "unknown"
+  ],
+  "confidence": [
+    "high",
+    "medium",
+    "low",
+    "unknown"
+  ],
+  "source_scopes": [
+    "saved_page",
+    "saved_archive",
+    "live_test",
+    "public_reference"
+  ],
+  "coverage_states": [
+    "pending",
+    "partial",
+    "analyzed",
+    "not_observable"
+  ],
+  "task_states": [
+    "queued",
+    "in_progress",
+    "blocked",
+    "not_observable",
+    "done"
+  ],
+  "semantics": {
+    "version": "Internal monotonically increasing capture sequence, not the target software version",
+    "unknown": "Unobserved or undetermined, never a negative finding",
+    "relationship": "Typed directed link between version-local components",
+    "snapshot": "A source-limited capture; no guarantee of site-wide representativeness"
+  }
+}

@@ -1,0 +1,251 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Viewsource specimen capture record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "ontology_version",
+    "specimen_id",
+    "version",
+    "capture_scope",
+    "processed_at",
+    "previous_version",
+    "status",
+    "coverage",
+    "components",
+    "relationships",
+    "findings",
+    "limitations"
+  ],
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "ontology_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "specimen_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,47}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "capture_scope": {
+      "enum": [
+        "saved_page",
+        "saved_archive"
+      ]
+    },
+    "processed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "previous_version": {
+      "type": [
+        "integer",
+        "null"
+      ],
+      "minimum": 1
+    },
+    "status": {
+      "enum": [
+        "processed",
+        "researching",
+        "reviewed"
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": {
+        "enum": [
+          "pending",
+          "partial",
+          "analyzed",
+          "not_observable"
+        ]
+      }
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/component"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/relationship"
+      }
+    },
+    "findings": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/finding"
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "evidence": {
+      "type": "object",
+      "required": [
+        "evidence_class",
+        "confidence"
+      ],
+      "properties": {
+        "evidence_class": {
+          "enum": [
+            "observed_static",
+            "inferred_static",
+            "observed_live",
+            "external_source",
+            "unknown"
+          ]
+        },
+        "confidence": {
+          "enum": [
+            "high",
+            "medium",
+            "low",
+            "unknown"
+          ]
+        },
+        "evidence_ref": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "source_scope": {
+          "enum": [
+            "saved_page",
+            "saved_archive",
+            "live_test",
+            "public_reference"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "component": {
+      "type": "object",
+      "required": [
+        "id",
+        "kind",
+        "name",
+        "description",
+        "evidence",
+        "properties"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "Page",
+            "DOMRegion",
+            "Script",
+            "StyleSheet",
+            "DesignToken",
+            "Asset",
+            "Font",
+            "Route",
+            "Interaction",
+            "Form",
+            "ClientState",
+            "Storage",
+            "APIReference",
+            "ExternalService",
+            "Dependency",
+            "AccessibilityFeature",
+            "Metadata",
+            "PerformanceSignal",
+            "SecuritySignal"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        },
+        "properties": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "relationship": {
+      "type": "object",
+      "required": [
+        "from",
+        "to",
+        "predicate",
+        "evidence"
+      ],
+      "properties": {
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "predicate": {
+          "enum": [
+            "contains",
+            "references",
+            "loads",
+            "styles",
+            "renders",
+            "triggers",
+            "updates",
+            "stores",
+            "requests",
+            "depends_on",
+            "navigates_to",
+            "inherits_from",
+            "associated_with"
+          ]
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        }
+      },
+      "additionalProperties": false
+    },
+    "finding": {
+      "type": "object",
+      "required": [
+        "id",
+        "statement",
+        "evidence"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "statement": {
+          "type": "string"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

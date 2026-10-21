@@ -1,0 +1,68 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Viewsource research task",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "id",
+    "specimen_id",
+    "version",
+    "profile",
+    "queue",
+    "title",
+    "status",
+    "depends_on"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+-v[0-9]{4}-[a-z][a-z0-9-]*$"
+    },
+    "specimen_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{1,47}$"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "profile": {
+      "type": "string",
+      "minLength": 1
+    },
+    "queue": {
+      "type": "string",
+      "minLength": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "queued",
+        "in_progress",
+        "blocked",
+        "not_observable",
+        "done"
+      ]
+    },
+    "depends_on": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "notes": {
+      "type": "string"
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  }
+}

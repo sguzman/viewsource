@@ -1,0 +1,13 @@
+{
+  "format_version": 1,
+  "project": "viewsource",
+  "ontology": {
+    "index": "ontology/README.md",
+    "data": "ontology/ontology.json"
+  },
+  "gallery": {
+    "index": "gallery/README.md",
+    "data": "gallery/index.json"
+  },
+  "membership": "unregistered"
+}

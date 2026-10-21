@@ -1,0 +1,165 @@
+{
+  "format_version": 1,
+  "profiles": [
+    {
+      "id": "intake",
+      "queue": "intake",
+      "title": "Scope and evidence characterization",
+      "depends_on": []
+    },
+    {
+      "id": "markup",
+      "queue": "structure",
+      "title": "DOM hierarchy and semantic regions",
+      "depends_on": [
+        "intake"
+      ]
+    },
+    {
+      "id": "navigation",
+      "queue": "navigation",
+      "title": "Routes, links, and navigation model",
+      "depends_on": [
+        "markup"
+      ]
+    },
+    {
+      "id": "scripts",
+      "queue": "scripts",
+      "title": "Script inventory and loading order",
+      "depends_on": [
+        "intake"
+      ]
+    },
+    {
+      "id": "modules",
+      "queue": "scripts",
+      "title": "Modules, frameworks, build and dependency clues",
+      "depends_on": [
+        "scripts"
+      ]
+    },
+    {
+      "id": "styles",
+      "queue": "styling",
+      "title": "Stylesheet inventory and design system",
+      "depends_on": [
+        "intake",
+        "markup"
+      ]
+    },
+    {
+      "id": "responsive",
+      "queue": "styling",
+      "title": "Responsive rules and layout states",
+      "depends_on": [
+        "styles"
+      ]
+    },
+    {
+      "id": "assets",
+      "queue": "assets",
+      "title": "Asset, font, icon and media roles",
+      "depends_on": [
+        "intake"
+      ]
+    },
+    {
+      "id": "interaction",
+      "queue": "behavior",
+      "title": "Events, controls, forms and interaction model",
+      "depends_on": [
+        "markup",
+        "scripts"
+      ]
+    },
+    {
+      "id": "state",
+      "queue": "state",
+      "title": "Client state, storage and lifecycle",
+      "depends_on": [
+        "interaction",
+        "scripts"
+      ]
+    },
+    {
+      "id": "services",
+      "queue": "network",
+      "title": "Static API and third-party service references",
+      "depends_on": [
+        "scripts"
+      ]
+    },
+    {
+      "id": "accessibility",
+      "queue": "accessibility",
+      "title": "Semantics and accessibility inspection",
+      "depends_on": [
+        "markup",
+        "styles"
+      ]
+    },
+    {
+      "id": "metadata",
+      "queue": "metadata",
+      "title": "Metadata, canonical signals and discoverability",
+      "depends_on": [
+        "markup"
+      ]
+    },
+    {
+      "id": "performance",
+      "queue": "performance",
+      "title": "Loading, resource and rendering performance clues",
+      "depends_on": [
+        "scripts",
+        "styles",
+        "assets"
+      ]
+    },
+    {
+      "id": "security",
+      "queue": "security",
+      "title": "Security and privacy-relevant static signals",
+      "depends_on": [
+        "scripts",
+        "services"
+      ]
+    },
+    {
+      "id": "architecture",
+      "queue": "architecture",
+      "title": "Cross-cutting component relationships",
+      "depends_on": [
+        "markup",
+        "modules",
+        "styles",
+        "services"
+      ]
+    },
+    {
+      "id": "comparison",
+      "queue": "evolution",
+      "title": "Differences from prior captured version",
+      "depends_on": [
+        "architecture"
+      ]
+    },
+    {
+      "id": "review",
+      "queue": "quality",
+      "title": "Evidence audit, limitations and publication review",
+      "depends_on": [
+        "navigation",
+        "responsive",
+        "assets",
+        "state",
+        "accessibility",
+        "metadata",
+        "performance",
+        "security",
+        "comparison"
+      ]
+    }
+  ]
+}
