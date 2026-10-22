@@ -128,9 +128,10 @@ def validate() -> list[str]:
         ver = t["version"]
         require(name in by_specimen and ver in by_specimen.get(name, {}).get("versions", []), f"Task missing specimen/version: {t['id']}")
         require(t["status"] in STATES, f"Invalid task state: {t['id']}")
+        refs = t.get("evidence_refs", [])
         if t["status"] == "done":
-            refs = t.get("evidence_refs", [])
             require(bool(refs), f"Completed task lacks evidence refs: {t['id']}")
+        if refs:
             require(len(refs) == len(set(refs)), f"Duplicate task evidence refs: {t['id']}")
             record_path = ROOT / "specimens" / name / f"v{ver:04d}" / "record.json"
             if record_path.is_file():
@@ -138,7 +139,9 @@ def validate() -> list[str]:
                     f["evidence"].get("evidence_ref")
                     for f in read(f"specimens/{name}/v{ver:04d}/record.json")["findings"]
                 }
-                require(set(refs) <= evidence_ids, f"Completed task has ungrounded evidence ref: {t['id']}")
+                require(set(refs) <= evidence_ids, f"Task has ungrounded evidence ref: {t['id']}")
+        if t["status"] in {"queued", "not_observable"}:
+            require(not refs, f"Unstarted/unobservable task has evidence refs: {t['id']}")
 
         if t["profile"] == "followup":
             require(t["id"].startswith(f"{name}-v{ver:04d}-followup-"), f"Bad followup task ID: {t['id']}")
