@@ -340,3 +340,19 @@ follow separate paths. These connections are directly represented by
 captured source and now form two additional evidence-graded edges in the
 transport trace. The processor's imported implementation, eventual
 message-store writes, and selected-message rendering remain unresolved.
+
+## Message update batching and client-state helper invocation
+
+The event processor used by the generation dispatcher is also present in
+the saved JavaScript. Its decoded-event handler classifies message updates,
+passes submission messages through a batching callback, and may defer some
+resumed-message updates for replay. Its `applyMessage` method checks
+message-placement acceptance and invokes an imported client-state mutation
+helper with the conversation, message, preserve-current-turn setting and
+optional fallback parent reference.
+
+This gives a **source-verified path** from the generation dispatcher through
+transport callbacks, decoded event handling and message-state mutation
+invocation. The imported helper's internal reducer/storage operation and
+eventual UI updates are still open static-analysis tasks. Neither a server
+write nor an actual browser state change has been observed.
