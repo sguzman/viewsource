@@ -62,6 +62,11 @@
           "title": "JavaScript imports",
           "body": "Inspect 236 parsed static import relationships among anonymous captured bundle IDs.",
           "link": "javascript"
+        },
+        {
+          "title": "Source-specific chat research",
+          "body": "Chat-oriented syntax counts, message-parent references and a separate feature research queue are now available.",
+          "link": "chat-interaction"
         }
       ],
       "flow": [
@@ -137,7 +142,7 @@
       "name": "Chat interactions",
       "eyebrow": "FEATURE MODEL",
       "title": "How chat interactions could work",
-      "lead": "The captured page shows a sidebar and composer. The state diagrams below are hypotheses for code and testing, not observed chat behavior.",
+      "lead": "Inspect real source evidence and candidate chat behavior. Conversation selection, message ancestry and response streaming remain unverified until tested.",
       "tags": [
         "Chat",
         "Events",
@@ -147,7 +152,10 @@
       "evidence": [
         "E2-045",
         "E2-054",
-        "E2-065"
+        "E2-065",
+        "E2-066",
+        "E2-067",
+        "E2-068"
       ],
       "metrics": [],
       "flow": [],
@@ -165,6 +173,11 @@
         {
           "title": "Branch semantics are unknown",
           "body": "The static ZIP cannot establish whether edits or regeneration create nodes, replace nodes or select alternative branches.",
+          "link": "evidence"
+        },
+        {
+          "title": "Source evidence and open tests",
+          "body": "The saved code has chat-related identity, parent and streaming syntax. The research backlog separates evidence we already have from real interactions that require a new controlled test.",
           "link": "evidence"
         }
       ],

@@ -199,6 +199,50 @@ def build(out: Path) -> dict:
                     "observed_control_categories": page_map["observed_control_categories"],
                     "note": page_map["note"]
                 }
+            chat_signals_path = ROOT / (base + "/chat_source_signals.json")
+            if chat_signals_path.is_file():
+                signals = read(base + "/chat_source_signals.json")
+                if signals["specimen_id"] != item["id"] or signals["version"] != number:
+                    raise ValueError("Chat source signal identity mismatch")
+                visuals["chat_source_signals"] = {
+                    "evidence_refs": ["E2-066", "E2-067", "E2-068"],
+                    "scope": "saved_archive",
+                    "summary": [
+                        {"label": "Conversation identity indicators",
+                         "count": signals["identifier_categories"]["conversation_like"]["files"]},
+                        {"label": "Message identity indicators",
+                         "count": signals["identifier_categories"]["message_like"]["files"]},
+                        {"label": "Parent reference indicators",
+                         "count": signals["identifier_categories"]["parent_like"]["files"]},
+                        {"label": "Branch-related indicators",
+                         "count": signals["identifier_categories"]["branch_like"]["files"]},
+                        {"label": "Stream-related indicators",
+                         "count": signals["identifier_categories"]["stream_like"]["files"]}
+                    ],
+                    "object_relationships": [
+                        {"label": key.replace("_", " "), "count": value["objects"]}
+                        for key, value in signals["object_literal_pairs"].items()
+                    ],
+                    "function_relationships": [
+                        {"label": key.replace("_", " "), "count": value["functions"]}
+                        for key, value in signals["lexical_function_pairs"].items()
+                    ]
+                }
+            feature_queue_path = ROOT / "queues/chat_research.json"
+            if feature_queue_path.is_file():
+                research = read("queues/chat_research.json")
+                if research["specimen_id"] == item["id"] and research["version"] == number:
+                    visuals["feature_research"] = {
+                        "policy": research["policy"],
+                        "tasks": [
+                            {"id": task["id"], "title": task["title"],
+                             "status": task["status"], "scope": task["scope"],
+                             "depends_on": task["depends_on"],
+                             "acceptance": task["acceptance"],
+                             "evidence_refs": task["evidence_refs"]}
+                            for task in research["tasks"]
+                        ]
+                    }
             feature_path = ROOT / (base + "/chat-interaction.graph.json")
             if feature_path.is_file():
                 feature = read(base + "/chat-interaction.graph.json")

@@ -21,6 +21,49 @@ window.ViewsourceChatGraph = (() => {
     link.href=feature.json_path;
     link.target="_blank";link.rel="noopener noreferrer";
     section.append(head,warning,link);
+    const signals=record.visuals?.chat_source_signals;
+    if(signals){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","What the saved JavaScript contains"));
+      const note=element("p","graph-caption","Bundle and syntax-tree counts. They are not a recovered chat protocol or verified data format.");
+      block.append(note);
+      const cards=element("div","chat-signals");
+      signals.summary.forEach(x=>{
+        const card=element("div","chat-source-card");
+        card.append(element("strong","",x.count),element("small","",x.label+" · saved bundles"));
+        cards.append(card);
+      });
+      block.append(cards);
+      const relations=element("details","chat-source-relations");
+      relations.append(element("summary","","Code structures containing related fields"));
+      const lines=element("ul","chat-questions");
+      signals.object_relationships.forEach(x=>lines.append(element("li","",x.label+": "+x.count+" object literals")));
+      signals.function_relationships.forEach(x=>lines.append(element("li","",x.label+": "+x.count+" function scopes")));
+      relations.append(lines);block.append(relations);
+      section.append(block);
+    }
+    const research=record.visuals?.feature_research;
+    if(research){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Chat research backlog"));
+      const counts={done:0,queued:0,requires_new_evidence:0};
+      research.tasks.forEach(t=>{counts[t.status]=(counts[t.status]||0)+1;});
+      block.append(element("p","graph-caption",
+        counts.done+" source tasks completed · "+counts.queued+" offline tasks open · "+
+        counts.requires_new_evidence+" tasks requiring new runtime evidence."));
+      const groups=element("div","chat-research-list");
+      research.tasks.forEach(t=>{
+        const row=element("details","chat-research-task");
+        const header=element("summary","chat-research-head");
+        header.append(element("strong","",t.title),
+          element("small","",t.status==="requires_new_evidence"?"Needs new evidence":t.status==="done"?"Completed":"Queued"));
+        row.append(header,element("p","",t.acceptance));
+        if(t.depends_on.length)row.append(element("p","graph-caption","Prerequisites: "+t.depends_on.length));
+        groups.append(row);
+      });
+      block.append(groups);section.append(block);
+    }
+
     const surface=element("div","chat-surface-list");
     feature.surfaces.forEach(item=>{
       const node=add(element("div","chat-surface"),
