@@ -1,0 +1,143 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_scope": "original_saved_javascript_archive",
+  "source_ref": "R-JS-018",
+  "evidence_class": "observed_static",
+  "reviewed_method_count": 5,
+  "source_executed": false,
+  "live_transport_verified": false,
+  "server_protocol_verified": false,
+  "method_observations": [
+    {
+      "method": "startCompletionStream",
+      "source_ref": "R-JS-018",
+      "behavior": "Prepares a completion request, creates completion stream handlers and attaches callbacks for decoded events, transport closure, errors, handoff, updates and resume.",
+      "source_relationships": [
+        "createCompletionStreamHandlers",
+        "getStreamOptions"
+      ],
+      "verification_boundary": "Request preparation and callback wiring are in captured client source; actual request delivery and server response have not been observed."
+    },
+    {
+      "method": "resumeCompletionStream",
+      "source_ref": "R-JS-018",
+      "behavior": "Creates completion stream handlers in explicit resume mode with an initial offset and optional resume token. It can attach to an existing stream topic, or issue a streaming resume request when no topic is supplied.",
+      "source_relationships": [
+        "createCompletionStreamHandlers",
+        "getStreamOptions",
+        "startFromTopic",
+        "streamPost"
+      ],
+      "verification_boundary": "Both source paths exist; this does not establish which path operates for a given account or server response."
+    },
+    {
+      "method": "cancelStream",
+      "source_ref": "R-JS-018",
+      "behavior": "Invokes the registered local cancellation function when present, removes the cancellation registry entry, and delegates cancellation to the request layer.",
+      "source_relationships": [
+        "completionCancellations",
+        "cancelStream"
+      ],
+      "verification_boundary": "Visible call order is client-side; success at interrupting a remote request is not verified."
+    },
+    {
+      "method": "getStreamOptions",
+      "source_ref": "R-JS-018",
+      "behavior": "Constructs stream parsing and timeout options, including event-data parsing, initial-open and between-byte idle timeouts and optional before-request hooks.",
+      "source_relationships": [
+        "parseEventData",
+        "initialOpenTimeoutMs",
+        "idleTimeoutMs",
+        "onBeforeRequestStart"
+      ],
+      "verification_boundary": "Configuration wiring is visible; negotiated transport settings and actual timeout behavior are unobserved."
+    },
+    {
+      "method": "createCompletionStreamHandlers",
+      "source_ref": "R-JS-018",
+      "behavior": "Connects decoded updates and lifecycle callbacks, maintains cancellation registration, coordinates topic-based transport handoff and resume/recovery paths, and guards error and completion handling.",
+      "source_relationships": [
+        "onComplete",
+        "onError",
+        "onEvent",
+        "onPrematureTermination",
+        "onRecoverableError",
+        "onDecodedEvent",
+        "onResume",
+        "onResumeToken"
+      ],
+      "verification_boundary": "Callback definitions and control flow are visible; dynamically exercised guards and server events are unknown."
+    }
+  ],
+  "reviewed_static_edges": [
+    {
+      "from": "startCompletionStream",
+      "to": "createCompletionStreamHandlers",
+      "kind": "direct_method_call"
+    },
+    {
+      "from": "resumeCompletionStream",
+      "to": "createCompletionStreamHandlers",
+      "kind": "direct_method_call"
+    },
+    {
+      "from": "startCompletionStream",
+      "to": "getStreamOptions",
+      "kind": "direct_method_call"
+    },
+    {
+      "from": "resumeCompletionStream",
+      "to": "getStreamOptions",
+      "kind": "direct_method_call"
+    },
+    {
+      "from": "resumeCompletionStream",
+      "to": "topic_based_stream",
+      "kind": "conditional_client_path"
+    },
+    {
+      "from": "resumeCompletionStream",
+      "to": "streaming_request",
+      "kind": "conditional_client_path"
+    },
+    {
+      "from": "cancelStream",
+      "to": "local_and_request_cancellation",
+      "kind": "direct_client_sequence"
+    },
+    {
+      "from": "createCompletionStreamHandlers",
+      "to": "resume_recovery",
+      "kind": "client_recovery_configuration"
+    }
+  ],
+  "websocket_stream_item_observation": {
+    "source_ref": "R-JS-018",
+    "evidence_class": "observed_static",
+    "behavior": "A topic stream-item handler maintains a seen-item set, detects duplicate stream item identifiers, checks whether an item's declared parent has been seen, decodes item contents through an event parser, and forwards acceptable events to a callback. It has a separate recovery path for missed history.",
+    "verification_boundary": "The handler shows intended client validation, not actual WebSocket delivery, ordering guarantees or recovery success."
+  },
+  "confirmed_client_observations": [
+    "Initial completion transport and resumed completion transport use the same handler-building method.",
+    "Resume contains alternative topic-subscription and streaming-request pathways.",
+    "A cancellation registry is coupled to request-layer cancellation.",
+    "Recovery state includes retry parameters, resume tokens and transport lifecycle callbacks.",
+    "A WebSocket item decoder tracks duplicate and out-of-order parent relationships."
+  ],
+  "still_unresolved": [
+    "Trace which generation-dispatch event handlers invoke the streaming transport methods across captured module boundaries.",
+    "Trace decoder outputs to message mapping reconciliation and rendered selected-message changes.",
+    "Resolve whether request-layer transport fallback and resumption are gated by runtime settings.",
+    "Distinguish cancellation of local rendering, local request handlers and server-side generation.",
+    "Trace timeout/retry error classification into visible retry controls.",
+    "Identify the entire call chain from the composer through dispatch, transport, decoded updates and persistent state."
+  ],
+  "limitations": [
+    "Only a saved JavaScript implementation has been examined; no captured script was executed.",
+    "Method and lifecycle names are generic allowlisted technical vocabulary, not original source extracts.",
+    "Static request configuration does not verify a server contract, current deployment or runtime feature flag.",
+    "This public report contains no raw source, endpoint, request body, header, cookie, account identifier, message or saved transcript."
+  ]
+}
