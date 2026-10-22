@@ -55,8 +55,8 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
             source_queue = current["visuals"]["static_source_queue"]
             self.assertEqual(source_queue["task_count"], 33)
-            self.assertEqual(source_queue["task_statuses"]["queued"], 30)
-            self.assertEqual(source_queue["task_statuses"]["in_progress"], 3)
+            self.assertEqual(source_queue["task_statuses"]["queued"], 27)
+            self.assertEqual(source_queue["task_statuses"]["in_progress"], 6)
             self.assertEqual(len(source_queue["tasks"]), 33)
             graph_write = current["visuals"]["chat_graph_mutation"]
             self.assertEqual(graph_write["source_ref"],"R-JS-018")
