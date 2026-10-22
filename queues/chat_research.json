@@ -73,13 +73,17 @@
       "specimen_id": "chatgpt-com",
       "version": 2,
       "scope": "offline",
-      "status": "queued",
+      "status": "done",
       "title": "Define neutral message graph",
       "depends_on": [
         "chat-source-ancestry"
       ],
       "acceptance": "Implement synthetic conversation/message/attempt identities, parent edges, selection and branch rules.",
-      "evidence_refs": []
+      "evidence_refs": [],
+      "artifacts": [
+        "scripts/chat_graph_core.py",
+        "tests/test_chat_graph_core.py"
+      ]
     },
     {
       "id": "chat-graph-invariants",
@@ -87,13 +91,17 @@
       "specimen_id": "chatgpt-com",
       "version": 2,
       "scope": "offline",
-      "status": "queued",
+      "status": "done",
       "title": "Test message graph invariants",
       "depends_on": [
         "chat-domain-schema"
       ],
       "acceptance": "Test cycles, missing parents, selected leaves, branch conservation and ambiguous attempts.",
-      "evidence_refs": []
+      "evidence_refs": [],
+      "artifacts": [
+        "scripts/chat_graph_core.py",
+        "tests/test_chat_graph_core.py"
+      ]
     },
     {
       "id": "chat-candidate-adapter",
@@ -101,13 +109,17 @@
       "specimen_id": "chatgpt-com",
       "version": 2,
       "scope": "offline",
-      "status": "queued",
+      "status": "done",
       "title": "Implement generic event graph adapter",
       "depends_on": [
         "chat-graph-invariants"
       ],
       "acceptance": "Expose stable machine-qualified transitions; refuse live execution of hypothesis edges.",
-      "evidence_refs": []
+      "evidence_refs": [],
+      "artifacts": [
+        "scripts/chat_feature_cli.py",
+        "tests/test_chat_feature_cli.py"
+      ]
     },
     {
       "id": "chat-site-browser",
@@ -115,13 +127,18 @@
       "specimen_id": "chatgpt-com",
       "version": 2,
       "scope": "offline",
-      "status": "queued",
+      "status": "done",
       "title": "Browse evidence and feature backlog",
       "depends_on": [
         "chat-source-branching"
       ],
       "acceptance": "Expose source signatures and next research tasks in the Chat interactions chapter.",
-      "evidence_refs": []
+      "evidence_refs": [],
+      "artifacts": [
+        "site/chat-graph.js",
+        "scripts/build_site.py",
+        "tests/browser_smoke.mjs"
+      ]
     },
     {
       "id": "chat-research-protocol",
@@ -129,13 +146,18 @@
       "specimen_id": "chatgpt-com",
       "version": 2,
       "scope": "offline",
-      "status": "queued",
+      "status": "done",
       "title": "Define safe structural trace format",
       "depends_on": [
         "chat-domain-schema"
       ],
       "acceptance": "Design event-class, timestamp, structure-delta and provenance schema with no sensitive values.",
-      "evidence_refs": []
+      "evidence_refs": [],
+      "artifacts": [
+        "schemas/chat-observation.schema.json",
+        "scripts/validate_chat_observation.py",
+        "tests/test_chat_observation.py"
+      ]
     },
     {
       "id": "chat-selection-runtime",
