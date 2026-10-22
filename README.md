@@ -79,7 +79,7 @@ These are research **queues**, not automatic guarantees of complete observation.
 
 Project-owned code and documentation are available under [MIT](LICENSE). This license does **not** grant rights to any third-party website material submitted for private analysis.
 
-**Offline scope closure:** v0002 has 69 tasks completed and 22 explicitly not observable across both phases, with zero tasks queued. This is not a reconstruction of the live website or private backend.
+**Prior audit scope:** v0002's original phases completed 69 tasks and classified 22 as unobservable. That audit is preserved, but the same captured assets have been reopened for **33 automatically defined source-level implementation research tasks**. The current snapshot status is researching, not fully analyzed.
 
 ## Chat interaction research
 
