@@ -237,3 +237,15 @@ function ordinal in the sanitized implementation-trace report. The export
 bindings establish that the relevant functions are exposed within these
 captured bundles; the identity and actual execution of importing UI code
 remain open research tasks, not established runtime behavior.
+
+## Regeneration and generation-branch selection
+
+Further AST inspection of the original captured bundles has established two
+additional client-side source implementations: one generation-dispatch
+function combines explicit continuation/parent parameters, regeneration
+inputs and pre-existing child-branch information to choose a parent
+message; another constructs and dispatches a regeneration operation using
+the targeted message identity and regeneration options. Both are recorded
+by capture-local function ordinal in the static implementation trace.
+These are **source statements about possible client execution paths**, not
+observations of a regeneration happening on the live service.
