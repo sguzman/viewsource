@@ -246,7 +246,7 @@ def build(out: Path) -> dict:
         if graph:
             filename = graph["json_path"].split("/")[-1]
             (out / "data" / "features" / filename).write_text(
-                json.dumps(graph, ensure_ascii=True, indent=2) + "\\n", encoding="utf-8"
+                json.dumps(graph, ensure_ascii=True, indent=2) + "\n", encoding="utf-8"
             )
     for name in ("index.html", "app.css", "explorer.js", "chat-graph.js", "app.js"):
         shutil.copyfile(SITE / name, out / name)
