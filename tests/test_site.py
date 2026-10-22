@@ -53,6 +53,10 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["icons"]["matched_uses"], 92)
             self.assertEqual(current["visuals"]["css_system"]["distinct_tokens"], 2509)
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
+            source_queue = current["visuals"]["static_source_queue"]
+            self.assertEqual(source_queue["task_count"], 33)
+            self.assertEqual(source_queue["task_statuses"]["queued"], 33)
+            self.assertEqual(len(source_queue["tasks"]), 33)
             trace = current["visuals"]["chat_static_impl_trace"]
             self.assertEqual((trace["match_count"], trace["matched_functions"]), (15, 14))
             self.assertEqual(len(trace["reviewed_operations"]), 7)
