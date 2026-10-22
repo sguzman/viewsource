@@ -8,7 +8,7 @@
       "name": "Overview",
       "eyebrow": "01 · Field guide",
       "title": "An interface is a living system.",
-      "lead": "Follow one saved ChatGPT interface from document shell and preloaded scripts to styled components, state management, and network-facing code. Every connection is bounded by what this snapshot actually captured.",
+      "lead": "Follow the source-bounded ChatGPT specimen through captured HTML, CSS, JavaScript, application state mechanisms, and explicit evidence limits. The offline study is reviewed; the live website remains outside scope.",
       "tags": [
         "HTML",
         "CSS",
@@ -21,7 +21,10 @@
         "E2-019",
         "E2-036",
         "E2-037",
-        "E2-041"
+        "E2-041",
+        "E2-051",
+        "E2-059",
+        "E2-063"
       ],
       "metrics": [
         [
@@ -52,6 +55,11 @@
           "title": "See the uncertainty as part of the story",
           "body": "Source-level observations and runtime verification occupy different evidence classes. Missing files, dynamic event ownership, and actual network responses remain open research boundaries.",
           "link": "evidence"
+        },
+        {
+          "title": "What the deep audit resolved",
+          "body": "The static study covers parsed module links, event and storage API classes, CSS-to-DOM vocabulary, font metadata and resource size. Questions requiring a live trace are listed as unobservable rather than converted into inventions.",
+          "link": "evidence"
         }
       ],
       "flow": [
@@ -81,7 +89,8 @@
         "E2-033",
         "E2-038",
         "E2-039",
-        "E2-040"
+        "E2-040",
+        "E2-056"
       ],
       "metrics": [
         [
@@ -146,7 +155,8 @@
         "E2-043",
         "E2-048",
         "E2-049",
-        "E2-050"
+        "E2-050",
+        "E2-056"
       ],
       "metrics": [
         [
@@ -216,7 +226,10 @@
         "E2-022",
         "E2-040",
         "E2-041",
-        "E2-042"
+        "E2-042",
+        "E2-051",
+        "E2-052",
+        "E2-055"
       ],
       "metrics": [
         [
@@ -252,6 +265,11 @@
           "title": "Specialized pathways",
           "body": "Worker, WebAssembly, WebRTC and browser media constructs appear as code signatures, without evidence of execution in this session.",
           "link": "state"
+        },
+        {
+          "title": "A full syntax-tree census",
+          "body": "144 captured bundles contain around 9.27 million AST nodes. React-like, event, network, state and worker API-signature groups overlap rather than uniquely assigning a bundle to a product feature.",
+          "link": "logic"
         }
       ],
       "flow": [
@@ -278,7 +296,8 @@
         "E2-002",
         "E2-027",
         "E2-033",
-        "E2-038"
+        "E2-038",
+        "E2-060"
       ],
       "metrics": [
         [
@@ -334,7 +353,9 @@
       "evidence": [
         "E2-027",
         "E2-029",
-        "E2-033"
+        "E2-033",
+        "E2-053",
+        "E2-055"
       ],
       "metrics": [
         [
@@ -365,6 +386,11 @@
           "title": "Media permissions",
           "body": "User-media, display-media, peer connection and AudioContext constructors appear in source. Consent, activation and success remain unobserved.",
           "link": "evidence"
+        },
+        {
+          "title": "Handlers are capabilities, not verified clicks",
+          "body": "The saved JavaScript contains listener, observer, animation frame and hook callsites, but the archive contains no trace mapping a captured control to an executed callback.",
+          "link": "state"
         }
       ],
       "flow": [
@@ -394,7 +420,10 @@
         "E2-035",
         "E2-039",
         "E2-040",
-        "E2-041"
+        "E2-041",
+        "E2-054",
+        "E2-055",
+        "E2-061"
       ],
       "metrics": [
         [
@@ -430,6 +459,11 @@
           "title": "Data movement",
           "body": "Fetch, streaming reader and WebSocket-related patterns identify network-facing implementation candidates, not observed server conversations.",
           "link": "state"
+        },
+        {
+          "title": "Streaming code shows proximity, not live dataflow",
+          "body": "Some source function scopes contain both fetch and stream-reader or abort constructs. Without execution, proximity cannot establish a successful request, endpoint contract or server response.",
+          "link": "evidence"
         }
       ],
       "flow": [
@@ -456,7 +490,8 @@
       "evidence": [
         "E2-021",
         "E2-028",
-        "E2-014"
+        "E2-014",
+        "E2-054"
       ],
       "metrics": [
         [
@@ -487,6 +522,11 @@
           "title": "State transitions",
           "body": "Worker/message and browser event patterns suggest cross-component or cross-tab coordination, but no transaction history or live graph was captured.",
           "link": "logic"
+        },
+        {
+          "title": "Browser storage and cross-tab boundaries",
+          "body": "Storage method calls, workers, channel constructors and postMessage signatures appear in the saved code; actual persisted keys, values and messages are not available.",
+          "link": "flow"
         }
       ],
       "flow": [
@@ -513,7 +553,8 @@
         "E2-006",
         "E2-024",
         "E2-031",
-        "E2-044"
+        "E2-044",
+        "E2-057"
       ],
       "metrics": [
         [
@@ -549,6 +590,11 @@
           "title": "Capture completeness",
           "body": "The manifest reports 29 missing resource attempts: 17 HTTP 403, ten HTTP 404, and two timeouts. These are capture outcomes rather than proof of broken features.",
           "link": "evidence"
+        },
+        {
+          "title": "Sixty saved font faces, two broad roles",
+          "body": "Font metadata distinguishes 57 mathematical typesetting assets and three interface sans assets. The saved sizes and weights do not establish which glyphs were displayed.",
+          "link": "css"
         }
       ],
       "flow": [
@@ -576,12 +622,14 @@
         "E2-036",
         "E2-037",
         "E2-046",
-        "E2-047"
+        "E2-047",
+        "E2-060",
+        "E2-063"
       ],
       "metrics": [
         [
           "Published findings",
-          "47"
+          "63"
         ],
         [
           "Current deep tasks",
@@ -628,7 +676,7 @@
       "name": "Research queue",
       "eyebrow": "11 · Active investigations",
       "title": "The work remains visible until it is earned.",
-      "lead": "Every source-rich capture now generates a deeper research graph. This specimen has 57 materialized deep tasks with dependencies and separately tracked evidence-based completion; see which remain open.",
+      "lead": "Research possible from the saved v0002 ZIP has reached terminal evidence-based dispositions: 69 tasks completed and 22 classified not observable across both phases. No research task remains queued for this capture.",
       "tags": [
         "57 tasks",
         "Dependencies",
@@ -636,7 +684,9 @@
       ],
       "evidence": [
         "E2-036",
-        "E2-037"
+        "E2-037",
+        "E2-062",
+        "E2-063"
       ],
       "metrics": [
         [

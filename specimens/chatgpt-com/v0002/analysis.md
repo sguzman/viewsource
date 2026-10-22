@@ -180,3 +180,33 @@ A second CSS-specific pass inventoried the **relationships** among custom-proper
 For responsive behavior, 573 bounded media-rule preludes and 454 bounded container-rule preludes were classifiable, from lexical totals of 627 and 504. Among overlapping media categories were 159 width, 178 hover, 60 pointer, 168 reduced-motion, and eleven print matches. Container categories included 258 style-query, 196 width-query and two height-query matches (conditions can overlap). Pixel-width threshold counts are intentionally published only in broad bands; these are not a definitive breakpoint or visual-state map.
 
 The corpus also shows 164 keyframe at-rules, 438 transition declarations, 287 animation declarations, 270 duration declarations, 493 focus-visible selector matches, and 168 reduced-motion query preludes across ten stylesheets. The [CSS analysis report](phase4_css_analysis.json) details these bounded methods. It is not a claim that any animation ran or any accessibility setting was tested. Three additional CSS deep-research tasks are complete; computed cascade and component-to-token ownership remain open.
+
+## Completed offline deep research and evidence boundaries (E2-051–E2-063)
+
+This final source-bounded review builds on the previously published DOM, JavaScript import, CSS and graphic findings. An additional offline syntax-tree and structured stylesheet pass produced the [sanitized source-system report](phase5_system_analysis.json). **No original HTML, JavaScript, CSS, file names, URLs, login material, account identifiers, messages or captured images are published.**
+
+### Modules and loading (E2-051, E2-052)
+
+All 144 captured JavaScript resources were parsed, yielding roughly 9.27 million syntax nodes and 120,699 function-like nodes. Fixed browser API signatures occur in overlapping groups: 48 bundles with React-like callsites, 54 with network-related callsites, 89 with events/observers and 46 with storage/message-state patterns. These overlap and **do not prove that any particular module owns a product feature**. The document has 72 matched modulepreloads; the code includes 236 parsed static imports and eighteen dynamic import expressions. None is an executed module-load trace.
+
+### Logic, persistence and transport (E2-053–E2-055)
+
+The static code includes 997 listener registrations, 822 removals, 144 animation-frame calls and multiple observer constructor types. Fixed-name state signatures include 118 getItem, 102 setItem and 78 removeItem method calls; the capture also contains eight Worker constructors, eleven BroadcastChannel and 25 MessageChannel constructors, plus 77 postMessage calls. These generic method names do not identify actual storage ownership or any message values.
+
+AST-level network syntax includes 178 fetch calls, 244 AbortController constructors, sixteen getReader calls, 33 TextDecoder constructors, six WebSocket and three peer-connection constructors. Five nearest lexical function scopes contain both fetch and streaming signatures, and six combine fetch and abort signatures. Lexical co-occurrence is **not proven runtime dataflow, a real API contract, authorization, retry behavior or successful media/streaming communication**.
+
+### Styling, typography, accessibility and budget (E2-056–E2-059)
+
+Of 2,183 saved DOM elements, 1,688 have CSS class attributes. There are 744 distinct DOM class names; a limited unescaped-class parser found 3,776 distinct class names in 16,983 CSS rules, with 359 shared names and 1,666 DOM elements containing a shared label. It is a vocabulary-overlap map, **not a computed CSS cascade**, component ownership or proof of responsive rendering.
+
+Font metadata separates 57 mathematical typesetting and three interface-sans assets among sixty captured font files. Accessibility indicators include ARIA annotations, focus-visible selectors and reduced-motion source conditions, without tested keyboard, focus, announcements or compliance.
+
+The archive holds 28,066,928 JavaScript bytes, 2,341,104 CSS bytes, 1,169,636 font bytes and 725,265 image bytes. The five largest scripts account for 36.38 percent of captured JS size, the ten largest 57.71 percent. These saved byte figures are **not live transfer sizes or a measured performance waterfall**.
+
+### Source boundaries and research dispositions (E2-060–E2-063)
+
+The site's navigable research story connects observed DOM/landmark structures, declared asset references, parsed static imports, CSS class overlap and generic browser API constructs. It is a conditional *research model*, not a claim of observed chronological behavior.
+
+Precise React/component props and ownership, control-to-handler mapping, network contracts, authentication enforcement, actual uploads, state transitions, media operations, assistive-technology interaction and like-for-like release changes are **not observable from this static ZIP**. They are recorded explicitly as unknown or unobservable, not counted as completed product reverse engineering.
+
+**Final v0002 task audit:** 37 deep tasks supported within static scope, twenty deep tasks not observable. Together with the first pass, the version has **69 completed, 22 explicitly unobservable, and zero queued** tasks. The record is reviewed **for the supplied offline evidence only**. Further investigation of the live product would require new, separately scoped and authorized evidence.

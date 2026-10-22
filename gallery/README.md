@@ -34,4 +34,4 @@ The second, deeper snapshot adds 144 JavaScript files, seventeen CSS files, sixt
 **Provenance:** original technical analysis derived from an independently supplied offline ZIP. **Rights:** original project-authored commentary and structured ontology under MIT, without granting rights over source website assets.
 
 
-**Active next phase:** 57 deep, dependency-aware research tasks are queued. The published findings remain usable, while the specimen is researching rather than fully finished.
+**Offline research audit complete:** 37 deep tasks completed, twenty deep tasks explicitly not observable; across v0002, 69 completed, 22 unobservable and none queued. The reviewed state means reviewed *source scope*, not verified live implementation.

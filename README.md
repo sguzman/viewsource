@@ -59,7 +59,7 @@ The public, privacy-bounded research website lives in [site/](site/) and is buil
 
 The **Appearance** dropdown provides **System** (default), **Light**, and **Dark** modes. Its selected preference is stored locally in the viewing browser. No captured source is executed by the atlas.
 
-A large ZIP now automatically generates **57 additional dependency-linked deep research tasks** (when matching source categories are available), beyond the standard 18-task intake phase; these are **queued** until substantively completed with evidence. The existing ChatGPT v0002 case has been reopened for its second research phase.
+A large ZIP now automatically generates **57 additional dependency-linked deep research tasks** (when matching source categories are available), beyond the standard 18-task intake phase; these are **queued** until substantively completed with evidence. ChatGPT v0002 has completed its offline deep research audit: 37 deep tasks supported by static findings, and twenty explicitly not observable from this ZIP.
 
 Run `python3 scripts/build_site.py --out _site` to generate the static site locally. The GitHub Pages workflow builds the same self-contained artifact from public repository data without storing private captures.
 
@@ -73,8 +73,10 @@ These are research **queues**, not automatic guarantees of complete observation.
 
 **One website specimen, now with two snapshot versions:** [chatgpt.com v0001](specimens/chatgpt-com/v0001/analysis.md), with a [machine-readable ontology record](specimens/chatgpt-com/v0001/record.json), [31-entry sanitized resource inventory](specimens/chatgpt-com/v0001/resource_inventory.json), and [gallery entry](gallery/README.md). The first-capture task graph has 14 completed and four unobservable tasks. The [v0002 ZIP study](specimens/chatgpt-com/v0002/analysis.md) adds deep static research of 234 captured resources, a [candidate source-reference graph](specimens/chatgpt-com/v0002/source_analysis.json), a [detailed static analysis](specimens/chatgpt-com/v0002/deep_analysis.json), and a reviewed task graph. Both versions are source-limited and are not claims of whole-site runtime coverage.
 
-[chatgpt.com v0002](specimens/chatgpt-com/v0002/analysis.md) expands the research to 234 captured resources (144 JS, 17 CSS, 60 fonts, 12 images, one additional HTML file). Its [privacy-safe resource index](specimens/chatgpt-com/v0002/resource_inventory.json) and [machine-readable ontology](specimens/chatgpt-com/v0002/record.json) are published while deeper source interpretation remains in the [task queues](queues/tasks.json). v0001 remains separately reviewed and intact.
+[chatgpt.com v0002](specimens/chatgpt-com/v0002/analysis.md) expands the research to 234 captured resources (144 JS, 17 CSS, 60 fonts, 12 images, one additional HTML file). Its [privacy-safe resource index](specimens/chatgpt-com/v0002/resource_inventory.json) and [machine-readable ontology](specimens/chatgpt-com/v0002/record.json) are published with final offline research dispositions recorded in the [task queues](queues/tasks.json) and a [source-level system report](specimens/chatgpt-com/v0002/phase5_system_analysis.json). v0001 remains separately reviewed and intact.
 
 ## License
 
 Project-owned code and documentation are available under [MIT](LICENSE). This license does **not** grant rights to any third-party website material submitted for private analysis.
+
+**Offline scope closure:** v0002 has 69 tasks completed and 22 explicitly not observable across both phases, with zero tasks queued. This is not a reconstruction of the live website or private backend.
