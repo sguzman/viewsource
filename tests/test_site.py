@@ -58,6 +58,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(source_queue["task_statuses"]["queued"], 30)
             self.assertEqual(source_queue["task_statuses"]["in_progress"], 3)
             self.assertEqual(len(source_queue["tasks"]), 33)
+            transport = current["visuals"]["chat_transport_trace"]
+            self.assertEqual(transport["source_ref"], "R-JS-018")
+            self.assertEqual(transport["reviewed_method_count"], 5)
+            self.assertEqual(len(transport["static_edges"]), 8)
+            self.assertFalse(transport["live_transport_verified"])
             trace = current["visuals"]["chat_static_impl_trace"]
             self.assertEqual((trace["match_count"], trace["matched_functions"]), (15, 14))
             self.assertEqual(len(trace["reviewed_operations"]), 7)
