@@ -147,7 +147,7 @@ window.ViewsourceChatGraph = (() => {
         link.source_ref+" / "+link.role+": function "+link.caller+
         " → function "+link.callee)));
       direct.append(edges,element("p","graph-caption",
-        "Four reviewed direct calls among "+implTrace.direct_call_candidate_count+
+        implTrace.direct_calls.length+" reviewed direct calls among "+implTrace.direct_call_candidate_count+
         " source-local candidates; "+implTrace.unreviewed_direct_call_count+
         " require inspection. No actual execution or server result is verified."));
       block.append(direct);
