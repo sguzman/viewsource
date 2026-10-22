@@ -309,6 +309,24 @@ def build(out: Path) -> dict:
                             for task in research["tasks"]
                         ]
                     }
+                    protocol_path = ROOT / "queues/chat_runtime_protocols.json"
+                    if protocol_path.is_file():
+                        protocols = read("queues/chat_runtime_protocols.json")
+                        if protocols["format_version"] != 1 or protocols["feature_id"] != "chat-interaction":
+                            raise ValueError("Chat runtime protocol identity mismatch")
+                        open_ids = {task["id"] for task in research["tasks"]
+                                    if task["status"] == "requires_new_evidence"}
+                        planned_ids = [entry["task_id"] for entry in protocols["protocols"]]
+                        if set(planned_ids) != open_ids or len(planned_ids) != len(open_ids):
+                            raise ValueError("Chat protocols must match open runtime tasks")
+                        visuals["feature_research"]["protocols"] = [
+                            {"task_id": entry["task_id"], "question": entry["question"],
+                             "discriminators": entry["discriminators"],
+                             "observables": entry["observables"],
+                             "stop_condition": entry["stop_condition"],
+                             "evidence_status": entry["evidence_status"]}
+                            for entry in protocols["protocols"]
+                        ]
             feature_path = ROOT / (base + "/chat-interaction.graph.json")
             if feature_path.is_file():
                 feature = read(base + "/chat-interaction.graph.json")

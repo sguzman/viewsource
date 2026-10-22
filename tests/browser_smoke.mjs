@@ -39,6 +39,10 @@ try {
 
   assert.equal(await page.locator(".chat-source-card").count(),10);
   assert.equal(await page.locator(".chat-research-task").count(),18);
+  const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
+  await runtimeStudy.locator("summary").click();
+  assert.ok((await runtimeStudy.innerText()).includes("Proposed study, not performed"));
+  assert.ok((await runtimeStudy.innerText()).includes("Outcomes to distinguish"));
   assert.equal(await page.locator(".chat-machine-tabs button").count(),3);
   await page.getByRole("button",{name:"Message edit and regeneration"}).click();
   assert.equal(await page.locator(".chat-state").count(),4);

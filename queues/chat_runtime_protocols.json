@@ -1,0 +1,128 @@
+{
+  "format_version": 1,
+  "feature_id": "chat-interaction",
+  "scope": "proposal_only_requires_separate_explicit_disposable_session_authorization",
+  "privacy": "Fixed event categories and structural counts only; no selectors, text, IDs, routes, network payloads or storage contents.",
+  "protocols": [
+    {
+      "task_id": "chat-selection-runtime",
+      "question": "Which visible selection and navigation state changes when a fictional conversation becomes active?",
+      "discriminators": [
+        "The sidebar selection and chat area both change",
+        "Only a route or heading changes while another area remains unchanged"
+      ],
+      "observables": [
+        "selection",
+        "relative_order",
+        "visible_region_change"
+      ],
+      "stop_condition": "Stop if a real chat or identifying conversation title becomes visible",
+      "evidence_status": "proposal_only"
+    },
+    {
+      "task_id": "chat-submission-runtime",
+      "question": "When does the draft cease to be an editable draft and become a visible submitted item?",
+      "discriminators": [
+        "A visible submitted item appears before response progress",
+        "The draft remains pending until some later visible transition"
+      ],
+      "observables": [
+        "composer_enabled",
+        "message_count_delta",
+        "response_phase"
+      ],
+      "stop_condition": "Stop before entering any personal message or attachment",
+      "evidence_status": "proposal_only"
+    },
+    {
+      "task_id": "chat-stream-runtime",
+      "question": "What visible sequence separates partial output, explicit stop, and natural completion?",
+      "discriminators": [
+        "Partial content becomes visible and then a terminal completion state appears",
+        "The control remains active or stopping produces another terminal state"
+      ],
+      "observables": [
+        "response_phase",
+        "stop_control_presence",
+        "relative_order"
+      ],
+      "stop_condition": "Stop if the session is not disposable or the response includes identifying content",
+      "evidence_status": "proposal_only"
+    },
+    {
+      "task_id": "chat-edit-runtime",
+      "question": "What visible ancestry or alternative-navigation controls change after an earlier message is edited or regenerated?",
+      "discriminators": [
+        "An alternative remains selectable in the same visible conversation",
+        "The earlier reply disappears from the visible navigation without an accessible alternative"
+      ],
+      "observables": [
+        "message_count_delta",
+        "branch_affordance",
+        "relative_order"
+      ],
+      "stop_condition": "Never derive server message identities from visual behavior alone",
+      "evidence_status": "proposal_only"
+    },
+    {
+      "task_id": "chat-branch-runtime",
+      "question": "What remains visible in the original versus the newly branched fictional conversation?",
+      "discriminators": [
+        "A distinct conversation navigation entry appears and the original remains available",
+        "A separate chat is visible but the preserved prefix or navigational relationship differs"
+      ],
+      "observables": [
+        "conversation_count_delta",
+        "visible_prefix_shape",
+        "selection"
+      ],
+      "stop_condition": "Do not record route literals, conversation identifiers or copied messages",
+      "evidence_status": "proposal_only"
+    },
+    {
+      "task_id": "chat-persistence-runtime",
+      "question": "Which coarse UI states survive a reload or a separate tab?",
+      "discriminators": [
+        "Conversation selection survives while draft state does not",
+        "Selection, draft and visible response states persist in a different combination"
+      ],
+      "observables": [
+        "selection",
+        "response_phase",
+        "reload_result"
+      ],
+      "stop_condition": "Do not read or export storage values",
+      "evidence_status": "proposal_only"
+    },
+    {
+      "task_id": "chat-failure-runtime",
+      "question": "What observable recovery path follows a naturally occurring failure of a fictional response?",
+      "discriminators": [
+        "A retry control becomes available and leads to new generation",
+        "The UI instead exposes a different recovery affordance or no retry"
+      ],
+      "observables": [
+        "response_phase",
+        "recovery_control_presence",
+        "relative_order"
+      ],
+      "stop_condition": "Do not deliberately induce failures on the live service",
+      "evidence_status": "proposal_only"
+    },
+    {
+      "task_id": "chat-server-contract",
+      "question": "How do abstract transport lifecycle categories line up with visible UI transitions?",
+      "discriminators": [
+        "The UI begins receiving before a terminal transport signal",
+        "The UI state changes in a different relative order than the transport categories"
+      ],
+      "observables": [
+        "sanitized_transport_category",
+        "response_phase",
+        "relative_order"
+      ],
+      "stop_condition": "Do not store requests, endpoints, headers, payloads, tokens, or identifiers",
+      "evidence_status": "proposal_only"
+    }
+  ]
+}

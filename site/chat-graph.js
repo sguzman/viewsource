@@ -213,12 +213,22 @@ window.ViewsourceChatGraph = (() => {
         counts.done+" tasks completed · "+counts.queued+" offline tasks open · "+
         counts.requires_new_evidence+" tasks requiring new runtime evidence."));
       const groups=element("div","chat-research-list");
+      const protocols=new Map((research.protocols||[]).map(p=>[p.task_id,p]));
       research.tasks.forEach(t=>{
         const row=element("details","chat-research-task");
         const header=element("summary","chat-research-head");
         header.append(element("strong","",t.title),
           element("small","",t.status==="requires_new_evidence"?"Needs new evidence":t.status==="done"?"Completed":"Queued"));
         row.append(header,element("p","",t.acceptance));
+        const protocol=protocols.get(t.id);
+        if(protocol){
+          row.append(element("p","graph-caption","Proposed study, not performed: "+protocol.question));
+          const distinctions=element("ul","");
+          protocol.discriminators.forEach(x=>distinctions.append(element("li","",x)));
+          row.append(element("p","graph-caption","Outcomes to distinguish:"),distinctions);
+          row.append(element("p","graph-caption","Observation categories: "+protocol.observables.join(", ")));
+          row.append(element("p","graph-caption","Stop boundary: "+protocol.stop_condition));
+        }
         if(t.depends_on.length)row.append(element("p","graph-caption","Prerequisites: "+t.depends_on.length));
         groups.append(row);
       });

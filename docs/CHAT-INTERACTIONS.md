@@ -167,3 +167,16 @@ retry with no failed attempt. Every emitted trace goes through both the
 strict structural validator and candidate-event analyzer. CI asserts
 synthetic counts and sequencing but never promotes these scenarios to
 observed live ChatGPT behavior.
+
+## Proposed runtime study protocols
+
+`queues/chat_runtime_protocols.json` now provides one strictly hypothetical
+study plan per unresolved runtime task. Each contains a research question,
+contrasting possible outcomes, allowed structural observation categories and
+a stop boundary. The builder requires exactly one plan per open task, and
+the atlas shows the plan within its backlog item. These proposals are **not**
+recordings, browser selectors or permission to experiment. Every live
+investigation still requires separate, explicit authorization for a
+disposable synthetic session. A protocol can be completed only after
+independently reviewed evidence; proposed alternatives must never be
+promoted to verified findings.
