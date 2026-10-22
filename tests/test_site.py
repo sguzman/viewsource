@@ -53,6 +53,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["icons"]["matched_uses"], 92)
             self.assertEqual(current["visuals"]["css_system"]["distinct_tokens"], 2509)
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
+            ast = current["visuals"]["chat_ast_followup"]
+            self.assertEqual((ast["parsed_bundles"], ast["candidate_functions"],
+                              ast["candidate_bundles"]), (144,333,41))
+            self.assertFalse(ast["verified_live_behavior"])
+            self.assertTrue(ast["unresolved"])
             self.assertEqual(len(current["visuals"]["source_system"]["event_signals"]), 6)
             self.assertEqual(len(current["visuals"]["source_system"]["state_signals"]), 7)
             self.assertEqual(len(current["visuals"]["source_system"]["network_signals"]), 6)
