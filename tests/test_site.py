@@ -38,7 +38,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(previous["chapters"], [])
             serialized = (dest / "data/catalog.json").read_text(encoding="utf-8").lower()
             for token in ("page-snapshot-chatgpt.com", "source-dom.html", "session_token",
-                          "guzmansalv@gmail", "user-llm4"):
+                          "SYNTHETIC_PRIVATE_EMAIL_SENTINEL", "SYNTHETIC_PRIVATE_USER_SENTINEL"):
                 self.assertNotIn(token, serialized)
 
     def test_appearance_controls_and_no_external_framework(self):

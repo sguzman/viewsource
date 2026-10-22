@@ -39,7 +39,7 @@ class V2SourceAnalysisTests(unittest.TestCase):
         self.assertEqual(self.doc["javascript"]["reference_graph"]["pairs"], 300)
         serialized = json.dumps(self.doc).lower()
         for forbidden in ("https://", "http://", "session_token", "conversation_id", "auth_cookie",
-                          "source-dom.html", "manifest.json", "user-llm4"):
+                          "source-dom.html", "manifest.json", "SYNTHETIC_PRIVATE_USER_SENTINEL"):
             self.assertNotIn(forbidden, serialized)
 
 

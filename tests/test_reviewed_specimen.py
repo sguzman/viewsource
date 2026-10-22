@@ -86,7 +86,7 @@ class ReviewedSpecimenChecks(unittest.TestCase):
         self.assertEqual(report["security"]["markup"]["script_nonce_attributes"], 18)
         self.assertEqual(report["evolution"]["source_scope_difference"]["verified_site_product_changes"], 0)
         contents = json.dumps(report).lower()
-        for forbidden in ("http://", "https://", "source-dom.html", "page-snapshot", "session_token", "user-llm4"):
+        for forbidden in ("http://", "https://", "source-dom.html", "page-snapshot", "session_token", "SYNTHETIC_PRIVATE_USER_SENTINEL"):
             self.assertNotIn(forbidden, contents)
 
 
