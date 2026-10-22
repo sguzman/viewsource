@@ -61,8 +61,10 @@ class AtlasTests(unittest.TestCase):
             graph_write = current["visuals"]["chat_graph_mutation"]
             self.assertEqual(graph_write["source_ref"],"R-JS-018")
             self.assertFalse(graph_write["source_executed"])
-            self.assertEqual(len(graph_write["operations"]),9)
-            self.assertEqual(len(graph_write["call_sequence"]),6)
+            self.assertEqual(len(graph_write["operations"]),11)
+            self.assertEqual(len(graph_write["call_sequence"]),9)
+            self.assertIn("selected_user_message_ancestry",
+                          graph_write["state_projection"]["field_roles"])
             transport = current["visuals"]["chat_transport_trace"]
             self.assertEqual(transport["source_ref"], "R-JS-018")
             self.assertEqual(transport["reviewed_method_count"], 5)
