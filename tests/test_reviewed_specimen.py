@@ -18,7 +18,7 @@ class ReviewedSpecimenChecks(unittest.TestCase):
             s for s in read("specimens/index.json")["specimens"]
             if s["id"] == "chatgpt-com"
         )
-        self.assertEqual(specimen["status"], "reviewed")
+        self.assertEqual(specimen["status"], "researching")
         self.assertEqual(specimen["current_version"], 2)
         self.assertEqual(specimen["versions"], [1, 2])
         record = read("specimens/chatgpt-com/v0001/record.json")
@@ -52,15 +52,19 @@ class ReviewedSpecimenChecks(unittest.TestCase):
 
     def test_second_specimen_review_and_work_queue(self):
         record = read("specimens/chatgpt-com/v0002/record.json")
-        self.assertEqual(record["status"], "reviewed")
+        self.assertEqual(record["status"], "researching")
         self.assertEqual(record["previous_version"], 1)
         self.assertGreaterEqual(len(record["components"]), 270)
         self.assertGreaterEqual(len(record["findings"]), 36)
-        self.assertEqual(set(record["coverage"].values()), {"analyzed"})
+        self.assertEqual(set(record["coverage"].values()), {"analyzed", "partial"})
         tasks = [t for t in read("queues/tasks.json")["tasks"]
                  if t["specimen_id"] == "chatgpt-com" and t["version"] == 2]
-        initial = [t for t in tasks if "-followup-deep-" not in t["id"]]
+        initial = [t for t in tasks if "-followup-deep-" not in t["id"]
+                   and "-followup-static-" not in t["id"]]
         deep = [t for t in tasks if "-followup-deep-" in t["id"]]
+        reopened = [t for t in tasks if "-followup-static-" in t["id"]]
+        self.assertEqual(len(reopened), 33)
+        self.assertTrue(all(t["status"] == "queued" for t in reopened))
         self.assertEqual(len(initial), 34)
         self.assertEqual(len(deep), 57)
         self.assertEqual(sum(t["status"] == "done" for t in initial), 32)
@@ -100,8 +104,8 @@ class ReviewedSpecimenChecks(unittest.TestCase):
         self.assertEqual(sum(t["status"] == "not_observable" for t in tasks), 20)
         self.assertTrue(all(t["notes"] for t in tasks))
         record = read("specimens/chatgpt-com/v0002/record.json")
-        self.assertEqual(record["status"], "reviewed")
-        self.assertEqual(record["coverage"]["review"], "analyzed")
+        self.assertEqual(record["status"], "researching")
+        self.assertEqual(record["coverage"]["review"], "partial")
 
 
 if __name__ == "__main__":
