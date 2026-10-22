@@ -1,0 +1,33 @@
+{
+  "format_version": 1,
+  "steps": [
+    {
+      "machine": "selection",
+      "event": "select_conversation"
+    },
+    {
+      "machine": "response",
+      "event": "edit_draft"
+    },
+    {
+      "machine": "response",
+      "event": "submit_draft"
+    },
+    {
+      "machine": "response",
+      "event": "response_started"
+    },
+    {
+      "machine": "response",
+      "event": "response_completed"
+    },
+    {
+      "machine": "message_operation",
+      "event": "request_regeneration"
+    },
+    {
+      "machine": "message_operation",
+      "event": "regeneration_result"
+    }
+  ]
+}
