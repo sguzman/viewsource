@@ -624,9 +624,9 @@
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-018"
       ]
     },
     {
@@ -640,9 +640,9 @@
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-026"
       ]
     },
     {
@@ -656,9 +656,10 @@
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-026",
+        "E2-029"
       ]
     },
     {
@@ -672,9 +673,9 @@
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-029"
       ]
     },
     {
@@ -688,9 +689,9 @@
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-028"
       ]
     },
     {
@@ -704,9 +705,10 @@
       "depends_on": [
         "chatgpt-com-v0002-modules"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-022",
+        "E2-029"
       ]
     },
     {
@@ -720,9 +722,10 @@
       "depends_on": [
         "chatgpt-com-v0002-styles"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-023",
+        "E2-030"
       ]
     },
     {
@@ -736,9 +739,10 @@
       "depends_on": [
         "chatgpt-com-v0002-styles"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-023",
+        "E2-030"
       ]
     },
     {
@@ -752,9 +756,9 @@
       "depends_on": [
         "chatgpt-com-v0002-assets"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-024"
       ]
     },
     {
@@ -768,9 +772,9 @@
       "depends_on": [
         "chatgpt-com-v0002-assets"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-031"
       ]
     },
     {
@@ -785,9 +789,9 @@
         "chatgpt-com-v0002-navigation",
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-019"
       ]
     },
     {
@@ -797,15 +801,12 @@
       "profile": "followup",
       "queue": "accessibility",
       "title": "Inspect dynamic accessibility behavior claimed by code, leaving execution unverified.",
-      "status": "done",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-accessibility",
         "chatgpt-com-v0002-interaction"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
-      "evidence_refs": [
-        "E2-036"
-      ]
+      "notes": "A static ZIP cannot verify screen-reader announcements, runtime focus management, keyboard transitions, or assistive-technology behavior."
     },
     {
       "id": "chatgpt-com-v0002-followup-client-trust-boundaries",
@@ -818,9 +819,9 @@
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-034"
       ]
     },
     {
@@ -834,9 +835,9 @@
       "depends_on": [
         "chatgpt-com-v0002-comparison"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-035"
       ]
     },
     {
@@ -850,9 +851,9 @@
       "depends_on": [
         "chatgpt-com-v0002-intake"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "notes": "Static source-scope classification complete; no runtime behavior inferred.",
       "evidence_refs": [
-        "E2-036"
+        "E2-003"
       ]
     },
     {
@@ -862,15 +863,12 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Connect button/form DOM evidence to bundle handlers where justified.",
-      "status": "done",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-markup",
         "chatgpt-com-v0002-modules"
       ],
-      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
-      "evidence_refs": [
-        "E2-036"
-      ]
+      "notes": "Saved minified JavaScript references event handlers, but cannot prove mapping of any specific captured DOM control to its active listener without source maps or runtime event traces."
     }
   ]
 }

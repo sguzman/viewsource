@@ -259,6 +259,32 @@ def validate() -> list[str]:
             require(sum(study["fonts"]["file_counts_by_family"].values()) == study["fonts"]["total_files"],
                     f"Font count mismatch: {path}")
 
+
+    # Reviewed ZIP studies may publish a manually checked, aggregate-only
+    # static deep-analysis report. Do not allow raw code or captured strings.
+    for specimen in specimens:
+        slug = specimen["id"]
+        for version in specimen["versions"]:
+            path = f"specimens/{slug}/v{version:04d}/deep_analysis.json"
+            if not (ROOT / path).is_file():
+                continue
+            report = read(path)
+            require(report.get("format_version") == 1 and report.get("specimen_id") == slug
+                    and report.get("version") == version and report.get("source_scope") == "saved_archive",
+                    f"Deep analysis identity invalid: {path}")
+            require(report.get("limitations") and report.get("method"),
+                    f"Deep analysis has no scoped methodology or limits: {path}")
+            require(report.get("network", {}).get("observed_requests") == 0
+                    and report.get("network", {}).get("remote_destinations_published") == 0,
+                    f"Unreviewed network data publication: {path}")
+            require(report.get("persistence", {}).get("storage_keys_published") == 0,
+                    f"Unreviewed local storage data publication: {path}")
+            require(report.get("security", {}).get("session_values_published") is False,
+                    f"Unreviewed session material publication: {path}")
+            require(report.get("evolution", {}).get("source_scope_difference", {})
+                    .get("verified_site_product_changes") == 0,
+                    f"Unverified site product changes claimed: {path}")
+
     gallery = read("gallery/index.json")
     require(gallery["format_version"] == 1, "Gallery format")
     require(len({item["id"] for item in gallery["entries"]}) == len(gallery["entries"]), "Duplicate gallery item")
