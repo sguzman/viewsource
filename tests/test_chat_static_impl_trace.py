@@ -44,7 +44,7 @@ class ChatImplementationTraceTests(unittest.TestCase):
     def test_reviewed_export_getters_do_not_claim_runtime_calls(self):
         doc = self.data
         present = {(x["source_ref"], x["function_ordinal"]) for x in doc["matches"]}
-        self.assertEqual(len(doc["reviewed_module_exports"]), 7)
+        self.assertEqual(len(doc["reviewed_module_exports"]), 9)
         for item in doc["reviewed_module_exports"]:
             self.assertRegex(item["source_ref"], r"^R-JS-[0-9]{3}$")
             self.assertGreater(item["exported_function_ordinal"], 0)
@@ -54,10 +54,11 @@ class ChatImplementationTraceTests(unittest.TestCase):
 
     def test_same_factory_calls_share_one_source_and_dispatcher(self):
         calls = self.data["reviewed_direct_calls"]
-        self.assertEqual(len(calls), 4)
+        self.assertEqual(len(calls), 6)
         self.assertEqual({x["caller_role"] for x in calls}, {
             "completion_submission", "local_function_result_submission",
-            "regeneration_submission", "conditional_retry_submission"
+            "regeneration_submission", "conditional_retry_submission",
+            "work_handoff_conversion", "answer_now_steering"
         })
         for call in calls:
             self.assertEqual(call["source_ref"], "R-JS-018")
@@ -73,7 +74,7 @@ class ChatImplementationTraceTests(unittest.TestCase):
         reviewed = {(x["source_ref"], x["caller_function_ordinal"],
                      x["callee_function_ordinal"]) for x in doc["reviewed_direct_calls"]}
         self.assertEqual(len(detected), 6)
-        self.assertEqual(len(reviewed), 4)
+        self.assertEqual(len(reviewed), 6)
         self.assertTrue(reviewed <= detected)
         self.assertEqual(len(detected - reviewed), doc["unreviewed_direct_call_count"])
         self.assertTrue(all(x["link_status"] == "candidate_named_direct_call"
