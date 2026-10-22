@@ -83,9 +83,9 @@ Project-owned code and documentation are available under [MIT](LICENSE). This li
 
 ## Chat interaction research
 
-The v0002 ZIP's offline research is reviewed, but this **does not** mean chat behavior is fully reconstructed. The [chat-specific source evidence](specimens/chatgpt-com/v0002/chat_source_signals.json) describes what the saved JavaScript and DOM can support without publishing any source content. The [feature interaction graph](specimens/chatgpt-com/v0002/chat-interaction.graph.json) provides typed message and conversation entities, candidate state machines and transitions, and explicit verification steps. Its edges are hypotheses, not a working internal API map.
+The original v0002 archive audit was completed, but the specimen is now **researching** while deeper static JavaScript implementation analysis continues. Chat behavior is not yet fully reconstructed. The [chat-specific source evidence](specimens/chatgpt-com/v0002/chat_source_signals.json) describes what the saved JavaScript and DOM can support without publishing any source content. The [feature interaction graph](specimens/chatgpt-com/v0002/chat-interaction.graph.json) provides typed message and conversation entities, candidate state machines and transitions, and explicit verification steps. Its edges are hypotheses, not a working internal API map.
 
-The independent [chat feature backlog](queues/chat_research.json) tracks **10 completed offline tasks and 8 runtime investigations requiring new authorized synthetic-session evidence**. Source analysis, graph tooling and strict content-free observation schemas are implemented, with [coding/research instructions](docs/CHAT-INTERACTIONS.md). No actual conversation, account identifier or private browser trace is included.
+The independent [chat feature backlog](queues/chat_research.json) tracks **10 completed earlier tasks and 8 optional runtime verification questions**; those questions do not block further static-source analysis. Source analysis, graph tooling and strict content-free observation schemas are implemented, with [coding/research instructions](docs/CHAT-INTERACTIONS.md). No actual conversation, account identifier or private browser trace is included.
 
 The public atlas's Chat interactions section now includes a [per-operation capability matrix](specimens/chatgpt-com/v0002/chat_capability_matrix.json), [officially documented UI actions](specimens/chatgpt-com/v0002/public_chat_actions.json), and an interactive *synthetic* response-branch example. The synthetic software tools can export ordinal-only message topologies, compare structural events against candidate transitions, simulate guarded state paths, and distinguish structurally equivalent exported trees without matching original IDs. A local-only browser test suite exercises fictional completion, interruption, failure and retry, without contacting ChatGPT. See [the chat research contract](docs/CHAT-INTERACTIONS.md).
 
@@ -93,6 +93,8 @@ A [local-only export normalizer](scripts/normalize_chat_export.py) is also
 available for export-compatible tree records. It constructs temporary
 ordinal message graphs and refuses broken ancestry. Unlike the public
 specimen results, it never includes raw text, original IDs or export files.
+
+The [source-anchored client implementation trace](specimens/chatgpt-com/v0002/chat_static_impl_trace.json) records **15 narrow AST pattern matches**, **7 manually examined client operations**, **6 direct caller-to-dispatcher edges**, and module export relationships without publishing JavaScript source or private values. The current source research queue has **33 tasks: 3 in progress, 30 queued, none claimed complete**. The [Specimen Atlas](https://sguzman.github.io/viewsource/) presents these static findings and the automatic queue before optional runtime studies.
 
 ## Automatic implementation tracing
 
