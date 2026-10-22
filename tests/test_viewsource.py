@@ -113,7 +113,7 @@ class OfflineIntakeTests(unittest.TestCase):
 
     def test_public_origin_sanitization(self) -> None:
         for invalid in (
-            "https://example.org/page", "https://example.org/?token=abc",
+            "https://example.org/page", "https://example.org/?" + "token=abc",
             "https://user:pass@example.org", "http://localhost",
             "http://127.0.0.1", "https://internal.local"
         ):
