@@ -80,3 +80,10 @@ These are research **queues**, not automatic guarantees of complete observation.
 Project-owned code and documentation are available under [MIT](LICENSE). This license does **not** grant rights to any third-party website material submitted for private analysis.
 
 **Offline scope closure:** v0002 has 69 tasks completed and 22 explicitly not observable across both phases, with zero tasks queued. This is not a reconstruction of the live website or private backend.
+
+## Chat interaction research
+
+The v0002 ZIP's offline research is reviewed, but this **does not** mean chat behavior is fully reconstructed. The [chat-specific source evidence](specimens/chatgpt-com/v0002/chat_source_signals.json) describes what the saved JavaScript and DOM can support without publishing any source content. The [feature interaction graph](specimens/chatgpt-com/v0002/chat-interaction.graph.json) provides typed message and conversation entities, candidate state machines and transitions, and explicit verification steps. Its edges are hypotheses, not a working internal API map.
+
+The independent [chat feature backlog](queues/chat_research.json) tracks **nine completed static or engineering tasks and eight runtime investigations requiring new authorized synthetic-session evidence**. Source analysis, graph tooling and strict content-free observation schemas are implemented, with [coding/research instructions](docs/CHAT-INTERACTIONS.md). No actual conversation, account identifier or private browser trace is included.
+
