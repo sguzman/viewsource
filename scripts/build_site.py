@@ -243,6 +243,8 @@ def build(out: Path) -> dict:
                         for row in study["reviewed_module_exports"]
                     ],
                     "module_export_limitations": study["module_export_limitations"],
+                    "unreviewed_direct_call_count": study["unreviewed_direct_call_count"],
+                    "direct_call_candidate_count": len(study["candidate_direct_calls"]),
                     "direct_calls": [
                         {"caller": row["caller_function_ordinal"],
                          "callee": row["callee_function_ordinal"],
