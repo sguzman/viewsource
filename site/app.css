@@ -227,3 +227,22 @@ button:disabled { cursor: not-allowed; opacity: .6; }
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
 }
+
+/* Anonymous research relationship explorer (site-authored, not captured CSS). */
+.module-map, .dom-topology { margin: 7px 0 26px; padding: 24px; background: var(--panel); border: 1px solid var(--line); border-radius: var(--round); box-shadow: var(--shadow); }
+.module-intro { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; padding-bottom: 23px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
+.module-intro div { display: flex; flex-direction: column; }
+.module-intro strong { font: normal 28px var(--serif); }
+.module-intro span { font-size: 11px; color: var(--muted); }
+.module-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 11px; }
+.module-source { display: block; min-width: 0; padding: 15px; border: 1px solid var(--line); border-radius: 9px; background: var(--panel-2); text-align: left; }
+.module-source:hover { border-color: var(--accent); background: var(--accent-bg); }
+.module-source-head,.dom-region-label { display: flex; justify-content: space-between; gap: 8px; font-size: 11px; }
+.module-source-head span,.dom-region-label span { color: var(--muted); }
+.module-source small { display: block; color: var(--muted); font-size: 10px; margin-top: 7px; overflow-wrap: anywhere; }
+.module-bar { margin-top: 10px; width: 100%; height: 7px; border-radius: 99px; background: var(--line); overflow: hidden; }
+.module-bar-fill { display: block; height: 100%; border-radius: 99px; background: var(--accent); }
+.dom-topology { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 21px; }
+.dom-region-label strong { text-transform: capitalize; }
+@media (max-width: 720px) { .module-list,.dom-topology { grid-template-columns: 1fr; } .module-map,.dom-topology { padding: 15px; } }
+

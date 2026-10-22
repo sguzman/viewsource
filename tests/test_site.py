@@ -28,6 +28,12 @@ class AtlasTests(unittest.TestCase):
             data = json.loads((dest / "data/catalog.json").read_text(encoding="utf-8"))
             current = next(v for v in data["versions"] if v["version"] == 2)
             self.assertEqual(len(current["chapters"]), 11)
+            self.assertEqual(current["visuals"]["module_imports"]["static_edges"], 236)
+            self.assertEqual(len(current["visuals"]["module_imports"]["sources"]), 8)
+            self.assertEqual(current["visuals"]["icons"]["matched_uses"], 92)
+            self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
+            self.assertEqual(previous["visuals"] if "previous" in locals() else
+                             next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
             self.assertEqual(len(current["findings"]), 47)
             self.assertEqual(len(current["tasks"]), 91)
             self.assertGreaterEqual(len(current["components"]), 270)

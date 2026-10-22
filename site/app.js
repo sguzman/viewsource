@@ -237,10 +237,80 @@ function graph() {
   outer.append(textList);section.append(outer);
   return section;
 }
+
+function renderModuleExplorer() {
+  const study = versionRecord().visuals?.module_imports;
+  if (!study || !study.sources?.length) return null;
+  const section = elem("section");
+  section.append(sectionHeader("PARSED SOURCE TOPOLOGY", "Parsed module relationships",
+    "Every line represents a source-level static import to an anonymous captured resource. It is not a measured runtime dependency."));
+  const panel = elem("div",{className:"module-map"});
+  const overview = elem("div",{className:"module-intro"},[
+    elem("div",{},[elem("strong",{text:String(study.static_edges)}),elem("span",{text:"AST-linked import pairs"})]),
+    elem("div",{},[elem("strong",{text:String(study.sources.length)}),elem("span",{text:"Importing bundles"})]),
+    elem("div",{},[elem("strong",{text:String(study.target_bundle_count)}),elem("span",{text:"Target bundles"})])
+  ]);
+  panel.append(overview);
+  const grid = elem("div",{className:"module-list"});
+  const max = Math.max(...study.sources.map(s=>s.target_count),1);
+  study.sources.forEach(item=>{
+    const targets = item.target_ranges.map(([low,high])=>low===high
+      ?"R-JS-"+String(low).padStart(3,"0")
+      :"R-JS-"+String(low).padStart(3,"0")+"…"+String(high).padStart(3,"0")).join(", ");
+    const button = elem("button",{type:"button",className:"module-source",
+      onClick:()=>openInspection("message",{
+        name:item.source,
+        description:String(item.target_count)+" parser-matched static import declarations point to saved bundle ordinals: "+targets+
+          ". These links were verified as literal import syntax but not as executed imports, load order, or module responsibility."
+      })
+    });
+    const nameRow = elem("div",{className:"module-source-head"},[
+      elem("strong",{text:item.source}),
+      elem("span",{text:item.target_count+" imports"})
+    ]);
+    const bar = elem("div",{className:"module-bar"});
+    bar.append(elem("span",{className:"module-bar-fill",
+      style:"width:"+Math.max(2,100*item.target_count/max).toFixed(1)+"%"}));
+    append(button,nameRow,bar,elem("small",{text:targets}));
+    grid.append(button);
+  });
+  panel.append(grid,elem("p",{className:"graph-caption",
+    text:"Anonymous script ordinals only. Eight same-ordinal links are retained as uncertain rather than interpreted as runtime recursion. Select a row to inspect its target range."}));
+  section.append(panel);
+  return section;
+}
+function renderDomTopology() {
+  const study = versionRecord().visuals?.landmarks;
+  if (!study) return null;
+  const section = elem("section");
+  section.append(sectionHeader("OBSERVED DOM REGIONS","Where the controls live",
+    "Counted by closest semantic landmark in one saved rendered state; these regions are not verified framework components."));
+  const wrap=elem("div",{className:"dom-topology"});
+  const max=Math.max(...Object.values(study.closest_landmark_buttons));
+  Object.entries(study.closest_landmark_buttons).forEach(([name,value])=>{
+    const item=elem("div",{className:"dom-region"},[
+      elem("div",{className:"dom-region-label"},[
+        elem("strong",{text:name==="other"?"Outside landmarks":name}),
+        elem("span",{text:String(value)+" buttons"})
+      ]),
+      elem("div",{className:"module-bar"},[
+        elem("span",{className:"module-bar-fill",style:"width:"+Math.max(2,100*value/max).toFixed(1)+"%"})
+      ])
+    ]);
+    wrap.append(item);
+  });
+  section.append(wrap);
+  return section;
+}
+
 function renderArticle(chapter,host) {
   append(host,makeHero(chapter),metrics(chapter));
   if(chapter.flow.length)host.append(flowRail(chapter));
   host.append(storySections(chapter));
+  if (chapter.id === "javascript") { const modules=renderModuleExplorer(); if(modules) host.append(modules); }
+  if (chapter.id === "html" || chapter.id === "components") {
+    const dom=renderDomTopology(); if(dom) host.append(dom);
+  }
   if(chapter.id==="overview"||chapter.id==="components"||chapter.id==="javascript") {
     const graphView=graph();if(graphView)host.append(graphView);
   }

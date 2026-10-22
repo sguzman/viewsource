@@ -61,6 +61,39 @@ def build(out: Path) -> dict:
                 for chapter in chapters:
                     if not set(chapter["evidence"]) <= refs:
                         raise ValueError(f"Story chapter has unsupported evidence: {chapter['id']}")
+            # Only explicitly allowlisted anonymous graph and structural metrics
+            # are passed to the website. The full analysis file is not copied.
+            visuals = {}
+            phase3_path = ROOT / (base + "/phase3_analysis.json")
+            if phase3_path.is_file():
+                study = read(base + "/phase3_analysis.json")
+                if study["specimen_id"] != item["id"] or study["version"] != number:
+                    raise ValueError("Deep source study identity mismatch")
+                graph = study["javascript_ast"]
+                visuals["module_imports"] = {
+                    "evidence_ref": "E2-041",
+                    "static_edges": graph["mapped_static_import_edges"],
+                    "target_bundle_count": graph["target_bundle_count"],
+                    "sources": [{
+                        "source": source,
+                        "target_ranges": ranges,
+                        "target_count": sum(high - low + 1 for low, high in ranges)
+                    } for source, ranges in graph["source_to_target_ranges"].items()]
+                }
+                document = study["document"]
+                visuals["landmarks"] = {
+                    "evidence_ref": "E2-038",
+                    "button_total": document["buttons"],
+                    "closest_landmark_buttons": document["closest_landmark_buttons"],
+                    "nav_inside_aside": document["nav_inside_aside"]
+                }
+                icon = study["icon_linkage"]
+                visuals["icons"] = {
+                    "evidence_ref": "E2-044",
+                    "sprite_ordinal": icon["sprite_resource_ordinal"],
+                    "matched_uses": icon["svg_uses_matching_symbol_id"],
+                    "unique_symbols": icon["unique_sprite_symbols_referenced"]
+                }
             inventory = read(base + "/resource_inventory.json") if (ROOT / (base + "/resource_inventory.json")).is_file() else {}
             totals = inventory.get("totals", {})
             catalog["versions"].append({
@@ -69,7 +102,7 @@ def build(out: Path) -> dict:
                 "processed_at": record["processed_at"],
                 "coverage": record["coverage"], "components": components,
                 "relationships": relationships, "findings": findings,
-                "tasks": scoped_tasks, "chapters": chapters,
+                "tasks": scoped_tasks, "chapters": chapters, "visuals": visuals,
                 "limitations": record["limitations"],
                 "resource_summary": {
                     "captured": totals.get("external_references", 0),

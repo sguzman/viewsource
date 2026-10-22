@@ -23,7 +23,12 @@ try {
   await page.getByRole("button",{name:"E2-023"}).click();
   await page.getByRole("heading",{name:"Finding F2-023"}).waitFor();
 
-  await page.locator(".chapter-link").filter({hasText:"Components"}).click();
+  await page.locator(".chapter-link").filter({hasText:"JavaScript"}).click();
+  await page.getByRole("heading",{name:"Parsed module relationships"}).waitFor();
+  assert.equal(await page.locator(".module-source").count(),8);
+  await page.locator(".module-source").first().click();
+  assert.equal(await page.locator(".inspection-card").count(),1);
+    await page.locator(".chapter-link").filter({hasText:"Components"}).click();
   await page.locator(".graph-node").first().click();
   assert.equal(await page.locator(".inspection-card").count(),1);
 
