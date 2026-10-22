@@ -249,6 +249,42 @@ def queue_specimen(slug: str, origin: str) -> None:
     save_json(path, index)
 
 
+
+def deep_capture_eligible(inventory: dict, config: dict) -> bool:
+    """Large or source-rich archives need a persistent second research phase."""
+    if inventory["capture_scope"] != "saved_archive":
+        return False
+    counts = inventory["categories"]
+    threshold = config["trigger"]
+    return (inventory["file_count"] >= threshold["min_archive_files"] or
+            counts.get("script", 0) >= threshold["min_script_files"] or
+            counts.get("stylesheet", 0) >= threshold["min_stylesheet_files"])
+
+
+def spawn_deep_research(slug: str, version: int, inventory: dict, config: dict) -> list[dict]:
+    if not deep_capture_eligible(inventory, config):
+        return []
+    prefix = f"{slug}-v{version:04d}-"
+    selected = [p for p in config["profiles"]
+                if set(p["requires"]).issubset(inventory["categories"])]
+    ids = {p["id"]: prefix + "followup-deep-" + p["id"] for p in selected}
+    tasks = []
+    for p in selected:
+        deps = []
+        for dep in p["depends_on"]:
+            if dep.startswith("base:"):
+                deps.append(prefix + dep[5:])
+            elif dep.startswith("deep:") and dep[5:] in ids:
+                deps.append(ids[dep[5:]])
+        tasks.append({
+            "id": ids[p["id"]], "specimen_id": slug, "version": version,
+            "profile": "followup", "queue": p["queue"], "title": p["title"],
+            "status": "queued", "depends_on": deps or [prefix + "intake"],
+            "notes": "Deep research contract: " + p["acceptance"]
+        })
+    return tasks
+
+
 def process_specimen(slug: str, input_path: Path) -> int:
     index_path = ROOT / "specimens/index.json"
     index = load_json(index_path)
@@ -271,7 +307,9 @@ def process_specimen(slug: str, input_path: Path) -> int:
          "status": "queued", "depends_on": [task_ids[d] for d in p["depends_on"]]}
         for p in profiles
     ]
-    if set(task_ids.values()) & {t["id"] for t in tasks_doc["tasks"]}:
+    spawned.extend(spawn_deep_research(slug, version, inventory,
+                                      load_json(ROOT / "queues/deep_profiles.json")))
+    if {t["id"] for t in spawned} & {t["id"] for t in tasks_doc["tasks"]}:
         raise ValueError("Duplicate task identifiers")
     processed_at = datetime.now(timezone.utc).isoformat(timespec="seconds")
     record = {

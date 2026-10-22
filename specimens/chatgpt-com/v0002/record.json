@@ -6,7 +6,7 @@
   "capture_scope": "saved_archive",
   "processed_at": "2026-10-22T01:01:18.692Z",
   "previous_version": 1,
-  "status": "reviewed",
+  "status": "researching",
   "coverage": {
     "intake": "analyzed",
     "markup": "analyzed",
@@ -25,7 +25,7 @@
     "security": "analyzed",
     "architecture": "analyzed",
     "comparison": "analyzed",
-    "review": "analyzed"
+    "review": "pending"
   },
   "components": [
     {

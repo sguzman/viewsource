@@ -869,6 +869,777 @@
         "chatgpt-com-v0002-modules"
       ],
       "notes": "Saved minified JavaScript references event handlers, but cannot prove mapping of any specific captured DOM control to its active listener without source maps or runtime event traces."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-scope",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "intake",
+      "title": "Characterize source coverage",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-intake"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of characterize source coverage, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-document-map",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "structure",
+      "title": "Document HTML sections and landmarks",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-markup",
+        "chatgpt-com-v0002-followup-deep-scope"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of document html sections and landmarks, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-route-graph",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "navigation",
+      "title": "Map route and navigation evidence",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-navigation",
+        "chatgpt-com-v0002-followup-deep-document-map"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of map route and navigation evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-shell-components",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "architecture",
+      "title": "Identify component boundaries",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-architecture",
+        "chatgpt-com-v0002-followup-deep-document-map"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of identify component boundaries, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-component-props",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "architecture",
+      "title": "Study observable component inputs",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-shell-components"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study observable component inputs, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-component-output",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "architecture",
+      "title": "Study component rendering outputs",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-component-props"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study component rendering outputs, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-script-entry",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Find JavaScript entrypoints",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts",
+        "chatgpt-com-v0002-followup-deep-scope"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of find javascript entrypoints, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-build-system",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Identify bundler and chunk conventions",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-script-entry"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of identify bundler and chunk conventions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-source-maps",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Inspect sourcemap and minification limits",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-script-entry"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of inspect sourcemap and minification limits, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-dependency-graph",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Verify module dependency relationships",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-build-system"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of verify module dependency relationships, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-module-groups",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Classify bundles by responsibility",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-dependency-graph"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of classify bundles by responsibility, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-module-ownership",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Relate modules to UI subsystems",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups",
+        "chatgpt-com-v0002-followup-deep-shell-components"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of relate modules to ui subsystems, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-third-party-libraries",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Classify vendored library code",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of classify vendored library code, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-lazy-loading",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "performance",
+      "title": "Study preload and dynamic load paths",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-dependency-graph"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study preload and dynamic load paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-render-pipeline",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "architecture",
+      "title": "Explain rendering and hydration",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-script-entry",
+        "chatgpt-com-v0002-followup-deep-document-map"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of explain rendering and hydration, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-router-loader",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "navigation",
+      "title": "Trace route-loader lifecycle",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-route-graph",
+        "chatgpt-com-v0002-followup-deep-render-pipeline"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace route-loader lifecycle, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-event-catalog",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Classify event handler types",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of classify event handler types, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-event-to-control",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Connect handlers to controls with evidence",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-event-catalog",
+        "chatgpt-com-v0002-followup-deep-shell-components"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of connect handlers to controls with evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-form-lifecycle",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Trace input and submission",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-event-to-control"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace input and submission, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-upload-lifecycle",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Trace file selection and upload",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-form-lifecycle"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace file selection and upload, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-dialog-lifecycle",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Trace dialog and keyboard pathways",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-event-to-control"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace dialog and keyboard pathways, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-reactivity",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Understand observers and rerender triggers",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-event-catalog",
+        "chatgpt-com-v0002-followup-deep-render-pipeline"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of understand observers and rerender triggers, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-state-ownership",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "state",
+      "title": "Locate state stores and owners",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of locate state stores and owners, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-state-transitions",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "state",
+      "title": "Trace state transitions",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-state-ownership",
+        "chatgpt-com-v0002-followup-deep-event-catalog"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace state transitions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-persistence",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "state",
+      "title": "Study persistence lifetimes",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-state-ownership"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study persistence lifetimes, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-cross-tab",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "state",
+      "title": "Trace cross-tab messaging",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-persistence"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace cross-tab messaging, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-serialized-state",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "state",
+      "title": "Trace initial serialized route state",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-router-loader",
+        "chatgpt-com-v0002-followup-deep-state-ownership"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace initial serialized route state, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-request-builders",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "network",
+      "title": "Classify request construction",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of classify request construction, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-network-streams",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "network",
+      "title": "Trace streaming response parsing",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-request-builders"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace streaming response parsing, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-realtime-clients",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "network",
+      "title": "Classify realtime transports",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-request-builders"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of classify realtime transports, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-retry-and-errors",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "network",
+      "title": "Study retries and error paths",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-request-builders"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study retries and error paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-authentication-boundary",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "security",
+      "title": "Map client trust and auth boundaries",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-request-builders"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of map client trust and auth boundaries, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-permission-gates",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "security",
+      "title": "Inspect feature and permission guards",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-authentication-boundary"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of inspect feature and permission guards, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-security-policy",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "security",
+      "title": "Study nonce and sandbox indicators",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-security",
+        "chatgpt-com-v0002-followup-deep-scope"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study nonce and sandbox indicators, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-style-entry",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Map stylesheet origins",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-styles",
+        "chatgpt-com-v0002-followup-deep-document-map"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of map stylesheet origins, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-style-layers",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Understand cascade and layers",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-style-entry"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of understand cascade and layers, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-token-taxonomy",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Classify design tokens",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-style-entry"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of classify design tokens, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-token-semantic-uses",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Map tokens to components",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-token-taxonomy",
+        "chatgpt-com-v0002-followup-deep-shell-components"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of map tokens to components, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-color-modes",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Explain theme preference and application",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-token-taxonomy",
+        "chatgpt-com-v0002-followup-deep-state-ownership"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of explain theme preference and application, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-responsive-matrix",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Map media and container regimes",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-style-entry"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of map media and container regimes, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-layout-topology",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Map responsive grids and shells",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-responsive-matrix",
+        "chatgpt-com-v0002-followup-deep-document-map"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of map responsive grids and shells, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-motion",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Study animations and reduced motion",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-style-entry"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study animations and reduced motion, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-typefaces",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "assets",
+      "title": "Identify font families and variants",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-assets",
+        "chatgpt-com-v0002-followup-deep-scope"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of identify font families and variants, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-icon-systems",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "assets",
+      "title": "Explain sprite and icon architecture",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-assets",
+        "chatgpt-com-v0002-followup-deep-scope"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of explain sprite and icon architecture, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-asset-placement",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "assets",
+      "title": "Link image resources to UI roles",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-icon-systems",
+        "chatgpt-com-v0002-followup-deep-document-map"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of link image resources to ui roles, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-media-journeys",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Trace media and audio source pathways",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of trace media and audio source pathways, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-worker-messaging",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "architecture",
+      "title": "Study workers and messaging",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups",
+        "chatgpt-com-v0002-followup-deep-cross-tab"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of study workers and messaging, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-a11y-landmarks",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "accessibility",
+      "title": "Inspect semantic hierarchy",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-accessibility",
+        "chatgpt-com-v0002-followup-deep-document-map"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of inspect semantic hierarchy, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-a11y-controls",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "accessibility",
+      "title": "Analyze focus and accessible-state hooks",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-a11y-landmarks",
+        "chatgpt-com-v0002-followup-deep-event-to-control"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of analyze focus and accessible-state hooks, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-a11y-dynamics",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "accessibility",
+      "title": "Separate static from live accessibility",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-a11y-controls"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of separate static from live accessibility, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-performance-budget",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "performance",
+      "title": "Estimate loading and critical paths",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-lazy-loading",
+        "chatgpt-com-v0002-followup-deep-style-entry"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of estimate loading and critical paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-bundle-hotspots",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "performance",
+      "title": "Classify largest bundle responsibilities",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-module-groups"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of classify largest bundle responsibilities, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-capture-gaps",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "quality",
+      "title": "Investigate missing capture evidence",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-intake",
+        "chatgpt-com-v0002-followup-deep-scope"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of investigate missing capture evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-evolution-matching",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "evolution",
+      "title": "Compare evidence across capture versions",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-document-map",
+        "chatgpt-com-v0002-followup-deep-dependency-graph"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of compare evidence across capture versions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-system-flow",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "architecture",
+      "title": "Create an end-to-end UI and data story",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-render-pipeline",
+        "chatgpt-com-v0002-followup-deep-state-transitions",
+        "chatgpt-com-v0002-followup-deep-network-streams"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of create an end-to-end ui and data story, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-public-narrative",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "quality",
+      "title": "Write linked and evidence-led story chapters",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-system-flow",
+        "chatgpt-com-v0002-followup-deep-layout-topology",
+        "chatgpt-com-v0002-followup-deep-a11y-controls"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of write linked and evidence-led story chapters, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-deep-limitations-audit",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "quality",
+      "title": "Audit and qualify unknowns",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-followup-deep-public-narrative",
+        "chatgpt-com-v0002-followup-deep-capture-gaps"
+      ],
+      "notes": "Deep research contract: Publish source-backed analysis of audit and qualify unknowns, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
     }
   ]
 }

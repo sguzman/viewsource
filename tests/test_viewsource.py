@@ -36,7 +36,7 @@ class OfflineIntakeTests(unittest.TestCase):
         tool.ROOT = self.root
         tool.WORKDIR = self.root / ".work"
         validator.ROOT = self.root
-        for resource in ("queues/profiles.json", "ontology/ontology.json",
+        for resource in ("queues/profiles.json", "queues/deep_profiles.json", "ontology/ontology.json",
                          "tarium.json", "gallery/index.json"):
             source = REPO / resource
             target = self.root / resource
@@ -127,6 +127,25 @@ class OfflineIntakeTests(unittest.TestCase):
         self.assertGreaterEqual(len({p["queue"] for p in profiles}), 10)
         self.assertGreaterEqual(len(profiles), 15)
         self.assertTrue(all(set(p["depends_on"]) <= keys for p in profiles))
+
+
+    def test_large_archive_generates_many_deep_tasks(self):
+        source = self.base / "large.zip"
+        with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("index.html", "<main>synthetic test</main>")
+            for i in range(24):
+                archive.writestr(f"bundle-{i}.js", "export const test = true;")
+            for i in range(7):
+                archive.writestr(f"style-{i}.css", ":root {--test: 1}")
+            archive.writestr("icon.svg", "<svg/>")
+            archive.writestr("font.woff2", b"not-a-real-font")
+        tool.queue_specimen("largesite", "https://large.example.org")
+        self.assertEqual(tool.process_specimen("largesite", source), 1)
+        tasks = tool.load_json(self.root / "queues/tasks.json")["tasks"]
+        deep = [t for t in tasks if "-followup-deep-" in t["id"]]
+        self.assertGreaterEqual(len(deep), 55)
+        self.assertTrue(all(t["status"] == "queued" and t["notes"] and t["depends_on"] for t in deep))
+        self.assertEqual(validator.validate(), [])
 
 
 if __name__ == "__main__":

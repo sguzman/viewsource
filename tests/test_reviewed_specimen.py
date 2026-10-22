@@ -18,7 +18,7 @@ class ReviewedSpecimenChecks(unittest.TestCase):
             s for s in read("specimens/index.json")["specimens"]
             if s["id"] == "chatgpt-com"
         )
-        self.assertEqual(specimen["status"], "reviewed")
+        self.assertEqual(specimen["status"], "researching")
         self.assertEqual(specimen["current_version"], 2)
         self.assertEqual(specimen["versions"], [1, 2])
         record = read("specimens/chatgpt-com/v0001/record.json")
@@ -85,6 +85,17 @@ class ReviewedSpecimenChecks(unittest.TestCase):
         contents = json.dumps(report).lower()
         for forbidden in ("http://", "https://", "source-dom.html", "page-snapshot", "session_token", "user-llm4"):
             self.assertNotIn(forbidden, contents)
+
+
+    def test_deep_research_backlog_preserved(self):
+        tasks = [t for t in read("queues/tasks.json")["tasks"]
+                 if t["specimen_id"] == "chatgpt-com" and t["version"] == 2
+                 and "-followup-deep-" in t["id"]]
+        self.assertGreaterEqual(len(tasks), 55)
+        self.assertTrue(all(t["status"] == "queued" and t["notes"] for t in tasks))
+        record = read("specimens/chatgpt-com/v0002/record.json")
+        self.assertEqual(record["status"], "researching")
+        self.assertEqual(record["coverage"]["review"], "pending")
 
 
 if __name__ == "__main__":
