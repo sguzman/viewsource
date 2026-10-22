@@ -261,6 +261,12 @@ def build(out: Path) -> dict:
                         for op in graph_mutation["graph_operations"]
                     ],
                     "unverified": graph_mutation["not_verified"],
+                    "state_projection": {
+                        "source_ref": graph_mutation["state_commit_observation"]["source_ref"],
+                        "behavior": graph_mutation["state_commit_observation"]["client_behavior"],
+                        "field_roles": graph_mutation["state_commit_observation"]["projected_state_roles"],
+                        "limits": graph_mutation["state_commit_observation"]["verification_boundary"],
+                    },
                 }
             transport_path = ROOT / (base + "/chat_transport_trace.json")
             if transport_path.is_file():
