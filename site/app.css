@@ -416,3 +416,13 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-ast-details { font-size: 12px; line-height: 1.65; }
 .chat-ast-details summary { cursor: pointer; }
 .chat-ast-details ul { padding-left: 20px; }
+
+.chat-implementation-totals { font-size: 13px; color: var(--muted); }
+.chat-implementation-list { display: grid; grid-template-columns: repeat(auto-fit,minmax(255px,1fr)); gap: 9px; margin: 13px 0; }
+.chat-implementation-card { border: 1px solid var(--line); background: var(--panel-2); border-radius: 8px; padding: 11px 13px; min-width: 0; }
+.chat-implementation-card summary { display: flex; flex-direction: column; gap: 4px; cursor: pointer; }
+.chat-implementation-card summary strong { text-transform: capitalize; font-size: 13px; }
+.chat-implementation-card summary small { color: var(--muted); font-size: 11px; }
+.chat-implementation-card p,.chat-implementation-questions { font-size: 12px; line-height: 1.65; }
+.chat-implementation-questions summary { cursor: pointer; }
+.chat-implementation-questions ul { padding-left: 20px; }
