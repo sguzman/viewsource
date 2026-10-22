@@ -62,7 +62,7 @@ try {
   await page.getByRole("heading",{name:"Streaming and transport code"}).waitFor();
   assert.equal(await page.locator(".signal-row").count(),6);
   await page.locator(".chapter-link").filter({hasText:"Research queue"}).click();
-  await page.getByRole("heading",{name:"Research tasks"}).waitFor();
+  await page.getByRole("heading",{name:"Research tasks",exact:true}).waitFor();
   assert.ok(await page.locator(".queue-group").count()>=10);
   await page.locator(".queue-group").first().locator("summary").click();
   assert.ok(await page.locator(".task").count()>0);
