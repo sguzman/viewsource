@@ -39,3 +39,11 @@ If a disclosure is suspected, stop publication and remediate without repeating t
 A substantial, source-rich ZIP must spawn a persistent deep research graph using \`queues/deep_profiles.json\`, in addition to the ordinary intake queues. Do not mistake source-pattern counts or completion of the initial pass for complete understanding. Preserve unmet deep tasks and their dependencies until supported by meaningful research.
 
 Viewsource is also a **browsable research website**: maintain the public [Specimen Atlas](site/) so readers can move through HTML, CSS, JavaScript, components, logic, flow, state, evidence, and active research queues. Maintain clickable relationships and evidence boundaries; expose only original sanitized findings, never capture source. The website **must** provide a System/Light/Dark appearance dropdown with **System as the default**. Keep the atlas functional at desktop and mobile widths and use automated browser checks where available.
+
+## Concrete specimen presentation
+
+The first screen of a specimen must show **what the capture actually contains**: an inspectable page-region diagram, identified libraries/frameworks and their source evidence, then linked technical analysis. Aggregate metrics and generic architectural essays are secondary. A visitor should be able to name the UI regions and principal source technologies without reading JSON.
+
+Use ordinary technical English. Avoid poetic headings, promotional slogans and vague phrases that say little about the specimen. Prefer "JavaScript imports", "HTML controls", "Libraries", "CSS rules" and short statements about what was observed.
+
+Distinguish **strong evidence**, **likely**, **indicator**, and **not established** for technology detection. Do not infer exact package versions, actual runtime execution, source component ownership or package provenance from a minified string alone. Keep snapshots, source snippets, identifiable markup, captured strings and personal information private.

@@ -7,7 +7,7 @@ This is the public, browser-accessible research interface for Viewsource. It is 
 ## Contents
 
 The generated atlas joins reviewed and in-progress specimen records to an editorial research narrative:
-- Chapter navigation for HTML, CSS, JavaScript, components, logic, flow, state, assets, evidence and research tasks
+- Page layout schematic, frameworks/libraries with evidence strength, and chapter navigation for HTML, CSS, JavaScript, components, logic, flow, state, assets, evidence and research tasks
 - Selected, clickable ontology component graph and relationship inspector
 - Interactive evidence references with confidence labels and scope
 - Research tasks with dependency status, source evidence requirements and open questions
@@ -37,3 +37,5 @@ New specimens appear in the selector after their public records are added. A ver
 ## Deployment
 
 The workflow uses the GitHub Pages Actions deployment source. If GitHub Pages has not been enabled for this repository, the workflow may require selecting **GitHub Actions** as the Pages source in repository Settings → Pages. The repo alone cannot guarantee Pages is enabled.
+
+The default ChatGPT v0002 page opens with the HTML-region diagram and named libraries. These are public, curated summaries, not copied screenshot or site source. Named library inventories are in each specimen version's technology inventory when available.
