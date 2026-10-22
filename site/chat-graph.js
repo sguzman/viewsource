@@ -127,6 +127,15 @@ window.ViewsourceChatGraph = (() => {
         methods.append(row);
       });
       block.append(methods);
+      const bridge=element("details","chat-transport-bridge");
+      bridge.append(element("summary","","Generation → stream service bridge"),
+        element("p","",transport.generation_bridge.behavior),
+        element("p","graph-caption",
+          "Generation function "+transport.generation_bridge.caller_function_ordinal+
+          " → "+transport.generation_bridge.callee_method+
+          "; callbacks: "+transport.generation_bridge.callbacks.join(", ")+
+          "; recovery inputs: "+transport.generation_bridge.recovery_inputs.join(", ")));
+      block.append(bridge);
       const flow=element("details","chat-transport-edges");
       flow.append(element("summary","","Reviewed client-side transport relationships"));
       const rows=element("ul","");
