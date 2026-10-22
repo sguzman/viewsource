@@ -111,6 +111,30 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const graphWrite=record.visuals?.chat_graph_mutation;
+    if(graphWrite){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Message graph mutation: captured implementation"));
+      block.append(element("p","graph-caption",
+        "Source-backed parent/child linking and selected-node updates in "+
+        graphWrite.source_ref+". The server model and live outcomes are unverified."));
+      const operations=element("div","chat-mutation-grid");
+      graphWrite.operations.forEach(item=>{
+        const row=element("details","chat-mutation-operation");
+        row.append(element("summary","",item.kind),
+          element("p","",item.observation));
+        operations.append(row);
+      });
+      block.append(operations);
+      const graph=element("details","chat-mutation-callpath");
+      graph.append(element("summary","","Recovered client call sequence"));
+      const list=element("ol","");
+      graphWrite.call_sequence.forEach(edge=>list.append(
+        element("li","",edge.from+" → "+edge.to+" ("+edge.kind+")")));
+      graph.append(list);
+      block.append(graph);
+      section.append(block);
+    }
     const transport=record.visuals?.chat_transport_trace;
     if(transport){
       const block=element("div","chat-subsection");
