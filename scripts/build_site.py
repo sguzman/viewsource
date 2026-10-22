@@ -235,6 +235,14 @@ def build(out: Path) -> dict:
                         for row in study["reviewed_client_operations"]
                     ],
                     "open_static_questions": study["open_static_questions"],
+                    "reviewed_module_exports": [
+                        {"source_ref": row["source_ref"],
+                         "exported_function_ordinal": row["exported_function_ordinal"],
+                         "name_scope": row["name_scope"].replace("_", " "),
+                         "meaning": row["meaning"]}
+                        for row in study["reviewed_module_exports"]
+                    ],
+                    "module_export_limitations": study["module_export_limitations"],
                 }
             static_ast_path = ROOT / (base + "/chat_ast_followup.json")
             if static_ast_path.is_file():
