@@ -158,11 +158,11 @@ class ChatGraphCoreTests(unittest.TestCase):
         self.assertEqual(middle["parent_edge_count"],1)
         self.assertEqual(after["branch_point_count"],1)
         self.assertEqual(after["alternative_child_count"],1)
-        self.assertEqual(after["selected_path_length"],0)
+        self.assertEqual(after["selected_path_length"],2)
         compared=core.compare_topology_metrics(middle,after)
         self.assertEqual(compared["changes"]["node_count"],1)
         self.assertEqual(compared["changes"]["alternative_child_count"],1)
-        self.assertEqual(compared["changes"]["selected_path_length"],-2)
+        self.assertEqual(compared["changes"]["selected_path_length"],0)
         self.assertFalse(compared["website_behavior_verified"])
         import json
         self.assertNotIn("opaque-key",json.dumps(compared))
