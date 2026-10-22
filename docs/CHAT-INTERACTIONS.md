@@ -261,3 +261,13 @@ These four caller-to-callee edges are reviewed source-level facts, not
 merely co-occurring field names or a speculative state diagram. They
 still do not demonstrate that any particular pathway was exercised in
 a live session or reveal server storage semantics.
+
+## Automated conservative caller discovery
+
+The AST tracer now discovers same-module direct identifier calls into the
+generation-parent-selection routine without publishing original symbol names.
+On this capture it identifies six such candidate callers. Four have been
+individually reviewed against their source-level behavior; two have not yet
+been classified. A lexical named call in one module does not independently
+verify dynamic execution. Unreviewed caller edges are preserved as candidates
+rather than assigned invented product responsibilities.
