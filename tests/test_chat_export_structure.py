@@ -99,5 +99,28 @@ class ChatExportStructureTests(unittest.TestCase):
             mod.inspect_export({"mapping": {}})
 
 
+    def test_incremental_reader_with_small_chunks(self):
+        from io import StringIO
+        payload=json.dumps([self.sample(), self.sample()], ensure_ascii=False)
+        parsed=list(mod.iter_export_records(StringIO(payload),chunk_size=3))
+        self.assertEqual(len(parsed),2)
+        summary=mod.summarize_records(
+            mod.iter_export_records(StringIO(payload),chunk_size=5))
+        self.assertEqual(summary["conversation_count"],2)
+        self.assertEqual(summary["resolved_off_path_nodes_total"],2)
+        self.assertNotIn("fictional-title",json.dumps(summary))
+
+    def test_stream_reader_rejects_truncated_and_extra_data(self):
+        from io import StringIO
+        for payload in ('[{},]', '[{}] trailing', '{ }', '[{"partial":'):
+            with self.subTest(kind=payload[:3]), self.assertRaises(mod.ExportShapeError):
+                list(mod.iter_export_records(StringIO(payload),chunk_size=2))
+
+    def test_stream_reader_accepts_empty_and_whitespace_arrays(self):
+        from io import StringIO
+        self.assertEqual(list(mod.iter_export_records(StringIO(" [   ] \n"))),[])
+        self.assertEqual(mod.summarize_records(iter(()))["conversation_count"],0)
+
+
 if __name__ == "__main__":
     unittest.main()
