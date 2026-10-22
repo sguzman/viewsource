@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en" data-theme="system">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <meta name="description" content="Viewsource — explore evidence-backed stories of how websites are built.">
+  <title>Viewsource — Specimen Atlas</title>
+  <script>
+    try {
+      const value = localStorage.getItem("viewsource:theme");
+      if (["system","light","dark"].includes(value)) document.documentElement.dataset.theme = value;
+    } catch (_) {}
+  </script>
+  <link rel="stylesheet" href="./app.css">
+  <script defer src="./app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to specimen story</a>
+  <div class="site">
+    <header class="topbar">
+      <a class="brand" href="#chapter=overview" aria-label="Viewsource atlas home">
+        <span class="brand-mark" aria-hidden="true"><span>V</span><span>S</span></span>
+        <span class="brand-text"><strong>viewsource</strong><small>SPECIMEN ATLAS</small></span>
+      </a>
+      <span class="topbar-divider" aria-hidden="true"></span>
+      <span class="topbar-context">Anatomy of the web, one capture at a time.</span>
+      <div class="topbar-actions">
+        <label class="select-field">Specimen
+          <select id="specimen-select" aria-label="Select specimen"><option value="">Loading…</option></select>
+        </label>
+        <label class="select-field">Version
+          <select id="version-select" aria-label="Select version"><option value="">—</option></select>
+        </label>
+        <label class="select-field mode-field">Appearance
+          <select id="theme-select" aria-label="Appearance">
+            <option value="system" selected>System</option>
+            <option value="light">Light</option>
+            <option value="dark">Dark</option>
+          </select>
+        </label>
+      </div>
+    </header>
+    <div class="workspace">
+      <aside class="sidebar" aria-label="Research chapters">
+        <div class="sidebar-head">
+          <span class="section-kicker">FIELD NOTES</span>
+          <h2>Explore the story</h2>
+          <p>Follow the evidence from structure to behavior.</p>
+        </div>
+        <nav id="chapters" aria-label="Story chapters"></nav>
+        <div class="side-bottom">
+          <div class="status-dot"><span class="pulse" aria-hidden="true"></span><span id="research-status">Loading research</span></div>
+          <div class="side-note">Original analysis. No website captures or private account data are hosted here.</div>
+          <a class="external-link" href="https://github.com/sguzman/viewsource" target="_blank" rel="noopener noreferrer">Source repository <span aria-hidden="true">↗</span></a>
+        </div>
+      </aside>
+      <main id="content" class="content" tabindex="-1">
+        <div class="story-header">
+          <div id="breadcrumbs" class="breadcrumbs">FIELD GUIDE / LOADING</div>
+          <div class="content-tools">
+            <label class="search-wrap"><span aria-hidden="true">⌕</span><span class="sr-only">Search research</span>
+              <input id="site-search" type="search" placeholder="Search findings, components, work…" autocomplete="off">
+            </label>
+            <button type="button" id="clear-search" class="clear-search" hidden>Clear</button>
+          </div>
+        </div>
+        <div id="story" aria-live="polite">
+          <div class="loading-state"><div class="loading-ring" aria-hidden="true"></div><p>Preparing the specimen atlas…</p></div>
+        </div>
+      </main>
+      <aside id="inspector" class="inspector" aria-label="Evidence inspector">
+        <div class="inspector-title">
+          <span class="section-kicker">RESEARCH LENS</span>
+          <h2>Evidence inspector</h2>
+          <p>Select a finding, component, or task to inspect its support.</p>
+        </div>
+        <div id="inspection" aria-live="polite"></div>
+      </aside>
+    </div>
+    <footer class="site-footer"><span>VIEWSOURCE / INDEPENDENT RESEARCH</span><span>Captures are inputs. Findings are the publication.</span></footer>
+  </div>
+</body>
+</html>
