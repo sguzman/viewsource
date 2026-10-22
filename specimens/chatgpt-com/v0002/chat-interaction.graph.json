@@ -261,6 +261,33 @@
         }
       ],
       "initial_state": "idle"
+    },
+    {
+      "id": "message_operation",
+      "label": "Message edit and regeneration",
+      "initial_state": "viewing",
+      "states": [
+        {
+          "id": "viewing",
+          "label": "Viewing messages",
+          "status": "candidate"
+        },
+        {
+          "id": "editing_prior",
+          "label": "Editing an earlier message",
+          "status": "candidate"
+        },
+        {
+          "id": "awaiting_revision",
+          "label": "Awaiting edited-message result",
+          "status": "candidate"
+        },
+        {
+          "id": "awaiting_regeneration",
+          "label": "Awaiting regenerated response",
+          "status": "candidate"
+        }
+      ]
     }
   ],
   "events": [
@@ -347,6 +374,48 @@
       "id": "reset_composer",
       "label": "Reset composer",
       "origin": "system",
+      "payload_fields": [],
+      "status": "candidate"
+    },
+    {
+      "id": "start_message_edit",
+      "label": "Activate message edit",
+      "origin": "user",
+      "payload_fields": [],
+      "status": "candidate"
+    },
+    {
+      "id": "cancel_message_edit",
+      "label": "Cancel message edit",
+      "origin": "user",
+      "payload_fields": [],
+      "status": "candidate"
+    },
+    {
+      "id": "submit_message_edit",
+      "label": "Submit edited message",
+      "origin": "user",
+      "payload_fields": [],
+      "status": "candidate"
+    },
+    {
+      "id": "revision_result",
+      "label": "Revision result visible",
+      "origin": "network_or_ui",
+      "payload_fields": [],
+      "status": "candidate"
+    },
+    {
+      "id": "request_regeneration",
+      "label": "Request regeneration",
+      "origin": "user",
+      "payload_fields": [],
+      "status": "candidate"
+    },
+    {
+      "id": "regeneration_result",
+      "label": "Regenerated result visible",
+      "origin": "network_or_ui",
       "payload_fields": [],
       "status": "candidate"
     }
@@ -553,6 +622,98 @@
       "evidence_status": "hypothesis",
       "evidence_refs": [],
       "verify": "Confirm whether reset is a real distinct action or simply a return to idle."
+    },
+    {
+      "id": "begin_prior_edit",
+      "machine": "message_operation",
+      "from": "viewing",
+      "event": "start_message_edit",
+      "to": "editing_prior",
+      "guards": [
+        "The edit control is available"
+      ],
+      "effects": [
+        "An editor may replace a message display"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Observe a synthetic prior-message edit control and any newly visible editor"
+    },
+    {
+      "id": "cancel_prior_edit",
+      "machine": "message_operation",
+      "from": "editing_prior",
+      "event": "cancel_message_edit",
+      "to": "viewing",
+      "guards": [
+        "Cancel is available"
+      ],
+      "effects": [
+        "The prior message may remain unchanged"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Check whether cancellation preserves the original visible path"
+    },
+    {
+      "id": "submit_prior_edit",
+      "machine": "message_operation",
+      "from": "editing_prior",
+      "event": "submit_message_edit",
+      "to": "awaiting_revision",
+      "guards": [
+        "The editor accepts the change"
+      ],
+      "effects": [
+        "A new pending operation may begin"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Compare visible message counts and parent links before and after synthetic revision"
+    },
+    {
+      "id": "revision_result_visible",
+      "machine": "message_operation",
+      "from": "awaiting_revision",
+      "event": "revision_result",
+      "to": "viewing",
+      "guards": [],
+      "effects": [
+        "A changed or alternative message may appear"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Distinguish replacement from a new branch without recording message text"
+    },
+    {
+      "id": "begin_regeneration",
+      "machine": "message_operation",
+      "from": "viewing",
+      "event": "request_regeneration",
+      "to": "awaiting_regeneration",
+      "guards": [
+        "A regeneration control is enabled"
+      ],
+      "effects": [
+        "Another response attempt may begin"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Observe synthetic regeneration and separate attempt count from message count"
+    },
+    {
+      "id": "regenerated_result_visible",
+      "machine": "message_operation",
+      "from": "awaiting_regeneration",
+      "event": "regeneration_result",
+      "to": "viewing",
+      "guards": [],
+      "effects": [
+        "Another response may be visible"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Determine whether the prior response remains accessible as an alternative"
     }
   ],
   "branch_model": {
@@ -601,6 +762,16 @@
       "id": "network",
       "question": "Which request/stream event categories correspond to an action?",
       "next_evidence": "Correlate abstract request and response events while removing payloads, tokens, endpoints and headers."
+    },
+    {
+      "id": "action-ownership",
+      "question": "Which edit and regeneration controls belong to which displayed messages?",
+      "next_evidence": "Run a disposable synthetic UI scenario and correlate control ancestry with visible message structure without saving text."
+    },
+    {
+      "id": "message-immutability",
+      "question": "After editing or regenerating, is the original message still reachable as an alternative?",
+      "next_evidence": "Compare synthetic node and selected-path structure before and after the action; do not assume the saved code proves a tree."
     }
   ],
   "limitations": [
@@ -608,5 +779,6 @@
     "Transition edges here are hypotheses for implementing a state-graph client, not recovered product behavior.",
     "Observed UI surfaces do not establish exact React component, listener, endpoint or store ownership.",
     "Private conversations and account identifiers are excluded from all public research."
-  ]
+  ],
+  "limits": []
 }
