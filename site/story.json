@@ -1,0 +1,626 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "chapters": [
+    {
+      "id": "overview",
+      "name": "Overview",
+      "eyebrow": "01 · Field guide",
+      "title": "An interface is a living system.",
+      "lead": "Follow one saved ChatGPT interface from document shell and preloaded scripts to styled components, state management, and network-facing code. Every connection is bounded by what this snapshot actually captured.",
+      "tags": [
+        "HTML",
+        "CSS",
+        "JavaScript",
+        "State"
+      ],
+      "evidence": [
+        "E2-001",
+        "E2-002",
+        "E2-019",
+        "E2-036"
+      ],
+      "metrics": [
+        [
+          "Captured resources",
+          "234"
+        ],
+        [
+          "Client bundles",
+          "144"
+        ],
+        [
+          "Deep investigations",
+          "57"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Begin with the visible document",
+          "body": "The captured page exposes semantic regions, controls, serialized route data, and resource hints. It is one authenticated browser state—not a complete site crawl.",
+          "link": "html"
+        },
+        {
+          "title": "Follow the code that assembles it",
+          "body": "JavaScript bundles contain bootstrap, event, state, request, and media-related syntax. Candidate references show where to investigate; they are not proof of executed imports.",
+          "link": "javascript"
+        },
+        {
+          "title": "See the uncertainty as part of the story",
+          "body": "Source-level observations and runtime verification occupy different evidence classes. Missing files, dynamic event ownership, and actual network responses remain open research boundaries.",
+          "link": "evidence"
+        }
+      ],
+      "flow": [
+        "Saved capture",
+        "Document + route data",
+        "Client bundles",
+        "UI components",
+        "State + services",
+        "Rendered experience"
+      ],
+      "unknown": "A static ZIP cannot independently prove runtime call order, server-side implementation, or actual user interactions."
+    },
+    {
+      "id": "html",
+      "name": "HTML",
+      "eyebrow": "02 · Document anatomy",
+      "title": "The document is the interface's skeleton.",
+      "lead": "Landmarks, controls, links and stream placeholders reveal the rendered application structure before any assumptions about its runtime wiring.",
+      "tags": [
+        "DOM",
+        "Landmarks",
+        "Routes"
+      ],
+      "evidence": [
+        "E2-002",
+        "E2-014",
+        "E2-033"
+      ],
+      "metrics": [
+        [
+          "Buttons",
+          "130"
+        ],
+        [
+          "Anchors",
+          "26"
+        ],
+        [
+          "Inline SVGs",
+          "175"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Semantic regions",
+          "body": "The source contains one main landmark, two navigation regions, two headers, two asides and a form. This is a particular conversation-facing DOM state.",
+          "link": "components"
+        },
+        {
+          "title": "Bootstrap alongside markup",
+          "body": "Sixteen executable inline scripts and two JSON script elements appear in the document, along with one external script reference and 72 modulepreloads.",
+          "link": "javascript"
+        },
+        {
+          "title": "Interactive affordances",
+          "body": "Buttons, a form and file inputs establish possible interactions, but source markup alone cannot assign live handlers or verify successful submission.",
+          "link": "logic"
+        }
+      ],
+      "flow": [
+        "HTML shell",
+        "Navigation + main",
+        "Controls",
+        "Script bootstraps",
+        "Hydration candidate"
+      ],
+      "unknown": "The snapshot does not enumerate hidden menus or other routes absent from this DOM."
+    },
+    {
+      "id": "css",
+      "name": "CSS",
+      "eyebrow": "03 · Visual system",
+      "title": "A design language in thousands of declarations.",
+      "lead": "Stylesheets reveal theme tokens, layout rules, container conditions, motion preferences and a layered visual vocabulary—without reproducing the site's proprietary CSS.",
+      "tags": [
+        "Tokens",
+        "Theme",
+        "Layout"
+      ],
+      "evidence": [
+        "E2-012",
+        "E2-023",
+        "E2-030"
+      ],
+      "metrics": [
+        [
+          "Stylesheets",
+          "17"
+        ],
+        [
+          "Distinct properties",
+          "2,509"
+        ],
+        [
+          "Container queries",
+          "504"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Tokens before pixels",
+          "body": "2,509 distinct custom-property names appear across 8,135 declarations, including color, type, shell and component families. Names and declarations are not the same count.",
+          "link": "components"
+        },
+        {
+          "title": "Responsive conditions",
+          "body": "The styles contain width/hover/pointer rules, 269 width-container conditions and 258 style-container conditions. Conditions may overlap.",
+          "link": "flow"
+        },
+        {
+          "title": "Motion and accessibility",
+          "body": "Reduced-motion conditions, focus-visible selectors and view-transition syntax coexist in the stylesheet corpus. Rendered behavior is not established by source counts.",
+          "link": "evidence"
+        }
+      ],
+      "flow": [
+        "Design tokens",
+        "Cascade + layers",
+        "Container / media rules",
+        "Component styling",
+        "Displayed layout"
+      ],
+      "unknown": "Computed styles, browser support and actual element-level cascade outcomes were not measured."
+    },
+    {
+      "id": "javascript",
+      "name": "JavaScript",
+      "eyebrow": "04 · Execution candidates",
+      "title": "Bundles describe capabilities, not verified actions.",
+      "lead": "The large source archive supplies the materials needed for meaningful module research. Its first map records candidate references and API syntax, not a validated import/call graph.",
+      "tags": [
+        "Modules",
+        "Streaming",
+        "Workers"
+      ],
+      "evidence": [
+        "E2-004",
+        "E2-018",
+        "E2-020",
+        "E2-022"
+      ],
+      "metrics": [
+        [
+          "Bundles",
+          "144"
+        ],
+        [
+          "Reference pairs",
+          "300"
+        ],
+        [
+          "Dynamic imports",
+          "23"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Reference graph",
+          "body": "Ten saved bundles mention public asset basenames matching 71 other saved bundles, forming 300 candidate source-to-target pairs. String matches are not parsed imports.",
+          "link": "flow"
+        },
+        {
+          "title": "Boot and update",
+          "body": "Route-loader streams and React boundary helpers are evident in inline scripts; the larger bundles suggest deferred functionality and observer-based updates.",
+          "link": "components"
+        },
+        {
+          "title": "Specialized pathways",
+          "body": "Worker, WebAssembly, WebRTC and browser media constructs appear as code signatures, without evidence of execution in this session.",
+          "link": "state"
+        }
+      ],
+      "flow": [
+        "Inline bootstrap",
+        "Preload hints",
+        "Candidate module graph",
+        "Handlers + observers",
+        "UI updates"
+      ],
+      "unknown": "Real dependency ownership and executed call paths require AST-level proof, source maps or runtime instrumentation."
+    },
+    {
+      "id": "components",
+      "name": "Components",
+      "eyebrow": "05 · Interface composition",
+      "title": "From document regions to reusable behavior.",
+      "lead": "Rather than mistake every bundle or DOM element for a component, Viewsource separates observed structure from inferred component boundaries.",
+      "tags": [
+        "Shell",
+        "Controls",
+        "Hierarchy"
+      ],
+      "evidence": [
+        "E2-002",
+        "E2-027",
+        "E2-033"
+      ],
+      "metrics": [
+        [
+          "Buttons",
+          "130"
+        ],
+        [
+          "Dialogs (role)",
+          "1"
+        ],
+        [
+          "File inputs",
+          "4"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Application shell",
+          "body": "Navigation, sidebars and main content form the observable layout. Their separation is a useful research hypothesis about rendering boundaries, not a recovered React component tree.",
+          "link": "html"
+        },
+        {
+          "title": "Controls and state",
+          "body": "130 button elements, popover state attributes and ARIA hooks suggest a rich interactive surface. The exact component props and owning handlers remain open tasks.",
+          "link": "logic"
+        },
+        {
+          "title": "Styled composition",
+          "body": "Generated CSS tokens, focus selectors and grid/flex rules can be organized by surface, provided that inferred ownership is labeled as inference.",
+          "link": "css"
+        }
+      ],
+      "flow": [
+        "Application shell",
+        "Navigation regions",
+        "Conversation region",
+        "Composer / inputs",
+        "Transient overlays"
+      ],
+      "unknown": "The precise source component hierarchy and prop interfaces have not been recovered."
+    },
+    {
+      "id": "logic",
+      "name": "Logic",
+      "eyebrow": "06 · Event machinery",
+      "title": "Actions change state; state can change the view.",
+      "lead": "Event and observer signatures make the mechanism visible, while specific control-to-handler ownership remains unobservable from this capture.",
+      "tags": [
+        "Listeners",
+        "Reactivity",
+        "Permissions"
+      ],
+      "evidence": [
+        "E2-027",
+        "E2-029",
+        "E2-033"
+      ],
+      "metrics": [
+        [
+          "Add-listener patterns",
+          "987"
+        ],
+        [
+          "Remove-listener patterns",
+          "815"
+        ],
+        [
+          "Animation-frame calls",
+          "144"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Events are abundant",
+          "body": "The saved code contains event listener registrations/removals and mutation, resize and intersection observers. Vendor code can account for repeated patterns.",
+          "link": "javascript"
+        },
+        {
+          "title": "From input to effect",
+          "body": "A plausible path is input → handler → state update → render, but this diagram is explanatory, not a tested trace for any individual button.",
+          "link": "flow"
+        },
+        {
+          "title": "Media permissions",
+          "body": "User-media, display-media, peer connection and AudioContext constructors appear in source. Consent, activation and success remain unobserved.",
+          "link": "evidence"
+        }
+      ],
+      "flow": [
+        "Input event",
+        "Handler candidate",
+        "State transition",
+        "DOM/render update",
+        "Visual feedback"
+      ],
+      "unknown": "No captured live event trace maps a specific DOM control to its owning JavaScript closure."
+    },
+    {
+      "id": "flow",
+      "name": "Flow",
+      "eyebrow": "07 · System journey",
+      "title": "Read the page as a sequence of boundaries.",
+      "lead": "The end-to-end model ties captured markup, preload declarations, styling, candidate client modules, and state/network mechanisms together without asserting runtime timing.",
+      "tags": [
+        "Bootstrap",
+        "Data",
+        "Render"
+      ],
+      "evidence": [
+        "E2-009",
+        "E2-019",
+        "E2-026",
+        "E2-035"
+      ],
+      "metrics": [
+        [
+          "Modulepreloads",
+          "72"
+        ],
+        [
+          "Fetch syntax matches",
+          "186"
+        ],
+        [
+          "WebSocket constructors",
+          "6"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Bootstrap",
+          "body": "The saved HTML carries route-related state, inline initialization scripts, and references to assets. Their presence is certain; chronological runtime execution is not.",
+          "link": "html"
+        },
+        {
+          "title": "Presentation",
+          "body": "CSS layers, custom properties and responsive rules style application regions; JavaScript libraries may update those regions and control transient UI states.",
+          "link": "css"
+        },
+        {
+          "title": "Data movement",
+          "body": "Fetch, streaming reader and WebSocket-related patterns identify network-facing implementation candidates, not observed server conversations.",
+          "link": "state"
+        }
+      ],
+      "flow": [
+        "Capture boundary",
+        "HTML + boot code",
+        "CSS + JS resources",
+        "State / event pathways",
+        "Network-facing code",
+        "Output surface"
+      ],
+      "unknown": "No HAR, browser trace, server log or live timing profile was supplied."
+    },
+    {
+      "id": "state",
+      "name": "State",
+      "eyebrow": "08 · Memory and coordination",
+      "title": "Some state lives in the page; some survives it.",
+      "lead": "The source includes browser persistence, serialization and messaging mechanisms. The values and user-specific keys are deliberately excluded from the research.",
+      "tags": [
+        "Persistence",
+        "Messages",
+        "Streams"
+      ],
+      "evidence": [
+        "E2-021",
+        "E2-028",
+        "E2-014"
+      ],
+      "metrics": [
+        [
+          "Local storage reads",
+          "55"
+        ],
+        [
+          "Session writes",
+          "46"
+        ],
+        [
+          "Channel constructors",
+          "10"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Initial state",
+          "body": "The HTML includes serialized route/application data. This supports source-level initialization analysis but private values are never published.",
+          "link": "html"
+        },
+        {
+          "title": "Persistence layers",
+          "body": "Local/session storage, IndexedDB and BroadcastChannel APIs occur in captured bundles. Actual stored data, ownership and expiry are unknown.",
+          "link": "javascript"
+        },
+        {
+          "title": "State transitions",
+          "body": "Worker/message and browser event patterns suggest cross-component or cross-tab coordination, but no transaction history or live graph was captured.",
+          "link": "logic"
+        }
+      ],
+      "flow": [
+        "Route payload",
+        "In-memory state",
+        "Browser storage",
+        "Cross-tab messages",
+        "UI re-render"
+      ],
+      "unknown": "This archive provides no reliable record of actual storage transactions or state-machine transitions."
+    },
+    {
+      "id": "assets",
+      "name": "Assets",
+      "eyebrow": "09 · Visual resources",
+      "title": "Typography, icons, and media are infrastructure.",
+      "lead": "Font tables and image structure reveal meaningful asset roles, while individual UI placements and download successes stay evidence-bounded.",
+      "tags": [
+        "Fonts",
+        "Icons",
+        "Media"
+      ],
+      "evidence": [
+        "E2-006",
+        "E2-024",
+        "E2-031"
+      ],
+      "metrics": [
+        [
+          "Font files",
+          "60"
+        ],
+        [
+          "Font families",
+          "13"
+        ],
+        [
+          "SVG sprite symbols",
+          "911"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Typography families",
+          "body": "The captured files include OpenAI Sans Regular, Medium and Semibold, plus twelve KaTeX font families. Repeated formats do not imply different visual typefaces.",
+          "link": "css"
+        },
+        {
+          "title": "Symbol systems",
+          "body": "One vector resource acts as a large sprite with 911 symbol definitions, separate from the inline SVG markup present in the HTML.",
+          "link": "components"
+        },
+        {
+          "title": "Capture completeness",
+          "body": "The manifest reports 29 missing resource attempts: 17 HTTP 403, ten HTTP 404, and two timeouts. These are capture outcomes rather than proof of broken features.",
+          "link": "evidence"
+        }
+      ],
+      "flow": [
+        "Font families",
+        "Sprite + raster assets",
+        "CSS / markup references",
+        "Browser rendering"
+      ],
+      "unknown": "Original assets are not redistributed; exact on-screen image use was not verified."
+    },
+    {
+      "id": "evidence",
+      "name": "Evidence",
+      "eyebrow": "10 · Research record",
+      "title": "Every claim needs an observation boundary.",
+      "lead": "Browse original findings by evidence class and confidence, and distinguish completed static interpretation from live questions still awaiting defensible evidence.",
+      "tags": [
+        "Findings",
+        "Limitations",
+        "Review"
+      ],
+      "evidence": [
+        "E2-003",
+        "E2-035",
+        "E2-036"
+      ],
+      "metrics": [
+        [
+          "Published findings",
+          "36"
+        ],
+        [
+          "Current deep tasks",
+          "57"
+        ],
+        [
+          "Reported capture misses",
+          "29"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Observed",
+          "body": "Statements marked observed_static are grounded in captured bytes or derived structural counts. The label does not imply live functionality.",
+          "link": "javascript"
+        },
+        {
+          "title": "Inferred",
+          "body": "Cross-cutting architectural explanations use conditional language and should identify which links are interpretations rather than direct observations.",
+          "link": "flow"
+        },
+        {
+          "title": "Still to establish",
+          "body": "Module ownership, live control behavior, request outcomes and security enforcement require evidence beyond a static ZIP or stronger parsing of the captured code.",
+          "link": "work"
+        }
+      ],
+      "flow": [
+        "Captured evidence",
+        "Source analysis",
+        "Scoped findings",
+        "Open questions",
+        "Future verification"
+      ],
+      "unknown": "Reviewed static findings must not be transformed into claims of verified live behavior."
+    },
+    {
+      "id": "work",
+      "name": "Research queue",
+      "eyebrow": "11 · Active investigations",
+      "title": "The work remains visible until it is earned.",
+      "lead": "Every large archive now opens a deeper task graph. Trace dependencies, see what is ready, and keep unverified work from disappearing behind a superficial 'done' label.",
+      "tags": [
+        "57 tasks",
+        "Dependencies",
+        "Quality"
+      ],
+      "evidence": [
+        "E2-036"
+      ],
+      "metrics": [
+        [
+          "Deep tasks",
+          "57"
+        ],
+        [
+          "Independent queues",
+          "15"
+        ],
+        [
+          "Initial static pass",
+          "Reviewed"
+        ]
+      ],
+      "sections": [
+        {
+          "title": "Source-rich captures launch deeper work",
+          "body": "Intake now adds a persistent second-phase task graph when a ZIP is sufficiently rich in files, scripts or CSS. Each task has a research contract and dependency list.",
+          "link": "overview"
+        },
+        {
+          "title": "Review is not automatic",
+          "body": "The deeper queue is not closed by counting source matches. It requires a justified finding and an account of missing evidence.",
+          "link": "evidence"
+        },
+        {
+          "title": "Story-first output",
+          "body": "The purpose of the analysis is to explain how a site's systems relate, not merely produce an ever-growing inventory of code tokens.",
+          "link": "flow"
+        }
+      ],
+      "flow": [
+        "Intake",
+        "Deep tasks",
+        "Evidence review",
+        "Dossier chapters",
+        "Published story"
+      ],
+      "unknown": "Queue creation is automatic; performing source analysis and reviewing publication remain substantive work."
+    }
+  ]
+}
