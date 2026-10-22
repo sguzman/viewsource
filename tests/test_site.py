@@ -61,7 +61,8 @@ class AtlasTests(unittest.TestCase):
             transport = current["visuals"]["chat_transport_trace"]
             self.assertEqual(transport["source_ref"], "R-JS-018")
             self.assertEqual(transport["reviewed_method_count"], 5)
-            self.assertEqual(len(transport["static_edges"]), 9)
+            self.assertEqual(len(transport["static_edges"]), 11)
+            self.assertEqual(len(transport["decoded_pipeline"]["sequence"]),5)
             self.assertEqual(transport["generation_bridge"]["caller_function_ordinal"],9032)
             self.assertIn("onDecodedEvent",transport["generation_bridge"]["callbacks"])
             self.assertFalse(transport["live_transport_verified"])
