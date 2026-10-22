@@ -26,9 +26,11 @@ class FinalResearchChecks(unittest.TestCase):
         refs = {f["evidence"]["evidence_ref"] for f in self.record["findings"]}
         for task in self.tasks:
             if task["status"] == "done":
-                self.assertTrue(set(task["evidence_refs"]) <= refs)
+                self.assertTrue(task["evidence_refs"])
             else:
                 self.assertTrue(task["notes"])
+            self.assertTrue(set(task.get("evidence_refs",[])) <= refs)
+            if task["status"] in ("queued","not_observable"):
                 self.assertFalse(task.get("evidence_refs"))
 
     def test_source_scope_and_census(self):
