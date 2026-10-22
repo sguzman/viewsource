@@ -246,11 +246,78 @@
       "export_kind": "static_module_getter",
       "name_scope": "minified_bundle_export",
       "meaning": "The conversation branch client function is exposed by its module export table."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "exported_function_ordinal": 9025,
+      "export_kind": "static_module_getter",
+      "name_scope": "descriptive_completion_export",
+      "meaning": "The completion submission wrapper is exposed under a descriptive bundle export."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "exported_function_ordinal": 9030,
+      "export_kind": "static_module_getter",
+      "name_scope": "descriptive_local_function_result_export",
+      "meaning": "The local-function-result wrapper is exposed under a descriptive bundle export."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "exported_function_ordinal": 9110,
+      "export_kind": "static_module_getter",
+      "name_scope": "descriptive_regeneration_export",
+      "meaning": "The regeneration assembly wrapper is exposed under a descriptive bundle export."
     }
   ],
   "module_export_limitations": [
     "Module export bindings establish exposure inside captured JavaScript, not whether any caller was executed.",
     "The importer module and concrete UI call chain remain untraced.",
-    "Dynamic imports and runtime selection may prevent a captured module from running."
+    "Dynamic imports and runtime selection may prevent a captured module from running.",
+    "The four reviewed caller-to-dispatcher edges are lexically direct within one module factory; they do not establish which path actually ran."
+  ],
+  "reviewed_direct_calls": [
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "caller_function_ordinal": 9025,
+      "callee_function_ordinal": 9032,
+      "caller_role": "completion_submission",
+      "call_kind": "same_factory_direct_identifier_call",
+      "evidence_class": "observed_static",
+      "note": "The captured completion submission wrapper directly invokes the shared generation dispatcher."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "caller_function_ordinal": 9030,
+      "callee_function_ordinal": 9032,
+      "caller_role": "local_function_result_submission",
+      "call_kind": "same_factory_direct_identifier_call",
+      "evidence_class": "observed_static",
+      "note": "The captured local-function-result wrapper invokes the shared dispatcher."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "caller_function_ordinal": 9110,
+      "callee_function_ordinal": 9032,
+      "caller_role": "regeneration_submission",
+      "call_kind": "same_factory_direct_identifier_call",
+      "evidence_class": "observed_static",
+      "note": "The regeneration request assembly function directly invokes the shared dispatcher."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "caller_function_ordinal": 9111,
+      "callee_function_ordinal": 9032,
+      "caller_role": "conditional_retry_submission",
+      "call_kind": "same_factory_direct_identifier_call",
+      "evidence_class": "observed_static",
+      "note": "A conditional retry-oriented wrapper also invokes the shared dispatcher."
+    }
   ]
 }
