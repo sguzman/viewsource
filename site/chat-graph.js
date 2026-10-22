@@ -111,6 +111,33 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const astStudy=record.visuals?.chat_ast_followup;
+    if(astStudy){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Implementation evidence from captured JavaScript"));
+      block.append(element("p","graph-caption",
+        "Parsed, locally captured function/property operations. These are concrete syntax observations, not verified chat handler ownership or backend behavior."));
+      const metrics=element("div","chat-ast-metrics");
+      [["Parsed bundles",astStudy.parsed_bundles],
+       ["Candidate functions",astStudy.candidate_functions],
+       ["Bundles with candidates",astStudy.candidate_bundles]].forEach(([label,count])=>{
+         const cell=element("div","chat-ast-stat");
+         cell.append(element("strong","",String(count)),element("small","",label));
+         metrics.append(cell);
+       });
+      block.append(metrics);
+      const details=element("details","chat-ast-details");
+      details.append(element("summary","","Member operations and remaining research"));
+      const pairs=element("ul","");
+      astStudy.cooccurrences.forEach(item=>pairs.append(element("li","",item.label+": "+item.count+" function scopes")));
+      details.append(element("p","graph-caption",
+        "Member-property pairs are not confirmed data schemas or call edges."),pairs);
+      const unresolved=element("ul","");
+      astStudy.unresolved.forEach(item=>unresolved.append(element("li","",item)));
+      details.append(element("p","graph-caption","Unresolved:"),unresolved);
+      block.append(details);
+      section.append(block);
+    }
     const exported=record.visuals?.chat_export_format;
     if(exported?.fields?.length){
       const block=element("div","chat-subsection");
