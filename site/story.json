@@ -19,7 +19,9 @@
         "E2-001",
         "E2-002",
         "E2-019",
-        "E2-036"
+        "E2-036",
+        "E2-037",
+        "E2-041"
       ],
       "metrics": [
         [
@@ -76,7 +78,10 @@
       "evidence": [
         "E2-002",
         "E2-014",
-        "E2-033"
+        "E2-033",
+        "E2-038",
+        "E2-039",
+        "E2-040"
       ],
       "metrics": [
         [
@@ -93,6 +98,11 @@
         ]
       ],
       "sections": [
+        {
+          "title": "A measured navigation hierarchy",
+          "body": "Both navigation elements are inside side regions. Among 130 buttons, 70 belong to navigation as their closest semantic landmark and another 42 belong directly to the main region. This tells us about the saved document, not the source component tree.",
+          "link": "components"
+        },
         {
           "title": "Semantic regions",
           "body": "The source contains one main landmark, two navigation regions, two headers, two asides and a form. This is a particular conversation-facing DOM state.",
@@ -132,7 +142,8 @@
       "evidence": [
         "E2-012",
         "E2-023",
-        "E2-030"
+        "E2-030",
+        "E2-043"
       ],
       "metrics": [
         [
@@ -149,6 +160,11 @@
         ]
       ],
       "sections": [
+        {
+          "title": "How styles enter the page",
+          "body": "Eighteen stylesheet links resolve to seventeen saved CSS assets, with one asset referenced twice. Layer, media and container at-rules are present, but computed cascade order remains untested.",
+          "link": "components"
+        },
         {
           "title": "Tokens before pixels",
           "body": "2,509 distinct custom-property names appear across 8,135 declarations, including color, type, shell and component families. Names and declarations are not the same count.",
@@ -189,7 +205,10 @@
         "E2-004",
         "E2-018",
         "E2-020",
-        "E2-022"
+        "E2-022",
+        "E2-040",
+        "E2-041",
+        "E2-042"
       ],
       "metrics": [
         [
@@ -206,6 +225,11 @@
         ]
       ],
       "sections": [
+        {
+          "title": "Validated syntax, not simple filename sightings",
+          "body": "Offline syntax-tree parsing found 236 static import declarations resolving to captured resource ordinals across eight importing and 71 referenced scripts. These declarations are more concrete than textual filename matches but still do not prove runtime loading.",
+          "link": "flow"
+        },
         {
           "title": "Reference graph",
           "body": "Ten saved bundles mention public asset basenames matching 71 other saved bundles, forming 300 candidate source-to-target pairs. String matches are not parsed imports.",
@@ -245,7 +269,8 @@
       "evidence": [
         "E2-002",
         "E2-027",
-        "E2-033"
+        "E2-033",
+        "E2-038"
       ],
       "metrics": [
         [
@@ -358,7 +383,10 @@
         "E2-009",
         "E2-019",
         "E2-026",
-        "E2-035"
+        "E2-035",
+        "E2-039",
+        "E2-040",
+        "E2-041"
       ],
       "metrics": [
         [
@@ -375,6 +403,11 @@
         ]
       ],
       "sections": [
+        {
+          "title": "Boot declarations lead to candidate modules",
+          "body": "The HTML references 72 modulepreloads and an external classic script, all matched to captured JavaScript resources. Syntax-tree imports help construct a candidate graph, not a verified execution timeline.",
+          "link": "javascript"
+        },
         {
           "title": "Bootstrap",
           "body": "The saved HTML carries route-related state, inline initialization scripts, and references to assets. Their presence is certain; chronological runtime execution is not.",
@@ -471,7 +504,8 @@
       "evidence": [
         "E2-006",
         "E2-024",
-        "E2-031"
+        "E2-031",
+        "E2-044"
       ],
       "metrics": [
         [
@@ -488,6 +522,11 @@
         ]
       ],
       "sections": [
+        {
+          "title": "The icon sprite connects to the saved DOM",
+          "body": "Ninety-two SVG use references all resolve to the same captured vector sprite and to 23 unique symbol definitions. This direct resource-to-markup link is distinct from merely counting icon files.",
+          "link": "html"
+        },
         {
           "title": "Typography families",
           "body": "The captured files include OpenAI Sans Regular, Medium and Semibold, plus twelve KaTeX font families. Repeated formats do not imply different visual typefaces.",
@@ -526,12 +565,15 @@
       "evidence": [
         "E2-003",
         "E2-035",
-        "E2-036"
+        "E2-036",
+        "E2-037",
+        "E2-046",
+        "E2-047"
       ],
       "metrics": [
         [
           "Published findings",
-          "36"
+          "47"
         ],
         [
           "Current deep tasks",
@@ -543,6 +585,11 @@
         ]
       ],
       "sections": [
+        {
+          "title": "A stronger source-evidence tier",
+          "body": "The deeper phase adds a parsed import graph, semantic DOM nesting and resolved sprite references; it preserves prior weaker string-match graphs separately instead of treating them as equivalent.",
+          "link": "javascript"
+        },
         {
           "title": "Observed",
           "body": "Statements marked observed_static are grounded in captured bytes or derived structural counts. The label does not imply live functionality.",
@@ -573,14 +620,15 @@
       "name": "Research queue",
       "eyebrow": "11 · Active investigations",
       "title": "The work remains visible until it is earned.",
-      "lead": "Every large archive now opens a deeper task graph. Trace dependencies, see what is ready, and keep unverified work from disappearing behind a superficial 'done' label.",
+      "lead": "Every source-rich capture now generates a deeper research graph. This specimen has 57 materialized deep tasks with dependencies and separately tracked evidence-based completion; see which remain open.",
       "tags": [
         "57 tasks",
         "Dependencies",
         "Quality"
       ],
       "evidence": [
-        "E2-036"
+        "E2-036",
+        "E2-037"
       ],
       "metrics": [
         [
@@ -604,7 +652,7 @@
         },
         {
           "title": "Review is not automatic",
-          "body": "The deeper queue is not closed by counting source matches. It requires a justified finding and an account of missing evidence.",
+          "body": "Deeper tasks are not closed by source-token counts alone. The first thirteen have specific structured evidence; the remaining investigations stay queued until supported.",
           "link": "evidence"
         },
         {
