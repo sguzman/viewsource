@@ -28,8 +28,10 @@ jobs:
       - name: Exercise content-free synthetic chat probe
         run: |
           node tests/synthetic_chat_probe.mjs
-          python3 scripts/validate_chat_observation.py /tmp/viewsource-synthetic-chat-observation.json
-          python3 scripts/analyze_chat_observation.py /tmp/viewsource-synthetic-chat-observation.json > /tmp/viewsource-synthetic-chat-summary.json
-          python3 -c 'import json; x=json.load(open("/tmp/viewsource-synthetic-chat-summary.json")); assert x["step_count"] == 7 and x["verified_transition_count"] == 0'
+          for kind in complete stopped; do
+            python3 scripts/validate_chat_observation.py /tmp/viewsource-synthetic-chat-$kind.json
+            python3 scripts/analyze_chat_observation.py /tmp/viewsource-synthetic-chat-$kind.json > /tmp/viewsource-synthetic-chat-$kind-summary.json
+          done
+          python3 -c 'import json; a=json.load(open("/tmp/viewsource-synthetic-chat-complete-summary.json")); b=json.load(open("/tmp/viewsource-synthetic-chat-stopped-summary.json")); assert a["step_count"] == 6 and b["step_count"] == 5; assert a["structure_deltas"] == {"messages":2,"conversations":2,"parent_links":1}; assert b["structure_deltas"] == {"messages":1,"conversations":1,"parent_links":0}; assert a["verified_transition_count"] == b["verified_transition_count"] == 0'
 
 

@@ -6,9 +6,10 @@
 </head>
 <body>
   <h1>Fictional chat</h1>
-  <p>This is a locally-authored test fixture. It contains no real chat content or account session.</p>
+  <p>Locally-authored, synthetic controls; no network connection or account state.</p>
   <section id="study-root" data-selection="none" data-phase="idle"
-           data-message-count="0" data-conversation-count="0" data-parent-links="0">
+           data-message-count="0" data-conversation-count="0"
+           data-parent-links="0" data-rejected-actions="0">
     <button id="select-chat">Select fictional conversation</button>
     <button id="draft">Edit fictional draft</button>
     <button id="submit">Submit fictional draft</button>
@@ -19,19 +20,38 @@
   </section>
   <script>
     "use strict";
-    const root=document.getElementById("study-root");
-    function set(name,value){root.dataset[name]=String(value);}
-    function count(name,delta){set(name,Number(root.dataset[name])+delta);}
-    const handlers={
-      "select-chat":()=>{set("selection","selected");count("conversationCount",1);},
-      "draft":()=>{set("phase","editing");},
-      "submit":()=>{set("phase","sending");count("messageCount",1);},
-      "receive":()=>{set("phase","receiving");},
-      "complete":()=>{set("phase","complete");count("messageCount",1);count("parentLinks",1);},
-      "stop":()=>{set("phase","stopped");},
-      "fork":()=>{count("conversationCount",1);}
+    const root = document.getElementById("study-root");
+    function set(key, value) { root.dataset[key] = String(value); }
+    function count(key, delta) { set(key, Number(root.dataset[key]) + delta); }
+    function conditional(allowed, action) {
+      if (allowed) action();
+      else count("rejectedActions", 1);
+    }
+    const handlers = {
+      "select-chat": () => conditional(root.dataset.selection === "none", () => {
+        set("selection", "selected");
+        count("conversationCount", 1);
+      }),
+      "draft": () => conditional(
+        root.dataset.selection === "selected" &&
+        ["idle", "complete", "stopped"].includes(root.dataset.phase),
+        () => set("phase", "editing")),
+      "submit": () => conditional(root.dataset.phase === "editing", () => {
+        set("phase", "sending");
+        count("messageCount", 1);
+      }),
+      "receive": () => conditional(root.dataset.phase === "sending", () => set("phase", "receiving")),
+      "complete": () => conditional(root.dataset.phase === "receiving", () => {
+        set("phase", "complete");
+        count("messageCount", 1);
+        count("parentLinks", 1);
+      }),
+      "stop": () => conditional(root.dataset.phase === "receiving", () => set("phase", "stopped")),
+      "fork": () => conditional(root.dataset.selection === "selected", () =>
+        count("conversationCount", 1)),
     };
-    Object.entries(handlers).forEach(([id,fn])=>document.getElementById(id).addEventListener("click",fn));
+    Object.entries(handlers).forEach(([id, fn]) =>
+      document.getElementById(id).addEventListener("click", fn));
   </script>
 </body>
 </html>
