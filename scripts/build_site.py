@@ -263,6 +263,17 @@ def build(out: Path) -> dict:
                         "verification_boundary":
                             transport["decoded_update_pipeline"]["verification_boundary"],
                     },
+                    "message_state_write": {
+                        "source_steps": [
+                            {"stage": step["stage"].replace("_"," "),
+                             "detail": step["detail"]}
+                            for step in transport["message_state_write_pipeline"]["source_steps"]
+                        ],
+                        "writer_argument_roles":
+                            transport["message_state_write_pipeline"]["message_writer_argument_roles"],
+                        "limitations":
+                            transport["message_state_write_pipeline"]["verification_boundary"],
+                    },
                     "generation_bridge": {
                         "caller_function_ordinal":
                             transport["generation_transport_bridge"]["caller_function_ordinal"],
