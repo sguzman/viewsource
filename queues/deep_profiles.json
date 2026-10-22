@@ -1,0 +1,704 @@
+{
+  "format_version": 1,
+  "trigger": {
+    "min_archive_files": 64,
+    "min_script_files": 20,
+    "min_stylesheet_files": 5
+  },
+  "policy": "Source-rich ZIP captures create a persistent deeper research task graph; only supported topics are queued, never auto-closed.",
+  "profiles": [
+    {
+      "id": "scope",
+      "queue": "intake",
+      "title": "Characterize source coverage",
+      "requires": [],
+      "depends_on": [
+        "base:intake"
+      ],
+      "acceptance": "Publish source-backed analysis of characterize source coverage, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "document-map",
+      "queue": "structure",
+      "title": "Document HTML sections and landmarks",
+      "requires": [],
+      "depends_on": [
+        "base:markup",
+        "deep:scope"
+      ],
+      "acceptance": "Publish source-backed analysis of document html sections and landmarks, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "route-graph",
+      "queue": "navigation",
+      "title": "Map route and navigation evidence",
+      "requires": [],
+      "depends_on": [
+        "base:navigation",
+        "deep:document-map"
+      ],
+      "acceptance": "Publish source-backed analysis of map route and navigation evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "shell-components",
+      "queue": "architecture",
+      "title": "Identify component boundaries",
+      "requires": [],
+      "depends_on": [
+        "base:architecture",
+        "deep:document-map"
+      ],
+      "acceptance": "Publish source-backed analysis of identify component boundaries, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "component-props",
+      "queue": "architecture",
+      "title": "Study observable component inputs",
+      "requires": [],
+      "depends_on": [
+        "deep:shell-components"
+      ],
+      "acceptance": "Publish source-backed analysis of study observable component inputs, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "component-output",
+      "queue": "architecture",
+      "title": "Study component rendering outputs",
+      "requires": [],
+      "depends_on": [
+        "deep:component-props"
+      ],
+      "acceptance": "Publish source-backed analysis of study component rendering outputs, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "script-entry",
+      "queue": "scripts",
+      "title": "Find JavaScript entrypoints",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "base:scripts",
+        "deep:scope"
+      ],
+      "acceptance": "Publish source-backed analysis of find javascript entrypoints, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "build-system",
+      "queue": "scripts",
+      "title": "Identify bundler and chunk conventions",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:script-entry"
+      ],
+      "acceptance": "Publish source-backed analysis of identify bundler and chunk conventions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "source-maps",
+      "queue": "scripts",
+      "title": "Inspect sourcemap and minification limits",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:script-entry"
+      ],
+      "acceptance": "Publish source-backed analysis of inspect sourcemap and minification limits, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "dependency-graph",
+      "queue": "scripts",
+      "title": "Verify module dependency relationships",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:build-system"
+      ],
+      "acceptance": "Publish source-backed analysis of verify module dependency relationships, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "module-groups",
+      "queue": "scripts",
+      "title": "Classify bundles by responsibility",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:dependency-graph"
+      ],
+      "acceptance": "Publish source-backed analysis of classify bundles by responsibility, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "module-ownership",
+      "queue": "scripts",
+      "title": "Relate modules to UI subsystems",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups",
+        "deep:shell-components"
+      ],
+      "acceptance": "Publish source-backed analysis of relate modules to ui subsystems, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "third-party-libraries",
+      "queue": "scripts",
+      "title": "Classify vendored library code",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups"
+      ],
+      "acceptance": "Publish source-backed analysis of classify vendored library code, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "lazy-loading",
+      "queue": "performance",
+      "title": "Study preload and dynamic load paths",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:dependency-graph"
+      ],
+      "acceptance": "Publish source-backed analysis of study preload and dynamic load paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "render-pipeline",
+      "queue": "architecture",
+      "title": "Explain rendering and hydration",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:script-entry",
+        "deep:document-map"
+      ],
+      "acceptance": "Publish source-backed analysis of explain rendering and hydration, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "router-loader",
+      "queue": "navigation",
+      "title": "Trace route-loader lifecycle",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:route-graph",
+        "deep:render-pipeline"
+      ],
+      "acceptance": "Publish source-backed analysis of trace route-loader lifecycle, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "event-catalog",
+      "queue": "behavior",
+      "title": "Classify event handler types",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups"
+      ],
+      "acceptance": "Publish source-backed analysis of classify event handler types, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "event-to-control",
+      "queue": "behavior",
+      "title": "Connect handlers to controls with evidence",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:event-catalog",
+        "deep:shell-components"
+      ],
+      "acceptance": "Publish source-backed analysis of connect handlers to controls with evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "form-lifecycle",
+      "queue": "behavior",
+      "title": "Trace input and submission",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:event-to-control"
+      ],
+      "acceptance": "Publish source-backed analysis of trace input and submission, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "upload-lifecycle",
+      "queue": "behavior",
+      "title": "Trace file selection and upload",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:form-lifecycle"
+      ],
+      "acceptance": "Publish source-backed analysis of trace file selection and upload, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "dialog-lifecycle",
+      "queue": "behavior",
+      "title": "Trace dialog and keyboard pathways",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:event-to-control"
+      ],
+      "acceptance": "Publish source-backed analysis of trace dialog and keyboard pathways, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "reactivity",
+      "queue": "behavior",
+      "title": "Understand observers and rerender triggers",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:event-catalog",
+        "deep:render-pipeline"
+      ],
+      "acceptance": "Publish source-backed analysis of understand observers and rerender triggers, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "state-ownership",
+      "queue": "state",
+      "title": "Locate state stores and owners",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups"
+      ],
+      "acceptance": "Publish source-backed analysis of locate state stores and owners, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "state-transitions",
+      "queue": "state",
+      "title": "Trace state transitions",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:state-ownership",
+        "deep:event-catalog"
+      ],
+      "acceptance": "Publish source-backed analysis of trace state transitions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "persistence",
+      "queue": "state",
+      "title": "Study persistence lifetimes",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:state-ownership"
+      ],
+      "acceptance": "Publish source-backed analysis of study persistence lifetimes, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "cross-tab",
+      "queue": "state",
+      "title": "Trace cross-tab messaging",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:persistence"
+      ],
+      "acceptance": "Publish source-backed analysis of trace cross-tab messaging, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "serialized-state",
+      "queue": "state",
+      "title": "Trace initial serialized route state",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:router-loader",
+        "deep:state-ownership"
+      ],
+      "acceptance": "Publish source-backed analysis of trace initial serialized route state, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "request-builders",
+      "queue": "network",
+      "title": "Classify request construction",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups"
+      ],
+      "acceptance": "Publish source-backed analysis of classify request construction, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "network-streams",
+      "queue": "network",
+      "title": "Trace streaming response parsing",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:request-builders"
+      ],
+      "acceptance": "Publish source-backed analysis of trace streaming response parsing, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "realtime-clients",
+      "queue": "network",
+      "title": "Classify realtime transports",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:request-builders"
+      ],
+      "acceptance": "Publish source-backed analysis of classify realtime transports, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "retry-and-errors",
+      "queue": "network",
+      "title": "Study retries and error paths",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:request-builders"
+      ],
+      "acceptance": "Publish source-backed analysis of study retries and error paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "authentication-boundary",
+      "queue": "security",
+      "title": "Map client trust and auth boundaries",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:request-builders"
+      ],
+      "acceptance": "Publish source-backed analysis of map client trust and auth boundaries, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "permission-gates",
+      "queue": "security",
+      "title": "Inspect feature and permission guards",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:authentication-boundary"
+      ],
+      "acceptance": "Publish source-backed analysis of inspect feature and permission guards, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "security-policy",
+      "queue": "security",
+      "title": "Study nonce and sandbox indicators",
+      "requires": [],
+      "depends_on": [
+        "base:security",
+        "deep:scope"
+      ],
+      "acceptance": "Publish source-backed analysis of study nonce and sandbox indicators, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "style-entry",
+      "queue": "styling",
+      "title": "Map stylesheet origins",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "base:styles",
+        "deep:document-map"
+      ],
+      "acceptance": "Publish source-backed analysis of map stylesheet origins, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "style-layers",
+      "queue": "styling",
+      "title": "Understand cascade and layers",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:style-entry"
+      ],
+      "acceptance": "Publish source-backed analysis of understand cascade and layers, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "token-taxonomy",
+      "queue": "styling",
+      "title": "Classify design tokens",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:style-entry"
+      ],
+      "acceptance": "Publish source-backed analysis of classify design tokens, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "token-semantic-uses",
+      "queue": "styling",
+      "title": "Map tokens to components",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:token-taxonomy",
+        "deep:shell-components"
+      ],
+      "acceptance": "Publish source-backed analysis of map tokens to components, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "color-modes",
+      "queue": "styling",
+      "title": "Explain theme preference and application",
+      "requires": [
+        "script",
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:token-taxonomy",
+        "deep:state-ownership"
+      ],
+      "acceptance": "Publish source-backed analysis of explain theme preference and application, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "responsive-matrix",
+      "queue": "styling",
+      "title": "Map media and container regimes",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:style-entry"
+      ],
+      "acceptance": "Publish source-backed analysis of map media and container regimes, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "layout-topology",
+      "queue": "styling",
+      "title": "Map responsive grids and shells",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:responsive-matrix",
+        "deep:document-map"
+      ],
+      "acceptance": "Publish source-backed analysis of map responsive grids and shells, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "motion",
+      "queue": "styling",
+      "title": "Study animations and reduced motion",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:style-entry"
+      ],
+      "acceptance": "Publish source-backed analysis of study animations and reduced motion, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "typefaces",
+      "queue": "assets",
+      "title": "Identify font families and variants",
+      "requires": [
+        "font"
+      ],
+      "depends_on": [
+        "base:assets",
+        "deep:scope"
+      ],
+      "acceptance": "Publish source-backed analysis of identify font families and variants, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "icon-systems",
+      "queue": "assets",
+      "title": "Explain sprite and icon architecture",
+      "requires": [
+        "image"
+      ],
+      "depends_on": [
+        "base:assets",
+        "deep:scope"
+      ],
+      "acceptance": "Publish source-backed analysis of explain sprite and icon architecture, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "asset-placement",
+      "queue": "assets",
+      "title": "Link image resources to UI roles",
+      "requires": [
+        "image"
+      ],
+      "depends_on": [
+        "deep:icon-systems",
+        "deep:document-map"
+      ],
+      "acceptance": "Publish source-backed analysis of link image resources to ui roles, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "media-journeys",
+      "queue": "behavior",
+      "title": "Trace media and audio source pathways",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups"
+      ],
+      "acceptance": "Publish source-backed analysis of trace media and audio source pathways, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "worker-messaging",
+      "queue": "architecture",
+      "title": "Study workers and messaging",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups",
+        "deep:cross-tab"
+      ],
+      "acceptance": "Publish source-backed analysis of study workers and messaging, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "a11y-landmarks",
+      "queue": "accessibility",
+      "title": "Inspect semantic hierarchy",
+      "requires": [],
+      "depends_on": [
+        "base:accessibility",
+        "deep:document-map"
+      ],
+      "acceptance": "Publish source-backed analysis of inspect semantic hierarchy, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "a11y-controls",
+      "queue": "accessibility",
+      "title": "Analyze focus and accessible-state hooks",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:a11y-landmarks",
+        "deep:event-to-control"
+      ],
+      "acceptance": "Publish source-backed analysis of analyze focus and accessible-state hooks, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "a11y-dynamics",
+      "queue": "accessibility",
+      "title": "Separate static from live accessibility",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:a11y-controls"
+      ],
+      "acceptance": "Publish source-backed analysis of separate static from live accessibility, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "performance-budget",
+      "queue": "performance",
+      "title": "Estimate loading and critical paths",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "deep:lazy-loading",
+        "deep:style-entry"
+      ],
+      "acceptance": "Publish source-backed analysis of estimate loading and critical paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "bundle-hotspots",
+      "queue": "performance",
+      "title": "Classify largest bundle responsibilities",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:module-groups"
+      ],
+      "acceptance": "Publish source-backed analysis of classify largest bundle responsibilities, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "capture-gaps",
+      "queue": "quality",
+      "title": "Investigate missing capture evidence",
+      "requires": [],
+      "depends_on": [
+        "base:intake",
+        "deep:scope"
+      ],
+      "acceptance": "Publish source-backed analysis of investigate missing capture evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "evolution-matching",
+      "queue": "evolution",
+      "title": "Compare evidence across capture versions",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:document-map",
+        "deep:dependency-graph"
+      ],
+      "acceptance": "Publish source-backed analysis of compare evidence across capture versions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "system-flow",
+      "queue": "architecture",
+      "title": "Create an end-to-end UI and data story",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "deep:render-pipeline",
+        "deep:state-transitions",
+        "deep:network-streams"
+      ],
+      "acceptance": "Publish source-backed analysis of create an end-to-end ui and data story, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "public-narrative",
+      "queue": "quality",
+      "title": "Write linked and evidence-led story chapters",
+      "requires": [],
+      "depends_on": [
+        "deep:system-flow",
+        "deep:layout-topology",
+        "deep:a11y-controls"
+      ],
+      "acceptance": "Publish source-backed analysis of write linked and evidence-led story chapters, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    },
+    {
+      "id": "limitations-audit",
+      "queue": "quality",
+      "title": "Audit and qualify unknowns",
+      "requires": [],
+      "depends_on": [
+        "deep:public-narrative",
+        "deep:capture-gaps"
+      ],
+      "acceptance": "Publish source-backed analysis of audit and qualify unknowns, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+    }
+  ]
+}
