@@ -380,3 +380,12 @@ This is a captured client algorithm, not merely a candidate graph model.
 It does **not** establish that arbitrary malformed mappings are always
 repaired, how the backend stores messages, or whether a particular live
 action selected a given branch.
+
+## Expanded active source investigations
+
+The source-level studies for streaming/resumption, message data shapes, and
+chat feature data-model operations are now in progress alongside the three
+earlier source-function/call/feature tasks. None is marked complete merely
+because one recovered function or source edge exists. Current static queue:
+6 in progress, 27 queued, 0 complete. Dependency and acceptance contracts
+remain unchanged.
