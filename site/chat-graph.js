@@ -398,7 +398,7 @@ window.ViewsourceChatGraph = (() => {
       research.tasks.forEach(t=>{counts[t.status]=(counts[t.status]||0)+1;});
       block.append(element("p","graph-caption",
         counts.done+" tasks completed · "+counts.queued+" offline tasks open · "+
-        counts.requires_new_evidence+" tasks requiring new runtime evidence."));
+        counts.requires_new_evidence+" optional live-verification proposals (not blockers to static analysis)."));
       const groups=element("div","chat-research-list");
       const protocols=new Map((research.protocols||[]).map(p=>[p.task_id,p]));
       research.tasks.forEach(t=>{
