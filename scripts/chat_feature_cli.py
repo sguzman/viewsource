@@ -21,6 +21,9 @@ class FeatureGraphError(ValueError):
 
 class FeatureGraphModel:
     def __init__(self, graph: dict[str, Any]) -> None:
+        required = {"machines", "events", "transitions", "entities", "domain_relations"}
+        if not isinstance(graph, dict) or not required <= graph.keys():
+            raise FeatureGraphError("Incomplete feature graph")
         self.graph = graph
         self.machines = {m["id"]: m for m in graph["machines"]}
         self.events = {e["id"]: e for e in graph["events"]}

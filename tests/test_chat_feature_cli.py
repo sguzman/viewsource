@@ -76,7 +76,7 @@ class FeatureConsumerTests(unittest.TestCase):
 
     def test_invalid_graph_references_not_accepted(self):
         invalid={"machines":[{"id":"m","states":[{"id":"one"}],"initial_state":"one"}],
-                 "events":[{"id":"a"}],"transitions":[{"id":"t","machine":"m","from":"one",
+                 "events":[{"id":"a"}],"entities":[],"domain_relations":[],"transitions":[{"id":"t","machine":"m","from":"one",
                 "to":"unknown","event":"a","evidence_status":"hypothesis"}]}
         with self.assertRaises(module.FeatureGraphError):
             module.FeatureGraphModel(invalid)
