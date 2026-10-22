@@ -59,7 +59,7 @@ def validate_extensions(require, specimen_id: str, version: int) -> None:
         states[machine["id"]] = set(ids)
     for surface in graph["surfaces"]:
         ref = surface["component_ref"]
-        require(ref in components and components[ref]["kind"] in {"DOMRegion", "Form", "Page"},
+        require(ref in components and components[ref]["kind"] in {"DOMRegion", "Form", "Page", "Interaction"},
                 f"Bad surface ontology reference: {ref}")
         require(surface["basis"] in {"observed_static", "observed_live", "hypothesis"},
                 f"Invalid surface evidence basis: {ref}")
