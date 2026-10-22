@@ -28,7 +28,7 @@ try {
   assert.ok(await page.locator(".technology-details:visible").count()>=1);
   await page.locator(".chapter-link").filter({hasText:"Page layout"}).click();
   assert.equal(await page.locator(".wire-node").count(),7);
-    await page.locator(".chapter-link").filter({hasText:"CSS"}).click();
+  await page.locator(".chapter-link").filter({hasText:"CSS"}).click();
   await page.getByRole("heading",{name:"CSS in the capture"}).waitFor();
   await page.getByRole("heading",{name:"Explore the token families"}).waitFor();
   assert.equal(await page.locator(".css-family").count(),8);
@@ -40,7 +40,7 @@ try {
   assert.equal(await page.locator(".module-source").count(),8);
   await page.locator(".module-source").first().click();
   assert.equal(await page.locator(".inspection-card").count(),1);
-    await page.locator(".chapter-link").filter({hasText:"Components"}).click();
+  await page.locator(".chapter-link").filter({hasText:"Components"}).click();
   await page.locator(".graph-node").first().click();
   assert.equal(await page.locator(".inspection-card").count(),1);
 
@@ -53,7 +53,7 @@ try {
   await page.locator(".chapter-link").filter({hasText:"Flow"}).click();
   await page.getByRole("heading",{name:"Streaming and transport code"}).waitFor();
   assert.equal(await page.locator(".signal-row").count(),6);
-    await page.locator(".chapter-link").filter({hasText:"Research queue"}).click();
+  await page.locator(".chapter-link").filter({hasText:"Research queue"}).click();
   await page.getByRole("heading",{name:"Research tasks"}).waitFor();
   assert.ok(await page.locator(".queue-group").count()>=10);
   await page.locator(".queue-group").first().locator("summary").click();
@@ -62,7 +62,7 @@ try {
   await page.locator("#version-select").selectOption("1");
   await page.getByRole("heading",{name:"A snapshot of an interface"}).waitFor();
   await page.locator("#version-select").selectOption("2");
-  await page.getByRole("heading",{name:"An interface is a living system."}).waitFor();
+  await page.getByRole("heading",{name:"ChatGPT — saved page"}).waitFor();
 
   await page.locator("#site-search").fill("WebSocket");
   await page.getByRole("heading",{name:"Results for “WebSocket”"}).waitFor();
