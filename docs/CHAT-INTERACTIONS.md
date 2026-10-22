@@ -271,3 +271,14 @@ individually reviewed against their source-level behavior; two have not yet
 been classified. A lexical named call in one module does not independently
 verify dynamic execution. Unreviewed caller edges are preserved as candidates
 rather than assigned invented product responsibilities.
+
+## Completed first-pass dispatch call classification
+
+The two initially unclassified same-module callers were independently
+examined in the saved source. One wraps a work-handoff conversion carrying a
+parent/handoff reference and message; the other issues a continuation with
+an answer-now steering setting. All six detected caller-to-dispatcher edges
+are now manually reviewed, with their source ordinals and export statuses
+recorded. This completes the **local call-edge classification for this
+specific generation dispatcher**, not the overall ChatGPT static research.
+Cross-module callers, live execution and backend behavior remain open.
