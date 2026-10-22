@@ -59,7 +59,9 @@ These are research **queues**, not automatic guarantees of complete observation.
 
 ## Current contents
 
-**One reviewed, evidence-bounded specimen:** [chatgpt.com v0001](specimens/chatgpt-com/v0001/analysis.md), with a [machine-readable ontology record](specimens/chatgpt-com/v0001/record.json), [31-entry sanitized resource inventory](specimens/chatgpt-com/v0001/resource_inventory.json), and [gallery entry](gallery/README.md). The first-capture task graph has 14 completed tasks and four explicitly unobservable tasks; no research tasks remain queued for v0001. This status does not imply full knowledge of the live website.
+**One website specimen, now with two snapshot versions:** [chatgpt.com v0001](specimens/chatgpt-com/v0001/analysis.md), with a [machine-readable ontology record](specimens/chatgpt-com/v0001/record.json), [31-entry sanitized resource inventory](specimens/chatgpt-com/v0001/resource_inventory.json), and [gallery entry](gallery/README.md). The first-capture task graph has 14 completed tasks and four explicitly unobservable tasks; no research tasks remain queued for v0001. This status does not imply full knowledge of the live website.
+
+[chatgpt.com v0002](specimens/chatgpt-com/v0002/analysis.md) expands the research to 234 captured resources (144 JS, 17 CSS, 60 fonts, 12 images, one additional HTML file). Its [privacy-safe resource index](specimens/chatgpt-com/v0002/resource_inventory.json) and [machine-readable ontology](specimens/chatgpt-com/v0002/record.json) are published while deeper source interpretation remains in the [task queues](queues/tasks.json). v0001 remains separately reviewed and intact.
 
 ## License
 

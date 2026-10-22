@@ -297,6 +297,499 @@
       "evidence_refs": [
         "E-024"
       ]
+    },
+    {
+      "id": "chatgpt-com-v0002-intake",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "intake",
+      "queue": "intake",
+      "title": "Scope and evidence characterization",
+      "status": "done",
+      "depends_on": [],
+      "evidence_refs": [
+        "E2-001",
+        "E2-003",
+        "E2-015"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-markup",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "markup",
+      "queue": "structure",
+      "title": "DOM hierarchy and semantic regions",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-intake"
+      ],
+      "evidence_refs": [
+        "E2-002",
+        "E2-014"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-navigation",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "navigation",
+      "queue": "navigation",
+      "title": "Routes, links, and navigation model",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-markup"
+      ],
+      "evidence_refs": [
+        "E2-002",
+        "E2-016"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-scripts",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "scripts",
+      "queue": "scripts",
+      "title": "Script inventory and loading order",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-intake"
+      ],
+      "evidence_refs": [
+        "E2-004",
+        "E2-014",
+        "E2-017"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-modules",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "modules",
+      "queue": "scripts",
+      "title": "Modules, frameworks, build and dependency clues",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-styles",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "styles",
+      "queue": "styling",
+      "title": "Stylesheet inventory and design system",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-intake",
+        "chatgpt-com-v0002-markup"
+      ],
+      "evidence_refs": [
+        "E2-005",
+        "E2-012"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-responsive",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "responsive",
+      "queue": "styling",
+      "title": "Responsive rules and layout states",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-styles"
+      ],
+      "evidence_refs": [
+        "E2-005",
+        "E2-012"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-assets",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "assets",
+      "queue": "assets",
+      "title": "Asset, font, icon and media roles",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-intake"
+      ],
+      "evidence_refs": [
+        "E2-006",
+        "E2-017"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "interaction",
+      "queue": "behavior",
+      "title": "Events, controls, forms and interaction model",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-markup",
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-state",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "state",
+      "queue": "state",
+      "title": "Client state, storage and lifecycle",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-interaction",
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-services",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "services",
+      "queue": "network",
+      "title": "Static API and third-party service references",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-accessibility",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "accessibility",
+      "queue": "accessibility",
+      "title": "Semantics and accessibility inspection",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-markup",
+        "chatgpt-com-v0002-styles"
+      ],
+      "evidence_refs": [
+        "E2-013"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-metadata",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "metadata",
+      "queue": "metadata",
+      "title": "Metadata, canonical signals and discoverability",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-markup"
+      ],
+      "evidence_refs": [
+        "E2-001",
+        "E2-003"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-performance",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "performance",
+      "queue": "performance",
+      "title": "Loading, resource and rendering performance clues",
+      "status": "done",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts",
+        "chatgpt-com-v0002-styles",
+        "chatgpt-com-v0002-assets"
+      ],
+      "evidence_refs": [
+        "E2-004",
+        "E2-005",
+        "E2-007"
+      ]
+    },
+    {
+      "id": "chatgpt-com-v0002-security",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "security",
+      "queue": "security",
+      "title": "Security and privacy-relevant static signals",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts",
+        "chatgpt-com-v0002-services"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-architecture",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "architecture",
+      "queue": "architecture",
+      "title": "Cross-cutting component relationships",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-markup",
+        "chatgpt-com-v0002-modules",
+        "chatgpt-com-v0002-styles",
+        "chatgpt-com-v0002-services"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-comparison",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "comparison",
+      "queue": "evolution",
+      "title": "Differences from prior captured version",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-architecture"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-review",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "review",
+      "queue": "quality",
+      "title": "Evidence audit, limitations and publication review",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-navigation",
+        "chatgpt-com-v0002-responsive",
+        "chatgpt-com-v0002-assets",
+        "chatgpt-com-v0002-state",
+        "chatgpt-com-v0002-accessibility",
+        "chatgpt-com-v0002-metadata",
+        "chatgpt-com-v0002-performance",
+        "chatgpt-com-v0002-security",
+        "chatgpt-com-v0002-comparison"
+      ],
+      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-bundle-import-graph",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "scripts",
+      "title": "Map static module relationships and imports from captured bundles.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-fetch-callsite-types",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "network",
+      "title": "Classify saved fetch call sites without recording private destination URLs.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-realtime-protocol-paths",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "network",
+      "title": "Inspect static WebSocket and EventSource call paths.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-media-code-paths",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Examine WebRTC, media-device and AudioContext code pathways.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-browser-persistence-map",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "state",
+      "title": "Classify browser storage references and their state responsibilities.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-worker-wasm-graph",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "architecture",
+      "title": "Model captured Worker, WebAssembly and dynamic-import relationships.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-modules"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-design-token-taxonomy",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Normalize CSS custom property families beyond raw declaration counts.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-styles"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-responsive-regimes",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "styling",
+      "title": "Group media/container query mechanisms and their visual relationships.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-styles"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-font-variant-identity",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "assets",
+      "title": "Examine font files as format/subset variants without redistribution.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-assets"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-image-semantic-roles",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "assets",
+      "title": "Relate captured SVG/PNG/WebP resources to visible UI roles.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-assets"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-modulepreload-route-graph",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "navigation",
+      "title": "Study captured preload declarations and route structure.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-navigation",
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-dynamic-a11y-paths",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "accessibility",
+      "title": "Inspect dynamic accessibility behavior claimed by code, leaving execution unverified.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-accessibility",
+        "chatgpt-com-v0002-interaction"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-client-trust-boundaries",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "security",
+      "title": "Separate static security indicators from runtime/response-header evidence.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-scripts"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-capture-matching",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "evolution",
+      "title": "Find reliable source correspondence with v0001 despite different capture methods.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-comparison"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-capture-failures",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "quality",
+      "title": "Document 29 missing resource reasons without exposing URLs.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-intake"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+    },
+    {
+      "id": "chatgpt-com-v0002-followup-dom-event-graph",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "profile": "followup",
+      "queue": "behavior",
+      "title": "Connect button/form DOM evidence to bundle handlers where justified.",
+      "status": "queued",
+      "depends_on": [
+        "chatgpt-com-v0002-markup",
+        "chatgpt-com-v0002-modules"
+      ],
+      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
     }
   ]
 }

@@ -4,10 +4,11 @@
     {
       "id": "chatgpt-com",
       "origin": "https://chatgpt.com",
-      "status": "reviewed",
-      "current_version": 1,
+      "status": "researching",
+      "current_version": 2,
       "versions": [
-        1
+        1,
+        2
       ]
     }
   ]

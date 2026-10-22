@@ -1,0 +1,2182 @@
+{
+  "format_version": 2,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "scope": "saved_archive",
+  "description": "Exhaustive capture-local ordinal index of 234 saved resources. Raw resource paths, URLs, scripts, fonts, stylesheets, and page contents are intentionally excluded.",
+  "totals": {
+    "external_references": 234,
+    "bytes_captured": 32315693,
+    "missing_reported": 29,
+    "captured_by_category": {
+      "script": 144,
+      "stylesheet": 17,
+      "font": 60,
+      "image": 12,
+      "html": 1
+    },
+    "bytes_by_category": {
+      "script": 28066928,
+      "stylesheet": 2340628,
+      "font": 1169636,
+      "image": 725265,
+      "html": 13236
+    },
+    "missing_by_reason": {
+      "HTTP 403": 17,
+      "HTTP 404": 10,
+      "timeout": 2
+    }
+  },
+  "code_indicators": {
+    "fetch_call_pattern": {
+      "asset_files": 30
+    },
+    "WebSocket_term": {
+      "asset_files": 8
+    },
+    "EventSource_term": {
+      "asset_files": 2
+    },
+    "browser_storage_terms": {
+      "asset_files": 26
+    },
+    "dynamic_import_pattern": {
+      "asset_files": 10
+    },
+    "WebAssembly_term": {
+      "asset_files": 3
+    },
+    "WebRTC_term": {
+      "asset_files": 5
+    },
+    "AudioContext_term": {
+      "asset_files": 5
+    }
+  },
+  "stylesheet_indicators": {
+    "media_rules": 627,
+    "supports_rules": 735,
+    "container_rules": 504,
+    "font_face": 26,
+    "keyframes": 164,
+    "custom_property_declarations": 8135,
+    "variable_references": 23269,
+    "focus_visible": 497,
+    "reduced_motion": 168
+  },
+  "resources": [
+    {
+      "id": "R-JS-001",
+      "category": "script",
+      "ordinal": 1,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-002",
+      "category": "script",
+      "ordinal": 2,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-003",
+      "category": "script",
+      "ordinal": 3,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-004",
+      "category": "script",
+      "ordinal": 4,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-005",
+      "category": "script",
+      "ordinal": 5,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-006",
+      "category": "script",
+      "ordinal": 6,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-007",
+      "category": "script",
+      "ordinal": 7,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-008",
+      "category": "script",
+      "ordinal": 8,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-009",
+      "category": "script",
+      "ordinal": 9,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-010",
+      "category": "script",
+      "ordinal": 10,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-011",
+      "category": "script",
+      "ordinal": 11,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-012",
+      "category": "script",
+      "ordinal": 12,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-013",
+      "category": "script",
+      "ordinal": 13,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-014",
+      "category": "script",
+      "ordinal": 14,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-015",
+      "category": "script",
+      "ordinal": 15,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-016",
+      "category": "script",
+      "ordinal": 16,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-017",
+      "category": "script",
+      "ordinal": 17,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-018",
+      "category": "script",
+      "ordinal": 18,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-019",
+      "category": "script",
+      "ordinal": 19,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-020",
+      "category": "script",
+      "ordinal": 20,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-021",
+      "category": "script",
+      "ordinal": 21,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-022",
+      "category": "script",
+      "ordinal": 22,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-023",
+      "category": "script",
+      "ordinal": 23,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-024",
+      "category": "script",
+      "ordinal": 24,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-025",
+      "category": "script",
+      "ordinal": 25,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-026",
+      "category": "script",
+      "ordinal": 26,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-027",
+      "category": "script",
+      "ordinal": 27,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-028",
+      "category": "script",
+      "ordinal": 28,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-029",
+      "category": "script",
+      "ordinal": 29,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-030",
+      "category": "script",
+      "ordinal": 30,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-031",
+      "category": "script",
+      "ordinal": 31,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-032",
+      "category": "script",
+      "ordinal": 32,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-033",
+      "category": "script",
+      "ordinal": 33,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-034",
+      "category": "script",
+      "ordinal": 34,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-035",
+      "category": "script",
+      "ordinal": 35,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-036",
+      "category": "script",
+      "ordinal": 36,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-037",
+      "category": "script",
+      "ordinal": 37,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-038",
+      "category": "script",
+      "ordinal": 38,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-039",
+      "category": "script",
+      "ordinal": 39,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-040",
+      "category": "script",
+      "ordinal": 40,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-041",
+      "category": "script",
+      "ordinal": 41,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-042",
+      "category": "script",
+      "ordinal": 42,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-043",
+      "category": "script",
+      "ordinal": 43,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-044",
+      "category": "script",
+      "ordinal": 44,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-045",
+      "category": "script",
+      "ordinal": 45,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-046",
+      "category": "script",
+      "ordinal": 46,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-047",
+      "category": "script",
+      "ordinal": 47,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-048",
+      "category": "script",
+      "ordinal": 48,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-049",
+      "category": "script",
+      "ordinal": 49,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-050",
+      "category": "script",
+      "ordinal": 50,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-051",
+      "category": "script",
+      "ordinal": 51,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-052",
+      "category": "script",
+      "ordinal": 52,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-053",
+      "category": "script",
+      "ordinal": 53,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-054",
+      "category": "script",
+      "ordinal": 54,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-055",
+      "category": "script",
+      "ordinal": 55,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-056",
+      "category": "script",
+      "ordinal": 56,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-057",
+      "category": "script",
+      "ordinal": 57,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-058",
+      "category": "script",
+      "ordinal": 58,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-059",
+      "category": "script",
+      "ordinal": 59,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-060",
+      "category": "script",
+      "ordinal": 60,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-061",
+      "category": "script",
+      "ordinal": 61,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-062",
+      "category": "script",
+      "ordinal": 62,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-063",
+      "category": "script",
+      "ordinal": 63,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-064",
+      "category": "script",
+      "ordinal": 64,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-065",
+      "category": "script",
+      "ordinal": 65,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-066",
+      "category": "script",
+      "ordinal": 66,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-067",
+      "category": "script",
+      "ordinal": 67,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-068",
+      "category": "script",
+      "ordinal": 68,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-069",
+      "category": "script",
+      "ordinal": 69,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-070",
+      "category": "script",
+      "ordinal": 70,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-071",
+      "category": "script",
+      "ordinal": 71,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-072",
+      "category": "script",
+      "ordinal": 72,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-073",
+      "category": "script",
+      "ordinal": 73,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-074",
+      "category": "script",
+      "ordinal": 74,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-075",
+      "category": "script",
+      "ordinal": 75,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-076",
+      "category": "script",
+      "ordinal": 76,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-077",
+      "category": "script",
+      "ordinal": 77,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-078",
+      "category": "script",
+      "ordinal": 78,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-079",
+      "category": "script",
+      "ordinal": 79,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-080",
+      "category": "script",
+      "ordinal": 80,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-081",
+      "category": "script",
+      "ordinal": 81,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-082",
+      "category": "script",
+      "ordinal": 82,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-083",
+      "category": "script",
+      "ordinal": 83,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-084",
+      "category": "script",
+      "ordinal": 84,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-085",
+      "category": "script",
+      "ordinal": 85,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-086",
+      "category": "script",
+      "ordinal": 86,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-087",
+      "category": "script",
+      "ordinal": 87,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-088",
+      "category": "script",
+      "ordinal": 88,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-089",
+      "category": "script",
+      "ordinal": 89,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-090",
+      "category": "script",
+      "ordinal": 90,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-091",
+      "category": "script",
+      "ordinal": 91,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-092",
+      "category": "script",
+      "ordinal": 92,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-093",
+      "category": "script",
+      "ordinal": 93,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-094",
+      "category": "script",
+      "ordinal": 94,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-095",
+      "category": "script",
+      "ordinal": 95,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-096",
+      "category": "script",
+      "ordinal": 96,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-097",
+      "category": "script",
+      "ordinal": 97,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-098",
+      "category": "script",
+      "ordinal": 98,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-099",
+      "category": "script",
+      "ordinal": 99,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-100",
+      "category": "script",
+      "ordinal": 100,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-101",
+      "category": "script",
+      "ordinal": 101,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-102",
+      "category": "script",
+      "ordinal": 102,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-103",
+      "category": "script",
+      "ordinal": 103,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-104",
+      "category": "script",
+      "ordinal": 104,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-105",
+      "category": "script",
+      "ordinal": 105,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-106",
+      "category": "script",
+      "ordinal": 106,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-107",
+      "category": "script",
+      "ordinal": 107,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-108",
+      "category": "script",
+      "ordinal": 108,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-109",
+      "category": "script",
+      "ordinal": 109,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-110",
+      "category": "script",
+      "ordinal": 110,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-111",
+      "category": "script",
+      "ordinal": 111,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-112",
+      "category": "script",
+      "ordinal": 112,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-113",
+      "category": "script",
+      "ordinal": 113,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-114",
+      "category": "script",
+      "ordinal": 114,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-115",
+      "category": "script",
+      "ordinal": 115,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-116",
+      "category": "script",
+      "ordinal": 116,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-117",
+      "category": "script",
+      "ordinal": 117,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-118",
+      "category": "script",
+      "ordinal": 118,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-119",
+      "category": "script",
+      "ordinal": 119,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-120",
+      "category": "script",
+      "ordinal": 120,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-121",
+      "category": "script",
+      "ordinal": 121,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-122",
+      "category": "script",
+      "ordinal": 122,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-123",
+      "category": "script",
+      "ordinal": 123,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-124",
+      "category": "script",
+      "ordinal": 124,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-125",
+      "category": "script",
+      "ordinal": 125,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-126",
+      "category": "script",
+      "ordinal": 126,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-127",
+      "category": "script",
+      "ordinal": 127,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-128",
+      "category": "script",
+      "ordinal": 128,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-129",
+      "category": "script",
+      "ordinal": 129,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-130",
+      "category": "script",
+      "ordinal": 130,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-131",
+      "category": "script",
+      "ordinal": 131,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-132",
+      "category": "script",
+      "ordinal": 132,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-133",
+      "category": "script",
+      "ordinal": 133,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-134",
+      "category": "script",
+      "ordinal": 134,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-135",
+      "category": "script",
+      "ordinal": 135,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-136",
+      "category": "script",
+      "ordinal": 136,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-137",
+      "category": "script",
+      "ordinal": 137,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-138",
+      "category": "script",
+      "ordinal": 138,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-139",
+      "category": "script",
+      "ordinal": 139,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-140",
+      "category": "script",
+      "ordinal": 140,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-141",
+      "category": "script",
+      "ordinal": 141,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-142",
+      "category": "script",
+      "ordinal": 142,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-143",
+      "category": "script",
+      "ordinal": 143,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-JS-144",
+      "category": "script",
+      "ordinal": 144,
+      "format": "js",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-001",
+      "category": "stylesheet",
+      "ordinal": 1,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-002",
+      "category": "stylesheet",
+      "ordinal": 2,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-003",
+      "category": "stylesheet",
+      "ordinal": 3,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-004",
+      "category": "stylesheet",
+      "ordinal": 4,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-005",
+      "category": "stylesheet",
+      "ordinal": 5,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-006",
+      "category": "stylesheet",
+      "ordinal": 6,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-007",
+      "category": "stylesheet",
+      "ordinal": 7,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-008",
+      "category": "stylesheet",
+      "ordinal": 8,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-009",
+      "category": "stylesheet",
+      "ordinal": 9,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-010",
+      "category": "stylesheet",
+      "ordinal": 10,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-011",
+      "category": "stylesheet",
+      "ordinal": 11,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-012",
+      "category": "stylesheet",
+      "ordinal": 12,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-013",
+      "category": "stylesheet",
+      "ordinal": 13,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-014",
+      "category": "stylesheet",
+      "ordinal": 14,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-015",
+      "category": "stylesheet",
+      "ordinal": 15,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-016",
+      "category": "stylesheet",
+      "ordinal": 16,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-CSS-017",
+      "category": "stylesheet",
+      "ordinal": 17,
+      "format": "css",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-001",
+      "category": "font",
+      "ordinal": 1,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-002",
+      "category": "font",
+      "ordinal": 2,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-003",
+      "category": "font",
+      "ordinal": 3,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-004",
+      "category": "font",
+      "ordinal": 4,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-005",
+      "category": "font",
+      "ordinal": 5,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-006",
+      "category": "font",
+      "ordinal": 6,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-007",
+      "category": "font",
+      "ordinal": 7,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-008",
+      "category": "font",
+      "ordinal": 8,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-009",
+      "category": "font",
+      "ordinal": 9,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-010",
+      "category": "font",
+      "ordinal": 10,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-011",
+      "category": "font",
+      "ordinal": 11,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-012",
+      "category": "font",
+      "ordinal": 12,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-013",
+      "category": "font",
+      "ordinal": 13,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-014",
+      "category": "font",
+      "ordinal": 14,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-015",
+      "category": "font",
+      "ordinal": 15,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-016",
+      "category": "font",
+      "ordinal": 16,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-017",
+      "category": "font",
+      "ordinal": 17,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-018",
+      "category": "font",
+      "ordinal": 18,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-019",
+      "category": "font",
+      "ordinal": 19,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-020",
+      "category": "font",
+      "ordinal": 20,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-021",
+      "category": "font",
+      "ordinal": 21,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-022",
+      "category": "font",
+      "ordinal": 22,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-023",
+      "category": "font",
+      "ordinal": 23,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-024",
+      "category": "font",
+      "ordinal": 24,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-025",
+      "category": "font",
+      "ordinal": 25,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-026",
+      "category": "font",
+      "ordinal": 26,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-027",
+      "category": "font",
+      "ordinal": 27,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-028",
+      "category": "font",
+      "ordinal": 28,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-029",
+      "category": "font",
+      "ordinal": 29,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-030",
+      "category": "font",
+      "ordinal": 30,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-031",
+      "category": "font",
+      "ordinal": 31,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-032",
+      "category": "font",
+      "ordinal": 32,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-033",
+      "category": "font",
+      "ordinal": 33,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-034",
+      "category": "font",
+      "ordinal": 34,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-035",
+      "category": "font",
+      "ordinal": 35,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-036",
+      "category": "font",
+      "ordinal": 36,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-037",
+      "category": "font",
+      "ordinal": 37,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-038",
+      "category": "font",
+      "ordinal": 38,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-039",
+      "category": "font",
+      "ordinal": 39,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-040",
+      "category": "font",
+      "ordinal": 40,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-041",
+      "category": "font",
+      "ordinal": 41,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-042",
+      "category": "font",
+      "ordinal": 42,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-043",
+      "category": "font",
+      "ordinal": 43,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-044",
+      "category": "font",
+      "ordinal": 44,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-045",
+      "category": "font",
+      "ordinal": 45,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-046",
+      "category": "font",
+      "ordinal": 46,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-047",
+      "category": "font",
+      "ordinal": 47,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-048",
+      "category": "font",
+      "ordinal": 48,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-049",
+      "category": "font",
+      "ordinal": 49,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-050",
+      "category": "font",
+      "ordinal": 50,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-051",
+      "category": "font",
+      "ordinal": 51,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-052",
+      "category": "font",
+      "ordinal": 52,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-053",
+      "category": "font",
+      "ordinal": 53,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-054",
+      "category": "font",
+      "ordinal": 54,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-055",
+      "category": "font",
+      "ordinal": 55,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-056",
+      "category": "font",
+      "ordinal": 56,
+      "format": "woff",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-057",
+      "category": "font",
+      "ordinal": 57,
+      "format": "ttf",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-058",
+      "category": "font",
+      "ordinal": 58,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-059",
+      "category": "font",
+      "ordinal": 59,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-FONT-060",
+      "category": "font",
+      "ordinal": 60,
+      "format": "woff2",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-001",
+      "category": "image",
+      "ordinal": 1,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-002",
+      "category": "image",
+      "ordinal": 2,
+      "format": "png",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-003",
+      "category": "image",
+      "ordinal": 3,
+      "format": "png",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-004",
+      "category": "image",
+      "ordinal": 4,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-005",
+      "category": "image",
+      "ordinal": 5,
+      "format": "png",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-006",
+      "category": "image",
+      "ordinal": 6,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-007",
+      "category": "image",
+      "ordinal": 7,
+      "format": "webp",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-008",
+      "category": "image",
+      "ordinal": 8,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-009",
+      "category": "image",
+      "ordinal": 9,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-010",
+      "category": "image",
+      "ordinal": 10,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-011",
+      "category": "image",
+      "ordinal": 11,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-IMG-012",
+      "category": "image",
+      "ordinal": 12,
+      "format": "svg",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    },
+    {
+      "id": "R-DOC-001",
+      "category": "html",
+      "ordinal": 1,
+      "format": "html",
+      "available_in_capture": true,
+      "content_committed": false,
+      "analysis_status": "captured_source_not_redistributed"
+    }
+  ],
+  "caveats": [
+    "Asset ordinals are local to v0002 and are not durable identities across versions.",
+    "The resource inventory reflects captured files, not all resources the website can serve or all code executed in this session.",
+    "Code indicators are static text-pattern matches that require further review for actual call paths.",
+    "The ZIP, manifest URLs, original resource filenames, user-linked page content and source binaries are not part of this public repository."
+  ]
+}

@@ -132,13 +132,18 @@ def validate() -> list[str]:
                 }
                 require(set(refs) <= evidence_ids, f"Completed task has ungrounded evidence ref: {t['id']}")
 
-        require(t["profile"] in profile_by_id, f"Unknown task profile: {t['id']}")
-        require(t["id"] == f"{name}-v{ver:04d}-{t['profile']}", f"Bad task ID: {t['id']}")
-        if t["profile"] in profile_by_id:
-            profile = profile_by_id[t["profile"]]
-            require(t["queue"] == profile["queue"], f"Queue mismatch: {t['id']}")
-            expected = {f"{name}-v{ver:04d}-{dep}" for dep in profile["depends_on"]}
-            require(set(t["depends_on"]) == expected, f"Dependency mismatch: {t['id']}")
+        if t["profile"] == "followup":
+            require(t["id"].startswith(f"{name}-v{ver:04d}-followup-"), f"Bad followup task ID: {t['id']}")
+            require(t["queue"] in {p["queue"] for p in profiles}, f"Unknown followup queue: {t['id']}")
+            require(bool(t.get("notes")), f"Unscoped followup task: {t['id']}")
+        else:
+            require(t["profile"] in profile_by_id, f"Unknown task profile: {t['id']}")
+            require(t["id"] == f"{name}-v{ver:04d}-{t['profile']}", f"Bad task ID: {t['id']}")
+            if t["profile"] in profile_by_id:
+                profile = profile_by_id[t["profile"]]
+                require(t["queue"] == profile["queue"], f"Queue mismatch: {t['id']}")
+                expected = {f"{name}-v{ver:04d}-{dep}" for dep in profile["depends_on"]}
+                require(set(t["depends_on"]) == expected, f"Dependency mismatch: {t['id']}")
         for dep in t["depends_on"]:
             require(dep in tasks_by_id, f"Dangling task dependency: {t['id']}")
     for specimen in specimens:
@@ -172,7 +177,7 @@ def validate() -> list[str]:
             if not reference.exists():
                 continue
             doc = read(str(reference.relative_to(ROOT)))
-            require(doc.get("format_version") == 1 and doc.get("specimen_id") == slug and doc.get("version") == version,
+            require(doc.get("format_version") in {1, 2} and doc.get("specimen_id") == slug and doc.get("version") == version,
                     f"Resource inventory identity mismatch: {reference}")
             entries = doc.get("resources", [])
             require(len({row["id"] for row in entries}) == len(entries), f"Duplicate resource inventory ID: {reference}")
@@ -180,11 +185,24 @@ def validate() -> list[str]:
                     f"Resource inventory count mismatch: {reference}")
             for row in entries:
                 require(bool(re.fullmatch(r"R-[A-Z]+-[0-9]{3}", row["id"])), f"Invalid resource ordinal: {reference}")
-                require(row["content_available"] is False, f"Resource content unexpectedly published: {reference}")
-                require(set(row) == {"id","category","ordinal","source_class","content_available","analysis_status","role"},
-                        f"Unreviewed resource fields: {reference}")
-                require(row["source_class"] in {"capture_relative","same_origin_absolute"},
-                        f"Unsupported resource origin class: {reference}")
+                if doc["format_version"] == 1:
+                    require(row["content_available"] is False, f"Resource content unexpectedly published: {reference}")
+                    require(set(row) == {"id","category","ordinal","source_class","content_available","analysis_status","role"},
+                            f"Unreviewed resource fields: {reference}")
+                    require(row["source_class"] in {"capture_relative","same_origin_absolute"},
+                            f"Unsupported resource origin class: {reference}")
+                else:
+                    permitted = {"id","category","ordinal","format","available_in_capture","content_committed","analysis_status"}
+                    require(set(row) == permitted, f"Unreviewed v2 resource fields: {reference}")
+                    require(row["available_in_capture"] is True and row["content_committed"] is False,
+                            f"Resource source publication prohibited: {reference}")
+                    require(row["category"] in {"script","stylesheet","font","image","html"},
+                            f"Invalid resource category: {reference}")
+            if doc["format_version"] == 2:
+                require(sum(doc["totals"]["captured_by_category"].values()) == len(entries),
+                        f"Capture resource count mismatch: {reference}")
+                require(sum(doc["totals"]["bytes_by_category"].values()) == doc["totals"]["bytes_captured"],
+                        f"Capture resource bytes mismatch: {reference}")
 
     gallery = read("gallery/index.json")
     require(gallery["format_version"] == 1, "Gallery format")
