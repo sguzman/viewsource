@@ -249,3 +249,15 @@ the targeted message identity and regeneration options. Both are recorded
 by capture-local function ordinal in the static implementation trace.
 These are **source statements about possible client execution paths**, not
 observations of a regeneration happening on the live service.
+
+## Direct generation-dispatch calls
+
+The captured module contains a shared generation-dispatch function and
+four client entrypoints that call it directly: normal completion, local
+function-result submission, regeneration, and a conditional retry path.
+All five functions are inside a single captured module factory. The
+first three entrypoints have descriptive static module export bindings.
+These four caller-to-callee edges are reviewed source-level facts, not
+merely co-occurring field names or a speculative state diagram. They
+still do not demonstrate that any particular pathway was exercised in
+a live session or reveal server storage semantics.
