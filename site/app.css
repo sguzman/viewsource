@@ -437,3 +437,10 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-transport-method summary,.chat-transport-edges summary,.chat-transport-websocket summary { cursor:pointer; line-height:1.55; font-weight:600; }
 .chat-transport-method p,.chat-transport-edges,.chat-transport-websocket { font-size:12px; line-height:1.65; }
 .chat-transport-edges ul { padding-left:20px; }
+
+.chat-mutation-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:9px; margin:13px 0; }
+.chat-mutation-operation { border:1px solid var(--line); background:var(--panel-2); border-radius:8px; padding:12px; min-width:0; }
+.chat-mutation-operation summary { cursor:pointer; font-size:12px; font-weight:600; line-height:1.6; text-transform:capitalize; }
+.chat-mutation-operation p,.chat-mutation-callpath { font-size:12px; line-height:1.65; }
+.chat-mutation-callpath summary { cursor:pointer; }
+.chat-mutation-callpath ol { padding-left:20px; }
