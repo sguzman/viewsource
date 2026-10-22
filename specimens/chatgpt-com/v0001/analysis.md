@@ -89,3 +89,54 @@ Four inline \`@media\` rules are visible: two reduced-motion rules, one hover-re
 ### Queue resolution for this pass
 
 The captured HTML's document structure, script-element inventory (including code/data distinctions), and head metadata inventory have been analyzed within **this capture's scope**. Navigation, responsiveness, component architecture, client-state evolution, assets, performance, live service behavior and security implications remain partial or pending as indicated in the machine-readable record. A successful static inventory never constitutes proof of runtime operation.
+
+## Final first-capture research pass (source-limited)
+
+### Navigation and page composition (E-015)
+
+Fifteen anchors occur in this saved page: fourteen HTTP(S) absolute references and one fragment link. Three links request new-tab navigation with \`noopener\` and \`noreferrer\`. The DOM has two navigation containers, two headers, two asides, and one main landmark, with a nested conversation/application composition. These counts capture the one rendered session view; they do **not** enumerate every application route, dynamic menu, or navigation destination. Destination addresses are deliberately not copied to public research outputs.
+
+### Design-system topology (E-017)
+
+The fourteen inline style elements contain 497 custom-property **declarations**, not necessarily 497 distinct custom properties; repeated light/dark values are included. There are 261 \`var()\` references, fourteen CSS \`@keyframes\` declarations, three layer directives and 104 elements with inline \`style\` attributes. Four media rules are visible, with reduced-motion, hover/pointer, and width-sensitive cases. External stylesheet contents and computed cascade outcomes are not available, so styling coverage refers strictly to inline content and link structure.
+
+### Exhaustive available external-reference inventory (E-025)
+
+See [resource_inventory.json](resource_inventory.json) for 31 individual resource references with ordinal identifiers, kinds, and source-availability flags:
+
+| Reference class | Count | Captured source available? |
+| --- | ---: | --- |
+| Linked CSS files | 25 | No |
+| External JavaScript file | 1 | No |
+| Referenced image file | 1 | No |
+| Favicon links | 2 | No |
+| Touch icon | 1 | No |
+| Iframe document | 1 | No |
+
+Each resource gets a separate typed ontology component and relationship to the page. Ordinal identifiers are version-local and intentionally exclude file paths, URL values, and other captured identifiers. Inline SVG (131 occurrences) and inline CSS/script elements are represented by separate component groups.
+
+### Accessible markup versus tested accessibility (E-020)
+
+The static DOM has 147 \`aria-hidden\`, 127 \`aria-label\`, seventy \`aria-expanded\`, five \`aria-controls\`, five \`aria-live\`, and 29 \`tabindex\` attributes. It also includes declarative presentation, group, button, and list roles. This documents semantic hooks and observable state annotation. The correct focus order, screen-reader experience, live announcements, and interactive toggle behavior remain **unverified**, not implicitly passing.
+
+### Interactive markup versus executed behavior (E-013, E-006)
+
+One form, four file inputs and 102 button tags are present. All observed button tags use \`type="button"\`, so their behavior cannot be inferred from native form submission alone. The four file inputs describe possible file-selection affordances, but the missing JS bundle and absence of an executed browser test prohibit reliable reconstruction of event-handler registrations, drag/drop flows, modal lifecycles, upload endpoints or subsequent state transitions. This research task is marked **not observable from the available capture**, rather than inventing a control flow.
+
+### Client state and services (E-004, E-009, E-011, E-019)
+
+The appearance bootstrap reads client-side preferences and browser media signals. Another source path uses session storage and a location fragment for transient launch data. Inline route-stream logic appends serialized application state, but the values are deliberately excluded from public output. A search of executable inline code shows **zero** occurrences of the \`fetch()\` call pattern and no references to \`XMLHttpRequest\`, \`WebSocket\` construction or \`EventSource\` construction. These negative observations concern the **small inline script subset only**. They do not imply that the application itself is offline, service-free, or request-free. Actual API contracts, remote persistence and third-party service graph remain not observable without the external JS or network evidence.
+
+### Performance and privacy/security clues (E-021, E-022)
+
+One external JavaScript reference and 25 linked CSS resources, alongside ten inline executable scripts and fourteen inline styles, describe the captured loading topology. The code includes early appearance initialization intended to avoid a theme flash. No loading timings, request counts, waterfall, memory data or browser performance entries were supplied, so no numeric performance judgment is justified. The saved markup exposes nonce-bearing script elements, a referrer directive, one sandboxed iframe and safer \`noopener\`/\`noreferrer\` handling on three new-tab links. These are **static indicators only**: no CSP response header, authorization mechanism, privacy policy enforcement, security vulnerability or remote trust boundary was evaluated.
+
+### Cross-cutting architecture (E-023)
+
+The observed client-side diagram is: a document shell containing navigation/content and a serialized route-data payload; inline streaming scripts coordinate React route-loader data and streamed boundary updates; an appearance bootstrap selects palette state; inline and referenced styles apply the interface design language; user controls and SVG elements are present in the rendered shell. Typed relationships and individually enumerated resource references live in [record.json](record.json) and [resource_inventory.json](resource_inventory.json). This is a **source-derived partial architectural model**, not a claim about the unobserved complete production backend.
+
+### Review disposition (E-024)
+
+All available HTML structure and inline sources have received a documented static-evidence pass. Four tasks close as **not observable**: external module reconstruction, executed interaction behavior, remote-service mapping, and comparison against an earlier capture. Every other task closes as **done within the v0001 evidence scope**, preserving the limitations above. This does not designate the complete ChatGPT website as fully analyzed. The next independently supplied dump is a separate capture version; it can fill the missing evidence, without rewriting v0001's historical observations.
+
+The raw saved HTML, personal data, private application-state payloads, and unprovided external files are excluded from the repository. This dossier contains only original explanations and aggregate counts derived from the source.

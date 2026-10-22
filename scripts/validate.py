@@ -146,6 +146,29 @@ def validate() -> list[str]:
             for profile in ids:
                 require(task_groups[(specimen["id"], version, profile)] == 1, f"Missing profile task: {specimen['id']} v{version} {profile}")
 
+    # Optional sanitized resource inventory; captures that have only just been
+    # processed may not have reached the detailed inventory research phase.
+    for specimen in specimens:
+        for version in specimen["versions"]:
+            slug = specimen["id"]
+            reference = ROOT / "specimens" / slug / f"v{version:04d}" / "resource_inventory.json"
+            if not reference.exists():
+                continue
+            doc = read(str(reference.relative_to(ROOT)))
+            require(doc.get("format_version") == 1 and doc.get("specimen_id") == slug and doc.get("version") == version,
+                    f"Resource inventory identity mismatch: {reference}")
+            entries = doc.get("resources", [])
+            require(len({row["id"] for row in entries}) == len(entries), f"Duplicate resource inventory ID: {reference}")
+            require(doc.get("totals", {}).get("external_references") == len(entries),
+                    f"Resource inventory count mismatch: {reference}")
+            for row in entries:
+                require(bool(re.fullmatch(r"R-[A-Z]+-[0-9]{3}", row["id"])), f"Invalid resource ordinal: {reference}")
+                require(row["content_available"] is False, f"Resource content unexpectedly published: {reference}")
+                require(set(row) == {"id","category","ordinal","source_class","content_available","analysis_status","role"},
+                        f"Unreviewed resource fields: {reference}")
+                require(row["source_class"] in {"capture_relative","same_origin_absolute"},
+                        f"Unsupported resource origin class: {reference}")
+
     gallery = read("gallery/index.json")
     require(gallery["format_version"] == 1, "Gallery format")
     require(len({item["id"] for item in gallery["entries"]}) == len(gallery["entries"]), "Duplicate gallery item")

@@ -6,26 +6,26 @@
   "capture_scope": "saved_page",
   "processed_at": "2026-10-21T21:56:57.196Z",
   "previous_version": null,
-  "status": "researching",
+  "status": "reviewed",
   "coverage": {
     "intake": "analyzed",
     "markup": "analyzed",
-    "navigation": "partial",
+    "navigation": "analyzed",
     "scripts": "analyzed",
-    "modules": "pending",
-    "styles": "partial",
-    "responsive": "partial",
-    "assets": "partial",
-    "interaction": "partial",
-    "state": "partial",
-    "services": "pending",
-    "accessibility": "partial",
+    "modules": "not_observable",
+    "styles": "analyzed",
+    "responsive": "analyzed",
+    "assets": "analyzed",
+    "interaction": "not_observable",
+    "state": "analyzed",
+    "services": "not_observable",
+    "accessibility": "analyzed",
     "metadata": "analyzed",
-    "performance": "pending",
-    "security": "partial",
-    "architecture": "partial",
+    "performance": "analyzed",
+    "security": "analyzed",
+    "architecture": "analyzed",
     "comparison": "not_observable",
-    "review": "pending"
+    "review": "analyzed"
   },
   "components": [
     {
@@ -415,6 +415,662 @@
         "hover_rule_count": 1,
         "max_width_rule_count": 1
       }
+    },
+    {
+      "id": "resource-r-css-001",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 1)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-001",
+        "slot": 1,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-002",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 2)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-002",
+        "slot": 2,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-003",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 3)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-003",
+        "slot": 3,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-004",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 4)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-004",
+        "slot": 4,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-005",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 5)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-005",
+        "slot": 5,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-006",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 6)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-006",
+        "slot": 6,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-007",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 7)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-007",
+        "slot": 7,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-008",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 8)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-008",
+        "slot": 8,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-009",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 9)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-009",
+        "slot": 9,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-010",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 10)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-010",
+        "slot": 10,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-011",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 11)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-011",
+        "slot": 11,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-012",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 12)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-012",
+        "slot": 12,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-013",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 13)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-013",
+        "slot": 13,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-014",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 14)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-014",
+        "slot": 14,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-015",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 15)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-015",
+        "slot": 15,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-016",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 16)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-016",
+        "slot": 16,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-017",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 17)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-017",
+        "slot": 17,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-018",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 18)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-018",
+        "slot": 18,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-019",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 19)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-019",
+        "slot": 19,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-020",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 20)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-020",
+        "slot": 20,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-021",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 21)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-021",
+        "slot": 21,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-022",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 22)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-022",
+        "slot": 22,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-023",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 23)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-023",
+        "slot": 23,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-024",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 24)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-024",
+        "slot": 24,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-css-025",
+      "kind": "StyleSheet",
+      "name": "Stylesheet referenced by a saved-page link (slot 25)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-CSS-025",
+        "slot": 25,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-js-001",
+      "kind": "Script",
+      "name": "JavaScript resource referenced by a script element (slot 1)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-JS-001",
+        "slot": 1,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-img-001",
+      "kind": "Asset",
+      "name": "Image referenced by an img element (slot 1)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-IMG-001",
+        "slot": 1,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-ico-001",
+      "kind": "Asset",
+      "name": "Favicon resource referenced by an icon link (slot 1)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-ICO-001",
+        "slot": 1,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-ico-002",
+      "kind": "Asset",
+      "name": "Favicon resource referenced by an icon link (slot 2)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-ICO-002",
+        "slot": 2,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-touch-001",
+      "kind": "Asset",
+      "name": "Touch icon resource referenced by a link (slot 1)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-TOUCH-001",
+        "slot": 1,
+        "content_available": false
+      }
+    },
+    {
+      "id": "resource-r-frame-001",
+      "kind": "Dependency",
+      "name": "Referenced iframe document (slot 1)",
+      "description": "External resource occurrence observed in this saved HTML; source file not supplied. Ordinal is local to this capture, not a cross-version stable identifier.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "reference_id": "R-FRAME-001",
+        "slot": 1,
+        "content_available": false
+      }
+    },
+    {
+      "id": "anchor-navigation",
+      "kind": "Route",
+      "name": "Captured anchor-link surface",
+      "description": "Fifteen anchors occur in the saved page; fourteen are absolute HTTPS references and one is an in-document fragment reference.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-015",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "anchor_total": 15,
+        "absolute_http_references": 14,
+        "fragment_references": 1,
+        "new_tab_links": 3
+      }
+    },
+    {
+      "id": "styling-declarations",
+      "kind": "DesignToken",
+      "name": "CSS token and animation inventory",
+      "description": "CSS styles expose repeated design-token declarations, var() references, keyframes, and layer declarations; these aggregate counts are not unique token counts.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-017",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "custom_property_declarations": 497,
+        "var_references": 261,
+        "keyframes": 14,
+        "layer_declarations": 3,
+        "inline_style_attributes": 104
+      }
+    },
+    {
+      "id": "resource-census",
+      "kind": "Metadata",
+      "name": "Sanitized external reference inventory",
+      "description": "External resource references are enumerated by ordinal in resource_inventory.json; raw paths and URLs are excluded.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "external_reference_count": 31,
+        "resource_inventory": "resource_inventory.json"
+      }
+    },
+    {
+      "id": "a11y-live-state",
+      "kind": "AccessibilityFeature",
+      "name": "ARIA state and live-region metadata",
+      "description": "Saved DOM includes state, relationship, status, and interaction semantics, but their runtime consistency is unknown.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-020",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "aria_hidden": 147,
+        "aria_label": 127,
+        "aria_expanded": 70,
+        "aria_controls": 5,
+        "aria_live": 5,
+        "tabindex": 29
+      }
+    },
+    {
+      "id": "document-safeguards",
+      "kind": "SecuritySignal",
+      "name": "Static markup protection indicators",
+      "description": "Some scripts carry nonce attributes, the page defines a referrer policy, and the iframe has a sandbox attribute. These do not demonstrate enforcement of browser/server security policies.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-022",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "nonce_attributes_present": true,
+        "referrer_meta_present": true,
+        "iframe_sandbox_present": true,
+        "external_new_tab_rel_protection": 3
+      }
+    },
+    {
+      "id": "load-clues",
+      "kind": "PerformanceSignal",
+      "name": "Initial rendering resource hints",
+      "description": "Linked CSS, inline theme initialization, deferred script inclusion, and multiple inline scripts describe loading structure without any measured timing or network waterfall.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-021",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "external_stylesheets": 25,
+        "inline_styles": 14,
+        "external_scripts": 1,
+        "inline_executable_scripts": 10,
+        "measured_performance": false
+      }
+    },
+    {
+      "id": "network-evidence-limit",
+      "kind": "APIReference",
+      "name": "Remote operation visibility boundary",
+      "description": "No fetch(), XMLHttpRequest, WebSocket, or EventSource constructor appears in the 17.4 KB executable inline script body; the external application script is missing.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-019",
+        "source_scope": "saved_page"
+      },
+      "properties": {
+        "inline_fetch_calls": 0,
+        "inline_xmlhttprequest_references": 0,
+        "inline_websocket_constructor_references": 0,
+        "inline_eventsource_constructor_references": 0,
+        "whole_application_network_inference": "unknown"
+      }
     }
   ],
   "relationships": [
@@ -725,6 +1381,479 @@
         "evidence_ref": "E-014",
         "source_scope": "saved_page"
       }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-001",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-002",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-003",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-004",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-005",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-006",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-007",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-008",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-009",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-010",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-011",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-012",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-013",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-014",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-015",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-016",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-017",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-018",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-019",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-020",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-021",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-022",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-023",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-024",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-css-025",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-js-001",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-img-001",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-ico-001",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-ico-002",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-touch-001",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-r-frame-001",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "anchor-navigation",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-015",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-css",
+      "to": "styling-declarations",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-017",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "resource-census",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "accessibility",
+      "to": "a11y-live-state",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-020",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "document-safeguards",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-022",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "load-clues",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-021",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "inline-scripts",
+      "to": "network-evidence-limit",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-019",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "external-script",
+      "to": "network-evidence-limit",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-019",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "react-boundaries",
+      "to": "router-stream",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-023",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "theme-init",
+      "to": "theme-tokens",
+      "predicate": "updates",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-023",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "router-stream",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-023",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "from": "page",
+      "to": "react-boundaries",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-023",
+        "source_scope": "saved_page"
+      }
     }
   ],
   "findings": [
@@ -887,6 +2016,96 @@
         "evidence_ref": "E-006",
         "source_scope": "saved_page"
       }
+    },
+    {
+      "id": "F-017",
+      "statement": "Fifteen anchor elements appear in the saved markup. Fourteen references use HTTP(S) absolute addresses, one is a fragment, and three links specify a new-tab target with noreferrer/noopener relationship flags.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-015",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-018",
+      "statement": "The saved inline CSS contains 497 custom-property declarations (including repeats), 261 CSS var() references, fourteen keyframes, three @layer occurrences, and 104 elements with inline style attributes. None establishes the complete styles of the missing CSS files.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-017",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-019",
+      "statement": "The standalone document contains 31 external references in six resource categories, documented by safe ordinal rather than source path. Referenced files were not supplied and are not present in the repository.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-025",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-020",
+      "statement": "The executable inline script code contains no fetch(), XMLHttpRequest, WebSocket constructor, or EventSource constructor reference in this capture. This is not evidence that the full application makes no network requests.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-019",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-021",
+      "statement": "The DOM has 147 aria-hidden, 127 aria-label, 70 aria-expanded, five aria-controls, five aria-live, and 29 tabindex attributes. Static markers do not demonstrate keyboard accessibility or correct runtime transitions.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-020",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-022",
+      "statement": "The saved markup includes script nonce attributes, referrer metadata, and a sandbox attribute on one iframe. Three new-tab links include noopener/noreferrer; no effective CSP headers or runtime policy were inspected.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-022",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-023",
+      "statement": "The saved document carries one referenced application script and ten inline executable scripts, along with 25 linked stylesheets and inline styles; loading performance cannot be measured from the source alone.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-021",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-024",
+      "statement": "The observed page architecture combines streamed route-loader state, streamed React DOM boundary handling, inline appearance initialization, a styled application shell, and referenced client assets. The missing bundle prevents definitive framework-module and event-flow reconstruction.",
+      "evidence": {
+        "evidence_class": "inferred_static",
+        "confidence": "medium",
+        "evidence_ref": "E-023",
+        "source_scope": "saved_page"
+      }
+    },
+    {
+      "id": "F-025",
+      "statement": "Static page inspection covers the available markup, inline scripts, inline styles, and external resource references; it cannot verify unprovided bundles, executed interactions, remotely served contracts, whole-site routing, or site-wide performance.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E-024",
+        "source_scope": "saved_page"
+      }
     }
   ],
   "limitations": [
@@ -895,6 +2114,11 @@
     "One large embedded application/json payload may contain account-linked or conversation content and was not copied into public artifacts.",
     "DOM markup and source references do not prove live behavior, remote API responses, backend implementation, browser compatibility, or security properties.",
     "The capture date is not independently established by server evidence; processed_at records the local specimen intake.",
-    "First internal version: no previous capture exists for comparison."
+    "First internal version: no previous capture exists for comparison.",
+    "A static DOM does not prove button actions, event-handler connections, form submission, upload support, or keyboard navigation. This limits the interaction-model task.",
+    "Missing external script source prevents a trustworthy module graph and remote-service contract reconstruction.",
+    "No request waterfall, timing data, server response headers, authenticated API execution, or runtime instrumentation was available for this capture.",
+    "The ordinal external-reference inventory avoids publication of raw resource paths and embedded state.",
+    "Internal snapshot status reviewed means static evidence was assessed and bounded; it is not an assertion that the full website is understood."
   ]
 }

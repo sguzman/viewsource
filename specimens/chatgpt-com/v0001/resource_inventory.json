@@ -1,0 +1,305 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 1,
+  "scope": "saved_page",
+  "description": "Sanitized ordinal inventory of external resource references only. Values and capture files are not included.",
+  "totals": {
+    "external_references": 31,
+    "linked_stylesheets": 25,
+    "script_references": 1,
+    "image_references": 1,
+    "favicon_references": 2,
+    "touch_icon_references": 1,
+    "iframe_references": 1,
+    "inline_svg_elements": 131,
+    "inline_stylesheet_elements": 14,
+    "inline_script_elements": 11
+  },
+  "resources": [
+    {
+      "id": "R-CSS-001",
+      "category": "stylesheet",
+      "ordinal": 1,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-002",
+      "category": "stylesheet",
+      "ordinal": 2,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-003",
+      "category": "stylesheet",
+      "ordinal": 3,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-004",
+      "category": "stylesheet",
+      "ordinal": 4,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-005",
+      "category": "stylesheet",
+      "ordinal": 5,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-006",
+      "category": "stylesheet",
+      "ordinal": 6,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-007",
+      "category": "stylesheet",
+      "ordinal": 7,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-008",
+      "category": "stylesheet",
+      "ordinal": 8,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-009",
+      "category": "stylesheet",
+      "ordinal": 9,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-010",
+      "category": "stylesheet",
+      "ordinal": 10,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-011",
+      "category": "stylesheet",
+      "ordinal": 11,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-012",
+      "category": "stylesheet",
+      "ordinal": 12,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-013",
+      "category": "stylesheet",
+      "ordinal": 13,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-014",
+      "category": "stylesheet",
+      "ordinal": 14,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-015",
+      "category": "stylesheet",
+      "ordinal": 15,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-016",
+      "category": "stylesheet",
+      "ordinal": 16,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-017",
+      "category": "stylesheet",
+      "ordinal": 17,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-018",
+      "category": "stylesheet",
+      "ordinal": 18,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-019",
+      "category": "stylesheet",
+      "ordinal": 19,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-020",
+      "category": "stylesheet",
+      "ordinal": 20,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-021",
+      "category": "stylesheet",
+      "ordinal": 21,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-022",
+      "category": "stylesheet",
+      "ordinal": 22,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-023",
+      "category": "stylesheet",
+      "ordinal": 23,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-024",
+      "category": "stylesheet",
+      "ordinal": 24,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-CSS-025",
+      "category": "stylesheet",
+      "ordinal": 25,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Stylesheet referenced by a saved-page link"
+    },
+    {
+      "id": "R-JS-001",
+      "category": "javascript",
+      "ordinal": 1,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "JavaScript resource referenced by a script element"
+    },
+    {
+      "id": "R-IMG-001",
+      "category": "image",
+      "ordinal": 1,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Image referenced by an img element"
+    },
+    {
+      "id": "R-ICO-001",
+      "category": "icon",
+      "ordinal": 1,
+      "source_class": "same_origin_absolute",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Favicon resource referenced by an icon link"
+    },
+    {
+      "id": "R-ICO-002",
+      "category": "icon",
+      "ordinal": 2,
+      "source_class": "same_origin_absolute",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Favicon resource referenced by an icon link"
+    },
+    {
+      "id": "R-TOUCH-001",
+      "category": "touch_icon",
+      "ordinal": 1,
+      "source_class": "same_origin_absolute",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Touch icon resource referenced by a link"
+    },
+    {
+      "id": "R-FRAME-001",
+      "category": "iframe",
+      "ordinal": 1,
+      "source_class": "capture_relative",
+      "content_available": false,
+      "analysis_status": "reference_only",
+      "role": "Referenced iframe document"
+    }
+  ],
+  "caveats": [
+    "Every external resource is listed by an ordinal within its reference category rather than its captured URL or filename.",
+    "Availability describes the user-supplied standalone HTML only; it does not assert the original website could not load the resource.",
+    "These ordinals are local to v0001 and must not be used as persistent resource identity across captures."
+  ]
+}

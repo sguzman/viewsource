@@ -49,3 +49,9 @@ For every new capture, compare like-for-like evidence. Same-site evolution and d
 ## Safe publication
 
 Raw captures and private inventories are never committed. Do not place screenshots or third-party assets in the gallery without explicit provenance, license and publication clearance. Read each proposed technical identifier and quotation for data leakage. Public-only descriptions should be original and minimal. Automated redaction cannot establish the right to publish third-party content.
+
+## Closing the scope of a single saved-page capture
+
+Complete a source-limited task when the available saved markup and included source have been analyzed and the resulting limitations are recorded in the version dossier. Use `not_observable` for tasks whose essential outcome requires absent source, runtime behavior, a previous snapshot, or unavailable external evidence. A reviewed version and fully resolved task queue means the **available evidence was exhausted**, not that the full website was reconstructed. Preserve all unknowns for a subsequent numbered capture.
+
+When possible, add a sanitized `resource_inventory.json` with category-local ordinals for every external HTML resource reference, excluding raw filenames, URLs, code and other private capture data. Ordinals are not stable cross-capture identities. The machine record may include corresponding typed components. Raw capture content and confidential local evidence remain untracked.

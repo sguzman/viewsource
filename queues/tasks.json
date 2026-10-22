@@ -39,9 +39,13 @@
       "profile": "navigation",
       "queue": "navigation",
       "title": "Routes, links, and navigation model",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-markup"
+      ],
+      "evidence_refs": [
+        "E-015",
+        "E-002"
       ]
     },
     {
@@ -69,10 +73,11 @@
       "profile": "modules",
       "queue": "scripts",
       "title": "Modules, frameworks, build and dependency clues",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0001-scripts"
-      ]
+      ],
+      "notes": "Referenced application bundle was not supplied. Static inline scripts are separately characterized; module graph cannot be reconstructed."
     },
     {
       "id": "chatgpt-com-v0001-styles",
@@ -81,10 +86,15 @@
       "profile": "styles",
       "queue": "styling",
       "title": "Stylesheet inventory and design system",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-intake",
         "chatgpt-com-v0001-markup"
+      ],
+      "evidence_refs": [
+        "E-005",
+        "E-014",
+        "E-017"
       ]
     },
     {
@@ -94,9 +104,13 @@
       "profile": "responsive",
       "queue": "styling",
       "title": "Responsive rules and layout states",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-styles"
+      ],
+      "evidence_refs": [
+        "E-014",
+        "E-017"
       ]
     },
     {
@@ -106,9 +120,13 @@
       "profile": "assets",
       "queue": "assets",
       "title": "Asset, font, icon and media roles",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-intake"
+      ],
+      "evidence_refs": [
+        "E-007",
+        "E-025"
       ]
     },
     {
@@ -118,11 +136,12 @@
       "profile": "interaction",
       "queue": "behavior",
       "title": "Events, controls, forms and interaction model",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0001-markup",
         "chatgpt-com-v0001-scripts"
-      ]
+      ],
+      "notes": "Control markup exists, but event handlers and browser interaction behavior cannot be verified from the available source."
     },
     {
       "id": "chatgpt-com-v0001-state",
@@ -131,10 +150,15 @@
       "profile": "state",
       "queue": "state",
       "title": "Client state, storage and lifecycle",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-interaction",
         "chatgpt-com-v0001-scripts"
+      ],
+      "evidence_refs": [
+        "E-004",
+        "E-009",
+        "E-011"
       ]
     },
     {
@@ -144,10 +168,11 @@
       "profile": "services",
       "queue": "network",
       "title": "Static API and third-party service references",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0001-scripts"
-      ]
+      ],
+      "notes": "External application JavaScript and runtime network traffic were not supplied; absence of network calls from inline bootstraps does not prove absence site-wide."
     },
     {
       "id": "chatgpt-com-v0001-accessibility",
@@ -156,10 +181,14 @@
       "profile": "accessibility",
       "queue": "accessibility",
       "title": "Semantics and accessibility inspection",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-markup",
         "chatgpt-com-v0001-styles"
+      ],
+      "evidence_refs": [
+        "E-006",
+        "E-020"
       ]
     },
     {
@@ -185,11 +214,15 @@
       "profile": "performance",
       "queue": "performance",
       "title": "Loading, resource and rendering performance clues",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-scripts",
         "chatgpt-com-v0001-styles",
         "chatgpt-com-v0001-assets"
+      ],
+      "evidence_refs": [
+        "E-003",
+        "E-021"
       ]
     },
     {
@@ -199,10 +232,14 @@
       "profile": "security",
       "queue": "security",
       "title": "Security and privacy-relevant static signals",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-scripts",
         "chatgpt-com-v0001-services"
+      ],
+      "evidence_refs": [
+        "E-008",
+        "E-022"
       ]
     },
     {
@@ -212,12 +249,17 @@
       "profile": "architecture",
       "queue": "architecture",
       "title": "Cross-cutting component relationships",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-markup",
         "chatgpt-com-v0001-modules",
         "chatgpt-com-v0001-styles",
         "chatgpt-com-v0001-services"
+      ],
+      "evidence_refs": [
+        "E-009",
+        "E-010",
+        "E-023"
       ]
     },
     {
@@ -230,7 +272,8 @@
       "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0001-architecture"
-      ]
+      ],
+      "notes": "No earlier capture version exists; compare when v0002 becomes available."
     },
     {
       "id": "chatgpt-com-v0001-review",
@@ -239,7 +282,7 @@
       "profile": "review",
       "queue": "quality",
       "title": "Evidence audit, limitations and publication review",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0001-navigation",
         "chatgpt-com-v0001-responsive",
@@ -250,6 +293,9 @@
         "chatgpt-com-v0001-performance",
         "chatgpt-com-v0001-security",
         "chatgpt-com-v0001-comparison"
+      ],
+      "evidence_refs": [
+        "E-024"
       ]
     }
   ]
