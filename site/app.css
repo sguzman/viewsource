@@ -431,3 +431,9 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-static-task { border: 1px solid var(--line); background: var(--panel-2); border-radius: 8px; padding: 11px; min-width: 0; font-size: 12px; }
 .chat-static-task summary { cursor: pointer; line-height: 1.5; }
 @media(max-width:720px){ .chat-static-task-list { grid-template-columns:1fr; } }
+
+.chat-transport-grid { display: grid; grid-template-columns: repeat(auto-fit,minmax(230px,1fr)); gap:9px; margin:12px 0; }
+.chat-transport-method { border:1px solid var(--line); background:var(--panel-2); border-radius:8px; padding:12px; font-size:12px; }
+.chat-transport-method summary,.chat-transport-edges summary,.chat-transport-websocket summary { cursor:pointer; line-height:1.55; font-weight:600; }
+.chat-transport-method p,.chat-transport-edges,.chat-transport-websocket { font-size:12px; line-height:1.65; }
+.chat-transport-edges ul { padding-left:20px; }
