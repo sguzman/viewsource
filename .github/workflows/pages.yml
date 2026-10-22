@@ -21,7 +21,9 @@ jobs:
       - name: Verify research records
         run: python3 scripts/validate.py
       - name: Verify atlas JavaScript syntax
-        run: node --check site/app.js
+        run: |
+          node --check site/explorer.js
+          node --check site/app.js
       - name: Build static atlas from reviewed public metadata
         run: python3 scripts/build_site.py --out _site
       - name: Configure Pages
