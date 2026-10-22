@@ -224,6 +224,41 @@ def validate() -> list[str]:
                         require(sum(row.get("style_metrics", {}).get(k, 0) for row in entries) == v,
                                 f"Stylesheet indicator count mismatch: {reference}")
 
+    # Optional source-level analysis from a privacy-cleared ZIP inventory.
+    # The compact graph records ordinal textual references, NOT executable imports.
+    for specimen in specimens:
+        slug = specimen["id"]
+        for version in specimen["versions"]:
+            path = f"specimens/{slug}/v{version:04d}/source_analysis.json"
+            if not (ROOT / path).is_file():
+                continue
+            study = read(path)
+            require(study.get("format_version") == 1 and study.get("specimen_id") == slug and study.get("version") == version,
+                    f"Source analysis identity mismatch: {path}")
+            graph = study.get("javascript", {}).get("reference_graph", {})
+            edges = set()
+            for source, ranges in graph.get("source_to_target_ranges", {}).items():
+                require(bool(re.fullmatch(r"R-JS-[0-9]{3}", source)), f"Invalid source ordinal: {path}")
+                for bounds in ranges:
+                    require(len(bounds) == 2 and all(isinstance(n, int) for n in bounds) and
+                            1 <= bounds[0] <= bounds[1] <= study["javascript"]["captured_files"],
+                            f"Invalid target ordinal range: {path}")
+                    for ordinal in range(bounds[0], bounds[1] + 1):
+                        edges.add((source, ordinal))
+            require(graph.get("pairs") == len(edges), f"Source graph pair count mismatch: {path}")
+            require(graph.get("source_bundles") == len({src for src, _ in edges}),
+                    f"Source graph source count mismatch: {path}")
+            require(graph.get("target_bundles") == len({dst for _, dst in edges}),
+                    f"Source graph target count mismatch: {path}")
+            require(graph.get("mentions", 0) >= len(edges), f"Source graph mentions inconsistent: {path}")
+            require(study.get("methodology", {}).get("privacy") and study.get("limitations"),
+                    f"Missing source analysis privacy or uncertainty caveats: {path}")
+            require(all(isinstance(row["files"], int) and row["files"] >= 0
+                        for row in study["javascript"].get("syntax_indicators", {}).values()),
+                    f"Invalid source analysis syntax counts: {path}")
+            require(sum(study["fonts"]["file_counts_by_family"].values()) == study["fonts"]["total_files"],
+                    f"Font count mismatch: {path}")
+
     gallery = read("gallery/index.json")
     require(gallery["format_version"] == 1, "Gallery format")
     require(len({item["id"] for item in gallery["entries"]}) == len(gallery["entries"]), "Duplicate gallery item")
