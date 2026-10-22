@@ -205,3 +205,7 @@ message ancestry in a flat response.
 ## Newly queued source-first continuation
 
 The original captured JavaScript is accessible for further analysis. The specimen's initial audit and its 91 terminal tasks remain in the historical record, while 33 new static research tasks are now queued in `queues/tasks.json`. The current capture has returned to `researching` because function call chains, domain shapes, UI handlers, streaming, retries, and persistence have not yet been fully traced. The optional runtime research queue does not block this source-first work.
+
+## New AST-anchored static findings
+
+The source-first follow-up now includes a [sanitized AST report](../specimens/chatgpt-com/v0002/chat_ast_followup.json) derived from the original captured JavaScript. All 144 JavaScript files parsed successfully; the private analysis identified 333 candidate structural functions across 41 bundles. The report records literal member-property pairs and assignments, including `conversationId`/`messageId`, `mapping`/`current_node`, and `parent`/`children`. It does not publish source snippets, site identifiers, URLs or source locations. These **are concrete syntax-level observations, not verified chat-function ownership**. The next tasks must resolve call edges and data flow before promoting any chat state claim.

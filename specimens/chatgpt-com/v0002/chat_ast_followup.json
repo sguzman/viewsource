@@ -1,0 +1,58 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_archive",
+  "method": "Private offline Acorn AST examination of all 144 captured JavaScript bundles; independently scoped function-body member access and assignment classification. No captured code published.",
+  "review_status": "partial_static_implementation_research",
+  "evidence_class": "observed_static",
+  "source_content_published": false,
+  "live_behavior_verified": false,
+  "backend_contract_verified": false,
+  "ast_census": {
+    "parsed_javascript_bundles": 144,
+    "failed_parses": 0,
+    "syntactic_function_nodes": 120699
+  },
+  "structural_candidates": {
+    "candidate_function_nodes": 333,
+    "source_bundles_with_candidate_functions": 41,
+    "criteria": "A candidate contains certain literal member-property pairs or explicit assignment to tracked graph/identity member properties; this is a filter, not a chat function classification."
+  },
+  "member_property_cooccurrence_functions": {
+    "conversationId_and_messageId": 142,
+    "mapping_and_parent": 39,
+    "children_and_parent": 38,
+    "mapping_and_current_node": 13,
+    "mapping_and_currentNode": 5,
+    "message_and_parent": 22,
+    "children_and_message": 12
+  },
+  "member_property_assignment_functions": {
+    "children": 40,
+    "parent": 28,
+    "mapping": 1,
+    "messageId": 3,
+    "message": 1
+  },
+  "supported_findings": [
+    "The captured JavaScript includes syntactic functions that refer to both conversationId and messageId member properties.",
+    "Some independently scoped functions access mapping and selected-node-like member fields together.",
+    "Captured functions include explicit parent and children member writes, but these are not yet attributed to the ChatGPT message model.",
+    "These sites supply concrete targets for tracing callers, callees, argument shapes, and UI/network consumers within the captured bundles."
+  ],
+  "unresolved": [
+    "Which of these functions belong to chat code rather than embedded third-party tree, editor or UI libraries?",
+    "Which exact source functions implement message ancestry, selected branch traversal, editing or regeneration?",
+    "Are graph fields reads, writes, or conversions of transport/export data, and how are they called from UI actions?",
+    "Which request parsers and streaming handlers pass data to those functions?",
+    "How do minification, aliases and dynamic imports limit call ownership conclusions?"
+  ],
+  "limitations": [
+    "Aggregates cover all saved JavaScript, including vendored libraries.",
+    "Source property co-occurrence is a syntactic observation, not proof of domain object identity.",
+    "Arrow and ordinary functions are counted separately; nested function bodies are excluded from their parents' local field analysis.",
+    "Property names are allowlisted technical vocabulary; actual objects, source names, source spans and literal values are never published.",
+    "Not a reconstructed call graph, observed runtime trace or verified server schema."
+  ]
+}
