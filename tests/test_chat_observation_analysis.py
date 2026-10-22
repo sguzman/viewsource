@@ -98,5 +98,44 @@ class ObservationAnalysisTests(unittest.TestCase):
                             for item in out["candidate_event_correlations"]))
 
 
+    def test_candidate_sequence_alignment_of_synthetic_completion(self):
+        out = mod.summarize(self.example(), self.graph)
+        alignment = out["candidate_sequence_alignment"]
+        self.assertEqual(alignment["verified_transitions"], 0)
+        self.assertEqual(alignment["status_counts"], {"consistent_with_candidate": 4})
+        self.assertEqual(
+            [item["status"] for item in alignment["steps"]],
+            ["consistent_with_candidate"] * 4,
+        )
+        self.assertTrue(all(not x["internal_behavior_verified"] for x in alignment["steps"]))
+
+    def test_candidate_sequence_flags_state_conflict(self):
+        doc = self.example()
+        doc["steps"][1]["response_phase"] = "complete"
+        doc["steps"][2]["response_phase"] = "receiving"
+        out = mod.summarize(doc, self.graph)["candidate_sequence_alignment"]
+        self.assertEqual(out["steps"][1]["status"], "conflicts_with_candidate")
+        self.assertEqual(out["steps"][2]["status"], "no_matching_candidate_edge")
+        self.assertEqual(out["verified_transitions"], 0)
+
+    def test_unknown_state_does_not_restore_model_state(self):
+        doc = self.example()
+        doc["steps"][0]["response_phase"] = "unknown"
+        alignment = mod.summarize(doc, self.graph)["candidate_sequence_alignment"]
+        self.assertEqual(alignment["steps"][0]["status"], "insufficient_state_signal")
+        self.assertEqual(alignment["steps"][1]["status"], "no_matching_candidate_edge")
+
+    def test_unmapped_and_message_machine_not_forced(self):
+        doc = self.example()
+        doc["steps"] = [
+            self.step(0, 0, "regenerate", "unknown"),
+            self.step(1, 50, "branch_new_chat", "unknown")
+        ]
+        alignment = mod.summarize(doc, self.graph)["candidate_sequence_alignment"]
+        self.assertEqual(alignment["steps"][0]["status"], "insufficient_state_signal")
+        self.assertEqual(alignment["steps"][1]["status"], "unmapped")
+        self.assertEqual(alignment["verified_transitions"], 0)
+
+
 if __name__ == "__main__":
     unittest.main()
