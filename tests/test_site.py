@@ -32,9 +32,8 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["module_imports"]["sources"]), 8)
             self.assertEqual(current["visuals"]["icons"]["matched_uses"], 92)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
-            self.assertEqual(previous["visuals"] if "previous" in locals() else
-                             next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 47)
+            self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
+            self.assertEqual(len(current["findings"]), 50)
             self.assertEqual(len(current["tasks"]), 91)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
