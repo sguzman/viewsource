@@ -116,6 +116,12 @@ class ChatExportStructureTests(unittest.TestCase):
             with self.subTest(kind=payload[:3]), self.assertRaises(mod.ExportShapeError):
                 list(mod.iter_export_records(StringIO(payload),chunk_size=2))
 
+    def test_stream_reader_rejects_unbounded_read_sizes(self):
+        from io import StringIO
+        for size in (0, -1, True, 2**25):
+            with self.subTest(size=size), self.assertRaises(mod.ExportShapeError):
+                list(mod.iter_export_records(StringIO("[]"), chunk_size=size))
+
     def test_stream_reader_accepts_empty_and_whitespace_arrays(self):
         from io import StringIO
         self.assertEqual(list(mod.iter_export_records(StringIO(" [   ] \n"))),[])

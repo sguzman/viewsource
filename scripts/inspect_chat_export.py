@@ -175,6 +175,8 @@ def iter_export_records(stream, *, chunk_size: int = 65536):
     No input fragment or identity is logged. Memory is bounded by the
     largest single conversation record plus a fixed read buffer.
     """
+    if type(chunk_size) is not int or not (1 <= chunk_size <= 1024 * 1024):
+        raise ExportShapeError("Chunk size must be a bounded positive integer")
     decoder = json.JSONDecoder()
     buffer = ""
     eof = False
