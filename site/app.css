@@ -408,3 +408,11 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-export-references summary { font-size:12px; cursor:pointer; }
 .chat-export-references a { display:block; margin-top:10px; font-size:11px; }
 @media(max-width:720px){ .chat-export-fields { grid-template-columns:1fr; } }
+
+.chat-ast-metrics { display: grid; grid-template-columns: repeat(auto-fit,minmax(140px,1fr)); gap: 9px; margin: 14px 0; }
+.chat-ast-stat { border: 1px solid var(--line); background: var(--panel-2); border-radius: 8px; padding: 13px; display: flex; flex-direction: column; gap: 4px; }
+.chat-ast-stat strong { font: normal 26px var(--serif); }
+.chat-ast-stat small { color: var(--muted); font-size: 11px; }
+.chat-ast-details { font-size: 12px; line-height: 1.65; }
+.chat-ast-details summary { cursor: pointer; }
+.chat-ast-details ul { padding-left: 20px; }
