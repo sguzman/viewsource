@@ -41,6 +41,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["chat_source_signals"]["dom_controls"]["document"]["contenteditable_true"], 1)
             self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 17)
             self.assertEqual(len(current["visuals"]["public_chat_actions"]["actions"]), 4)
+            self.assertEqual(len(current["visuals"]["chat_export_format"]["fields"]), 4)
             self.assertEqual(len(current["visuals"]["chat_capabilities"]["entries"]), 8)
 
             self.assertTrue(all(t["evidence_status"] == "hypothesis" for t in feature["transitions"]))
@@ -58,7 +59,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 69)
+            self.assertEqual(len(current["findings"]), 70)
             self.assertEqual(len(current["tasks"]), 91)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "reviewed")

@@ -215,6 +215,28 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            export_format_path = ROOT / (base + "/export_format_research.json")
+            if export_format_path.is_file():
+                research = read(base + "/export_format_research.json")
+                if research["specimen_id"] != item["id"] or research["version"] != number:
+                    raise ValueError("Export research identity mismatch")
+                visuals["chat_export_format"] = {
+                    "evidence_ref": "E2-070",
+                    "scope": "public_reference",
+                    "fields": [{
+                        "field": f["field"], "meaning": f["meaning"]
+                    } for f in research["export_tree_fields"]],
+                    "operations": research["derived_operations"],
+                    "sources": [{
+                        "title": research["official"]["source_title"],
+                        "url": research["official"]["source_url"],
+                        "authority": "official"
+                    }] + [{
+                        "title": s["source_title"], "url": s["source_url"],
+                        "authority": "community"
+                    } for s in research["community"]],
+                    "limitations": research["limitations"]
+                }
             public_actions_path = ROOT / (base + "/public_chat_actions.json")
             if public_actions_path.is_file():
                 documented = read(base + "/public_chat_actions.json")

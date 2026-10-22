@@ -111,6 +111,36 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const exported=record.visuals?.chat_export_format;
+    if(exported?.fields?.length){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","How exported conversation trees are organized"));
+      block.append(element("p","graph-caption",
+        "Public export documentation and community parser research. This is not a recovered live ChatGPT API or database schema."));
+      const fields=element("div","chat-export-fields");
+      exported.fields.forEach(item=>{
+        const field=element("div","chat-export-field");
+        field.append(element("strong","",item.field),element("p","",item.meaning));
+        fields.append(field);
+      });
+      block.append(fields);
+      const relations=element("div","chat-export-operations");
+      exported.operations.forEach(item=>{
+        relations.append(element("p","",item.operation.replaceAll("_"," ")+": "+item.description));
+      });
+      block.append(relations);
+      const references=element("details","chat-export-references");
+      references.append(element("summary","","Sources and limitations"));
+      exported.sources.forEach(item=>{
+        const link=element("a","text-link",item.authority+": "+item.title+" ↗");
+        link.href=item.url;link.target="_blank";link.rel="noopener noreferrer";
+        references.append(link);
+      });
+      block.append(references);
+      block.append(element("p","chat-document-limit",
+        "The export tree can be inspected locally with the content-free analyzer. No real export was used in this research."));
+      section.append(block);
+    }
     const documented=record.visuals?.public_chat_actions;
     if(documented?.actions?.length){
       const block=element("div","chat-subsection");

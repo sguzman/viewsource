@@ -88,3 +88,22 @@ The [capability matrix](../specimens/chatgpt-com/v0002/chat_capability_matrix.js
 The website includes a synthetic branch-selection visualization. Its messages, alternatives and separate conversation fork are invented for demonstration, **not** extracted from a user's chats.
 
 A future controlled test should yield content-free structural evidence and independent verification. Until then, the current research has no verified live transition, request contract, response stream grammar or backend message identity mapping.
+
+## Publicly described export tree (separate from captured runtime)
+
+OpenAI documents an export containing conversation JSON. Independent public
+parsers describe a tree-shaped export in which `mapping` holds nodes with
+`parent` and `children`, while `current_node` selects the current ancestry
+path. See [the source-classified report](../specimens/chatgpt-com/v0002/export_format_research.json).
+
+The local `scripts/inspect_chat_export.py` tool can inspect an export shard
+without printing conversation titles, message content, node identifiers, or
+conversation IDs. It only emits aggregate tree statistics and validation
+counts. It uses the in-memory standard-library JSON parser. Never commit,
+upload, or redirect real exports or detailed analyses into the public
+repository. No real export was used for the tests.
+
+Community documentation warns that private API responses may now use
+flat message arrays rather than legacy tree mappings. The analyzer does not
+invent parent links for such arrays. Neither format should be described as
+proven backend storage or as the implementation observed in v0002.

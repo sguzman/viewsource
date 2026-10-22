@@ -399,3 +399,12 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-example-metric strong { font-size: 18px; }
 .chat-example-metric small { font-size: 10px; color: var(--muted); }
 @media(max-width:720px){ .chat-example-metrics { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+
+.chat-export-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin:16px 0; }
+.chat-export-field { border:1px solid var(--line); padding:12px; border-radius:8px; background:var(--panel-2); min-width:0; }
+.chat-export-field strong { font-size:12px; font-family:monospace; }
+.chat-export-field p,.chat-export-operations p { font-size:11px; line-height:1.65; color:var(--muted); margin:7px 0; }
+.chat-export-references { margin-top:15px; padding-top:10px; border-top:1px solid var(--line); }
+.chat-export-references summary { font-size:12px; cursor:pointer; }
+.chat-export-references a { display:block; margin-top:10px; font-size:11px; }
+@media(max-width:720px){ .chat-export-fields { grid-template-columns:1fr; } }

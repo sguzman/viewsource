@@ -25,6 +25,7 @@ try {
   await page.getByRole("heading",{name:"Chat state model"}).waitFor();
   assert.equal(await page.locator(".chat-surface").count(),6);
   assert.equal(await page.locator(".chat-documented-action").count(),4);
+  assert.equal(await page.locator(".chat-export-field").count(),4);
   assert.equal(await page.locator(".chat-capability").count(),8);
   assert.equal(await page.locator(".chat-domain-edge").count(),8);
   assert.deepEqual(await page.locator(".chat-example-metric strong").allInnerTexts(),["1","3","1","0"]);

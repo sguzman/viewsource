@@ -156,7 +156,8 @@
         "E2-066",
         "E2-067",
         "E2-068",
-        "E2-069"
+        "E2-069",
+        "E2-070"
       ],
       "metrics": [],
       "flow": [],
@@ -190,6 +191,11 @@
           "title": "Source evidence and open tests",
           "body": "The saved code has chat-related identity, parent and streaming syntax. The research backlog separates evidence we already have from real interactions that require a new controlled test.",
           "link": "evidence"
+        },
+        {
+          "title": "Exported conversation trees",
+          "body": "External documentation describes message mappings, parent and child links, and the selected current node. These fields let local software reconstruct an exported conversation tree, but are not evidence of the current website's internal storage.",
+          "link": "chat-interaction"
         }
       ],
       "unknown": "All candidate transitions remain unverified. No live chat identity, request payload, endpoint or account data is published."
