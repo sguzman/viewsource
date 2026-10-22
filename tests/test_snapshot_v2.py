@@ -22,7 +22,7 @@ class SecondSnapshot(unittest.TestCase):
         self.assertEqual(inv["totals"]["missing_reported"],29)
         self.assertEqual(sum(inv["totals"]["captured_by_category"].values()),234)
         self.assertTrue(all(not a["content_committed"] for a in inv["resources"]))
-        self.assertTrue(all(not(set(a)&{"path","url","source","text","filename","bytes"}) for a in inv["resources"]))
+        self.assertTrue(all(not(set(a)&{"path","url","source","text","filename"}) for a in inv["resources"]))
         self.assertEqual(len(set(a["id"] for a in inv["resources"])),234)
         self.assertEqual(sum(a["bytes"] for a in inv["resources"]),32315693)
 if __name__=="__main__":unittest.main()
