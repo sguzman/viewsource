@@ -14,8 +14,9 @@ class SecondSnapshot(unittest.TestCase):
         self.assertEqual((rec["version"],rec["previous_version"]),(2,1))
         self.assertEqual(rec["capture_scope"],"saved_archive")
         tasks=[t for t in read("queues/tasks.json")["tasks"] if t["specimen_id"]=="chatgpt-com" and t["version"]==2]
-        self.assertEqual(len(tasks),91)
-        self.assertEqual(len([t for t in tasks if t["profile"]=="followup"]),73)
+        self.assertEqual(len(tasks),124)
+        self.assertEqual(len([t for t in tasks if t["profile"]=="followup"]),106)
+        self.assertEqual(len([t for t in tasks if "-followup-static-" in t["id"]]),33)
         self.assertEqual(len([t for t in tasks if "-followup-deep-" in t["id"]]),57)
     def test_sanitized_census(self):
         inv=read("specimens/chatgpt-com/v0002/resource_inventory.json")
