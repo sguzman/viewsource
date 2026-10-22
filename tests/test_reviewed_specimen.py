@@ -18,7 +18,9 @@ class ReviewedSpecimenChecks(unittest.TestCase):
             s for s in read("specimens/index.json")["specimens"]
             if s["id"] == "chatgpt-com"
         )
-        self.assertEqual(specimen["status"], "reviewed")
+        self.assertEqual(specimen["status"], "researching")
+        self.assertEqual(specimen["current_version"], 2)
+        self.assertEqual(specimen["versions"], [1, 2])
         record = read("specimens/chatgpt-com/v0001/record.json")
         self.assertEqual(record["status"], "reviewed")
         self.assertGreaterEqual(len(record["components"]), 60)
