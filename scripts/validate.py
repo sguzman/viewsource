@@ -9,6 +9,7 @@ import re
 import sys
 
 from validate_feature_graph import validate_extensions
+from validate_feature_research import validate_feature_research
 
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r"^[a-z][a-z0-9-]{1,47}$")
@@ -291,6 +292,8 @@ def validate() -> list[str]:
             require(report.get("evolution", {}).get("source_scope_difference", {})
                     .get("verified_site_product_changes") == 0,
                     f"Unverified site product changes claimed: {path}")
+
+    errors.extend(validate_feature_research())
 
     gallery = read("gallery/index.json")
     require(gallery["format_version"] == 1, "Gallery format")
