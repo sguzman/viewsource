@@ -389,3 +389,17 @@ earlier source-function/call/feature tasks. None is marked complete merely
 because one recovered function or source edge exists. Current static queue:
 6 in progress, 27 queued, 0 complete. Dependency and acceptance contracts
 remain unchanged.
+
+## Scoped state commit and visible ancestry projections
+
+The next saved-source function in the same capture takes the updated
+conversation state and writes the mapping and current node into a scoped
+client store. It also maintains two derived projections: a visible-message
+list reconstructed from the selected ancestry path (with an incremental
+changed-message optimization), and a separate root-to-leaf user-message
+ancestry list updated after relevant selection/parent changes. The
+user-message traversal protects against revisiting a node. This is
+source-backed evidence of the client-side representation used to support
+conversation rendering, **not** proof that a particular UI component
+subscribes to each field. Concrete render selectors remain an active
+research question.
