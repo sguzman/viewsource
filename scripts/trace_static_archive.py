@@ -21,7 +21,7 @@ MAX_SCRIPTS = 2000
 ROOT = Path(__file__).resolve().parents[1]
 
 
-def inspect_zip(input_file: Path) -> dict:
+def inspect_zip(input_file: Path, *, chat_trace: bool = False) -> dict:
     if not input_file.is_file() or input_file.resolve().is_relative_to(ROOT):
         raise ValueError("Input ZIP must exist outside the public repository")
     if input_file.stat().st_size > 1024 * 1024 * 1024:
@@ -48,7 +48,7 @@ def inspect_zip(input_file: Path) -> dict:
                     raise ValueError("Unsafe compression ratio")
                 (Path(folder) / f"bundle-{i:04d}.js").write_bytes(archive.read(info))
             result = subprocess.run(
-                ["node", str(ROOT / "scripts/static_ast_probe.cjs"), folder],
+                ["node", str(ROOT / ("scripts/trace_chat_impl.cjs" if chat_trace else "scripts/static_ast_probe.cjs")), folder],
                 capture_output=True, text=True, timeout=180, check=False,
             )
             if result.returncode:
@@ -59,9 +59,11 @@ def inspect_zip(input_file: Path) -> dict:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Summarize AST operations from an offline private ZIP")
     parser.add_argument("--input", type=Path, required=True)
+    parser.add_argument("--chat-trace", action="store_true",
+                        help="Emit ordinal-only chat-pattern AST observations")
     args = parser.parse_args()
     try:
-        report = inspect_zip(args.input)
+        report = inspect_zip(args.input, chat_trace=args.chat_trace)
     except (OSError, ValueError, json.JSONDecodeError, subprocess.TimeoutExpired,
             zipfile.BadZipFile, UnicodeError):
         parser.exit(2, "Static AST analysis rejected (input or parser unavailable)\n")
