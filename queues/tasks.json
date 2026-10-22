@@ -1776,7 +1776,11 @@
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-entrypoints"
       ],
-      "notes": "Static implementation trace: Parse functions and exported symbols; group by responsibility, inspect handlers and type/property usage; identify testable call chains, not only string counts."
+      "notes": "Static implementation trace: Parse functions and exported symbols; group by responsibility, inspect handlers and type/property usage; identify testable call chains, not only string counts.",
+      "evidence_refs": [
+        "E2-071",
+        "E2-072"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-calls",
@@ -1790,7 +1794,12 @@
         "chatgpt-com-v0002-followup-static-source-functions",
         "chatgpt-com-v0002-architecture"
       ],
-      "notes": "Static implementation trace: Trace calls across bundle/module boundaries where resolvable; label unresolved dynamic imports, aliases and minified identities rather than guessing."
+      "notes": "Static implementation trace: Trace calls across bundle/module boundaries where resolvable; label unresolved dynamic imports, aliases and minified identities rather than guessing.",
+      "evidence_refs": [
+        "E2-072",
+        "E2-073",
+        "E2-074"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-data-shapes",
@@ -1803,7 +1812,11 @@
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-functions"
       ],
-      "notes": "Static implementation trace: Trace object creation, field reads/writes, parent-child relationships and serialization; report supported invariants and conflicting candidate schemas. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure."
+      "notes": "Static implementation trace: Trace object creation, field reads/writes, parent-child relationships and serialization; report supported invariants and conflicting candidate schemas. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure.",
+      "evidence_refs": [
+        "E2-073",
+        "E2-074"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-events",
@@ -1859,7 +1872,11 @@
         "chatgpt-com-v0002-followup-static-source-network-contracts",
         "chatgpt-com-v0002-followup-static-source-state-flows"
       ],
-      "notes": "Static implementation trace: Follow parser/reader callbacks to UI state updates, completion, interruption and cleanup branches; avoid claiming verified server events. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure."
+      "notes": "Static implementation trace: Follow parser/reader callbacks to UI state updates, completion, interruption and cleanup branches; avoid claiming verified server events. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure.",
+      "evidence_refs": [
+        "E2-072",
+        "E2-075"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-failures",
@@ -1943,7 +1960,11 @@
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-events"
       ],
-      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Identify exact candidate handler/function relationships for this feature from parsed code, not from label occurrences."
+      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Identify exact candidate handler/function relationships for this feature from parsed code, not from label occurrences.",
+      "evidence_refs": [
+        "E2-071",
+        "E2-072"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-feature-chat-data-model",
@@ -1957,7 +1978,11 @@
         "chatgpt-com-v0002-followup-static-feature-chat-operations",
         "chatgpt-com-v0002-followup-static-source-data-shapes"
       ],
-      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Reconstruct source-backed property shapes, relationships and mutation/selection pathways. Report competing models explicitly. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure."
+      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Reconstruct source-backed property shapes, relationships and mutation/selection pathways. Report competing models explicitly. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure.",
+      "evidence_refs": [
+        "E2-073",
+        "E2-074"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-feature-chat-transport",
