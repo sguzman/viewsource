@@ -179,5 +179,44 @@
     "Lexical enclosure is not an execution or call relationship.",
     "Observed client code is not observed runtime behavior or a verified backend protocol.",
     "No original JavaScript file, user identifier, message text, cookie, token, route, endpoint or payload is reproduced."
+  ],
+  "reviewed_module_exports": [
+    {
+      "source_ref": "R-JS-013",
+      "module_factory_ordinal": 483,
+      "exported_function_ordinal": 484,
+      "export_kind": "static_module_getter",
+      "name_scope": "minified_bundle_export",
+      "meaning": "Selected-path materialization function is exposed by the captured module export table."
+    },
+    {
+      "source_ref": "R-JS-013",
+      "module_factory_ordinal": 483,
+      "exported_function_ordinal": 487,
+      "export_kind": "static_module_getter",
+      "name_scope": "minified_bundle_export",
+      "meaning": "Predicate-limited ancestry traversal is exposed by the same module export table."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 3036,
+      "exported_function_ordinal": 3085,
+      "export_kind": "static_module_getter",
+      "name_scope": "descriptive_conversation_refetch_export",
+      "meaning": "The asynchronous conversation-refetch function has an explicit descriptive export binding."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 4777,
+      "exported_function_ordinal": 4931,
+      "export_kind": "static_module_getter",
+      "name_scope": "minified_bundle_export",
+      "meaning": "The conversation branch client function is exposed by its module export table."
+    }
+  ],
+  "module_export_limitations": [
+    "Module export bindings establish exposure inside captured JavaScript, not whether any caller was executed.",
+    "The importer module and concrete UI call chain remain untraced.",
+    "Dynamic imports and runtime selection may prevent a captured module from running."
   ]
 }
