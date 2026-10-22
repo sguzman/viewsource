@@ -33,7 +33,7 @@ function versionRecord() {
 function specimenRecord() { return model.catalog.specimens.find(s=>s.id===model.specimen); }
 const fallbackChapters = [
   {id:"overview",name:"Overview",eyebrow:"Research introduction",title:"A snapshot of an interface",
-   lead:"A static research version with verified structural observations and carefully bounded unknowns.",
+   lead:"An earlier saved HTML page, without the deeper resource ZIP.",
    metrics:[],tags:["Saved capture"],sections:[],flow:["Document","Resources","Findings"],evidence:[]},
   {id:"evidence",name:"Evidence",eyebrow:"Research findings",title:"What this capture can support",
    lead:"The inspected source makes some architecture visible without verifying live execution.",
@@ -107,7 +107,7 @@ function makeHero(chapter) {
     elem("h1",{text:chapter.title}),
     elem("p",{className:"lead",text:chapter.lead}));
   const tags=elem("div",{className:"hero-tags"});
-  append(tags,pill("chatgpt.com / v"+String(model.version).padStart(4,"0"),"accent"),pill("Source-bounded"));
+  append(tags,pill("chatgpt.com / v"+String(model.version).padStart(4,"0"),"accent"),pill("Saved-file study"));
   (chapter.tags||[]).forEach(label=>tags.append(pill(label)));
   header.append(tags);
   return header;
@@ -137,9 +137,9 @@ function sectionHeader(kicker,heading,description="") {
 }
 function flowRail(chapter) {
   const box=elem("section");
-  box.append(sectionHeader("SYSTEM MAP","How the pieces relate","An explanatory ordering from the captured evidence, not a verified execution trace."));
+  box.append(sectionHeader("SYSTEM MAP","How the pieces relate","An explanatory source-level diagram, not a runtime trace."));
   const diagram=elem("div",{className:"diagram"});
-  diagram.append(elem("div",{className:"diagram-caption",text:"SOURCE → INTERPRETATION → INTERFACE"}));
+  diagram.append(elem("div",{className:"diagram-caption",text:"CAPTURED FILES → SOURCE CLUES → UI"}));
   const rail=elem("div",{className:"flow-rail",role:"list"});
   chapter.flow.forEach((label,i)=>{
     if(i)rail.append(elem("div",{className:"flow-arrow","aria-hidden":"true",text:"→"}));
@@ -148,7 +148,7 @@ function flowRail(chapter) {
     rail.append(card);
   });
   diagram.append(rail,elem("div",{className:"diagram-footer"},[
-    elem("span",{text:"●  Observed mechanisms and bounded interpretations"}),
+    elem("span",{text:"Source structure and tentative relationships"}),
     elem("span",{text:"See evidence IDs below ↘"})
   ]));
   box.append(diagram);
@@ -158,12 +158,12 @@ function storySections(chapter) {
   const wrapper=elem("section");
   const heading=elem("div",{className:"section-head"},[
     elem("h2",{text:"Details"}),
-    elem("span",{text:"SELECT A CONNECTION TO CONTINUE"})
+    elem("span",{text:"OPEN A RELATED SECTION"})
   ]);
   const cards=elem("div",{className:"story-cards"});
   (chapter.sections||[]).forEach((section,i)=>{
     const card=elem("article",{className:"story-card"});
-    append(card,elem("div",{className:"story-card-number",text:"FIELD NOTE / "+String(i+1).padStart(2,"0")}),
+    append(card,elem("div",{className:"story-card-number",text:"SECTION "+String(i+1).padStart(2,"0")}),
       elem("h3",{text:section.title}),elem("p",{text:section.body}));
     if(chapters().some(c=>c.id===section.link))card.append(
       elem("button",{type:"button",className:"text-link",text:"Explore "+section.link+" ↗",onClick:()=>setRoute(section.link)})
@@ -177,14 +177,14 @@ function boundary(text) {
   return elem("aside",{className:"boundary"},[
     elem("span",{className:"boundary-icon","aria-hidden":"true",text:"!"}),
     elem("div",{},[
-      elem("strong",{text:"EVIDENCE BOUNDARY"}),
+      elem("strong",{text:"Not established"}),
       elem("p",{text})
     ])
   ]);
 }
 function showEvidenceLinks(chapter) {
   const section=elem("section");
-  section.append(sectionHeader("CITABLE OBSERVATIONS","Follow the evidence"));
+  section.append(sectionHeader("SOURCES","Evidence references"));
   const row=elem("div",{className:"evidence-row"});
   (chapter.evidence||[]).forEach(ref=>row.append(evidenceButton(ref)));
   section.append(row);
@@ -198,7 +198,7 @@ function graph() {
   const chosen=pool.map(id=>rec.components.find(c=>c.id===id)).filter(Boolean).slice(0,12);
   if(chosen.length<3)return null;
   const section=elem("section");
-  section.append(sectionHeader("RELATIONSHIP EXPLORER","Component landscape","Select a node to inspect its published description and evidence reference."));
+  section.append(sectionHeader("RELATIONSHIP EXPLORER","Technical relationships","Select a node to inspect its published description and evidence reference."));
   const outer=elem("div",{className:"graph-panel"});
   const svg=document.createElementNS(namespace,"svg");
   svg.setAttribute("viewBox","0 0 740 365");
@@ -466,7 +466,7 @@ function openInspection(type,record) {
       metaList([["Work queue",record.queue],["Status",statusLabels[record.status]||record.status],
         ["Dependencies",String(record.depends_on.length)],["Task ID",record.id]]));
     if(record.depends_on.length){
-      card.append(elem("div",{className:"section-kicker",text:"TASK DEPENDENCIES"}));
+      card.append(elem("div",{className:"section-kicker",text:"WORK QUEUES"}));
       const ul=elem("ul");
       const byId=new Map(versionRecord().tasks.map(t=>[t.id,t]));
       record.depends_on.forEach(id=>{
@@ -492,7 +492,7 @@ function renderFindings(host,onlyQuery="") {
   const rec=versionRecord();
   const intro=elem("section",{className:"hero"},[
     elem("div",{className:"eyebrow",text:"RESEARCH LEDGER"}),
-    elem("h1",{text:onlyQuery?"Research matches":"Evidence, not assertion."}),
+    elem("h1",{text:onlyQuery?"Research matches":"Findings"}),
     elem("p",{className:"lead",text:"All published findings are linked to a source scope and confidence classification. The original capture remains private."})
   ]);
   host.append(intro);
@@ -525,9 +525,9 @@ function renderWork(host,query="") {
   const done=all.filter(t=>t.status==="done").length;
   const pending=all.filter(t=>t.status==="queued"||t.status==="in_progress"||t.status==="blocked").length;
   append(host,elem("section",{className:"hero"},[
-    elem("div",{className:"eyebrow",text:"PERSISTENT RESEARCH PROGRAM"}),
+    elem("div",{className:"eyebrow",text:"RESEARCH STATUS"}),
     elem("h1",{text:"Research tasks"}),
-    elem("p",{className:"lead",text:"The first analysis pass is not the last. Every deep task has a dependency chain and must be closed through evidence, not an automatic inventory count."})
+    elem("p",{className:"lead",text:"Task results for the saved capture. Each task is marked completed or not observable from the available files."})
   ]));
   const metricBox=elem("div",{className:"metrics"});
   [["Deep tasks",deep.length],["Active tasks",pending],["Previously completed",done]].forEach(([label,value])=>metricBox.append(
@@ -537,7 +537,7 @@ function renderWork(host,query="") {
   const filtered=all.filter(t=>!query||filterText(query,t.title+" "+t.queue+" "+t.id+" "+t.notes));
   const groups=new Map();
   filtered.forEach(t=>{if(!groups.has(t.queue))groups.set(t.queue,[]);groups.get(t.queue).push(t);});
-  host.append(sectionHeader("TASK DEPENDENCIES","Investigations by workstream","Expand a queue; click a task to inspect its required evidence and dependencies."));
+  host.append(sectionHeader("WORK QUEUES","Research tasks by area","Expand a queue; click a task to inspect its required evidence and dependencies."));
   if(!groups.size)host.append(elem("div",{className:"result-empty",text:"No research tasks matched."}));
   [...groups].sort(([a],[b])=>a.localeCompare(b)).forEach(([name,list])=>{
     const details=elem("details",{className:"queue-group"});
