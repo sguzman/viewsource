@@ -66,6 +66,19 @@ class ChatImplementationTraceTests(unittest.TestCase):
             self.assertEqual(call["call_kind"], "same_factory_direct_identifier_call")
             self.assertEqual(call["evidence_class"], "observed_static")
 
+    def test_detected_direct_calls_are_broader_than_reviewed_subset(self):
+        doc = self.data
+        detected = {(x["source_ref"], x["caller_function_ordinal"],
+                     x["callee_function_ordinal"]) for x in doc["candidate_direct_calls"]}
+        reviewed = {(x["source_ref"], x["caller_function_ordinal"],
+                     x["callee_function_ordinal"]) for x in doc["reviewed_direct_calls"]}
+        self.assertEqual(len(detected), 6)
+        self.assertEqual(len(reviewed), 4)
+        self.assertTrue(reviewed <= detected)
+        self.assertEqual(len(detected - reviewed), doc["unreviewed_direct_call_count"])
+        self.assertTrue(all(x["link_status"] == "candidate_named_direct_call"
+                            for x in doc["candidate_direct_calls"]))
+
     def test_report_does_not_publish_source_paths_or_chat_content(self):
         text = DATA.read_text("utf-8").lower()
         for term in ("http://", "https://", ".js", "bundle-", "source-dom",
