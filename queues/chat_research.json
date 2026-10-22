@@ -1,0 +1,237 @@
+{
+  "format_version": 1,
+  "feature_id": "chat-interaction",
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "policy": "Separate from the completed ZIP research queue. New behavioral evidence requires an expressly authorized disposable-session test. Offline work may use synthetic data and already-sanctioned aggregate results.",
+  "tasks": [
+    {
+      "id": "chat-source-identity",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "done",
+      "title": "Identity token census",
+      "depends_on": [],
+      "acceptance": "Classify generic chat and message identity syntax from saved files.",
+      "evidence_refs": [
+        "E2-066"
+      ]
+    },
+    {
+      "id": "chat-source-ancestry",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "done",
+      "title": "Parent and edge syntax",
+      "depends_on": [
+        "chat-source-identity"
+      ],
+      "acceptance": "Count graph-related property co-occurrence without claiming a concrete message schema.",
+      "evidence_refs": [
+        "E2-067"
+      ]
+    },
+    {
+      "id": "chat-source-branching",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "done",
+      "title": "Branch and stream source signatures",
+      "depends_on": [
+        "chat-source-ancestry"
+      ],
+      "acceptance": "Identify generic branch and streaming syntax in common function scopes.",
+      "evidence_refs": [
+        "E2-068"
+      ]
+    },
+    {
+      "id": "chat-domain-schema",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "queued",
+      "title": "Define neutral message graph",
+      "depends_on": [
+        "chat-source-ancestry"
+      ],
+      "acceptance": "Implement synthetic conversation/message/attempt identities, parent edges, selection and branch rules.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-graph-invariants",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "queued",
+      "title": "Test message graph invariants",
+      "depends_on": [
+        "chat-domain-schema"
+      ],
+      "acceptance": "Test cycles, missing parents, selected leaves, branch conservation and ambiguous attempts.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-candidate-adapter",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "queued",
+      "title": "Implement generic event graph adapter",
+      "depends_on": [
+        "chat-graph-invariants"
+      ],
+      "acceptance": "Expose stable machine-qualified transitions; refuse live execution of hypothesis edges.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-site-browser",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "queued",
+      "title": "Browse evidence and feature backlog",
+      "depends_on": [
+        "chat-source-branching"
+      ],
+      "acceptance": "Expose source signatures and next research tasks in the Chat interactions chapter.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-research-protocol",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "queued",
+      "title": "Define safe structural trace format",
+      "depends_on": [
+        "chat-domain-schema"
+      ],
+      "acceptance": "Design event-class, timestamp, structure-delta and provenance schema with no sensitive values.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-selection-runtime",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Observe selection and navigation",
+      "depends_on": [
+        "chat-research-protocol"
+      ],
+      "acceptance": "Document selection state changes in a separate authorized synthetic test session.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-submission-runtime",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Observe draft and submit",
+      "depends_on": [
+        "chat-selection-runtime"
+      ],
+      "acceptance": "Correlate synthetic submit action with generic UI status changes.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-stream-runtime",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Observe streaming and stop",
+      "depends_on": [
+        "chat-submission-runtime"
+      ],
+      "acceptance": "Establish actual response start, streaming, stop and completion order.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-edit-runtime",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Observe edits and regeneration",
+      "depends_on": [
+        "chat-submission-runtime"
+      ],
+      "acceptance": "Determine whether changes mutate nodes or introduce alternate nodes.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-branch-runtime",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Observe branch to new chat",
+      "depends_on": [
+        "chat-edit-runtime"
+      ],
+      "acceptance": "Distinguish conversation forks from alternative replies and document visible ancestry.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-persistence-runtime",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Observe persistence boundaries",
+      "depends_on": [
+        "chat-selection-runtime"
+      ],
+      "acceptance": "Test what survives reload and tab changes without collecting storage values.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-failure-runtime",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Observe failures and retries",
+      "depends_on": [
+        "chat-stream-runtime"
+      ],
+      "acceptance": "Verify error and retry lifecycle without inducing destructive actions.",
+      "evidence_refs": []
+    },
+    {
+      "id": "chat-server-contract",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "runtime",
+      "status": "requires_new_evidence",
+      "title": "Classify request-to-UI correspondence",
+      "depends_on": [
+        "chat-submission-runtime"
+      ],
+      "acceptance": "Correlate abstract event categories only; no URLs, headers, bodies or identifiers.",
+      "evidence_refs": []
+    }
+  ]
+}

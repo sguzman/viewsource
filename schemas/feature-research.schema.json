@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Viewsource feature research backlog",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "feature_id",
+    "specimen_id",
+    "version",
+    "policy",
+    "tasks"
+  ],
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "feature_id": {
+      "type": "string"
+    },
+    "specimen_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "policy": {
+      "type": "string"
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "feature_id",
+          "specimen_id",
+          "version",
+          "scope",
+          "status",
+          "title",
+          "depends_on",
+          "acceptance",
+          "evidence_refs"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "feature_id": {
+            "type": "string"
+          },
+          "specimen_id": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "scope": {
+            "enum": [
+              "offline",
+              "runtime"
+            ]
+          },
+          "status": {
+            "enum": [
+              "queued",
+              "done",
+              "requires_new_evidence"
+            ]
+          },
+          "title": {
+            "type": "string"
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "acceptance": {
+            "type": "string"
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          }
+        }
+      }
+    }
+  }
+}
