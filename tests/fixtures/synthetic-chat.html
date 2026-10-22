@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Fictional Chat State Fixture</title>
+</head>
+<body>
+  <h1>Fictional chat</h1>
+  <p>This is a locally-authored test fixture. It contains no real chat content or account session.</p>
+  <section id="study-root" data-selection="none" data-phase="idle"
+           data-message-count="0" data-conversation-count="0" data-parent-links="0">
+    <button id="select-chat">Select fictional conversation</button>
+    <button id="draft">Edit fictional draft</button>
+    <button id="submit">Submit fictional draft</button>
+    <button id="receive">Show fictional response started</button>
+    <button id="complete">Complete fictional response</button>
+    <button id="stop">Stop fictional response</button>
+    <button id="fork">Create fictional separate conversation</button>
+  </section>
+  <script>
+    "use strict";
+    const root=document.getElementById("study-root");
+    function set(name,value){root.dataset[name]=String(value);}
+    function count(name,delta){set(name,Number(root.dataset[name])+delta);}
+    const handlers={
+      "select-chat":()=>{set("selection","selected");count("conversationCount",1);},
+      "draft":()=>{set("phase","editing");},
+      "submit":()=>{set("phase","sending");count("messageCount",1);},
+      "receive":()=>{set("phase","receiving");},
+      "complete":()=>{set("phase","complete");count("messageCount",1);count("parentLinks",1);},
+      "stop":()=>{set("phase","stopped");},
+      "fork":()=>{count("conversationCount",1);}
+    };
+    Object.entries(handlers).forEach(([id,fn])=>document.getElementById(id).addEventListener("click",fn));
+  </script>
+</body>
+</html>
