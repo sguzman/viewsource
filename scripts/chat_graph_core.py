@@ -49,6 +49,10 @@ class ConversationGraph:
             raise GraphError("Parent must exist before child insertion")
         node = MessageNode(local_key, parent_key, actor)
         self._nodes[local_key] = node
+        # Appending a child invalidates leaf selection. Do not guess whether
+        # the website would automatically follow the newly created child.
+        if parent_key == self.selected_leaf:
+            self.selected_leaf = None
         return node
 
     def _get(self, key: str) -> MessageNode:
@@ -123,6 +127,18 @@ class ConversationForest:
         if source_chat == destination_chat:
             raise GraphError("Cross-chat forks need distinct chat roots")
         self.chats[source_chat].lineage(source_message)
+        # A cross-conversation ancestry model must remain acyclic.
+        # Existing directed edges are source -> destination.
+        reachable = {destination_chat}
+        frontier = [destination_chat]
+        while frontier:
+            node = frontier.pop()
+            for existing in self.forks:
+                if existing.source_chat_key == node and existing.destination_chat_key not in reachable:
+                    reachable.add(existing.destination_chat_key)
+                    frontier.append(existing.destination_chat_key)
+        if source_chat in reachable:
+            raise GraphError("Candidate fork would create a conversation cycle")
         fork = ConversationFork(source_chat, source_message, destination_chat)
         if fork in self.forks:
             raise GraphError("Duplicate candidate fork")

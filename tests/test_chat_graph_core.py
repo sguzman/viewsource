@@ -68,6 +68,28 @@ class ChatGraphCoreTests(unittest.TestCase):
         with self.assertRaises(core.GraphError):
             forest.annotate_candidate_fork("synthetic-original","root","synthetic-branch")
 
+    def test_selected_leaf_is_cleared_after_a_child_is_added(self):
+        graph=core.ConversationGraph("synthetic")
+        graph.add("root",None,"user")
+        graph.select("root")
+        graph.add("reply","root","assistant")
+        self.assertIsNone(graph.selected_leaf)
+        self.assertEqual(graph.select("reply"),("root","reply"))
+
+    def test_cross_chat_cycle_is_rejected(self):
+        forest=core.ConversationForest()
+        a=forest.new_chat("a")
+        b=forest.new_chat("b")
+        c=forest.new_chat("c")
+        a.add("a1",None,"user")
+        b.add("b1",None,"user")
+        c.add("c1",None,"user")
+        forest.annotate_candidate_fork("a","a1","b")
+        forest.annotate_candidate_fork("b","b1","c")
+        with self.assertRaises(core.GraphError):
+            forest.annotate_candidate_fork("c","c1","a")
+        self.assertEqual(len(forest.forks),2)
+
     def test_cross_chat_links_require_existing_ids(self):
         forest=core.ConversationForest()
         forest.new_chat("original")
