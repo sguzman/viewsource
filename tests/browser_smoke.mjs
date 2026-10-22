@@ -26,6 +26,13 @@ try {
   assert.equal(await page.locator(".chat-surface").count(),6);
   assert.equal(await page.locator(".chat-documented-action").count(),4);
   assert.equal(await page.locator(".chat-domain-edge").count(),8);
+  await page.getByRole("button",{name:"Select response B"}).click();
+  assert.ok((await page.locator(".chat-example-status").innerText()).includes("U1 → A2"));
+  await page.getByRole("button",{name:"Show separate conversation fork"}).click();
+  assert.equal(await page.locator(".chat-example-conversation").count(),2);
+  await page.getByRole("button",{name:"Select response A"}).click();
+  assert.ok((await page.locator(".chat-example-status").innerText()).includes("U1 → A1"));
+
   assert.equal(await page.locator(".chat-source-card").count(),10);
   assert.equal(await page.locator(".chat-research-task").count(),17);
   assert.equal(await page.locator(".chat-machine-tabs button").count(),3);
