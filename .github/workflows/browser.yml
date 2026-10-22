@@ -25,4 +25,11 @@ jobs:
           python3 -m http.server 8765 --bind 127.0.0.1 --directory _site >/tmp/viewsource-http.log 2>&1 &
           sleep 2
           node tests/browser_smoke.mjs
+      - name: Exercise content-free synthetic chat probe
+        run: |
+          node tests/synthetic_chat_probe.mjs
+          python3 scripts/validate_chat_observation.py /tmp/viewsource-synthetic-chat-observation.json
+          python3 scripts/analyze_chat_observation.py /tmp/viewsource-synthetic-chat-observation.json > /tmp/viewsource-synthetic-chat-summary.json
+          python3 -c 'import json; x=json.load(open("/tmp/viewsource-synthetic-chat-summary.json")); assert x["step_count"] == 7 and x["verified_transition_count"] == 0'
+
 
