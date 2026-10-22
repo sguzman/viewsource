@@ -41,6 +41,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["chat_source_signals"]["dom_controls"]["document"]["contenteditable_true"], 1)
             self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 17)
             self.assertEqual(len(current["visuals"]["public_chat_actions"]["actions"]), 4)
+            self.assertEqual(len(current["visuals"]["chat_capabilities"]["entries"]), 8)
 
             self.assertTrue(all(t["evidence_status"] == "hypothesis" for t in feature["transitions"]))
             self.assertTrue((dest / feature["json_path"]).exists())

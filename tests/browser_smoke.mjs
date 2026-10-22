@@ -25,6 +25,7 @@ try {
   await page.getByRole("heading",{name:"Chat state model"}).waitFor();
   assert.equal(await page.locator(".chat-surface").count(),6);
   assert.equal(await page.locator(".chat-documented-action").count(),4);
+  assert.equal(await page.locator(".chat-capability").count(),8);
   assert.equal(await page.locator(".chat-domain-edge").count(),8);
   await page.getByRole("button",{name:"Select response B"}).click();
   assert.ok((await page.locator(".chat-example-status").innerText()).includes("U1 → A2"));

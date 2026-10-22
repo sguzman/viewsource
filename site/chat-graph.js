@@ -71,6 +71,33 @@ window.ViewsourceChatGraph = (() => {
     link.href=feature.json_path;
     link.target="_blank";link.rel="noopener noreferrer";
     section.append(head,warning,link);
+    const capabilities=record.visuals?.chat_capabilities;
+    if(capabilities?.entries?.length){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Chat functionality: evidence by operation"));
+      block.append(element("p","graph-caption",
+        "Static evidence, public documentation and candidate event models are separate. No operation below has a verified internal runtime contract."));
+      const list=element("div","chat-capability-list");
+      capabilities.entries.forEach(item=>{
+        const card=element("details","chat-capability");
+        const summary=element("summary","");
+        summary.append(element("strong","",item.label),
+          element("small","","Not verified internally"));
+        card.append(summary);
+        const observed=item.static_refs.length?"Saved-file evidence: "+item.static_refs.join(", "):"Saved-file action evidence: not established";
+        card.append(element("p","",observed));
+        card.append(element("p","",item.documented_action?
+          "Official UI documentation: available ("+item.documented_action.replaceAll("_"," ")+").":
+          "Official UI documentation: not linked in this study."));
+        if(item.candidate_events.length)card.append(element("p","",
+          "Candidate events: "+item.candidate_events.join(", ")));
+        if(item.candidate_relations.length)card.append(element("p","",
+          "Candidate relationships: "+item.candidate_relations.join(", ")));
+        card.append(element("p","chat-capability-next","Next test: "+item.next_experiment));
+        list.append(card);
+      });
+      block.append(list);section.append(block);
+    }
     const documented=record.visuals?.public_chat_actions;
     if(documented?.actions?.length){
       const block=element("div","chat-subsection");

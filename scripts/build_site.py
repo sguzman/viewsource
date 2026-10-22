@@ -199,6 +199,22 @@ def build(out: Path) -> dict:
                     "observed_control_categories": page_map["observed_control_categories"],
                     "note": page_map["note"]
                 }
+            capability_path = ROOT / (base + "/chat_capability_matrix.json")
+            if capability_path.is_file():
+                matrix = read(base + "/chat_capability_matrix.json")
+                if matrix["specimen_id"] != item["id"] or matrix["version"] != number:
+                    raise ValueError("Chat capability matrix identity mismatch")
+                visuals["chat_capabilities"] = {
+                    "entries": [{
+                        "id": x["id"], "label": x["label"],
+                        "static_refs": x["static_refs"],
+                        "documented_action": x["documented_action"],
+                        "candidate_events": x["candidate_events"],
+                        "candidate_relations": x["candidate_relations"],
+                        "runtime_status": x["runtime_status"],
+                        "next_experiment": x["next_experiment"]
+                    } for x in matrix["capabilities"]]
+                }
             public_actions_path = ROOT / (base + "/public_chat_actions.json")
             if public_actions_path.is_file():
                 documented = read(base + "/public_chat_actions.json")
