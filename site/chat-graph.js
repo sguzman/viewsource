@@ -140,6 +140,15 @@ window.ViewsourceChatGraph = (() => {
       exportsInfo.append(exportList,element("p","graph-caption",
         "Export bindings do not establish which consumers executed."));
       block.append(exportsInfo);
+      const direct=element("details","chat-implementation-direct-calls");
+      direct.append(element("summary","","Verified source-level function calls"));
+      const edges=element("ul","");
+      implTrace.direct_calls.forEach(link=>edges.append(element("li","",
+        link.source_ref+" / "+link.role+": function "+link.caller+
+        " → function "+link.callee)));
+      direct.append(edges,element("p","graph-caption",
+        "Direct calls in captured source. This does not verify server execution."));
+      block.append(direct);
       const questions=element("details","chat-implementation-questions");
       questions.append(element("summary","","Next source-level investigations"));
       const lines=element("ul","");
