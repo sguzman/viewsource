@@ -1,0 +1,450 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Viewsource machine-readable feature interaction graph",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "specimen_id",
+    "version",
+    "feature_id",
+    "title",
+    "source_scope",
+    "model_status",
+    "purpose",
+    "evidence_policy",
+    "technology_links",
+    "surfaces",
+    "entities",
+    "machines",
+    "events",
+    "transitions",
+    "branch_model",
+    "open_questions",
+    "limitations"
+  ],
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "specimen_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "feature_id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]+$"
+    },
+    "title": {
+      "type": "string"
+    },
+    "source_scope": {
+      "enum": [
+        "saved_page",
+        "saved_archive",
+        "live_test"
+      ]
+    },
+    "model_status": {
+      "enum": [
+        "candidate",
+        "partially_verified",
+        "verified"
+      ]
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "evidence_policy": {
+      "type": "object",
+      "required": [
+        "observed",
+        "candidate",
+        "data_protection"
+      ],
+      "properties": {
+        "observed": {
+          "type": "string"
+        },
+        "candidate": {
+          "type": "string"
+        },
+        "data_protection": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "technology_links": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/techLink"
+      }
+    },
+    "surfaces": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/surface"
+      }
+    },
+    "entities": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/entity"
+      }
+    },
+    "machines": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/machine"
+      }
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      }
+    },
+    "transitions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/transition"
+      }
+    },
+    "branch_model": {
+      "type": "object",
+      "required": [
+        "status",
+        "description",
+        "candidate_relations",
+        "required_observations"
+      ],
+      "properties": {
+        "status": {
+          "enum": [
+            "not_established",
+            "partially_verified",
+            "verified"
+          ]
+        },
+        "description": {
+          "type": "string"
+        },
+        "candidate_relations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "required_observations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "open_questions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "question",
+          "next_evidence"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "question": {
+            "type": "string"
+          },
+          "next_evidence": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$defs": {
+    "techLink": {
+      "type": "object",
+      "required": [
+        "component_ref",
+        "role",
+        "evidence_status",
+        "evidence_refs",
+        "feature_ownership_verified"
+      ],
+      "properties": {
+        "component_ref": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "evidence_status": {
+          "enum": [
+            "static_presence",
+            "verified_feature_use",
+            "hypothesis"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "feature_ownership_verified": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "surface": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "component_ref",
+        "basis",
+        "evidence_refs",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "component_ref": {
+          "type": "string"
+        },
+        "basis": {
+          "enum": [
+            "observed_static",
+            "observed_live",
+            "hypothesis"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "entity": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "status",
+        "fields",
+        "description"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "partially_verified",
+            "verified"
+          ]
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "name",
+              "type"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "description": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "machine": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "states",
+        "initial_state"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "states": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "id",
+              "label",
+              "status"
+            ],
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "label": {
+                "type": "string"
+              },
+              "status": {
+                "enum": [
+                  "candidate",
+                  "verified"
+                ]
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "initial_state": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "origin",
+        "payload_fields",
+        "status"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "origin": {
+          "enum": [
+            "user",
+            "network_or_ui",
+            "system"
+          ]
+        },
+        "payload_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "status": {
+          "enum": [
+            "candidate",
+            "verified"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "transition": {
+      "type": "object",
+      "required": [
+        "id",
+        "machine",
+        "from",
+        "event",
+        "to",
+        "guards",
+        "effects",
+        "evidence_status",
+        "evidence_refs",
+        "verify"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "machine": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "event": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "guards": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evidence_status": {
+          "enum": [
+            "hypothesis",
+            "observed_live"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "verify": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

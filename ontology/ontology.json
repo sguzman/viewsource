@@ -364,5 +364,19 @@
     "unknown": "Unobserved or undetermined, never a negative finding",
     "relationship": "Typed directed link between version-local components",
     "snapshot": "A source-limited capture; no guarantee of site-wide representativeness"
+  },
+  "extension_artifacts": {
+    "technology_inventory": {
+      "format_version": 1,
+      "schema": "schemas/technology-inventory.schema.json",
+      "component_kind": "Dependency",
+      "link_key": "component_ref",
+      "meaning": "Evidence-classified public library signals; named framework presence is separate from demonstrated ownership or execution."
+    },
+    "feature_graph": {
+      "format_version": 1,
+      "schema": "schemas/feature-graph.schema.json",
+      "meaning": "Reusable entities, surfaces, state machines, events, transitions and verification requirements. Hypotheses do not become observed facts until new evidence exists."
+    }
   }
 }

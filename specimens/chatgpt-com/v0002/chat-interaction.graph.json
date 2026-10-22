@@ -1,0 +1,592 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "feature_id": "chat-interaction",
+  "title": "Chat interactions",
+  "source_scope": "saved_archive",
+  "model_status": "candidate",
+  "purpose": "Code-oriented candidate models for chat selection, composition, generation, message relationships and branches. Only stated UI surfaces have static capture support.",
+  "evidence_policy": {
+    "observed": "The saved HTML establishes selected UI regions and controls, not that a particular transition took place.",
+    "candidate": "State/event edges describe possible contracts for software authors. Every transition requires future verification; never treat it as a recovered ChatGPT protocol.",
+    "data_protection": "This public graph contains no chat text, user identifiers, actual conversation IDs, storage keys, request paths, payload examples or authentication data."
+  },
+  "technology_links": [
+    {
+      "component_ref": "tech-react",
+      "role": "possible UI rendering layer",
+      "evidence_status": "static_presence",
+      "evidence_refs": [
+        "E2-064"
+      ],
+      "feature_ownership_verified": false
+    },
+    {
+      "component_ref": "tech-react-router",
+      "role": "possible navigation layer",
+      "evidence_status": "static_presence",
+      "evidence_refs": [
+        "E2-064"
+      ],
+      "feature_ownership_verified": false
+    },
+    {
+      "component_ref": "tech-prosemirror",
+      "role": "possible rich-text editor layer",
+      "evidence_status": "static_presence",
+      "evidence_refs": [
+        "E2-064"
+      ],
+      "feature_ownership_verified": false
+    },
+    {
+      "component_ref": "tech-tanstack-query",
+      "role": "possible request cache layer",
+      "evidence_status": "static_presence",
+      "evidence_refs": [
+        "E2-064"
+      ],
+      "feature_ownership_verified": false
+    }
+  ],
+  "surfaces": [
+    {
+      "id": "chat-sidebar",
+      "label": "Sidebar navigation",
+      "component_ref": "page-region-sidebar",
+      "basis": "observed_static",
+      "evidence_refs": [
+        "E2-065"
+      ],
+      "description": "Captured side region with two nested navigation regions. Whether each control selects a chat was not traced."
+    },
+    {
+      "id": "composer-form",
+      "label": "Composer form",
+      "component_ref": "page-region-composer",
+      "basis": "observed_static",
+      "evidence_refs": [
+        "E2-065"
+      ],
+      "description": "Captured form with three buttons and four file inputs; handler ownership unknown."
+    },
+    {
+      "id": "textbox-marker",
+      "label": "Textbox role",
+      "component_ref": "dom",
+      "basis": "observed_static",
+      "evidence_refs": [
+        "E2-045"
+      ],
+      "description": "A textbox role occurs in the saved document. Its association with the form was not demonstrated."
+    },
+    {
+      "id": "dialog-marker",
+      "label": "Dialog",
+      "component_ref": "page-region-dialog",
+      "basis": "observed_static",
+      "evidence_refs": [
+        "E2-065"
+      ],
+      "description": "A role=dialog region exists; opening, closing and focus behavior were not observed."
+    }
+  ],
+  "entities": [
+    {
+      "id": "conversation",
+      "label": "Conversation",
+      "status": "candidate",
+      "fields": [
+        {
+          "name": "local_key",
+          "type": "opaque"
+        },
+        {
+          "name": "selected_leaf",
+          "type": "opaque_nullable"
+        }
+      ],
+      "description": "Abstract conversation root with a local opaque reference. Not a claim about actual site storage fields."
+    },
+    {
+      "id": "message",
+      "label": "Message",
+      "status": "candidate",
+      "fields": [
+        {
+          "name": "local_key",
+          "type": "opaque"
+        },
+        {
+          "name": "parent_local_key",
+          "type": "opaque_nullable"
+        },
+        {
+          "name": "actor",
+          "type": "enum:user_or_assistant_or_other"
+        },
+        {
+          "name": "status",
+          "type": "enum:pending_or_complete_or_failed"
+        }
+      ],
+      "description": "A possible node in a message graph. Content is deliberately not modeled in public examples."
+    },
+    {
+      "id": "branch",
+      "label": "Branch selection",
+      "status": "candidate",
+      "fields": [
+        {
+          "name": "conversation_local_key",
+          "type": "opaque"
+        },
+        {
+          "name": "selected_message_local_key",
+          "type": "opaque_nullable"
+        }
+      ],
+      "description": "Candidate model for alternative message paths. No branch-switching action was verified."
+    },
+    {
+      "id": "draft",
+      "label": "Draft",
+      "status": "candidate",
+      "fields": [
+        {
+          "name": "dirty",
+          "type": "boolean"
+        },
+        {
+          "name": "has_attachments",
+          "type": "boolean"
+        }
+      ],
+      "description": "Local conceptual editing state. No stored text or attachment metadata is included."
+    },
+    {
+      "id": "response",
+      "label": "Response operation",
+      "status": "candidate",
+      "fields": [
+        {
+          "name": "phase",
+          "type": "enum:idle_or_sending_or_receiving_or_complete_or_failed_or_stopped"
+        },
+        {
+          "name": "local_attempt_key",
+          "type": "opaque_nullable"
+        }
+      ],
+      "description": "Possible response lifecycle used only to organize future experiments."
+    }
+  ],
+  "machines": [
+    {
+      "id": "selection",
+      "label": "Conversation selection",
+      "states": [
+        {
+          "id": "none",
+          "label": "No conversation selected",
+          "status": "candidate"
+        },
+        {
+          "id": "selected",
+          "label": "Conversation selected",
+          "status": "candidate"
+        }
+      ],
+      "initial_state": "none"
+    },
+    {
+      "id": "response",
+      "label": "Draft and response lifecycle",
+      "states": [
+        {
+          "id": "idle",
+          "label": "Idle",
+          "status": "candidate"
+        },
+        {
+          "id": "editing",
+          "label": "Draft editing",
+          "status": "candidate"
+        },
+        {
+          "id": "sending",
+          "label": "Submission pending",
+          "status": "candidate"
+        },
+        {
+          "id": "receiving",
+          "label": "Response arriving",
+          "status": "candidate"
+        },
+        {
+          "id": "complete",
+          "label": "Response complete",
+          "status": "candidate"
+        },
+        {
+          "id": "failed",
+          "label": "Response failed",
+          "status": "candidate"
+        },
+        {
+          "id": "stopped",
+          "label": "Response stopped",
+          "status": "candidate"
+        }
+      ],
+      "initial_state": "idle"
+    }
+  ],
+  "events": [
+    {
+      "id": "select_conversation",
+      "label": "Select conversation",
+      "origin": "user",
+      "payload_fields": [
+        "local_conversation_key"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "clear_selection",
+      "label": "Clear selection",
+      "origin": "user",
+      "payload_fields": [],
+      "status": "candidate"
+    },
+    {
+      "id": "edit_draft",
+      "label": "Edit draft",
+      "origin": "user",
+      "payload_fields": [
+        "has_text"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "submit_draft",
+      "label": "Submit draft",
+      "origin": "user",
+      "payload_fields": [
+        "local_attempt_key"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "response_started",
+      "label": "Response started",
+      "origin": "network_or_ui",
+      "payload_fields": [
+        "local_attempt_key"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "response_completed",
+      "label": "Response completed",
+      "origin": "network_or_ui",
+      "payload_fields": [
+        "local_attempt_key"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "response_failed",
+      "label": "Response failed",
+      "origin": "network_or_ui",
+      "payload_fields": [
+        "error_category"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "stop_response",
+      "label": "Stop response",
+      "origin": "user",
+      "payload_fields": [
+        "local_attempt_key"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "retry_response",
+      "label": "Retry response",
+      "origin": "user",
+      "payload_fields": [
+        "local_attempt_key"
+      ],
+      "status": "candidate"
+    },
+    {
+      "id": "reset_composer",
+      "label": "Reset composer",
+      "origin": "system",
+      "payload_fields": [],
+      "status": "candidate"
+    }
+  ],
+  "transitions": [
+    {
+      "id": "select",
+      "machine": "selection",
+      "from": "none",
+      "event": "select_conversation",
+      "to": "selected",
+      "guards": [],
+      "effects": [
+        "selected conversation reference may change"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "In an authorized controlled session, select a non-sensitive test conversation and compare selected UI and route state before/after."
+    },
+    {
+      "id": "switch",
+      "machine": "selection",
+      "from": "selected",
+      "event": "select_conversation",
+      "to": "selected",
+      "guards": [],
+      "effects": [
+        "active conversation may change"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Compare before/after selection in a disposable test session; do not record identifiers or message text."
+    },
+    {
+      "id": "deselect",
+      "machine": "selection",
+      "from": "selected",
+      "event": "clear_selection",
+      "to": "none",
+      "guards": [],
+      "effects": [
+        "selection may clear"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Test whether an explicit UI action clears selection; may be unsupported."
+    },
+    {
+      "id": "begin_edit",
+      "machine": "response",
+      "from": "idle",
+      "event": "edit_draft",
+      "to": "editing",
+      "guards": [],
+      "effects": [
+        "draft becomes dirty"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Record only generic editor state changes after synthetic typing; avoid recording content."
+    },
+    {
+      "id": "edit_again",
+      "machine": "response",
+      "from": "editing",
+      "event": "edit_draft",
+      "to": "editing",
+      "guards": [],
+      "effects": [
+        "draft state may change"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Observe generic editor change events without logging text."
+    },
+    {
+      "id": "submit",
+      "machine": "response",
+      "from": "editing",
+      "event": "submit_draft",
+      "to": "sending",
+      "guards": [
+        "submit is enabled"
+      ],
+      "effects": [
+        "one logical request attempt may begin"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Submit harmless synthetic content under explicit permission and correlate UI state with a sanitized request event without endpoints or payloads."
+    },
+    {
+      "id": "receive",
+      "machine": "response",
+      "from": "sending",
+      "event": "response_started",
+      "to": "receiving",
+      "guards": [],
+      "effects": [
+        "partial response may become visible"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Observe timing of first UI response update; log only timestamps and generic event category."
+    },
+    {
+      "id": "complete",
+      "machine": "response",
+      "from": "receiving",
+      "event": "response_completed",
+      "to": "complete",
+      "guards": [],
+      "effects": [
+        "response attempt may become terminal"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Observe final UI status in a disposable test conversation without content capture."
+    },
+    {
+      "id": "failure_early",
+      "machine": "response",
+      "from": "sending",
+      "event": "response_failed",
+      "to": "failed",
+      "guards": [],
+      "effects": [
+        "an error UI may appear"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Only if a safe, naturally occurring error can be observed; do not induce unsafe failures."
+    },
+    {
+      "id": "failure_stream",
+      "machine": "response",
+      "from": "receiving",
+      "event": "response_failed",
+      "to": "failed",
+      "guards": [],
+      "effects": [
+        "partial attempt may stop"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Observe safe error state without storing content or network secrets."
+    },
+    {
+      "id": "stop",
+      "machine": "response",
+      "from": "receiving",
+      "event": "stop_response",
+      "to": "stopped",
+      "guards": [
+        "stop action is available"
+      ],
+      "effects": [
+        "active response may be interrupted"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Verify stop-control visibility, response status and event timing in an authorized test."
+    },
+    {
+      "id": "retry",
+      "machine": "response",
+      "from": "failed",
+      "event": "retry_response",
+      "to": "sending",
+      "guards": [
+        "retry action exists"
+      ],
+      "effects": [
+        "new response attempt may begin"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Verify whether a retry control exists and whether it creates a new attempt; absence is allowed."
+    },
+    {
+      "id": "reuse_composer",
+      "machine": "response",
+      "from": "complete",
+      "event": "edit_draft",
+      "to": "editing",
+      "guards": [],
+      "effects": [
+        "next draft may begin"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Type synthetic content after a completed response and record general UI state."
+    },
+    {
+      "id": "reset_stopped",
+      "machine": "response",
+      "from": "stopped",
+      "event": "reset_composer",
+      "to": "idle",
+      "guards": [],
+      "effects": [
+        "UI may become idle"
+      ],
+      "evidence_status": "hypothesis",
+      "evidence_refs": [],
+      "verify": "Confirm whether reset is a real distinct action or simply a return to idle."
+    }
+  ],
+  "branch_model": {
+    "status": "not_established",
+    "description": "Alternative response branches, edits, and regenerations should be modeled as graph structure only if later evidence confirms their identity and selection semantics.",
+    "candidate_relations": [
+      "message_parent",
+      "alternative_response",
+      "selected_path"
+    ],
+    "required_observations": [
+      "Does editing create a new message node or mutate an existing one?",
+      "Can more than one assistant response share a parent?",
+      "What selects the visible path?",
+      "Does regeneration create a new attempt, new message, or both?",
+      "Do URLs or persisted state encode branch selection?"
+    ]
+  },
+  "open_questions": [
+    {
+      "id": "chat-identity",
+      "question": "What stable and ephemeral identities are needed to track a conversation without exposing actual account IDs?",
+      "next_evidence": "Synthetic opaque identifiers derived inside a local research harness; verify only equality/continuity properties."
+    },
+    {
+      "id": "event-order",
+      "question": "What order do selection, submission, streaming and completion UI events follow?",
+      "next_evidence": "An explicitly authorized controlled test with event types, timestamps and redacted correlation keys."
+    },
+    {
+      "id": "persistence",
+      "question": "Which state survives refresh, reload, tab switch or browser restart?",
+      "next_evidence": "Observe state continuity only; never publish storage keys or values."
+    },
+    {
+      "id": "route",
+      "question": "Which generic route state maps to selected conversation or active branch?",
+      "next_evidence": "Record only presence/shape changes; keep all real routes and identifiers private."
+    },
+    {
+      "id": "branches",
+      "question": "How do edits, regeneration and alternate message paths actually affect the conversation graph?",
+      "next_evidence": "Use disposable synthetic conversations and record structural relationships only."
+    },
+    {
+      "id": "network",
+      "question": "Which request/stream event categories correspond to an action?",
+      "next_evidence": "Correlate abstract request and response events while removing payloads, tokens, endpoints and headers."
+    }
+  ],
+  "limitations": [
+    "No live chat interactions were observed in the supplied ZIP.",
+    "Transition edges here are hypotheses for implementing a state-graph client, not recovered product behavior.",
+    "Observed UI surfaces do not establish exact React component, listener, endpoint or store ownership.",
+    "Private conversations and account identifiers are excluded from all public research."
+  ]
+}

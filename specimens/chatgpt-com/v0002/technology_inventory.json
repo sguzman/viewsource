@@ -26,7 +26,8 @@
       ],
       "role": "Client component rendering",
       "version": null,
-      "note": "Runtime markers support identification; the exact build/version and executed route were not recovered."
+      "note": "Runtime markers support identification; the exact build/version and executed route were not recovered.",
+      "component_ref": "tech-react"
     },
     {
       "id": "react-router",
@@ -53,7 +54,8 @@
       ],
       "role": "Client routing and route data conventions",
       "version": null,
-      "note": "Router code is present. Specific routes and loader execution were not traced."
+      "note": "Router code is present. Specific routes and loader execution were not traced.",
+      "component_ref": "tech-react-router"
     },
     {
       "id": "tailwind-css",
@@ -80,7 +82,8 @@
       ],
       "role": "Utility-oriented stylesheet generation",
       "version": null,
-      "note": "Static generated CSS is present; no complete Tailwind build configuration was captured."
+      "note": "Static generated CSS is present; no complete Tailwind build configuration was captured.",
+      "component_ref": "tech-tailwind-css"
     },
     {
       "id": "radix-ui",
@@ -102,7 +105,8 @@
       ],
       "role": "Menu, popup or interactive primitive candidates",
       "version": null,
-      "note": "Package markers do not establish the exact source component or live interaction."
+      "note": "Package markers do not establish the exact source component or live interaction.",
+      "component_ref": "tech-radix-ui"
     },
     {
       "id": "prosemirror",
@@ -119,7 +123,8 @@
       ],
       "role": "Rich-text editing infrastructure",
       "version": null,
-      "note": "Presence does not establish which captured textbox used it or its plugin inventory."
+      "note": "Presence does not establish which captured textbox used it or its plugin inventory.",
+      "component_ref": "tech-prosemirror"
     },
     {
       "id": "katex",
@@ -136,7 +141,8 @@
       ],
       "role": "Typeset mathematics",
       "version": null,
-      "note": "Math renderer assets are present; individual rendered expressions were not analyzed."
+      "note": "Math renderer assets are present; individual rendered expressions were not analyzed.",
+      "component_ref": "tech-katex"
     },
     {
       "id": "floating-ui",
@@ -153,7 +159,8 @@
       ],
       "role": "Potential floating overlay positioning",
       "version": null,
-      "note": "Marker evidence does not independently establish use in the captured dialog."
+      "note": "Marker evidence does not independently establish use in the captured dialog.",
+      "component_ref": "tech-floating-ui"
     },
     {
       "id": "tanstack-query",
@@ -170,7 +177,8 @@
       ],
       "role": "Potential client query caching and synchronization",
       "version": null,
-      "note": "Do not infer concrete queries or cache contents from this signature."
+      "note": "Do not infer concrete queries or cache contents from this signature.",
+      "component_ref": "tech-tanstack-query"
     },
     {
       "id": "react-markdown",
@@ -192,7 +200,8 @@
       ],
       "role": "Potential Markdown parsing and rendering",
       "version": null,
-      "note": "The markers do not prove a precise package/version combination or which view uses it."
+      "note": "The markers do not prove a precise package/version combination or which view uses it.",
+      "component_ref": "tech-react-markdown"
     },
     {
       "id": "motion",
@@ -214,7 +223,8 @@
       ],
       "role": "Potential component animation",
       "version": null,
-      "note": "No version or runtime animation was verified."
+      "note": "No version or runtime animation was verified.",
+      "component_ref": "tech-motion"
     },
     {
       "id": "highlight",
@@ -231,7 +241,8 @@
       ],
       "role": "Code block highlighting style system",
       "version": null,
-      "note": "Class naming alone does not prove highlight.js was the active engine."
+      "note": "Class naming alone does not prove highlight.js was the active engine.",
+      "component_ref": "tech-highlight"
     }
   ],
   "unresolved": [

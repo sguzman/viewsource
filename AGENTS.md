@@ -47,3 +47,7 @@ The first screen of a specimen must show **what the capture actually contains**:
 Use ordinary technical English. Avoid poetic headings, promotional slogans and vague phrases that say little about the specimen. Prefer "JavaScript imports", "HTML controls", "Libraries", "CSS rules" and short statements about what was observed.
 
 Distinguish **strong evidence**, **likely**, **indicator**, and **not established** for technology detection. Do not infer exact package versions, actual runtime execution, source component ownership or package provenance from a minified string alone. Keep snapshots, source snippets, identifiable markup, captured strings and personal information private.
+
+## Chat and feature interaction graphs
+
+Provide a typed, evidence-graded feature graph in addition to component counts when the research goal is writing code against site behavior. Separate observed HTML affordances, candidate domain entities, state machines, events, transition guards/effects, browser/API clues and unverified relationships. Encode concrete verification questions. Link named libraries to `Dependency` ontology IDs; never claim that library presence establishes chat feature ownership. Make feature graphs browsable in the site and consumable as sanitized JSON. Do not publish real chat content, account IDs, source code, authentication information, raw URLs or traces.
