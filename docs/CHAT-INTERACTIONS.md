@@ -328,3 +328,15 @@ between the generation call graph and the transport lifecycle, not merely
 shared vocabulary. A direct scoped-service call in the bundle still does
 not prove the real service delivered a response or that a backend persisted
 a particular message graph.
+
+## Decoded stream events into message updates
+
+The generation dispatcher supplies an event processor's `onEvent`
+method to the transport's `onDecodedEvent` callback. The processor is
+constructed with an `onUpdate` handler. In that handler, message-class
+updates feed message and model-message callbacks; marker-class updates
+feed timing and render-marker tracking, while terminal/statistics updates
+follow separate paths. These connections are directly represented by
+captured source and now form two additional evidence-graded edges in the
+transport trace. The processor's imported implementation, eventual
+message-store writes, and selected-message rendering remain unresolved.
