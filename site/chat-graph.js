@@ -145,6 +145,16 @@ window.ViewsourceChatGraph = (() => {
       decode.append(steps,element("p","graph-caption",
         transport.decoded_pipeline.verification_boundary));
       block.append(decode);
+      const mutation=element("details","chat-transport-mutation");
+      mutation.append(element("summary","","Decoded messages → client-state mutation"));
+      const stages=element("ol","");
+      transport.message_state_write.source_steps.forEach(item=>{
+        stages.append(element("li","",item.stage+": "+item.detail));
+      });
+      mutation.append(stages,element("p","graph-caption",
+        "Writer arguments: "+transport.message_state_write.writer_argument_roles.join(", ")),
+        element("p","graph-caption",transport.message_state_write.limitations));
+      block.append(mutation);
       const flow=element("details","chat-transport-edges");
       flow.append(element("summary","","Reviewed client-side transport relationships"));
       const rows=element("ul","");
