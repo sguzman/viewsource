@@ -45,6 +45,7 @@ class OfflineIntakeTests(unittest.TestCase):
         for resource, data in (
             ("specimens/index.json", {"format_version": 1, "specimens": []}),
             ("queues/tasks.json", {"format_version": 1, "tasks": []}),
+            ("gallery/index.json", {"format_version": 1, "entries": []}),
         ):
             tool.save_json(self.root / resource, data)
         for resource in ("ontology/README.md", "gallery/README.md"):
