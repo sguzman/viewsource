@@ -28,7 +28,7 @@ class AtlasTests(unittest.TestCase):
             data = json.loads((dest / "data/catalog.json").read_text(encoding="utf-8"))
             current = next(v for v in data["versions"] if v["version"] == 2)
             self.assertEqual(len(current["chapters"]), 11)
-            self.assertEqual(len(current["findings"]), 36)
+            self.assertEqual(len(current["findings"]), 47)
             self.assertEqual(len(current["tasks"]), 91)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
