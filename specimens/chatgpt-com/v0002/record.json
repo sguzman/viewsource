@@ -10760,6 +10760,56 @@
         "evidence_ref": "E2-070",
         "source_scope": "public_reference"
       }
+    },
+    {
+      "id": "F2-071",
+      "statement": "The captured client defines selected-ancestry traversal through a node mapping and exposes a branching operation that supplies a conversation and message identity. These are source-level client implementations, not verified backend storage.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-071",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-072",
+      "statement": "Six captured generation entrypoints directly delegate to a shared generation dispatcher; that dispatcher invokes a completion-stream client and wires decoded events, completion, recoverable errors and resumption callbacks. These are source call relationships, not observed network outcomes.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-072",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-073",
+      "statement": "Decoded message updates enter a captured event processor and reach a client graph mutator. The mutator inserts or updates nodes, maintains parent/child relationships, can rotate a descendant and returns new-node/rotation flags; the caller conditionally preserves or advances the selected node.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-073",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-074",
+      "statement": "The scoped conversation state writer publishes the revised mapping and selected node and maintains a selected-path visible-message projection plus an independent user-message ancestry projection. Reacting UI components and actual browser rendering have not been traced.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-074",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-075",
+      "statement": "The captured completion transport supports distinct start/resume pathways, topic-stream and streaming-request alternatives, local/request cancellation, recovery callbacks and WebSocket stream-item duplicate/missing-parent checks. Actual server delivery and recovery success remain unobserved.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-075",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
