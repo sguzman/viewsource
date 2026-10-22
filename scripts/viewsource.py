@@ -81,8 +81,10 @@ def public_origin(value: str) -> str:
 
 
 class PageParser(HTMLParser):
-    def __init__(self) -> None:
+    def __init__(self, feature_config: dict | None = None) -> None:
         super().__init__(convert_charrefs=True)
+        self._feature_config = feature_config
+        self.inline_feature_signals: dict[str, set[str]] = {}
         self.tags = Counter()
         self.scripts = []
         self.styles = []
@@ -131,6 +133,9 @@ class PageParser(HTMLParser):
     def handle_data(self, data: str) -> None:
         if self._script_depth:
             self._inline_script_chars += len(data)
+            if self._feature_config is not None:
+                for feature, signals in scan_feature_signals(data, self._feature_config).items():
+                    self.inline_feature_signals.setdefault(feature, set()).update(signals)
 
     def summary(self) -> dict:
         return {
@@ -138,7 +143,10 @@ class PageParser(HTMLParser):
             "stylesheets": self.styles, "assets": self.assets, "forms": self.forms,
             "other_links": self.links, "metadata": self.metadata,
             "inline_handlers": dict(self.inline_handlers),
-            "inline_script_characters": self._inline_script_chars
+            "inline_script_characters": self._inline_script_chars,
+            "inline_feature_signals": {
+                key: sorted(value) for key, value in sorted(self.inline_feature_signals.items())
+            }
         }
 
 
@@ -161,7 +169,7 @@ def scan_text(name: str, contents: bytes) -> dict:
     text = contents.decode("utf-8", errors="replace")
     kind = category(name)
     if kind == "html":
-        parser = PageParser()
+        parser = PageParser(load_json(ROOT / "queues/static_profiles.json"))
         parser.feed(text)
         parser.close()
         return parser.summary()
@@ -316,10 +324,12 @@ def candidate_static_features(inventory: dict, config: dict) -> list[str]:
     counts: Counter[str] = Counter()
     required = {f["id"]: set(f["signals"]) for f in config["features"]}
     for item in inventory["files"]:
-        if item["category"] != "script":
+        if item["category"] not in {"script", "html"}:
             continue
         observations = item.get("observations", {})
-        for feature, hits in observations.get("feature_signals", {}).items():
+        label = ("feature_signals" if item["category"] == "script"
+                 else "inline_feature_signals")
+        for feature, hits in observations.get(label, {}).items():
             if feature in required and required[feature] <= set(hits):
                 counts[feature] += 1
     # Large captures often vendor unrelated libraries; do not promote a
