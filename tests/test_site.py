@@ -54,8 +54,8 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["css_system"]["distinct_tokens"], 2509)
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
             trace = current["visuals"]["chat_static_impl_trace"]
-            self.assertEqual((trace["match_count"], trace["matched_functions"]), (13, 12))
-            self.assertEqual(len(trace["reviewed_operations"]), 5)
+            self.assertEqual((trace["match_count"], trace["matched_functions"]), (15, 14))
+            self.assertEqual(len(trace["reviewed_operations"]), 7)
             self.assertTrue(trace["open_static_questions"])
             ast = current["visuals"]["chat_ast_followup"]
             self.assertEqual((ast["parsed_bundles"], ast["candidate_functions"],
