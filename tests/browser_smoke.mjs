@@ -42,7 +42,9 @@ try {
   assert.equal(await page.locator(".chat-implementation-card").count(),7);
   assert.equal(await page.locator(".chat-transport-method").count(),5);
   await page.locator(".chat-transport-edges summary").click();
-  assert.equal(await page.locator(".chat-transport-edges li").count(),11);
+  assert.equal(await page.locator(".chat-transport-edges li").count(),13);
+  await page.locator(".chat-transport-mutation summary").click();
+  assert.equal(await page.locator(".chat-transport-mutation li").count(),5);
   await page.locator(".chat-transport-decode summary").click();
   assert.equal(await page.locator(".chat-transport-decode li").count(),5);
   await page.locator(".chat-transport-bridge summary").click();
