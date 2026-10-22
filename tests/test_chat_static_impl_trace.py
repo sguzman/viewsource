@@ -41,6 +41,16 @@ class ChatImplementationTraceTests(unittest.TestCase):
         self.assertFalse(doc["server_contract_verified"])
         self.assertTrue(doc["open_static_questions"])
 
+    def test_reviewed_export_getters_do_not_claim_runtime_calls(self):
+        doc = self.data
+        present = {(x["source_ref"], x["function_ordinal"]) for x in doc["matches"]}
+        self.assertEqual(len(doc["reviewed_module_exports"]), 4)
+        for item in doc["reviewed_module_exports"]:
+            self.assertIn((item["source_ref"], item["exported_function_ordinal"]), present)
+            self.assertEqual(item["export_kind"], "static_module_getter")
+            self.assertGreater(item["module_factory_ordinal"], 0)
+        self.assertTrue(doc["module_export_limitations"])
+
     def test_report_does_not_publish_source_paths_or_chat_content(self):
         text = DATA.read_text("utf-8").lower()
         for term in ("http://", "https://", ".js", "bundle-", "source-dom",
