@@ -132,6 +132,34 @@ class ChatExportStructureTests(unittest.TestCase):
         self.assertEqual(summary["resolved_off_path_nodes_total"],2)
         self.assertNotIn("fictional-title",json.dumps(summary))
 
+    def test_scanner_handles_nested_strings_and_many_chunk_boundaries(self):
+        from io import StringIO
+        records = [
+            {"content": {"parts": ['brackets ] } commas , [ " and backslash \\']},
+             "mapping": {"root": {"parent": None, "children": [], "message": None}},
+             "current_node": "root"},
+            {"messages": [{"body": "fictional" * 3000}, {"body": "[{},]"}]},
+            {"mixed": [1, {"items": [True, False, None]}, "escaped \\" ]"},
+        ]
+        payload = json.dumps(records, ensure_ascii=False)
+        expected = mod.inspect_export(records)
+        for size in (1, 2, 3, 11, 127, 1024, 65536):
+            with self.subTest(chunk_size=size):
+                actual = mod.summarize_records(
+                    mod.iter_export_records(StringIO(payload), chunk_size=size))
+                self.assertEqual(actual, expected)
+
+    def test_scanner_refuses_invalid_records_without_retrying_fragments(self):
+        from io import StringIO
+        for payload in (
+            '[{"nested":[1,2}],{"a":1,"a":2}]',
+            '[{"text":"unfinished}]',
+            '[{"text":"escaped\\\\quote"},,{}]',
+            ' [1, 2] trailing ',
+        ):
+            with self.subTest(payload=payload[:30]), self.assertRaises(ValueError):
+                list(mod.iter_export_records(StringIO(payload), chunk_size=3))
+
     def test_stream_reader_rejects_truncated_and_extra_data(self):
         from io import StringIO
         for payload in ('[{},]', '[{}] trailing', '{ }', '[{"partial":'):

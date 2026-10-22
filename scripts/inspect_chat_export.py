@@ -201,10 +201,12 @@ def inspect_export(data: object) -> dict:
 
 
 def iter_export_records(stream, *, chunk_size: int = 65536):
-    """Yield one top-level array item at a time from a text stream.
+    """Yield top-level JSON array records with one lexical scan per character.
 
-    No input fragment or identity is logged. Memory is bounded by the
-    largest single conversation record plus a fixed read buffer.
+    Only one record is buffered at a time, up to the configured record limit.
+    A string-aware depth scanner finds top-level delimiters, then JSONDecoder
+    validates each *complete* record once (including duplicate-key checks).
+    This avoids reparsing the entire growing record at every chunk boundary.
     """
     if type(chunk_size) is not int or not (1 <= chunk_size <= 1024 * 1024):
         raise ExportShapeError("Chunk size must be a bounded positive integer")
@@ -212,70 +214,88 @@ def iter_export_records(stream, *, chunk_size: int = 65536):
         object_pairs_hook=_reject_duplicate_keys,
         parse_constant=_reject_nonfinite,
     )
-    buffer = ""
-    eof = False
     state = "start"
+    nesting = 0
+    in_string = False
+    escaped = False
+    fragments: list[str] = []
+    record_chars = 0
     max_record_chars = 128 * 1024 * 1024
+
+    def keep(fragment: str) -> None:
+        nonlocal record_chars
+        if fragment:
+            record_chars += len(fragment)
+            if record_chars > max_record_chars:
+                raise ExportShapeError("Oversized export record")
+            fragments.append(fragment)
+
     while True:
-        buffer = buffer.lstrip()
-        if not buffer and not eof:
-            chunk = stream.read(chunk_size)
-            if chunk:
-                buffer += chunk
-            else:
-                eof = True
-            continue
-        if state == "done":
-            if buffer:
-                raise ExportShapeError("Trailing characters after array")
-            if eof:
-                return
-            chunk = stream.read(chunk_size)
-            if chunk:
-                buffer += chunk
-            else:
-                eof = True
-            continue
-        if not buffer:
-            raise ExportShapeError("Truncated export array")
-        if state == "start":
-            if buffer[0] != "[":
-                raise ExportShapeError("Expected JSON export array")
-            buffer = buffer[1:]
-            state = "first_or_end"
-            continue
-        if state in ("first_or_end", "value"):
-            if buffer[0] == "]":
-                if state == "value":
-                    raise ExportShapeError("Trailing comma")
-                buffer = buffer[1:]
-                state = "done"
+        chunk = stream.read(chunk_size)
+        if not chunk:
+            break
+        # A partially read value resumes from the start of this chunk.
+        segment_start = 0 if state == "record" else None
+        for index, char in enumerate(chunk):
+            if state == "done":
+                if not char.isspace():
+                    raise ExportShapeError("Trailing characters after array")
                 continue
-            try:
-                record, end = decoder.raw_decode(buffer)
-            except json.JSONDecodeError:
-                if eof or len(buffer) >= max_record_chars:
-                    raise ExportShapeError("Invalid or oversized export record") from None
-                chunk = stream.read(chunk_size)
-                if not chunk:
-                    eof = True
-                else:
-                    buffer += chunk
+            if state == "start":
+                if char.isspace():
+                    continue
+                if char != "[":
+                    raise ExportShapeError("Expected JSON export array")
+                state = "first_or_end"
                 continue
-            yield record
-            buffer = buffer[end:]
-            state = "separator"
-            continue
-        if state == "separator":
-            if buffer[0] == ",":
-                buffer = buffer[1:]
-                state = "value"
+            if state in ("first_or_end", "value"):
+                if char.isspace():
+                    continue
+                if char == "]":
+                    if state == "value":
+                        raise ExportShapeError("Trailing comma")
+                    state = "done"
+                    continue
+                state = "record"
+                segment_start = index
+
+            if state == "record":
+                if not in_string and nesting == 0 and char in ",]":
+                    # The outer array delimiter is not part of the record.
+                    keep(chunk[segment_start:index])
+                    # Full JSON validation is performed exactly once per
+                    # completed record, not once per incoming chunk.
+                    yield decoder.decode("".join(fragments))
+                    fragments.clear()
+                    record_chars = 0
+                    nesting = 0
+                    in_string = False
+                    escaped = False
+                    segment_start = None
+                    state = "value" if char == "," else "done"
+                    continue
+                if in_string:
+                    if escaped:
+                        escaped = False
+                    elif char == "\\":
+                        escaped = True
+                    elif char == '"':
+                        in_string = False
+                elif char == '"':
+                    in_string = True
+                elif char in "[{":
+                    nesting += 1
+                elif char in "]}":
+                    nesting -= 1
+                    if nesting < 0:
+                        raise ExportShapeError("Invalid nested structure")
                 continue
-            if buffer[0] == "]":
-                buffer = buffer[1:]
-                state = "done"
-                continue
+
             raise ExportShapeError("Invalid export array separator")
+        if state == "record":
+            keep(chunk[segment_start:])
+    if state != "done":
+        raise ExportShapeError("Truncated export array")
 
 
 def inspect_file(path: Path) -> dict:

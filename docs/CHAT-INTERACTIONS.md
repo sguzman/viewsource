@@ -190,3 +190,14 @@ inspector now reports `flat_message_items` as a separate aggregate for
 array-shaped inputs while leaving tree nodes, parent links, alternatives
 and selected-path status unestablished. A flat array must never be silently
 treated as a tree or used to infer a branch switch.
+
+## Linear-time local JSON record scanning
+
+The export-array reader scans strings, escapes and container depth only once
+to locate each top-level record boundary. It then calls the strict JSON
+decoder once per completed record, instead of repeatedly decoding an
+unfinished growing record after every read. Processing remains incremental
+over the top-level array and bounded by the largest individual record
+(current safety cap: 128 MiB of characters). Malformed or duplicate-key
+records still fail closed. This does not parse or infer undocumented
+message ancestry in a flat response.
