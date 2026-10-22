@@ -27,16 +27,18 @@ class TransportTraceTests(unittest.TestCase):
         })
         allowed=names|{"generation_dispatcher","topic_based_stream","streaming_request",
                        "local_and_request_cancellation","resume_recovery",
-                       "decoded_update_processor","message_update_callback"}
+                       "decoded_update_processor","message_update_callback",
+                       "message_batch_or_replay","client_graph_mutation_helper"}
         edges=report["reviewed_static_edges"]
-        self.assertEqual(len(edges),11)
+        self.assertEqual(len(edges),13)
         for row in edges:
             self.assertIn(row["from"],allowed)
             self.assertIn(row["to"],allowed)
             self.assertIn(row["kind"],{
                 "direct_method_call","conditional_client_path",
                 "direct_client_sequence","client_recovery_configuration",
-                "scoped_service_method_call","static_callback_wiring"
+                "scoped_service_method_call","static_callback_wiring",
+                "conditional_client_flow","static_imported_helper_call"
             })
         self.assertTrue(report["still_unresolved"])
 
@@ -63,6 +65,19 @@ class TransportTraceTests(unittest.TestCase):
             "message_update","message_marker","terminal_or_metadata"
         ])
         self.assertTrue(pipeline["verification_boundary"])
+
+    def test_captured_message_update_reaches_imported_state_helper(self):
+        item=self.report["message_state_write_pipeline"]
+        self.assertEqual(item["source_ref"],"R-JS-018")
+        self.assertEqual(item["evidence_class"],"observed_static")
+        self.assertFalse(item["live_state_changes_observed"])
+        self.assertEqual([step["stage"] for step in item["source_steps"]],[
+            "decoded_update","message_classification","batch_or_replay",
+            "apply_message","graph_mutation_helper"
+        ])
+        self.assertEqual(len(item["message_writer_argument_roles"]),4)
+        self.assertTrue(item["not_yet_traced"])
+        self.assertTrue(item["verification_boundary"])
 
     def test_no_capture_data_escapes_to_public_report(self):
         output=REPORT.read_text("utf-8").lower()
