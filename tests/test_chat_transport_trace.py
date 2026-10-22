@@ -25,18 +25,32 @@ class TransportTraceTests(unittest.TestCase):
             "startCompletionStream","resumeCompletionStream","cancelStream",
             "getStreamOptions","createCompletionStreamHandlers"
         })
-        allowed=names|{"topic_based_stream","streaming_request",
+        allowed=names|{"generation_dispatcher","topic_based_stream","streaming_request",
                        "local_and_request_cancellation","resume_recovery"}
         edges=report["reviewed_static_edges"]
-        self.assertEqual(len(edges),8)
+        self.assertEqual(len(edges),9)
         for row in edges:
             self.assertIn(row["from"],allowed)
             self.assertIn(row["to"],allowed)
             self.assertIn(row["kind"],{
                 "direct_method_call","conditional_client_path",
-                "direct_client_sequence","client_recovery_configuration"
+                "direct_client_sequence","client_recovery_configuration",
+                "scoped_service_method_call"
             })
         self.assertTrue(report["still_unresolved"])
+
+    def test_dispatcher_to_transport_bridge_is_source_reviewed(self):
+        bridge=self.report["generation_transport_bridge"]
+        self.assertEqual(bridge["source_ref"],"R-JS-018")
+        self.assertEqual(bridge["caller_function_ordinal"],9032)
+        self.assertEqual(bridge["callee_method"],"startCompletionStream")
+        self.assertEqual(bridge["static_call_kind"],"scoped_service_method_call")
+        self.assertTrue(bridge["reviewed_call"])
+        self.assertEqual(bridge["evidence_class"],"observed_static")
+        self.assertIn("onDecodedEvent",bridge["observed_callback_wiring"])
+        self.assertIn("conversation_mapping",bridge["recovery_state_inputs"])
+        self.assertIn("selected_message_node",bridge["recovery_state_inputs"])
+        self.assertFalse(self.report["live_transport_verified"])
 
     def test_no_capture_data_escapes_to_public_report(self):
         output=REPORT.read_text("utf-8").lower()
