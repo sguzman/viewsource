@@ -1,0 +1,63 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "scope": "official_public_documentation",
+  "method": "OpenAI Help Center user-interface descriptions; not independently observed runtime behavior, server schemas or captured source tracing.",
+  "privacy": "Public documentation only. No user content, account identifiers or captured URLs.",
+  "actions": [
+    {
+      "id": "branch_new_chat",
+      "name": "Branch in new chat",
+      "documented_date": "2025-09-04",
+      "status": "documented_ui",
+      "summary": "On web, a message's More actions menu can branch from that point into a separate conversation without losing the original.",
+      "source_title": "ChatGPT release notes",
+      "source_url": "https://help.openai.com/en/articles/6825453-chatgpt-release-notes",
+      "graph_events": [],
+      "capture_ref": null,
+      "unknown": "No confirmed backend ancestry or message-copy schema."
+    },
+    {
+      "id": "regenerate_response",
+      "name": "Regenerate a response",
+      "documented_date": "2026-03-17",
+      "status": "documented_ui",
+      "summary": "Release notes describe retry/regenerate options through a response menu, specifically including Thinking or Pro model responses.",
+      "source_title": "ChatGPT release notes",
+      "source_url": "https://help.openai.com/en/articles/6825453-chatgpt-release-notes",
+      "graph_events": [
+        "request_regeneration"
+      ],
+      "capture_ref": "E2-069",
+      "unknown": "No proof of sibling messages, attempt identity or retention of previous output."
+    },
+    {
+      "id": "stop_regenerate",
+      "name": "Stop and retry generation",
+      "documented_date": null,
+      "status": "documented_ui",
+      "summary": "Help guidance describes stopping generation and using Regenerate when a response stalls.",
+      "source_title": "Troubleshooting ChatGPT error messages",
+      "source_url": "https://help.openai.com/en/articles/7996703-troubleshooting-chatgpt-error-messages",
+      "graph_events": [
+        "stop_response",
+        "request_regeneration"
+      ],
+      "capture_ref": null,
+      "unknown": "No confirmed streaming termination or retry request contract."
+    },
+    {
+      "id": "pin_chat",
+      "name": "Pin a chat",
+      "documented_date": "2026-06-18",
+      "status": "documented_ui",
+      "summary": "Web users can pin chats from the sidebar.",
+      "source_title": "ChatGPT release notes",
+      "source_url": "https://help.openai.com/en/articles/6825453-chatgpt-release-notes",
+      "graph_events": [],
+      "capture_ref": null,
+      "unknown": "No captured pin-state persistence or endpoint semantics."
+    }
+  ]
+}
