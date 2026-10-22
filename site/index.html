@@ -13,6 +13,7 @@
     } catch (_) {}
   </script>
   <link rel="stylesheet" href="./app.css">
+  <script defer src="./explorer.js"></script>
   <script defer src="./app.js"></script>
 </head>
 <body>
@@ -21,10 +22,10 @@
     <header class="topbar">
       <a class="brand" href="#chapter=overview" aria-label="Viewsource atlas home">
         <span class="brand-mark" aria-hidden="true"><span>V</span><span>S</span></span>
-        <span class="brand-text"><strong>viewsource</strong><small>SPECIMEN ATLAS</small></span>
+        <span class="brand-text"><strong>viewsource</strong><small>WEBSITE RESEARCH</small></span>
       </a>
       <span class="topbar-divider" aria-hidden="true"></span>
-      <span class="topbar-context">Anatomy of the web, one capture at a time.</span>
+      <span class="topbar-context">Inspect captured websites</span>
       <div class="topbar-actions">
         <label class="select-field">Specimen
           <select id="specimen-select" aria-label="Select specimen"><option value="">Loading…</option></select>
@@ -42,11 +43,11 @@
       </div>
     </header>
     <div class="workspace">
-      <aside class="sidebar" aria-label="Research chapters">
+      <aside class="sidebar" aria-label="Sections">
         <div class="sidebar-head">
-          <span class="section-kicker">FIELD NOTES</span>
-          <h2>Explore the story</h2>
-          <p>Follow the evidence from structure to behavior.</p>
+          <span class="section-kicker">CONTENTS</span>
+          <h2>Explore the capture</h2>
+          <p>HTML, frameworks, styles, scripts and assets.</p>
         </div>
         <nav id="chapters" aria-label="Story chapters"></nav>
         <div class="side-bottom">
@@ -69,16 +70,16 @@
           <div class="loading-state"><div class="loading-ring" aria-hidden="true"></div><p>Preparing the specimen atlas…</p></div>
         </div>
       </main>
-      <aside id="inspector" class="inspector" aria-label="Evidence inspector">
+      <aside id="inspector" class="inspector" aria-label="Inspector">
         <div class="inspector-title">
-          <span class="section-kicker">RESEARCH LENS</span>
+          <span class="section-kicker">DETAILS</span>
           <h2>Evidence inspector</h2>
-          <p>Select a finding, component, or task to inspect its support.</p>
+          <p>Select a region, library or finding to inspect it.</p>
         </div>
         <div id="inspection" aria-live="polite"></div>
       </aside>
     </div>
-    <footer class="site-footer"><span>VIEWSOURCE / INDEPENDENT RESEARCH</span><span>Captures are inputs. Findings are the publication.</span></footer>
+    <footer class="site-footer"><span>VIEWSOURCE / WEBSITE CAPTURES</span><span>Raw captures stay private.</span></footer>
   </div>
 </body>
 </html>

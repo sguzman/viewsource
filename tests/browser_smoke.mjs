@@ -6,7 +6,7 @@ const browser = await chromium.launch({headless:true});
 const page = await browser.newPage({viewport:{width:1440,height:900},colorScheme:"dark"});
 try {
   await page.goto(base,{waitUntil:"networkidle"});
-  await page.getByRole("heading",{name:"An interface is a living system."}).waitFor();
+  await page.getByRole("heading",{name:"ChatGPT — saved page"}).waitFor();
   assert.equal(await page.locator("#theme-select").inputValue(),"system");
   assert.equal(await page.locator("html").getAttribute("data-theme"),"system");
 
@@ -18,8 +18,18 @@ try {
   assert.equal(await page.locator("html").getAttribute("data-theme"),"dark");
   await page.locator("#theme-select").selectOption("system");
 
-  await page.locator(".chapter-link").filter({hasText:"CSS"}).click();
-  await page.getByRole("heading",{name:"A design language in thousands of declarations."}).waitFor();
+  await page.getByRole("heading",{name:"Libraries and frameworks"}).first().waitFor();
+  await page.getByRole("button",{name:"Inspect Left sidebar"}).first().click();
+  assert.equal(await page.locator(".inspection-card").count(),1);
+  await page.locator(".chapter-link").filter({hasText:"Libraries"}).click();
+  await page.getByRole("heading",{name:"Libraries and frameworks"}).first().waitFor();
+  assert.equal(await page.locator(".technology-card").count(),11);
+  await page.locator(".technology-card").first().locator("summary").click();
+  assert.ok(await page.locator(".technology-details:visible").count()>=1);
+  await page.locator(".chapter-link").filter({hasText:"Page layout"}).click();
+  assert.equal(await page.locator(".wire-node").count(),7);
+    await page.locator(".chapter-link").filter({hasText:"CSS"}).click();
+  await page.getByRole("heading",{name:"CSS in the capture"}).waitFor();
   await page.getByRole("heading",{name:"Explore the token families"}).waitFor();
   assert.equal(await page.locator(".css-family").count(),8);
     await page.getByRole("button",{name:"E2-023"}).click();
@@ -44,7 +54,7 @@ try {
   await page.getByRole("heading",{name:"Streaming and transport code"}).waitFor();
   assert.equal(await page.locator(".signal-row").count(),6);
     await page.locator(".chapter-link").filter({hasText:"Research queue"}).click();
-  await page.getByRole("heading",{name:"Work that stays on the map."}).waitFor();
+  await page.getByRole("heading",{name:"Research tasks"}).waitFor();
   assert.ok(await page.locator(".queue-group").count()>=10);
   await page.locator(".queue-group").first().locator("summary").click();
   assert.ok(await page.locator(".task").count()>0);

@@ -259,3 +259,55 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .signal-row { min-width: 0; }
 .signal-row .dom-region-label { align-items: baseline; }
 @media (max-width:720px) { .signal-panel { padding: 15px; } .signal-list { grid-template-columns: 1fr; gap: 17px; } }
+
+/* Capture explorer: original schematic and inspectable library cards. */
+.explorer-heading { margin: 35px 0 17px; }
+.explorer-heading h2 { font: normal 28px var(--serif); letter-spacing: -.04em; margin: 6px 0 5px; }
+.explorer-heading p { font-size: 12px; color: var(--muted); margin: 0; max-width: 690px; }
+.technology-filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 15px 0; }
+.technology-filter { padding: 6px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); font-size: 12px; }
+.technology-filter[aria-pressed="true"] { background: var(--accent-bg); color: var(--accent-ink); border-color: var(--accent); }
+.technology-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
+.technology-card { min-width: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--panel); overflow: hidden; }
+.technology-card[open] { border-color: var(--accent); }
+.technology-summary { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 17px; cursor: pointer; }
+.technology-name { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.technology-name strong { font-size: 15px; letter-spacing: -.025em; }
+.technology-name small { color: var(--muted); font-size: 11px; }
+.technology-confidence { font-size: 10px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.technology-details { border-top: 1px solid var(--line); padding: 0 17px 17px; }
+.technology-details p,.technology-details li { color: var(--muted); font-size: 12px; line-height: 1.7; }
+.technology-details ul { padding-left: 18px; }
+.technology-version { font-weight: 750; }
+.technology-unresolved { margin: 19px 0 25px; border: 1px solid var(--line); padding: 17px; border-radius: 10px; }
+.technology-unresolved h3,.whitelist-controls h3 { font-size: 14px; margin: 0 0 8px; }
+.technology-unresolved ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 12px; }
+.wireframe { position: relative; display: grid; grid-template-columns: minmax(145px, 28%) 1fr; min-height: 410px; gap: 10px; background: var(--panel); border: 1px solid var(--line); padding: 14px; border-radius: 12px; }
+.wire-sidebar,.wire-main { display: flex; flex-direction: column; gap: 8px; padding: 9px; border: 1px dashed var(--line); border-radius: 9px; min-width: 0; }
+.wire-sidebar { background: var(--sidebar); }
+.wire-main { background: var(--panel-2); }
+.wire-node { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; width: 100%; text-align: left; border-radius: 8px; border: 1px solid var(--line); padding: 11px; background: var(--panel); }
+.wire-node:hover,.wire-node:focus-visible { border-color: var(--accent); background: var(--accent-bg); }
+.wire-node strong { font-size: 12px; }
+.wire-node small { font-size: 10px; color: var(--accent); text-transform: uppercase; }
+.wire-count { font-size: 10px; color: var(--muted); line-height: 1.5; }
+.wire-list-nav { flex: 1; }
+.wire-main-head { min-height: 56px; }
+.wire-content-placeholder { flex: 1; min-height: 115px; padding: 17px; border: 1px dashed var(--line); border-radius: 9px; display: flex; flex-direction: column; justify-content: center; gap: 7px; color: var(--muted); }
+.wire-content-placeholder strong { font: normal 21px var(--serif); color: var(--ink); }
+.wire-content-placeholder span { font-size: 11px; }
+.wire-overlay { position: absolute; right: 7%; top: 38%; width: 29%; pointer-events: none; }
+.wire-overlay .wire-node { border-color: var(--accent); box-shadow: var(--shadow); pointer-events: auto; }
+.whitelist-controls { margin: 20px 0; }
+.control-categories { display: flex; flex-wrap: wrap; gap: 7px; }
+.control-category { border: 1px solid var(--line); border-radius: 7px; background: var(--panel); color: var(--muted); font-size: 11px; padding: 6px 9px; }
+.page-explorer,.technology-explorer { margin-bottom: 23px; }
+@media (max-width:720px) {
+ .technology-grid { grid-template-columns: 1fr; }
+ .wireframe { padding: 8px; grid-template-columns: minmax(110px, 38%) 1fr; min-height: 370px; }
+ .wire-sidebar,.wire-main { padding: 5px; }
+ .wire-node { padding: 7px; }
+ .wire-count { font-size: 9px; }
+ .wire-overlay { width: 48%; right: 3%; top: 41%; }
+ .technology-confidence { white-space: normal; text-align: right; }
+}

@@ -157,7 +157,7 @@ function flowRail(chapter) {
 function storySections(chapter) {
   const wrapper=elem("section");
   const heading=elem("div",{className:"section-head"},[
-    elem("h2",{text:"Inside the system"}),
+    elem("h2",{text:"Details"}),
     elem("span",{text:"SELECT A CONNECTION TO CONTINUE"})
   ]);
   const cards=elem("div",{className:"story-cards"});
@@ -401,8 +401,24 @@ function renderResourceBudget() {
 }
 
 function renderArticle(chapter,host) {
+  if (chapter.id === "stack" || chapter.id === "page-map") {
+    host.append(makeHero(chapter));
+    host.append(chapter.id === "stack"
+      ? ViewsourceExplorer.renderStack(versionRecord())
+      : ViewsourceExplorer.renderMap(versionRecord()));
+    host.append(showEvidenceLinks(chapter));
+    return;
+  }
+  if (chapter.id === "overview" && versionRecord().visuals?.technology) {
+    host.append(makeHero(chapter));
+    host.append(ViewsourceExplorer.renderMap(versionRecord(), true));
+    host.append(ViewsourceExplorer.renderStack(versionRecord(), true));
+    host.append(storySections(chapter));
+    host.append(showEvidenceLinks(chapter));
+    return;
+  }
   append(host,makeHero(chapter),metrics(chapter));
-  if(chapter.flow.length)host.append(flowRail(chapter));
+  if(chapter.id === "flow" && chapter.flow.length)host.append(flowRail(chapter));
   host.append(storySections(chapter));
   if (chapter.id === "javascript") { const modules=renderModuleExplorer(); if(modules) host.append(modules); }
   if (chapter.id === "css") { const visual=renderCssSystem(); if(visual) host.append(visual); }
@@ -510,7 +526,7 @@ function renderWork(host,query="") {
   const pending=all.filter(t=>t.status==="queued"||t.status==="in_progress"||t.status==="blocked").length;
   append(host,elem("section",{className:"hero"},[
     elem("div",{className:"eyebrow",text:"PERSISTENT RESEARCH PROGRAM"}),
-    elem("h1",{text:"Work that stays on the map."}),
+    elem("h1",{text:"Research tasks"}),
     elem("p",{className:"lead",text:"The first analysis pass is not the last. Every deep task has a dependency chain and must be closed through evidence, not an automatic inventory count."})
   ]));
   const metricBox=elem("div",{className:"metrics"});

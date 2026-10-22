@@ -161,6 +161,44 @@ def build(out: Path) -> dict:
                         "images": budget["images"]["bytes"]
                     }
                 }
+            technology_path = ROOT / (base + "/technology_inventory.json")
+            if technology_path.is_file():
+                study = read(base + "/technology_inventory.json")
+                if study["specimen_id"] != item["id"] or study["version"] != number:
+                    raise ValueError("Technology study identity mismatch")
+                allowed_strength = {"strong", "likely", "indicator"}
+                items = []
+                for item_tech in study["technologies"]:
+                    if item_tech["confidence"] not in allowed_strength:
+                        raise ValueError("Unsupported evidence confidence")
+                    items.append({
+                        "id": item_tech["id"], "name": item_tech["name"],
+                        "category": item_tech["category"],
+                        "confidence": item_tech["confidence"],
+                        "role": item_tech["role"],
+                        "evidence": item_tech["evidence"],
+                        "observations": [{
+                            "marker": m["marker"], "matches": m["matches"], "files": m["files"]
+                        } for m in item_tech["observations"]],
+                        "note": item_tech["note"]
+                    })
+                page_map = study["page_map"]
+                visuals["technology"] = {
+                    "evidence_ref": "E2-064",
+                    "technologies": items,
+                    "unresolved": [{"technology": x["technology"], "reason": x["reason"]}
+                                   for x in study["unresolved"]]
+                }
+                visuals["page_map"] = {
+                    "evidence_ref": "E2-065",
+                    "nodes": [{
+                        "id": n["id"], "title": n["title"], "kind": n["kind"],
+                        "description": n["description"], "counts": n["counts"],
+                        "evidence": n["evidence"]
+                    } for n in page_map["nodes"]],
+                    "observed_control_categories": page_map["observed_control_categories"],
+                    "note": page_map["note"]
+                }
             inventory = read(base + "/resource_inventory.json") if (ROOT / (base + "/resource_inventory.json")).is_file() else {}
             totals = inventory.get("totals", {})
             catalog["versions"].append({
@@ -179,7 +217,7 @@ def build(out: Path) -> dict:
             })
     out.mkdir(parents=True, exist_ok=True)
     (out / "data").mkdir(exist_ok=True)
-    for name in ("index.html", "app.css", "app.js"):
+    for name in ("index.html", "app.css", "explorer.js", "app.js"):
         shutil.copyfile(SITE / name, out / name)
     (out / ".nojekyll").write_text("", encoding="utf-8")
     (out / "data/catalog.json").write_text(
