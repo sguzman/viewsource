@@ -41,9 +41,11 @@ try {
   assert.deepEqual(await page.locator(".chat-ast-stat strong").allInnerTexts(), ["144","333","41"]);
   assert.equal(await page.locator(".chat-implementation-card").count(),7);
   assert.equal(await page.locator(".chat-transport-method").count(),5);
-  assert.equal(await page.locator(".chat-mutation-operation").count(),9);
+  assert.equal(await page.locator(".chat-mutation-operation").count(),11);
   await page.locator(".chat-mutation-callpath summary").click();
-  assert.equal(await page.locator(".chat-mutation-callpath li").count(),6);
+  assert.equal(await page.locator(".chat-mutation-callpath li").count(),9);
+  await page.locator(".chat-mutation-projection summary").click();
+  assert.ok((await page.locator(".chat-mutation-projection").innerText()).includes("selected_user_message_ancestry"));
   await page.locator(".chat-transport-edges summary").click();
   assert.equal(await page.locator(".chat-transport-edges li").count(),13);
   await page.locator(".chat-transport-mutation summary").click();
