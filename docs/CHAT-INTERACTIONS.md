@@ -125,3 +125,23 @@ explicitly, but must not publish or log derived private graph structures.
 
 This is an adapter for community-documented export trees only. It does not
 validate ChatGPT's current browser interaction protocol or backend model.
+
+## Comparing two anonymous export topologies
+
+`scripts/compare_chat_topologies.py` compares two results from
+`normalize_conversation()` in memory, without assuming their temporary
+ordinals correspond. Its bottom-up subtree comparison is independent of node
+identifiers and source mapping iteration order. It reports whether the
+actor-labeled forests are structurally equivalent, whether marking the
+selected ancestry paths preserves that equivalence, and aggregate metric
+deltas. It validates parent links, selection ancestry, branch counts and
+cycles before comparing. Deep graphs are handled iteratively.
+
+This is **not** an identity join, operation classifier, or browser trace.
+Two symmetrical alternatives can be indistinguishable even if the selected
+reply changed. Changing topology cannot, by itself, distinguish editing,
+regeneration, a new reply, or an export-format change. No fingerprint, node
+identifier, source message, or per-message comparison is returned. The
+comparator has no CLI and is for deliberate local, synthetic or explicitly
+authorized data processing only; never publish output from a personal export
+without separate review.
