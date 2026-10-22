@@ -187,6 +187,21 @@ class OfflineIntakeTests(unittest.TestCase):
         self.assertTrue(all(t["depends_on"] and t["notes"] for t in feature_tasks))
         self.assertEqual(validator.validate(), [])
 
+    def test_standalone_html_inline_chat_source_triggers_implementation_queue(self):
+        tool.queue_specimen("inlinechat", "https://inline.example.org")
+        source = self.base / "inline.html"
+        source.write_text(
+            "<html><script>function sendMessage(conversationId,messageId)"
+            "{return conversationId + messageId}</script></html>", encoding="utf-8")
+        tool.process_specimen("inlinechat", source)
+        inventory = tool.load_json(self.root / ".work/inlinechat/v0001/inventory.json")
+        self.assertEqual(inventory["files"][0]["observations"]["inline_feature_signals"]["chat"],
+                         ["conversations", "messages"])
+        tasks = tool.load_json(self.root / "queues/tasks.json")["tasks"]
+        self.assertEqual(sum("-followup-static-feature-chat-" in t["id"] for t in tasks), 4)
+        self.assertTrue(any("-followup-static-source-functions" in t["id"] for t in tasks))
+        self.assertEqual(validator.validate(), [])
+
     def test_unrelated_site_does_not_get_a_chat_feature(self):
         source = self.base / "plain.zip"
         with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
