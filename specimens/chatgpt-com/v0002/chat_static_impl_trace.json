@@ -270,14 +270,29 @@
       "export_kind": "static_module_getter",
       "name_scope": "descriptive_regeneration_export",
       "meaning": "The regeneration assembly wrapper is exposed under a descriptive bundle export."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "exported_function_ordinal": 9031,
+      "export_kind": "static_module_getter",
+      "name_scope": "minified_bundle_export",
+      "meaning": "The work-handoff conversion wrapper is exposed by a static module export getter."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "exported_function_ordinal": 9112,
+      "export_kind": "static_module_getter",
+      "name_scope": "minified_bundle_export",
+      "meaning": "The answer-now steering wrapper is exposed by a static module export getter."
     }
   ],
   "module_export_limitations": [
     "Module export bindings establish exposure inside captured JavaScript, not whether any caller was executed.",
     "The importer module and concrete UI call chain remain untraced.",
     "Dynamic imports and runtime selection may prevent a captured module from running.",
-    "The four reviewed caller-to-dispatcher edges are lexically direct within one module factory; they do not establish which path actually ran.",
-    "The source parser found two further caller candidates (functions 9031 and 9112); these remain unreviewed and are not assigned to product actions."
+    "The four reviewed caller-to-dispatcher edges are lexically direct within one module factory; they do not establish which path actually ran."
   ],
   "reviewed_direct_calls": [
     {
@@ -303,6 +318,16 @@
     {
       "source_ref": "R-JS-018",
       "module_factory_ordinal": 9012,
+      "caller_function_ordinal": 9031,
+      "callee_function_ordinal": 9032,
+      "caller_role": "work_handoff_conversion",
+      "call_kind": "same_factory_direct_identifier_call",
+      "evidence_class": "observed_static",
+      "note": "A work-handoff conversion function assembles message, handoff-parent and conversion options and delegates to the shared dispatcher."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
       "caller_function_ordinal": 9110,
       "callee_function_ordinal": 9032,
       "caller_role": "regeneration_submission",
@@ -319,6 +344,16 @@
       "call_kind": "same_factory_direct_identifier_call",
       "evidence_class": "observed_static",
       "note": "A conditional retry-oriented wrapper also invokes the shared dispatcher."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "module_factory_ordinal": 9012,
+      "caller_function_ordinal": 9112,
+      "callee_function_ordinal": 9032,
+      "caller_role": "answer_now_steering",
+      "call_kind": "same_factory_direct_identifier_call",
+      "evidence_class": "observed_static",
+      "note": "A steering action requiring an active message submits a continuation with an answer-now steering flag through the same dispatcher."
     }
   ],
   "candidate_direct_calls": [
@@ -365,5 +400,5 @@
       "link_status": "candidate_named_direct_call"
     }
   ],
-  "unreviewed_direct_call_count": 2
+  "unreviewed_direct_call_count": 0
 }
