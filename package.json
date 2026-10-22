@@ -1,0 +1,9 @@
+{
+  "name": "viewsource-static-research-tools",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Offline, research-only JavaScript AST parser dependency",
+  "devDependencies": {
+    "acorn": "8.15.0"
+  }
+}
