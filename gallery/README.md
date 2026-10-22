@@ -29,7 +29,9 @@ The second, deeper snapshot adds 144 JavaScript files, seventeen CSS files, sixt
 - [Candidate dependency and CSS/font analysis](../specimens/chatgpt-com/v0002/source_analysis.json)
 - [Deeper static behavior and media census](../specimens/chatgpt-com/v0002/deep_analysis.json)
 
-**Disposition:** 32 tasks completed and two explicitly not observable from the archive (dynamic accessibility behavior and DOM-to-handler ownership). The raw capture, all third-party source/binary assets, account-specific state, capture URLs, and conversation data remain excluded from Git.
+**Initial static pass:** 32 tasks completed and two explicitly not observable from the archive (dynamic accessibility behavior and DOM-to-handler ownership). The raw capture, all third-party source/binary assets, account-specific state, capture URLs, and conversation data remain excluded from Git.
 
 **Provenance:** original technical analysis derived from an independently supplied offline ZIP. **Rights:** original project-authored commentary and structured ontology under MIT, without granting rights over source website assets.
 
+
+**Active next phase:** 57 deep, dependency-aware research tasks are queued. The published findings remain usable, while the specimen is researching rather than fully finished.

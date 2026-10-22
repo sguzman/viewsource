@@ -51,6 +51,16 @@ The intake input path must point **outside** the repository. It is read only. Fo
 
 See [static census](docs/STATIC-CENSUS.md) for a private, content-free structural summary and [queue guide](queues/README.md) for dependency-aware work scheduling.
 
+## Specimen Atlas website
+
+The public, privacy-bounded research website lives in [site/](site/) and is built with [scripts/build_site.py](scripts/build_site.py). It turns curated findings, ontology relationships and persistent task queues into an accessible, searchable specimen narrative with an evidence inspector and interactive component graph.
+
+The **Appearance** dropdown provides **System** (default), **Light**, and **Dark** modes. Its selected preference is stored locally in the viewing browser. No captured source is executed by the atlas.
+
+A large ZIP now automatically generates **57 additional dependency-linked deep research tasks** (when matching source categories are available), beyond the standard 18-task intake phase; these are **queued** until substantively completed with evidence. The existing ChatGPT v0002 case has been reopened for its second research phase.
+
+Run `python3 scripts/build_site.py --out _site` to generate the static site locally. The GitHub Pages workflow builds the same self-contained artifact from public repository data without storing private captures.
+
 ## What analysis covers
 
 Structure, routes and navigation; scripts and module loading; script responsibilities; CSS and design tokens; assets, fonts and media; accessibility and semantics; forms and interaction; client state and persistence; third-party services; requests and APIs suggested by static references; build signatures; performance hypotheses; privacy and security indicators; metadata and search discoverability; responsive behavior; dependency relationships; and differences between snapshots.

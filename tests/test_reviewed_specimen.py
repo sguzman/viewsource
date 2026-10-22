@@ -52,17 +52,20 @@ class ReviewedSpecimenChecks(unittest.TestCase):
 
     def test_second_specimen_review_and_work_queue(self):
         record = read("specimens/chatgpt-com/v0002/record.json")
-        self.assertEqual(record["status"], "reviewed")
+        self.assertEqual(record["status"], "researching")
         self.assertEqual(record["previous_version"], 1)
         self.assertGreaterEqual(len(record["components"]), 270)
         self.assertGreaterEqual(len(record["findings"]), 36)
-        self.assertEqual(set(record["coverage"].values()), {"analyzed"})
+        self.assertEqual(set(record["coverage"].values()), {"analyzed","pending"})
         tasks = [t for t in read("queues/tasks.json")["tasks"]
                  if t["specimen_id"] == "chatgpt-com" and t["version"] == 2]
-        self.assertEqual(len(tasks), 34)
-        self.assertEqual(sum(t["status"] == "done" for t in tasks), 32)
-        self.assertEqual(sum(t["status"] == "not_observable" for t in tasks), 2)
-        self.assertFalse(any(t["status"] in {"queued", "in_progress", "blocked"} for t in tasks))
+        initial = [t for t in tasks if "-followup-deep-" not in t["id"]]
+        deep = [t for t in tasks if "-followup-deep-" in t["id"]]
+        self.assertEqual(len(initial), 34)
+        self.assertEqual(len(deep), 57)
+        self.assertEqual(sum(t["status"] == "done" for t in initial), 32)
+        self.assertEqual(sum(t["status"] == "not_observable" for t in initial), 2)
+        self.assertTrue(all(t["status"] == "queued" for t in deep))
         by_id = {t["id"]: t for t in tasks}
         for profile in ("followup-dynamic-a11y-paths", "followup-dom-event-graph"):
             item = by_id["chatgpt-com-v0002-" + profile]
