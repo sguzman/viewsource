@@ -1,0 +1,183 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_scope": "saved_javascript_static_ast",
+  "method": "Acorn AST source-ordinal scan of the original privately held ZIP; deterministic bundle ordinals; manual examination of selected function bodies without publishing source excerpts.",
+  "source_privacy": "Only anonymous capture-local resource and function ordinals, fixed pattern labels, aggregate counts and original summaries.",
+  "asset_files_parsed": 144,
+  "function_nodes_parsed": 120699,
+  "parse_failures": 0,
+  "verified_live_behavior": false,
+  "server_contract_verified": false,
+  "patterns": {
+    "selected_ancestry_walk": 11,
+    "branch_transport_call": 1,
+    "mapping_ancestry_reconciliation": 1
+  },
+  "matched_source_bundles": 4,
+  "match_count": 13,
+  "matched_functions": 12,
+  "matches": [
+    {
+      "source_ref": "R-JS-013",
+      "function_ordinal": 484,
+      "parent_ordinal": 483,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-013",
+      "function_ordinal": 487,
+      "parent_ordinal": 483,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 285,
+      "parent_ordinal": 284,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 2954,
+      "parent_ordinal": 2928,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 3085,
+      "parent_ordinal": 3036,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 4911,
+      "parent_ordinal": 4908,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 4914,
+      "parent_ordinal": 4908,
+      "pattern": "mapping_ancestry_reconciliation",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 4914,
+      "parent_ordinal": 4908,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 4931,
+      "parent_ordinal": 4777,
+      "pattern": "branch_transport_call",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 7085,
+      "parent_ordinal": 7083,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 9351,
+      "parent_ordinal": 9347,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-072",
+      "function_ordinal": 745,
+      "parent_ordinal": 744,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-138",
+      "function_ordinal": 165,
+      "parent_ordinal": 108,
+      "pattern": "selected_ancestry_walk",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    }
+  ],
+  "reviewed_client_operations": [
+    {
+      "source_ref": "R-JS-013",
+      "function_ordinal": 484,
+      "classification": "selected_ancestry_materialization",
+      "evidence_class": "observed_static",
+      "description": "A function begins with the selected current node, repeatedly looks up that node in a mapping, follows the parent reference, reverses the accumulated path and extracts available messages.",
+      "limits": "Indicates a client-side traversal implementation; does not prove that a server persists data in the identical structure."
+    },
+    {
+      "source_ref": "R-JS-013",
+      "function_ordinal": 487,
+      "classification": "predicate_limited_ancestry_walk",
+      "evidence_class": "observed_static",
+      "description": "A related function walks selected-node ancestry, collects non-null messages, and stops at a message satisfying an injected predicate; its default predicate targets the user author role.",
+      "limits": "Only the inspected function's local behavior is established; callers and UI ownership need separate tracing."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 3085,
+      "classification": "refetch_mapping_reconciliation",
+      "evidence_class": "observed_static",
+      "description": "An asynchronous refetch routine examines current conversation state, optionally defers while streaming, and merges a fetched node mapping with locally held messages, preserving particular in-progress or newer message states.",
+      "limits": "Client reconciliation and guards are visible, but network response timing and actual server semantics are unobserved."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 4914,
+      "classification": "parent_child_graph_reconciliation",
+      "evidence_class": "observed_static",
+      "description": "A mapping reconciliation function adds locally held nodes absent from another mapping, finds a surviving parent or a root, appends child references and selects between current-node values based on availability and change.",
+      "limits": "A concrete client-side graph operation; it is not confirmation of export schema stability or backend storage design."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 4931,
+      "classification": "branch_client_call",
+      "evidence_class": "observed_static",
+      "description": "An asynchronous client function invokes a branch method with the conversation identity and selected message identity; the call returns a new thread identity and conversation object that the client processes further.",
+      "limits": "The method call and result handling are present statically, but endpoint names, wire protocol, actual server behavior and resulting persistence remain outside this proof."
+    }
+  ],
+  "open_static_questions": [
+    "Identify direct callers and imported consumers of the selected-ancestry functions, distinguishing chat UI code from generic tree libraries.",
+    "Trace the branch method's client-side return flow into conversation selection, navigation and local state.",
+    "Trace the fetch/reconcile operation's call-site triggers and the lifecycle of stream merge guards.",
+    "Recover the editor, regenerate, abort and retry function relationships from the same captured bundles.",
+    "Classify minified module boundaries, call aliases and dynamic import limitations without treating lexical proximity as an executable edge."
+  ],
+  "limitations": [
+    "AST pattern matches are intentionally narrow and may include unrelated libraries.",
+    "Resource and function ordinals are stable only for this capture and extraction ordering.",
+    "Lexical enclosure is not an execution or call relationship.",
+    "Observed client code is not observed runtime behavior or a verified backend protocol.",
+    "No original JavaScript file, user identifier, message text, cookie, token, route, endpoint or payload is reproduced."
+  ]
+}
