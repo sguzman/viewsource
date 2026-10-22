@@ -278,10 +278,30 @@ window.ViewsourceChatGraph = (() => {
         section.append(block);
       }
     }
+    const sourceQueue=record.visuals?.static_source_queue;
+    if(sourceQueue){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Automatic static-source research queue"));
+      const count=sourceQueue.task_statuses;
+      block.append(element("p","graph-caption",
+        sourceQueue.task_count+" tasks generated from captured source: "+
+        (count.done||0)+" complete, "+(count.in_progress||0)+" in progress, "+
+        (count.queued||0)+" queued. This work uses saved JavaScript, not live account access."));
+      const grouped=element("div","chat-static-task-list");
+      sourceQueue.tasks.forEach(task=>{
+        const row=element("details","chat-static-task");
+        row.append(element("summary","",task.title),
+          element("p","graph-caption",
+            "Area: "+task.queue+" · Status: "+task.status+
+            " · Dependencies: "+task.dependency_count));
+        grouped.append(row);
+      });
+      block.append(grouped);section.append(block);
+    }
     const research=record.visuals?.feature_research;
     if(research){
       const block=element("div","chat-subsection");
-      block.append(element("h3","","Chat research backlog"));
+      block.append(element("h3","","Optional runtime and completed research backlog"));
       const counts={done:0,queued:0,requires_new_evidence:0};
       research.tasks.forEach(t=>{counts[t.status]=(counts[t.status]||0)+1;});
       block.append(element("p","graph-caption",
