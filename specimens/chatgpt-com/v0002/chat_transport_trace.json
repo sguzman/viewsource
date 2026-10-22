@@ -111,6 +111,11 @@
       "from": "createCompletionStreamHandlers",
       "to": "resume_recovery",
       "kind": "client_recovery_configuration"
+    },
+    {
+      "from": "generation_dispatcher",
+      "to": "startCompletionStream",
+      "kind": "scoped_service_method_call"
     }
   ],
   "websocket_stream_item_observation": {
@@ -124,10 +129,11 @@
     "Resume contains alternative topic-subscription and streaming-request pathways.",
     "A cancellation registry is coupled to request-layer cancellation.",
     "Recovery state includes retry parameters, resume tokens and transport lifecycle callbacks.",
-    "A WebSocket item decoder tracks duplicate and out-of-order parent relationships."
+    "A WebSocket item decoder tracks duplicate and out-of-order parent relationships.",
+    "The generation dispatcher directly calls the completion-stream service and connects decoded events and recovery callbacks."
   ],
   "still_unresolved": [
-    "Trace which generation-dispatch event handlers invoke the streaming transport methods across captured module boundaries.",
+    "Trace callback implementations from transport decoded-event callbacks into message reducers, selectors and visible conversation UI.",
     "Trace decoder outputs to message mapping reconciliation and rendered selected-message changes.",
     "Resolve whether request-layer transport fallback and resumption are gated by runtime settings.",
     "Distinguish cancellation of local rendering, local request handlers and server-side generation.",
@@ -139,5 +145,32 @@
     "Method and lifecycle names are generic allowlisted technical vocabulary, not original source extracts.",
     "Static request configuration does not verify a server contract, current deployment or runtime feature flag.",
     "This public report contains no raw source, endpoint, request body, header, cookie, account identifier, message or saved transcript."
-  ]
+  ],
+  "generation_transport_bridge": {
+    "source_ref": "R-JS-018",
+    "caller_function_ordinal": 9032,
+    "callee_method": "startCompletionStream",
+    "static_call_kind": "scoped_service_method_call",
+    "evidence_class": "observed_static",
+    "reviewed_call": true,
+    "client_behavior": "The shared generation dispatcher invokes the completion-stream service and provides lifecycle callbacks for decoded messages, transport completion/closure, recoverable errors, response metadata and resumption.",
+    "observed_callback_wiring": [
+      "onComplete",
+      "onTransportClose",
+      "onError",
+      "onPrematureTermination",
+      "onStreamData",
+      "onStreamErrorObserved",
+      "onEvent",
+      "onDecodedEvent",
+      "onResponse",
+      "onResume",
+      "onRecoverableError"
+    ],
+    "recovery_state_inputs": [
+      "conversation_mapping",
+      "selected_message_node"
+    ],
+    "verification_boundary": "The scoped-service call and callback wiring are present in saved client source. This does not establish executed runtime behavior, transport delivery, or authoritative server storage."
+  }
 }
