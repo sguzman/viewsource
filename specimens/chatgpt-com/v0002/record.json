@@ -6,26 +6,26 @@
   "capture_scope": "saved_archive",
   "processed_at": "2026-10-22T01:01:18.692Z",
   "previous_version": 1,
-  "status": "reviewed",
+  "status": "researching",
   "coverage": {
     "intake": "analyzed",
     "markup": "analyzed",
     "navigation": "analyzed",
-    "scripts": "analyzed",
+    "scripts": "partial",
     "modules": "analyzed",
     "styles": "analyzed",
     "responsive": "analyzed",
     "assets": "analyzed",
-    "interaction": "analyzed",
-    "state": "analyzed",
-    "services": "analyzed",
+    "interaction": "partial",
+    "state": "partial",
+    "services": "partial",
     "accessibility": "analyzed",
     "metadata": "analyzed",
     "performance": "analyzed",
     "security": "analyzed",
-    "architecture": "analyzed",
+    "architecture": "partial",
     "comparison": "analyzed",
-    "review": "analyzed"
+    "review": "partial"
   },
   "components": [
     {
