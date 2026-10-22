@@ -168,7 +168,7 @@ class ChatExportStructureTests(unittest.TestCase):
 
     def test_stream_reader_rejects_non_json_unicode_whitespace(self):
         from io import StringIO
-        for payload in ("\\u00a0[]", "[]\\u2003", "[{}\\u00a0]"):
+        for payload in ("\u00a0[]", "[]\u2003", "[{}\u00a0]"):
             with self.subTest(payload=repr(payload)), self.assertRaises(ValueError):
                 list(mod.iter_export_records(StringIO(payload), chunk_size=1))
 
