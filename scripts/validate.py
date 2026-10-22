@@ -192,17 +192,21 @@ def validate() -> list[str]:
                     require(row["source_class"] in {"capture_relative","same_origin_absolute"},
                             f"Unsupported resource origin class: {reference}")
                 else:
-                    permitted = {"id","category","ordinal","format","available_in_capture","content_committed","analysis_status"}
+                    permitted = {"id","category","ordinal","format","bytes","available_in_capture","content_committed","analysis_status"}
                     require(set(row) == permitted, f"Unreviewed v2 resource fields: {reference}")
                     require(row["available_in_capture"] is True and row["content_committed"] is False,
                             f"Resource source publication prohibited: {reference}")
                     require(row["category"] in {"script","stylesheet","font","image","html"},
                             f"Invalid resource category: {reference}")
+                    require(isinstance(row["bytes"], int) and row["bytes"] >= 0,
+                            f"Invalid resource byte count: {reference}")
             if doc["format_version"] == 2:
                 require(sum(doc["totals"]["captured_by_category"].values()) == len(entries),
                         f"Capture resource count mismatch: {reference}")
                 require(sum(doc["totals"]["bytes_by_category"].values()) == doc["totals"]["bytes_captured"],
                         f"Capture resource bytes mismatch: {reference}")
+                require(sum(row["bytes"] for row in entries) == doc["totals"]["bytes_captured"],
+                        f"Per-resource bytes do not sum to capture total: {reference}")
 
     gallery = read("gallery/index.json")
     require(gallery["format_version"] == 1, "Gallery format")

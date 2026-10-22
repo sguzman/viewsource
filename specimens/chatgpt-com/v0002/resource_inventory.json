@@ -73,7 +73,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 286092
     },
     {
       "id": "R-JS-002",
@@ -82,7 +83,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5756
     },
     {
       "id": "R-JS-003",
@@ -91,7 +93,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 219486
     },
     {
       "id": "R-JS-004",
@@ -100,7 +103,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1109107
     },
     {
       "id": "R-JS-005",
@@ -109,7 +113,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 53376
     },
     {
       "id": "R-JS-006",
@@ -118,7 +123,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 573
     },
     {
       "id": "R-JS-007",
@@ -127,7 +133,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 653675
     },
     {
       "id": "R-JS-008",
@@ -136,7 +143,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 100233
     },
     {
       "id": "R-JS-009",
@@ -145,7 +153,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 75251
     },
     {
       "id": "R-JS-010",
@@ -154,7 +163,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 366407
     },
     {
       "id": "R-JS-011",
@@ -163,7 +173,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 2179367
     },
     {
       "id": "R-JS-012",
@@ -172,7 +183,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 187683
     },
     {
       "id": "R-JS-013",
@@ -181,7 +193,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 573954
     },
     {
       "id": "R-JS-014",
@@ -190,7 +203,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 40605
     },
     {
       "id": "R-JS-015",
@@ -199,7 +213,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1257698
     },
     {
       "id": "R-JS-016",
@@ -208,7 +223,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 239517
     },
     {
       "id": "R-JS-017",
@@ -217,7 +233,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 428761
     },
     {
       "id": "R-JS-018",
@@ -226,7 +243,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 2103147
     },
     {
       "id": "R-JS-019",
@@ -235,7 +253,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1230826
     },
     {
       "id": "R-JS-020",
@@ -244,7 +263,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 98723
     },
     {
       "id": "R-JS-021",
@@ -253,7 +273,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 472940
     },
     {
       "id": "R-JS-022",
@@ -262,7 +283,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 39783
     },
     {
       "id": "R-JS-023",
@@ -271,7 +293,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 244
     },
     {
       "id": "R-JS-024",
@@ -280,7 +303,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1763198
     },
     {
       "id": "R-JS-025",
@@ -289,7 +313,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 2121464
     },
     {
       "id": "R-JS-026",
@@ -298,7 +323,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 546942
     },
     {
       "id": "R-JS-027",
@@ -307,7 +333,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 2042380
     },
     {
       "id": "R-JS-028",
@@ -316,7 +343,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 89478
     },
     {
       "id": "R-JS-029",
@@ -325,7 +353,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 736905
     },
     {
       "id": "R-JS-030",
@@ -334,7 +363,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 7843
     },
     {
       "id": "R-JS-031",
@@ -343,7 +373,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 25083
     },
     {
       "id": "R-JS-032",
@@ -352,7 +383,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 105875
     },
     {
       "id": "R-JS-033",
@@ -361,7 +393,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5620
     },
     {
       "id": "R-JS-034",
@@ -370,7 +403,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 25071
     },
     {
       "id": "R-JS-035",
@@ -379,7 +413,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 79609
     },
     {
       "id": "R-JS-036",
@@ -388,7 +423,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 345
     },
     {
       "id": "R-JS-037",
@@ -397,7 +433,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 11228
     },
     {
       "id": "R-JS-038",
@@ -406,7 +443,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 206
     },
     {
       "id": "R-JS-039",
@@ -415,7 +453,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 17370
     },
     {
       "id": "R-JS-040",
@@ -424,7 +463,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 43842
     },
     {
       "id": "R-JS-041",
@@ -433,7 +473,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 70529
     },
     {
       "id": "R-JS-042",
@@ -442,7 +483,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 68462
     },
     {
       "id": "R-JS-043",
@@ -451,7 +493,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 46561
     },
     {
       "id": "R-JS-044",
@@ -460,7 +503,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 125730
     },
     {
       "id": "R-JS-045",
@@ -469,7 +513,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 448361
     },
     {
       "id": "R-JS-046",
@@ -478,7 +523,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 51962
     },
     {
       "id": "R-JS-047",
@@ -487,7 +533,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 53916
     },
     {
       "id": "R-JS-048",
@@ -496,7 +543,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 49687
     },
     {
       "id": "R-JS-049",
@@ -505,7 +553,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 58928
     },
     {
       "id": "R-JS-050",
@@ -514,7 +563,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 41871
     },
     {
       "id": "R-JS-051",
@@ -523,7 +573,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 42657
     },
     {
       "id": "R-JS-052",
@@ -532,7 +583,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 48275
     },
     {
       "id": "R-JS-053",
@@ -541,7 +593,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 41560
     },
     {
       "id": "R-JS-054",
@@ -550,7 +603,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 60379
     },
     {
       "id": "R-JS-055",
@@ -559,7 +613,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 66593
     },
     {
       "id": "R-JS-056",
@@ -568,7 +623,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 106591
     },
     {
       "id": "R-JS-057",
@@ -577,7 +633,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 54298
     },
     {
       "id": "R-JS-058",
@@ -586,7 +643,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 47136
     },
     {
       "id": "R-JS-059",
@@ -595,7 +653,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 84799
     },
     {
       "id": "R-JS-060",
@@ -604,7 +663,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 70996
     },
     {
       "id": "R-JS-061",
@@ -613,7 +673,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 55582
     },
     {
       "id": "R-JS-062",
@@ -622,7 +683,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 54616
     },
     {
       "id": "R-JS-063",
@@ -631,7 +693,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 523765
     },
     {
       "id": "R-JS-064",
@@ -640,7 +703,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 48058
     },
     {
       "id": "R-JS-065",
@@ -649,7 +713,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 113242
     },
     {
       "id": "R-JS-066",
@@ -658,7 +723,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 100778
     },
     {
       "id": "R-JS-067",
@@ -667,7 +733,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 80833
     },
     {
       "id": "R-JS-068",
@@ -676,7 +743,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 48890
     },
     {
       "id": "R-JS-069",
@@ -685,7 +753,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 608800
     },
     {
       "id": "R-JS-070",
@@ -694,7 +763,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 31672
     },
     {
       "id": "R-JS-071",
@@ -703,7 +773,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 57931
     },
     {
       "id": "R-JS-072",
@@ -712,7 +783,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 251168
     },
     {
       "id": "R-JS-073",
@@ -721,7 +793,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5106
     },
     {
       "id": "R-JS-074",
@@ -730,7 +803,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 8680
     },
     {
       "id": "R-JS-075",
@@ -739,7 +813,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1332
     },
     {
       "id": "R-JS-076",
@@ -748,7 +823,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1923
     },
     {
       "id": "R-JS-077",
@@ -757,7 +833,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16929
     },
     {
       "id": "R-JS-078",
@@ -766,7 +843,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 4721
     },
     {
       "id": "R-JS-079",
@@ -775,7 +853,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5802
     },
     {
       "id": "R-JS-080",
@@ -784,7 +863,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 36660
     },
     {
       "id": "R-JS-081",
@@ -793,7 +873,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 924
     },
     {
       "id": "R-JS-082",
@@ -802,7 +883,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 62829
     },
     {
       "id": "R-JS-083",
@@ -811,7 +893,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 58715
     },
     {
       "id": "R-JS-084",
@@ -820,7 +903,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 247
     },
     {
       "id": "R-JS-085",
@@ -829,7 +913,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 720
     },
     {
       "id": "R-JS-086",
@@ -838,7 +923,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 38086
     },
     {
       "id": "R-JS-087",
@@ -847,7 +933,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 97735
     },
     {
       "id": "R-JS-088",
@@ -856,7 +943,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 54474
     },
     {
       "id": "R-JS-089",
@@ -865,7 +953,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16289
     },
     {
       "id": "R-JS-090",
@@ -874,7 +963,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16289
     },
     {
       "id": "R-JS-091",
@@ -883,7 +973,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 86759
     },
     {
       "id": "R-JS-092",
@@ -892,7 +983,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 17503
     },
     {
       "id": "R-JS-093",
@@ -901,7 +993,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 3645
     },
     {
       "id": "R-JS-094",
@@ -910,7 +1003,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 95147
     },
     {
       "id": "R-JS-095",
@@ -919,7 +1013,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 4455
     },
     {
       "id": "R-JS-096",
@@ -928,7 +1023,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 11700
     },
     {
       "id": "R-JS-097",
@@ -937,7 +1033,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 12101
     },
     {
       "id": "R-JS-098",
@@ -946,7 +1043,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 9895
     },
     {
       "id": "R-JS-099",
@@ -955,7 +1053,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1324
     },
     {
       "id": "R-JS-100",
@@ -964,7 +1063,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 30200
     },
     {
       "id": "R-JS-101",
@@ -973,7 +1073,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 10110
     },
     {
       "id": "R-JS-102",
@@ -982,7 +1083,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 92102
     },
     {
       "id": "R-JS-103",
@@ -991,7 +1093,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 11167
     },
     {
       "id": "R-JS-104",
@@ -1000,7 +1103,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 14011
     },
     {
       "id": "R-JS-105",
@@ -1009,7 +1113,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 2088
     },
     {
       "id": "R-JS-106",
@@ -1018,7 +1123,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 505
     },
     {
       "id": "R-JS-107",
@@ -1027,7 +1133,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 3772
     },
     {
       "id": "R-JS-108",
@@ -1036,7 +1143,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 40804
     },
     {
       "id": "R-JS-109",
@@ -1045,7 +1153,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 69535
     },
     {
       "id": "R-JS-110",
@@ -1054,7 +1163,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 127255
     },
     {
       "id": "R-JS-111",
@@ -1063,7 +1173,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 125214
     },
     {
       "id": "R-JS-112",
@@ -1072,7 +1183,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 23138
     },
     {
       "id": "R-JS-113",
@@ -1081,7 +1193,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 41665
     },
     {
       "id": "R-JS-114",
@@ -1090,7 +1203,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 251290
     },
     {
       "id": "R-JS-115",
@@ -1099,7 +1213,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 211538
     },
     {
       "id": "R-JS-116",
@@ -1108,7 +1223,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 38353
     },
     {
       "id": "R-JS-117",
@@ -1117,7 +1233,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 49909
     },
     {
       "id": "R-JS-118",
@@ -1126,7 +1243,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 321121
     },
     {
       "id": "R-JS-119",
@@ -1135,7 +1253,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 36925
     },
     {
       "id": "R-JS-120",
@@ -1144,7 +1263,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1652978
     },
     {
       "id": "R-JS-121",
@@ -1153,7 +1273,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 47784
     },
     {
       "id": "R-JS-122",
@@ -1162,7 +1283,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 58807
     },
     {
       "id": "R-JS-123",
@@ -1171,7 +1293,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 47425
     },
     {
       "id": "R-JS-124",
@@ -1180,7 +1303,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 43978
     },
     {
       "id": "R-JS-125",
@@ -1189,7 +1313,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 70133
     },
     {
       "id": "R-JS-126",
@@ -1198,7 +1323,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 169441
     },
     {
       "id": "R-JS-127",
@@ -1207,7 +1333,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 50473
     },
     {
       "id": "R-JS-128",
@@ -1216,7 +1343,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 10473
     },
     {
       "id": "R-JS-129",
@@ -1225,7 +1353,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 68395
     },
     {
       "id": "R-JS-130",
@@ -1234,7 +1363,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 774
     },
     {
       "id": "R-JS-131",
@@ -1243,7 +1373,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 970
     },
     {
       "id": "R-JS-132",
@@ -1252,7 +1383,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 27990
     },
     {
       "id": "R-JS-133",
@@ -1261,7 +1393,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 342
     },
     {
       "id": "R-JS-134",
@@ -1270,7 +1403,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 65800
     },
     {
       "id": "R-JS-135",
@@ -1279,7 +1413,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 30563
     },
     {
       "id": "R-JS-136",
@@ -1288,7 +1423,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 120845
     },
     {
       "id": "R-JS-137",
@@ -1297,7 +1433,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 62177
     },
     {
       "id": "R-JS-138",
@@ -1306,7 +1443,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 124284
     },
     {
       "id": "R-JS-139",
@@ -1315,7 +1453,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 167168
     },
     {
       "id": "R-JS-140",
@@ -1324,7 +1463,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1013
     },
     {
       "id": "R-JS-141",
@@ -1333,7 +1473,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 23721
     },
     {
       "id": "R-JS-142",
@@ -1342,7 +1483,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 48556
     },
     {
       "id": "R-JS-143",
@@ -1351,7 +1493,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1180
     },
     {
       "id": "R-JS-144",
@@ -1360,7 +1503,8 @@
       "format": "js",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 40677
     },
     {
       "id": "R-CSS-001",
@@ -1369,7 +1513,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1752008
     },
     {
       "id": "R-CSS-002",
@@ -1378,7 +1523,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 10696
     },
     {
       "id": "R-CSS-003",
@@ -1387,7 +1533,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 27818
     },
     {
       "id": "R-CSS-004",
@@ -1396,7 +1543,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 4932
     },
     {
       "id": "R-CSS-005",
@@ -1405,7 +1553,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 235
     },
     {
       "id": "R-CSS-006",
@@ -1414,7 +1563,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 28594
     },
     {
       "id": "R-CSS-007",
@@ -1423,7 +1573,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 269
     },
     {
       "id": "R-CSS-008",
@@ -1432,7 +1583,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 28586
     },
     {
       "id": "R-CSS-009",
@@ -1441,7 +1593,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 88151
     },
     {
       "id": "R-CSS-010",
@@ -1450,7 +1603,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 109488
     },
     {
       "id": "R-CSS-011",
@@ -1459,7 +1613,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 44114
     },
     {
       "id": "R-CSS-012",
@@ -1468,7 +1623,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 236
     },
     {
       "id": "R-CSS-013",
@@ -1477,7 +1633,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 7975
     },
     {
       "id": "R-CSS-014",
@@ -1486,7 +1643,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 87813
     },
     {
       "id": "R-CSS-015",
@@ -1495,7 +1653,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 8281
     },
     {
       "id": "R-CSS-016",
@@ -1504,7 +1663,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 10798
     },
     {
       "id": "R-CSS-017",
@@ -1513,7 +1673,8 @@
       "format": "css",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 130634
     },
     {
       "id": "R-FONT-001",
@@ -1522,7 +1683,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 28076
     },
     {
       "id": "R-FONT-002",
@@ -1531,7 +1693,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 33516
     },
     {
       "id": "R-FONT-003",
@@ -1540,7 +1703,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 63632
     },
     {
       "id": "R-FONT-004",
@@ -1549,7 +1713,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 6912
     },
     {
       "id": "R-FONT-005",
@@ -1558,7 +1723,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 7716
     },
     {
       "id": "R-FONT-006",
@@ -1567,7 +1733,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 12368
     },
     {
       "id": "R-FONT-007",
@@ -1576,7 +1743,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 6908
     },
     {
       "id": "R-FONT-008",
@@ -1585,7 +1753,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 7656
     },
     {
       "id": "R-FONT-009",
@@ -1594,7 +1763,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 12344
     },
     {
       "id": "R-FONT-010",
@@ -1603,7 +1773,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 11348
     },
     {
       "id": "R-FONT-011",
@@ -1612,7 +1783,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 13296
     },
     {
       "id": "R-FONT-012",
@@ -1621,7 +1793,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 19584
     },
     {
       "id": "R-FONT-013",
@@ -1630,7 +1803,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 11316
     },
     {
       "id": "R-FONT-014",
@@ -1639,7 +1813,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 13208
     },
     {
       "id": "R-FONT-015",
@@ -1648,7 +1823,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 19572
     },
     {
       "id": "R-FONT-016",
@@ -1657,7 +1833,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 25324
     },
     {
       "id": "R-FONT-017",
@@ -1666,7 +1843,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 29912
     },
     {
       "id": "R-FONT-018",
@@ -1675,7 +1853,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 51336
     },
     {
       "id": "R-FONT-019",
@@ -1684,7 +1863,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16780
     },
     {
       "id": "R-FONT-020",
@@ -1693,7 +1873,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 19412
     },
     {
       "id": "R-FONT-021",
@@ -1702,7 +1883,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 32968
     },
     {
       "id": "R-FONT-022",
@@ -1711,7 +1893,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16988
     },
     {
       "id": "R-FONT-023",
@@ -1720,7 +1903,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 19676
     },
     {
       "id": "R-FONT-024",
@@ -1729,7 +1913,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 30772
     },
     {
       "id": "R-FONT-025",
@@ -1738,7 +1923,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 53580
     },
     {
       "id": "R-FONT-026",
@@ -1747,7 +1933,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16400
     },
     {
       "id": "R-FONT-027",
@@ -1756,7 +1943,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 18668
     },
     {
       "id": "R-FONT-028",
@@ -1765,7 +1953,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 31196
     },
     {
       "id": "R-FONT-029",
@@ -1774,7 +1963,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16440
     },
     {
       "id": "R-FONT-030",
@@ -1783,7 +1973,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 18748
     },
     {
       "id": "R-FONT-031",
@@ -1792,7 +1983,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 31308
     },
     {
       "id": "R-FONT-032",
@@ -1801,7 +1993,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 12216
     },
     {
       "id": "R-FONT-033",
@@ -1810,7 +2003,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 14408
     },
     {
       "id": "R-FONT-034",
@@ -1819,7 +2013,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 24504
     },
     {
       "id": "R-FONT-035",
@@ -1828,7 +2023,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 12028
     },
     {
       "id": "R-FONT-036",
@@ -1837,7 +2033,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 14112
     },
     {
       "id": "R-FONT-037",
@@ -1846,7 +2043,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 22364
     },
     {
       "id": "R-FONT-038",
@@ -1855,7 +2053,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 10344
     },
     {
       "id": "R-FONT-039",
@@ -1864,7 +2063,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 12316
     },
     {
       "id": "R-FONT-040",
@@ -1873,7 +2073,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 19436
     },
     {
       "id": "R-FONT-041",
@@ -1882,7 +2083,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 9644
     },
     {
       "id": "R-FONT-042",
@@ -1891,7 +2093,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 10588
     },
     {
       "id": "R-FONT-043",
@@ -1900,7 +2103,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16648
     },
     {
       "id": "R-FONT-044",
@@ -1909,7 +2113,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5468
     },
     {
       "id": "R-FONT-045",
@@ -1918,7 +2123,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 6496
     },
     {
       "id": "R-FONT-046",
@@ -1927,7 +2133,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 12228
     },
     {
       "id": "R-FONT-047",
@@ -1936,7 +2143,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5208
     },
     {
       "id": "R-FONT-048",
@@ -1945,7 +2153,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 6188
     },
     {
       "id": "R-FONT-049",
@@ -1954,7 +2163,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 11508
     },
     {
       "id": "R-FONT-050",
@@ -1963,7 +2173,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 4420
     },
     {
       "id": "R-FONT-051",
@@ -1972,7 +2183,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 7588
     },
     {
       "id": "R-FONT-052",
@@ -1981,7 +2193,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 4928
     },
     {
       "id": "R-FONT-053",
@@ -1990,7 +2203,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5980
     },
     {
       "id": "R-FONT-054",
@@ -1999,7 +2213,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 10364
     },
     {
       "id": "R-FONT-055",
@@ -2008,7 +2223,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 13568
     },
     {
       "id": "R-FONT-056",
@@ -2017,7 +2233,8 @@
       "format": "woff",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 16028
     },
     {
       "id": "R-FONT-057",
@@ -2026,7 +2243,8 @@
       "format": "ttf",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 27556
     },
     {
       "id": "R-FONT-058",
@@ -2035,7 +2253,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 49040
     },
     {
       "id": "R-FONT-059",
@@ -2044,7 +2263,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 51304
     },
     {
       "id": "R-FONT-060",
@@ -2053,7 +2273,8 @@
       "format": "woff2",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 56196
     },
     {
       "id": "R-IMG-001",
@@ -2062,7 +2283,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 4234
     },
     {
       "id": "R-IMG-002",
@@ -2071,7 +2293,8 @@
       "format": "png",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 3613
     },
     {
       "id": "R-IMG-003",
@@ -2080,7 +2303,8 @@
       "format": "png",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 5152
     },
     {
       "id": "R-IMG-004",
@@ -2089,7 +2313,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 609592
     },
     {
       "id": "R-IMG-005",
@@ -2098,7 +2323,8 @@
       "format": "png",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 2406
     },
     {
       "id": "R-IMG-006",
@@ -2107,7 +2333,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 4381
     },
     {
       "id": "R-IMG-007",
@@ -2116,7 +2343,8 @@
       "format": "webp",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 88346
     },
     {
       "id": "R-IMG-008",
@@ -2125,7 +2353,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 3805
     },
     {
       "id": "R-IMG-009",
@@ -2134,7 +2363,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 916
     },
     {
       "id": "R-IMG-010",
@@ -2143,7 +2373,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 1371
     },
     {
       "id": "R-IMG-011",
@@ -2152,7 +2383,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 928
     },
     {
       "id": "R-IMG-012",
@@ -2161,7 +2393,8 @@
       "format": "svg",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 521
     },
     {
       "id": "R-DOC-001",
@@ -2170,7 +2403,8 @@
       "format": "html",
       "available_in_capture": true,
       "content_committed": false,
-      "analysis_status": "captured_source_not_redistributed"
+      "analysis_status": "captured_source_not_redistributed",
+      "bytes": 13236
     }
   ],
   "caveats": [

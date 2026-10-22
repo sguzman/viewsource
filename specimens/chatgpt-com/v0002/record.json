@@ -351,7 +351,8 @@
         "resource_id": "R-JS-001",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 286092
       }
     },
     {
@@ -369,7 +370,8 @@
         "resource_id": "R-JS-002",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5756
       }
     },
     {
@@ -387,7 +389,8 @@
         "resource_id": "R-JS-003",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 219486
       }
     },
     {
@@ -405,7 +408,8 @@
         "resource_id": "R-JS-004",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1109107
       }
     },
     {
@@ -423,7 +427,8 @@
         "resource_id": "R-JS-005",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 53376
       }
     },
     {
@@ -441,7 +446,8 @@
         "resource_id": "R-JS-006",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 573
       }
     },
     {
@@ -459,7 +465,8 @@
         "resource_id": "R-JS-007",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 653675
       }
     },
     {
@@ -477,7 +484,8 @@
         "resource_id": "R-JS-008",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 100233
       }
     },
     {
@@ -495,7 +503,8 @@
         "resource_id": "R-JS-009",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 75251
       }
     },
     {
@@ -513,7 +522,8 @@
         "resource_id": "R-JS-010",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 366407
       }
     },
     {
@@ -531,7 +541,8 @@
         "resource_id": "R-JS-011",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 2179367
       }
     },
     {
@@ -549,7 +560,8 @@
         "resource_id": "R-JS-012",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 187683
       }
     },
     {
@@ -567,7 +579,8 @@
         "resource_id": "R-JS-013",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 573954
       }
     },
     {
@@ -585,7 +598,8 @@
         "resource_id": "R-JS-014",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 40605
       }
     },
     {
@@ -603,7 +617,8 @@
         "resource_id": "R-JS-015",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1257698
       }
     },
     {
@@ -621,7 +636,8 @@
         "resource_id": "R-JS-016",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 239517
       }
     },
     {
@@ -639,7 +655,8 @@
         "resource_id": "R-JS-017",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 428761
       }
     },
     {
@@ -657,7 +674,8 @@
         "resource_id": "R-JS-018",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 2103147
       }
     },
     {
@@ -675,7 +693,8 @@
         "resource_id": "R-JS-019",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1230826
       }
     },
     {
@@ -693,7 +712,8 @@
         "resource_id": "R-JS-020",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 98723
       }
     },
     {
@@ -711,7 +731,8 @@
         "resource_id": "R-JS-021",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 472940
       }
     },
     {
@@ -729,7 +750,8 @@
         "resource_id": "R-JS-022",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 39783
       }
     },
     {
@@ -747,7 +769,8 @@
         "resource_id": "R-JS-023",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 244
       }
     },
     {
@@ -765,7 +788,8 @@
         "resource_id": "R-JS-024",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1763198
       }
     },
     {
@@ -783,7 +807,8 @@
         "resource_id": "R-JS-025",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 2121464
       }
     },
     {
@@ -801,7 +826,8 @@
         "resource_id": "R-JS-026",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 546942
       }
     },
     {
@@ -819,7 +845,8 @@
         "resource_id": "R-JS-027",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 2042380
       }
     },
     {
@@ -837,7 +864,8 @@
         "resource_id": "R-JS-028",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 89478
       }
     },
     {
@@ -855,7 +883,8 @@
         "resource_id": "R-JS-029",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 736905
       }
     },
     {
@@ -873,7 +902,8 @@
         "resource_id": "R-JS-030",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 7843
       }
     },
     {
@@ -891,7 +921,8 @@
         "resource_id": "R-JS-031",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 25083
       }
     },
     {
@@ -909,7 +940,8 @@
         "resource_id": "R-JS-032",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 105875
       }
     },
     {
@@ -927,7 +959,8 @@
         "resource_id": "R-JS-033",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5620
       }
     },
     {
@@ -945,7 +978,8 @@
         "resource_id": "R-JS-034",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 25071
       }
     },
     {
@@ -963,7 +997,8 @@
         "resource_id": "R-JS-035",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 79609
       }
     },
     {
@@ -981,7 +1016,8 @@
         "resource_id": "R-JS-036",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 345
       }
     },
     {
@@ -999,7 +1035,8 @@
         "resource_id": "R-JS-037",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 11228
       }
     },
     {
@@ -1017,7 +1054,8 @@
         "resource_id": "R-JS-038",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 206
       }
     },
     {
@@ -1035,7 +1073,8 @@
         "resource_id": "R-JS-039",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 17370
       }
     },
     {
@@ -1053,7 +1092,8 @@
         "resource_id": "R-JS-040",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 43842
       }
     },
     {
@@ -1071,7 +1111,8 @@
         "resource_id": "R-JS-041",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 70529
       }
     },
     {
@@ -1089,7 +1130,8 @@
         "resource_id": "R-JS-042",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 68462
       }
     },
     {
@@ -1107,7 +1149,8 @@
         "resource_id": "R-JS-043",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 46561
       }
     },
     {
@@ -1125,7 +1168,8 @@
         "resource_id": "R-JS-044",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 125730
       }
     },
     {
@@ -1143,7 +1187,8 @@
         "resource_id": "R-JS-045",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 448361
       }
     },
     {
@@ -1161,7 +1206,8 @@
         "resource_id": "R-JS-046",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 51962
       }
     },
     {
@@ -1179,7 +1225,8 @@
         "resource_id": "R-JS-047",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 53916
       }
     },
     {
@@ -1197,7 +1244,8 @@
         "resource_id": "R-JS-048",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 49687
       }
     },
     {
@@ -1215,7 +1263,8 @@
         "resource_id": "R-JS-049",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 58928
       }
     },
     {
@@ -1233,7 +1282,8 @@
         "resource_id": "R-JS-050",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 41871
       }
     },
     {
@@ -1251,7 +1301,8 @@
         "resource_id": "R-JS-051",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 42657
       }
     },
     {
@@ -1269,7 +1320,8 @@
         "resource_id": "R-JS-052",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 48275
       }
     },
     {
@@ -1287,7 +1339,8 @@
         "resource_id": "R-JS-053",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 41560
       }
     },
     {
@@ -1305,7 +1358,8 @@
         "resource_id": "R-JS-054",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 60379
       }
     },
     {
@@ -1323,7 +1377,8 @@
         "resource_id": "R-JS-055",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 66593
       }
     },
     {
@@ -1341,7 +1396,8 @@
         "resource_id": "R-JS-056",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 106591
       }
     },
     {
@@ -1359,7 +1415,8 @@
         "resource_id": "R-JS-057",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 54298
       }
     },
     {
@@ -1377,7 +1434,8 @@
         "resource_id": "R-JS-058",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 47136
       }
     },
     {
@@ -1395,7 +1453,8 @@
         "resource_id": "R-JS-059",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 84799
       }
     },
     {
@@ -1413,7 +1472,8 @@
         "resource_id": "R-JS-060",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 70996
       }
     },
     {
@@ -1431,7 +1491,8 @@
         "resource_id": "R-JS-061",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 55582
       }
     },
     {
@@ -1449,7 +1510,8 @@
         "resource_id": "R-JS-062",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 54616
       }
     },
     {
@@ -1467,7 +1529,8 @@
         "resource_id": "R-JS-063",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 523765
       }
     },
     {
@@ -1485,7 +1548,8 @@
         "resource_id": "R-JS-064",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 48058
       }
     },
     {
@@ -1503,7 +1567,8 @@
         "resource_id": "R-JS-065",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 113242
       }
     },
     {
@@ -1521,7 +1586,8 @@
         "resource_id": "R-JS-066",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 100778
       }
     },
     {
@@ -1539,7 +1605,8 @@
         "resource_id": "R-JS-067",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 80833
       }
     },
     {
@@ -1557,7 +1624,8 @@
         "resource_id": "R-JS-068",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 48890
       }
     },
     {
@@ -1575,7 +1643,8 @@
         "resource_id": "R-JS-069",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 608800
       }
     },
     {
@@ -1593,7 +1662,8 @@
         "resource_id": "R-JS-070",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 31672
       }
     },
     {
@@ -1611,7 +1681,8 @@
         "resource_id": "R-JS-071",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 57931
       }
     },
     {
@@ -1629,7 +1700,8 @@
         "resource_id": "R-JS-072",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 251168
       }
     },
     {
@@ -1647,7 +1719,8 @@
         "resource_id": "R-JS-073",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5106
       }
     },
     {
@@ -1665,7 +1738,8 @@
         "resource_id": "R-JS-074",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 8680
       }
     },
     {
@@ -1683,7 +1757,8 @@
         "resource_id": "R-JS-075",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1332
       }
     },
     {
@@ -1701,7 +1776,8 @@
         "resource_id": "R-JS-076",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1923
       }
     },
     {
@@ -1719,7 +1795,8 @@
         "resource_id": "R-JS-077",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16929
       }
     },
     {
@@ -1737,7 +1814,8 @@
         "resource_id": "R-JS-078",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 4721
       }
     },
     {
@@ -1755,7 +1833,8 @@
         "resource_id": "R-JS-079",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5802
       }
     },
     {
@@ -1773,7 +1852,8 @@
         "resource_id": "R-JS-080",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 36660
       }
     },
     {
@@ -1791,7 +1871,8 @@
         "resource_id": "R-JS-081",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 924
       }
     },
     {
@@ -1809,7 +1890,8 @@
         "resource_id": "R-JS-082",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 62829
       }
     },
     {
@@ -1827,7 +1909,8 @@
         "resource_id": "R-JS-083",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 58715
       }
     },
     {
@@ -1845,7 +1928,8 @@
         "resource_id": "R-JS-084",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 247
       }
     },
     {
@@ -1863,7 +1947,8 @@
         "resource_id": "R-JS-085",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 720
       }
     },
     {
@@ -1881,7 +1966,8 @@
         "resource_id": "R-JS-086",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 38086
       }
     },
     {
@@ -1899,7 +1985,8 @@
         "resource_id": "R-JS-087",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 97735
       }
     },
     {
@@ -1917,7 +2004,8 @@
         "resource_id": "R-JS-088",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 54474
       }
     },
     {
@@ -1935,7 +2023,8 @@
         "resource_id": "R-JS-089",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16289
       }
     },
     {
@@ -1953,7 +2042,8 @@
         "resource_id": "R-JS-090",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16289
       }
     },
     {
@@ -1971,7 +2061,8 @@
         "resource_id": "R-JS-091",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 86759
       }
     },
     {
@@ -1989,7 +2080,8 @@
         "resource_id": "R-JS-092",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 17503
       }
     },
     {
@@ -2007,7 +2099,8 @@
         "resource_id": "R-JS-093",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 3645
       }
     },
     {
@@ -2025,7 +2118,8 @@
         "resource_id": "R-JS-094",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 95147
       }
     },
     {
@@ -2043,7 +2137,8 @@
         "resource_id": "R-JS-095",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 4455
       }
     },
     {
@@ -2061,7 +2156,8 @@
         "resource_id": "R-JS-096",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 11700
       }
     },
     {
@@ -2079,7 +2175,8 @@
         "resource_id": "R-JS-097",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 12101
       }
     },
     {
@@ -2097,7 +2194,8 @@
         "resource_id": "R-JS-098",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 9895
       }
     },
     {
@@ -2115,7 +2213,8 @@
         "resource_id": "R-JS-099",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1324
       }
     },
     {
@@ -2133,7 +2232,8 @@
         "resource_id": "R-JS-100",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 30200
       }
     },
     {
@@ -2151,7 +2251,8 @@
         "resource_id": "R-JS-101",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 10110
       }
     },
     {
@@ -2169,7 +2270,8 @@
         "resource_id": "R-JS-102",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 92102
       }
     },
     {
@@ -2187,7 +2289,8 @@
         "resource_id": "R-JS-103",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 11167
       }
     },
     {
@@ -2205,7 +2308,8 @@
         "resource_id": "R-JS-104",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 14011
       }
     },
     {
@@ -2223,7 +2327,8 @@
         "resource_id": "R-JS-105",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 2088
       }
     },
     {
@@ -2241,7 +2346,8 @@
         "resource_id": "R-JS-106",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 505
       }
     },
     {
@@ -2259,7 +2365,8 @@
         "resource_id": "R-JS-107",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 3772
       }
     },
     {
@@ -2277,7 +2384,8 @@
         "resource_id": "R-JS-108",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 40804
       }
     },
     {
@@ -2295,7 +2403,8 @@
         "resource_id": "R-JS-109",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 69535
       }
     },
     {
@@ -2313,7 +2422,8 @@
         "resource_id": "R-JS-110",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 127255
       }
     },
     {
@@ -2331,7 +2441,8 @@
         "resource_id": "R-JS-111",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 125214
       }
     },
     {
@@ -2349,7 +2460,8 @@
         "resource_id": "R-JS-112",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 23138
       }
     },
     {
@@ -2367,7 +2479,8 @@
         "resource_id": "R-JS-113",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 41665
       }
     },
     {
@@ -2385,7 +2498,8 @@
         "resource_id": "R-JS-114",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 251290
       }
     },
     {
@@ -2403,7 +2517,8 @@
         "resource_id": "R-JS-115",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 211538
       }
     },
     {
@@ -2421,7 +2536,8 @@
         "resource_id": "R-JS-116",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 38353
       }
     },
     {
@@ -2439,7 +2555,8 @@
         "resource_id": "R-JS-117",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 49909
       }
     },
     {
@@ -2457,7 +2574,8 @@
         "resource_id": "R-JS-118",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 321121
       }
     },
     {
@@ -2475,7 +2593,8 @@
         "resource_id": "R-JS-119",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 36925
       }
     },
     {
@@ -2493,7 +2612,8 @@
         "resource_id": "R-JS-120",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1652978
       }
     },
     {
@@ -2511,7 +2631,8 @@
         "resource_id": "R-JS-121",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 47784
       }
     },
     {
@@ -2529,7 +2650,8 @@
         "resource_id": "R-JS-122",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 58807
       }
     },
     {
@@ -2547,7 +2669,8 @@
         "resource_id": "R-JS-123",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 47425
       }
     },
     {
@@ -2565,7 +2688,8 @@
         "resource_id": "R-JS-124",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 43978
       }
     },
     {
@@ -2583,7 +2707,8 @@
         "resource_id": "R-JS-125",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 70133
       }
     },
     {
@@ -2601,7 +2726,8 @@
         "resource_id": "R-JS-126",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 169441
       }
     },
     {
@@ -2619,7 +2745,8 @@
         "resource_id": "R-JS-127",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 50473
       }
     },
     {
@@ -2637,7 +2764,8 @@
         "resource_id": "R-JS-128",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 10473
       }
     },
     {
@@ -2655,7 +2783,8 @@
         "resource_id": "R-JS-129",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 68395
       }
     },
     {
@@ -2673,7 +2802,8 @@
         "resource_id": "R-JS-130",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 774
       }
     },
     {
@@ -2691,7 +2821,8 @@
         "resource_id": "R-JS-131",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 970
       }
     },
     {
@@ -2709,7 +2840,8 @@
         "resource_id": "R-JS-132",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 27990
       }
     },
     {
@@ -2727,7 +2859,8 @@
         "resource_id": "R-JS-133",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 342
       }
     },
     {
@@ -2745,7 +2878,8 @@
         "resource_id": "R-JS-134",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 65800
       }
     },
     {
@@ -2763,7 +2897,8 @@
         "resource_id": "R-JS-135",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 30563
       }
     },
     {
@@ -2781,7 +2916,8 @@
         "resource_id": "R-JS-136",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 120845
       }
     },
     {
@@ -2799,7 +2935,8 @@
         "resource_id": "R-JS-137",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 62177
       }
     },
     {
@@ -2817,7 +2954,8 @@
         "resource_id": "R-JS-138",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 124284
       }
     },
     {
@@ -2835,7 +2973,8 @@
         "resource_id": "R-JS-139",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 167168
       }
     },
     {
@@ -2853,7 +2992,8 @@
         "resource_id": "R-JS-140",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1013
       }
     },
     {
@@ -2871,7 +3011,8 @@
         "resource_id": "R-JS-141",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 23721
       }
     },
     {
@@ -2889,7 +3030,8 @@
         "resource_id": "R-JS-142",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 48556
       }
     },
     {
@@ -2907,7 +3049,8 @@
         "resource_id": "R-JS-143",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1180
       }
     },
     {
@@ -2925,7 +3068,8 @@
         "resource_id": "R-JS-144",
         "format": "js",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 40677
       }
     },
     {
@@ -2943,7 +3087,8 @@
         "resource_id": "R-CSS-001",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1752008
       }
     },
     {
@@ -2961,7 +3106,8 @@
         "resource_id": "R-CSS-002",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 10696
       }
     },
     {
@@ -2979,7 +3125,8 @@
         "resource_id": "R-CSS-003",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 27818
       }
     },
     {
@@ -2997,7 +3144,8 @@
         "resource_id": "R-CSS-004",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 4932
       }
     },
     {
@@ -3015,7 +3163,8 @@
         "resource_id": "R-CSS-005",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 235
       }
     },
     {
@@ -3033,7 +3182,8 @@
         "resource_id": "R-CSS-006",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 28594
       }
     },
     {
@@ -3051,7 +3201,8 @@
         "resource_id": "R-CSS-007",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 269
       }
     },
     {
@@ -3069,7 +3220,8 @@
         "resource_id": "R-CSS-008",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 28586
       }
     },
     {
@@ -3087,7 +3239,8 @@
         "resource_id": "R-CSS-009",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 88151
       }
     },
     {
@@ -3105,7 +3258,8 @@
         "resource_id": "R-CSS-010",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 109488
       }
     },
     {
@@ -3123,7 +3277,8 @@
         "resource_id": "R-CSS-011",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 44114
       }
     },
     {
@@ -3141,7 +3296,8 @@
         "resource_id": "R-CSS-012",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 236
       }
     },
     {
@@ -3159,7 +3315,8 @@
         "resource_id": "R-CSS-013",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 7975
       }
     },
     {
@@ -3177,7 +3334,8 @@
         "resource_id": "R-CSS-014",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 87813
       }
     },
     {
@@ -3195,7 +3353,8 @@
         "resource_id": "R-CSS-015",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 8281
       }
     },
     {
@@ -3213,7 +3372,8 @@
         "resource_id": "R-CSS-016",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 10798
       }
     },
     {
@@ -3231,7 +3391,8 @@
         "resource_id": "R-CSS-017",
         "format": "css",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 130634
       }
     },
     {
@@ -3249,7 +3410,8 @@
         "resource_id": "R-FONT-001",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 28076
       }
     },
     {
@@ -3267,7 +3429,8 @@
         "resource_id": "R-FONT-002",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 33516
       }
     },
     {
@@ -3285,7 +3448,8 @@
         "resource_id": "R-FONT-003",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 63632
       }
     },
     {
@@ -3303,7 +3467,8 @@
         "resource_id": "R-FONT-004",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 6912
       }
     },
     {
@@ -3321,7 +3486,8 @@
         "resource_id": "R-FONT-005",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 7716
       }
     },
     {
@@ -3339,7 +3505,8 @@
         "resource_id": "R-FONT-006",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 12368
       }
     },
     {
@@ -3357,7 +3524,8 @@
         "resource_id": "R-FONT-007",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 6908
       }
     },
     {
@@ -3375,7 +3543,8 @@
         "resource_id": "R-FONT-008",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 7656
       }
     },
     {
@@ -3393,7 +3562,8 @@
         "resource_id": "R-FONT-009",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 12344
       }
     },
     {
@@ -3411,7 +3581,8 @@
         "resource_id": "R-FONT-010",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 11348
       }
     },
     {
@@ -3429,7 +3600,8 @@
         "resource_id": "R-FONT-011",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 13296
       }
     },
     {
@@ -3447,7 +3619,8 @@
         "resource_id": "R-FONT-012",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 19584
       }
     },
     {
@@ -3465,7 +3638,8 @@
         "resource_id": "R-FONT-013",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 11316
       }
     },
     {
@@ -3483,7 +3657,8 @@
         "resource_id": "R-FONT-014",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 13208
       }
     },
     {
@@ -3501,7 +3676,8 @@
         "resource_id": "R-FONT-015",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 19572
       }
     },
     {
@@ -3519,7 +3695,8 @@
         "resource_id": "R-FONT-016",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 25324
       }
     },
     {
@@ -3537,7 +3714,8 @@
         "resource_id": "R-FONT-017",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 29912
       }
     },
     {
@@ -3555,7 +3733,8 @@
         "resource_id": "R-FONT-018",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 51336
       }
     },
     {
@@ -3573,7 +3752,8 @@
         "resource_id": "R-FONT-019",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16780
       }
     },
     {
@@ -3591,7 +3771,8 @@
         "resource_id": "R-FONT-020",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 19412
       }
     },
     {
@@ -3609,7 +3790,8 @@
         "resource_id": "R-FONT-021",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 32968
       }
     },
     {
@@ -3627,7 +3809,8 @@
         "resource_id": "R-FONT-022",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16988
       }
     },
     {
@@ -3645,7 +3828,8 @@
         "resource_id": "R-FONT-023",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 19676
       }
     },
     {
@@ -3663,7 +3847,8 @@
         "resource_id": "R-FONT-024",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 30772
       }
     },
     {
@@ -3681,7 +3866,8 @@
         "resource_id": "R-FONT-025",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 53580
       }
     },
     {
@@ -3699,7 +3885,8 @@
         "resource_id": "R-FONT-026",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16400
       }
     },
     {
@@ -3717,7 +3904,8 @@
         "resource_id": "R-FONT-027",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 18668
       }
     },
     {
@@ -3735,7 +3923,8 @@
         "resource_id": "R-FONT-028",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 31196
       }
     },
     {
@@ -3753,7 +3942,8 @@
         "resource_id": "R-FONT-029",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16440
       }
     },
     {
@@ -3771,7 +3961,8 @@
         "resource_id": "R-FONT-030",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 18748
       }
     },
     {
@@ -3789,7 +3980,8 @@
         "resource_id": "R-FONT-031",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 31308
       }
     },
     {
@@ -3807,7 +3999,8 @@
         "resource_id": "R-FONT-032",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 12216
       }
     },
     {
@@ -3825,7 +4018,8 @@
         "resource_id": "R-FONT-033",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 14408
       }
     },
     {
@@ -3843,7 +4037,8 @@
         "resource_id": "R-FONT-034",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 24504
       }
     },
     {
@@ -3861,7 +4056,8 @@
         "resource_id": "R-FONT-035",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 12028
       }
     },
     {
@@ -3879,7 +4075,8 @@
         "resource_id": "R-FONT-036",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 14112
       }
     },
     {
@@ -3897,7 +4094,8 @@
         "resource_id": "R-FONT-037",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 22364
       }
     },
     {
@@ -3915,7 +4113,8 @@
         "resource_id": "R-FONT-038",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 10344
       }
     },
     {
@@ -3933,7 +4132,8 @@
         "resource_id": "R-FONT-039",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 12316
       }
     },
     {
@@ -3951,7 +4151,8 @@
         "resource_id": "R-FONT-040",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 19436
       }
     },
     {
@@ -3969,7 +4170,8 @@
         "resource_id": "R-FONT-041",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 9644
       }
     },
     {
@@ -3987,7 +4189,8 @@
         "resource_id": "R-FONT-042",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 10588
       }
     },
     {
@@ -4005,7 +4208,8 @@
         "resource_id": "R-FONT-043",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16648
       }
     },
     {
@@ -4023,7 +4227,8 @@
         "resource_id": "R-FONT-044",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5468
       }
     },
     {
@@ -4041,7 +4246,8 @@
         "resource_id": "R-FONT-045",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 6496
       }
     },
     {
@@ -4059,7 +4265,8 @@
         "resource_id": "R-FONT-046",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 12228
       }
     },
     {
@@ -4077,7 +4284,8 @@
         "resource_id": "R-FONT-047",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5208
       }
     },
     {
@@ -4095,7 +4303,8 @@
         "resource_id": "R-FONT-048",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 6188
       }
     },
     {
@@ -4113,7 +4322,8 @@
         "resource_id": "R-FONT-049",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 11508
       }
     },
     {
@@ -4131,7 +4341,8 @@
         "resource_id": "R-FONT-050",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 4420
       }
     },
     {
@@ -4149,7 +4360,8 @@
         "resource_id": "R-FONT-051",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 7588
       }
     },
     {
@@ -4167,7 +4379,8 @@
         "resource_id": "R-FONT-052",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 4928
       }
     },
     {
@@ -4185,7 +4398,8 @@
         "resource_id": "R-FONT-053",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5980
       }
     },
     {
@@ -4203,7 +4417,8 @@
         "resource_id": "R-FONT-054",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 10364
       }
     },
     {
@@ -4221,7 +4436,8 @@
         "resource_id": "R-FONT-055",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 13568
       }
     },
     {
@@ -4239,7 +4455,8 @@
         "resource_id": "R-FONT-056",
         "format": "woff",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 16028
       }
     },
     {
@@ -4257,7 +4474,8 @@
         "resource_id": "R-FONT-057",
         "format": "ttf",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 27556
       }
     },
     {
@@ -4275,7 +4493,8 @@
         "resource_id": "R-FONT-058",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 49040
       }
     },
     {
@@ -4293,7 +4512,8 @@
         "resource_id": "R-FONT-059",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 51304
       }
     },
     {
@@ -4311,7 +4531,8 @@
         "resource_id": "R-FONT-060",
         "format": "woff2",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 56196
       }
     },
     {
@@ -4329,7 +4550,8 @@
         "resource_id": "R-IMG-001",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 4234
       }
     },
     {
@@ -4347,7 +4569,8 @@
         "resource_id": "R-IMG-002",
         "format": "png",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 3613
       }
     },
     {
@@ -4365,7 +4588,8 @@
         "resource_id": "R-IMG-003",
         "format": "png",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 5152
       }
     },
     {
@@ -4383,7 +4607,8 @@
         "resource_id": "R-IMG-004",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 609592
       }
     },
     {
@@ -4401,7 +4626,8 @@
         "resource_id": "R-IMG-005",
         "format": "png",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 2406
       }
     },
     {
@@ -4419,7 +4645,8 @@
         "resource_id": "R-IMG-006",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 4381
       }
     },
     {
@@ -4437,7 +4664,8 @@
         "resource_id": "R-IMG-007",
         "format": "webp",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 88346
       }
     },
     {
@@ -4455,7 +4683,8 @@
         "resource_id": "R-IMG-008",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 3805
       }
     },
     {
@@ -4473,7 +4702,8 @@
         "resource_id": "R-IMG-009",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 916
       }
     },
     {
@@ -4491,7 +4721,8 @@
         "resource_id": "R-IMG-010",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 1371
       }
     },
     {
@@ -4509,7 +4740,8 @@
         "resource_id": "R-IMG-011",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 928
       }
     },
     {
@@ -4527,7 +4759,8 @@
         "resource_id": "R-IMG-012",
         "format": "svg",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 521
       }
     },
     {
@@ -4545,7 +4778,8 @@
         "resource_id": "R-DOC-001",
         "format": "html",
         "content_available_in_capture": true,
-        "content_committed": false
+        "content_committed": false,
+        "bytes": 13236
       }
     }
   ],
