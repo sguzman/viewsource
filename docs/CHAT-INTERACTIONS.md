@@ -314,3 +314,17 @@ saved JavaScript without executing it and emits allowlisted transport method
 and callback signals without source text or network details. The dedicated
 report includes manually reviewed behavior and explicit remaining gaps; AST
 signal presence alone is not sufficient evidence of a working live path.
+
+## Generation-to-transport source linkage
+
+Further inspection of the original captured module found a direct call
+from the shared generation dispatcher (R-JS-018, function ordinal 9032)
+to the completion stream service's `startCompletionStream` method. The
+caller passes callbacks for decoded events, raw stream data, stream
+completion, premature termination, recoverable errors, response metadata
+and resumption. A recovery pathway reads the currently selected node and
+message mapping from client state. This is a concrete source-level bridge
+between the generation call graph and the transport lifecycle, not merely
+shared vocabulary. A direct scoped-service call in the bundle still does
+not prove the real service delivered a response or that a backend persisted
+a particular message graph.
