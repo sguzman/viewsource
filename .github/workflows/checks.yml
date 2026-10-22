@@ -13,6 +13,10 @@ jobs:
         run: python3 scripts/validate.py
       - name: Exercise offline capture workflow
         run: python3 -m unittest discover -s tests -v
+      - name: Verify offline JavaScript AST research probe
+        run: |
+          npm install --no-save --no-package-lock --no-audit --no-fund --ignore-scripts acorn@8.15.0
+          node scripts/static_ast_probe.cjs --self-test
       - name: Check atlas JavaScript syntax
         run: |
           node --check site/explorer.js
