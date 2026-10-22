@@ -6,7 +6,7 @@
   "capture_scope": "saved_archive",
   "processed_at": "2026-10-22T01:01:18.692Z",
   "previous_version": 1,
-  "status": "researching",
+  "status": "reviewed",
   "coverage": {
     "intake": "analyzed",
     "markup": "analyzed",
@@ -25,7 +25,7 @@
     "security": "analyzed",
     "architecture": "analyzed",
     "comparison": "analyzed",
-    "review": "pending"
+    "review": "analyzed"
   },
   "components": [
     {
@@ -5780,6 +5780,179 @@
         "keyframes": 164,
         "reduced_motion_preludes": 168
       }
+    },
+    {
+      "id": "deep-api-families",
+      "kind": "Script",
+      "name": "Source API-family census",
+      "description": "Whitelisted source-API group counts, not ownership.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-051",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "ast_nodes": 9273632,
+        "network_bundle_count": 54
+      }
+    },
+    {
+      "id": "deep-load-system",
+      "kind": "Dependency",
+      "name": "Static loading system",
+      "description": "Preload and parsed import declarations, not execution.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-052",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "modulepreloads": 72,
+        "static_imports": 236
+      }
+    },
+    {
+      "id": "deep-event-reaction",
+      "kind": "Interaction",
+      "name": "Event/reactivity mechanisms",
+      "description": "Listener and observer callsite inventory.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-053",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "listener_add": 997,
+        "listener_remove": 822
+      }
+    },
+    {
+      "id": "deep-browser-coordination",
+      "kind": "Storage",
+      "name": "Browser persistence and channels",
+      "description": "Method/constructor signatures, no stored values.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-054",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "storage_reads": 118,
+        "worker_constructors": 8
+      }
+    },
+    {
+      "id": "deep-transport-signatures",
+      "kind": "APIReference",
+      "name": "Network and streaming syntax",
+      "description": "Nearest lexical scope relationships without observed requests.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-055",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "fetch_calls": 178,
+        "fetch_stream_scopes": 5
+      }
+    },
+    {
+      "id": "deep-class-vocabulary",
+      "kind": "StyleSheet",
+      "name": "CSS and DOM vocabulary overlap",
+      "description": "Heuristic class-token intersection, not selector execution.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-056",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "distinct_dom_classes": 744,
+        "overlap": 359
+      }
+    },
+    {
+      "id": "deep-font-roles",
+      "kind": "Font",
+      "name": "Font metadata roles",
+      "description": "Math and interface font groups from saved metadata.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-057",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "math": 57,
+        "interface": 3
+      }
+    },
+    {
+      "id": "deep-static-a11y",
+      "kind": "AccessibilityFeature",
+      "name": "Static accessibility cues",
+      "description": "ARIA and focus/motion stylesheet clues.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-058",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "aria_labels": 152
+      }
+    },
+    {
+      "id": "deep-byte-budget",
+      "kind": "PerformanceSignal",
+      "name": "Saved resource byte budget",
+      "description": "Byte concentration, not a measured waterfall.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-059",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "script_bytes": 28066928,
+        "top_five_share": 0.3638
+      }
+    },
+    {
+      "id": "deep-observability-boundary",
+      "kind": "Metadata",
+      "name": "Unobservable runtime ownership",
+      "description": "Original component/handler mapping cannot be verified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-060",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "runtime_trace": false
+      }
+    },
+    {
+      "id": "deep-source-flow",
+      "kind": "Metadata",
+      "name": "Conditional cross-layer system model",
+      "description": "An explanatory evidence graph, not runtime execution.",
+      "evidence": {
+        "evidence_class": "inferred_static",
+        "confidence": "medium",
+        "evidence_ref": "E2-061",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "verified_execution": false
+      }
     }
   ],
   "relationships": [
@@ -9016,6 +9189,138 @@
         "evidence_ref": "E2-050",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "javascript",
+      "to": "deep-api-families",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-051",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "deep-load-system",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-052",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "deep-event-reaction",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-053",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "deep-browser-coordination",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-054",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "deep-transport-signatures",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-055",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "deep-class-vocabulary",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-056",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "stylesheets",
+      "to": "deep-class-vocabulary",
+      "predicate": "styles",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-056",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "fonts",
+      "to": "deep-font-roles",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-057",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "a11y",
+      "to": "deep-static-a11y",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-058",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "website",
+      "to": "deep-byte-budget",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-059",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "website",
+      "to": "deep-observability-boundary",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-060",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "website",
+      "to": "deep-source-flow",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-061",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -9518,6 +9823,136 @@
         "evidence_ref": "E2-050",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-051",
+      "statement": "An offline syntax-tree pass over 144 JavaScript resources traversed 9,273,632 AST nodes, including 120,699 function-like nodes. Fixed API-signature categories overlap across 48 React-like, 54 network, 46 browser-state, 89 event/observer, seven media and seventeen worker-related bundles. These groups are code-study candidates, not verified module ownership.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-051",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-052",
+      "statement": "Saved HTML declares 72 captured modulepreloads; JavaScript contains 236 static imports and eighteen dynamic import expressions. A rendered document, initialization scripts and React-like source hooks are also present. The ZIP cannot show the executed load/hydration sequence.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-052",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-053",
+      "statement": "AST-level callsites include 997 event-listener registrations, 822 removals, 144 animation-frame calls and 67, 90 and 57 mutation, resize and intersection observer constructors. It also contains 133 useState and 134 useEffect calls by fixed-name syntax; no individual DOM control-to-handler mapping was observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-053",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-054",
+      "statement": "Generic storage method signatures include 118 getItem, 102 setItem and 78 removeItem calls; message-related constructs include eleven BroadcastChannel, 25 MessageChannel, eight Worker and 77 postMessage patterns. Twelve lexical function scopes combine worker/messaging and channel signatures. Stored values and actual messages were not observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-054",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-055",
+      "statement": "The syntax trees contain 178 fetch calls, 244 AbortController, sixteen getReader, 33 TextDecoder, six WebSocket and three peer-connection call/constructor signatures. Five lexical function scopes contain both fetch and streaming signatures, and six contain fetch and abort signatures. No actual API transaction or retry policy is established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-055",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-056",
+      "statement": "The saved DOM has 2,183 elements, 1,688 with classes and 744 distinct class names. A plain unescaped CSS class-selector scan finds 3,776 distinct selector class names in 16,983 rules; 359 names overlap the DOM and 1,666 class-bearing DOM elements have one or more overlapping labels. These are vocabulary matches, not verified computed selectors or component ownership.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-056",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-057",
+      "statement": "Font metadata from sixty files separates 57 mathematical typesetting assets and three interface sans faces across 21 WOFF2, twenty WOFF and nineteen TTF containers. Font weight metadata includes forty weight-400, eighteen weight-700, one weight-500 and one weight-600 files. Actual glyph usage is unknown.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-057",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-058",
+      "statement": "Static accessibility indicators include 152 aria-label, 93 aria-expanded, 61 aria-haspopup attributes, a dialog and textbox role, CSS focus-visible selectors and reduced-motion conditions. Their presence does not demonstrate actual keyboard navigation or assistive-technology announcements.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-058",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-059",
+      "statement": "Captured resources comprise 28,066,928 script bytes, 2,341,104 stylesheet bytes, 1,169,636 font bytes, 725,265 image bytes and 13,236 supplemental-document bytes. The five largest scripts comprise 36.38% of captured JavaScript bytes and the ten largest comprise 57.71%; actual download, cache and render timing were not measured.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-059",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-060",
+      "statement": "Semantic DOM landmarks and selector overlap cannot identify original framework components, props or output owners. This saved ZIP lacks executable event ownership traces and captured source maps; precise component and route-loader linkage remains unsupported.",
+      "evidence": {
+        "evidence_class": "inferred_static",
+        "confidence": "medium",
+        "evidence_ref": "E2-060",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-061",
+      "statement": "The project-authored architectural story connects observed markup, preload declarations, parsed import syntax, CSS vocabulary and browser API callsite classes. The flow is explicitly explanatory and conditional, not a browser execution trace.",
+      "evidence": {
+        "evidence_class": "inferred_static",
+        "confidence": "medium",
+        "evidence_ref": "E2-061",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-062",
+      "statement": "The Specimen Atlas presents original evidence-backed HTML, CSS, JavaScript, component, logic, flow, state, asset and research chapters, plus sanitized interactive graphs and queue views.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-062",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-063",
+      "statement": "The final source-scope audit distinguishes statically investigable mechanisms from component ownership, live interactions, authentication, media transfers, dynamic accessibility, measured performance and product release comparisons that the ZIP cannot establish.",
+      "evidence": {
+        "evidence_class": "inferred_static",
+        "confidence": "medium",
+        "evidence_ref": "E2-063",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
@@ -9530,6 +9965,8 @@
     "v0001 and v0002 differ in capture depth and DOM state; numeric differences are not verified product changes.",
     "The final static review cannot attribute minified event listeners to individual rendered controls or prove focus behavior without runtime or sourcemap evidence.",
     "The ZIP contains source patterns for media, network, security and client storage; captured code is not evidence that any feature was enabled, called successfully, or executed on this page.",
-    "Rendered-state and archive-depth differences between v0001 and v0002 cannot be interpreted as verified product changes."
+    "Rendered-state and archive-depth differences between v0001 and v0002 cannot be interpreted as verified product changes.",
+    "Offline research identifies structural mechanisms but not actual runtime component, storage, network, permission or accessibility behavior.",
+    "Like-for-like site release comparison and live performance timing cannot be derived from unmatched capture states."
   ]
 }

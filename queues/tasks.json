@@ -927,12 +927,12 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Identify component boundaries",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-architecture",
         "chatgpt-com-v0002-followup-deep-document-map"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of identify component boundaries, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Original framework component boundaries cannot be recovered from landmark nesting and minified resources. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-component-props",
@@ -941,11 +941,11 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Study observable component inputs",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-shell-components"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study observable component inputs, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Component prop ownership cannot be connected to saved DOM instances. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-component-output",
@@ -954,11 +954,11 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Study component rendering outputs",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-component-props"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study component rendering outputs, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Cannot map rendered output to its individual source render function. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-script-entry",
@@ -1032,11 +1032,14 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Classify bundles by responsibility",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-dependency-graph"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of classify bundles by responsibility, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for classify bundles by responsibility. Evidence E2-051; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-051"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-module-ownership",
@@ -1045,12 +1048,12 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Relate modules to UI subsystems",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups",
         "chatgpt-com-v0002-followup-deep-shell-components"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of relate modules to ui subsystems, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "API family and parsed import links do not uniquely assign source modules to product features. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-third-party-libraries",
@@ -1059,11 +1062,11 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Classify vendored library code",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of classify vendored library code, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Vendored library boundaries and versions cannot be reliably distinguished by the available fixed-name signatures. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-lazy-loading",
@@ -1072,11 +1075,14 @@
       "profile": "followup",
       "queue": "performance",
       "title": "Study preload and dynamic load paths",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-dependency-graph"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study preload and dynamic load paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for study preload and dynamic load paths. Evidence E2-052; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-052"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-render-pipeline",
@@ -1085,12 +1091,15 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Explain rendering and hydration",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-script-entry",
         "chatgpt-com-v0002-followup-deep-document-map"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of explain rendering and hydration, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for explain rendering and hydration. Evidence E2-052; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-052"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-router-loader",
@@ -1099,12 +1108,12 @@
       "profile": "followup",
       "queue": "navigation",
       "title": "Trace route-loader lifecycle",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-route-graph",
         "chatgpt-com-v0002-followup-deep-render-pipeline"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace route-loader lifecycle, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Route loader execution order and dataflow were not captured. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-event-catalog",
@@ -1113,11 +1122,14 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Classify event handler types",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of classify event handler types, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for classify event handler types. Evidence E2-053; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-053"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-event-to-control",
@@ -1126,12 +1138,12 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Connect handlers to controls with evidence",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-event-catalog",
         "chatgpt-com-v0002-followup-deep-shell-components"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of connect handlers to controls with evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "No reliable event listener ownership map for captured DOM controls exists. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-form-lifecycle",
@@ -1140,11 +1152,11 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Trace input and submission",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-event-to-control"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace input and submission, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Live form validation and submission behavior was not observed. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-upload-lifecycle",
@@ -1153,11 +1165,11 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Trace file selection and upload",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-form-lifecycle"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace file selection and upload, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "File inputs are present but upload contracts, payloads and outcomes are not observed. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-dialog-lifecycle",
@@ -1166,11 +1178,11 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Trace dialog and keyboard pathways",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-event-to-control"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace dialog and keyboard pathways, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "No live keyboard, focus, dialog-open/close or escape trace exists. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-reactivity",
@@ -1179,12 +1191,15 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Understand observers and rerender triggers",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-event-catalog",
         "chatgpt-com-v0002-followup-deep-render-pipeline"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of understand observers and rerender triggers, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for understand observers and rerender triggers. Evidence E2-053; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-053"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-state-ownership",
@@ -1193,11 +1208,11 @@
       "profile": "followup",
       "queue": "state",
       "title": "Locate state stores and owners",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of locate state stores and owners, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Storage API syntax does not identify application store and component ownership. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-state-transitions",
@@ -1206,12 +1221,12 @@
       "profile": "followup",
       "queue": "state",
       "title": "Trace state transitions",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-state-ownership",
         "chatgpt-com-v0002-followup-deep-event-catalog"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace state transitions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "No actual state transitions or action/reducer traces were captured. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-persistence",
@@ -1220,11 +1235,14 @@
       "profile": "followup",
       "queue": "state",
       "title": "Study persistence lifetimes",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-state-ownership"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study persistence lifetimes, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for study persistence lifetimes. Evidence E2-054; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-054"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-cross-tab",
@@ -1233,11 +1251,14 @@
       "profile": "followup",
       "queue": "state",
       "title": "Trace cross-tab messaging",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-persistence"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace cross-tab messaging, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for trace cross-tab messaging. Evidence E2-054; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-054"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-serialized-state",
@@ -1246,12 +1267,12 @@
       "profile": "followup",
       "queue": "state",
       "title": "Trace initial serialized route state",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-router-loader",
         "chatgpt-com-v0002-followup-deep-state-ownership"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace initial serialized route state, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Private serialized data consumption and source ownership cannot be traced without disclosing or executing sensitive input. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-request-builders",
@@ -1260,11 +1281,14 @@
       "profile": "followup",
       "queue": "network",
       "title": "Classify request construction",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of classify request construction, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for classify request construction. Evidence E2-055; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-055"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-network-streams",
@@ -1273,11 +1297,14 @@
       "profile": "followup",
       "queue": "network",
       "title": "Trace streaming response parsing",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-request-builders"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace streaming response parsing, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for trace streaming response parsing. Evidence E2-055; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-055"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-realtime-clients",
@@ -1286,11 +1313,14 @@
       "profile": "followup",
       "queue": "network",
       "title": "Classify realtime transports",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-request-builders"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of classify realtime transports, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for classify realtime transports. Evidence E2-055; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-055"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-retry-and-errors",
@@ -1299,11 +1329,11 @@
       "profile": "followup",
       "queue": "network",
       "title": "Study retries and error paths",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-request-builders"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study retries and error paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Try/catch and abort syntax cannot prove retry rules or network-error paths. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-authentication-boundary",
@@ -1312,11 +1342,11 @@
       "profile": "followup",
       "queue": "security",
       "title": "Map client trust and auth boundaries",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-request-builders"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of map client trust and auth boundaries, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Effective authentication or server-side authorization mechanisms are not observable. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-permission-gates",
@@ -1325,11 +1355,11 @@
       "profile": "followup",
       "queue": "security",
       "title": "Inspect feature and permission guards",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-authentication-boundary"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of inspect feature and permission guards, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static media API mentions do not prove runtime permission gates or consent. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-security-policy",
@@ -1404,12 +1434,12 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Map tokens to components",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-token-taxonomy",
         "chatgpt-com-v0002-followup-deep-shell-components"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of map tokens to components, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "CSS/DOM vocabulary overlap cannot prove which component owns each token or its computed style. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-color-modes",
@@ -1418,12 +1448,15 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Explain theme preference and application",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-token-taxonomy",
         "chatgpt-com-v0002-followup-deep-state-ownership"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of explain theme preference and application, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for explain theme preference and application. Evidence E2-056; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-056"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-responsive-matrix",
@@ -1448,12 +1481,15 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Map responsive grids and shells",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-responsive-matrix",
         "chatgpt-com-v0002-followup-deep-document-map"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of map responsive grids and shells, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for map responsive grids and shells. Evidence E2-056; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-056"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-motion",
@@ -1478,12 +1514,15 @@
       "profile": "followup",
       "queue": "assets",
       "title": "Identify font families and variants",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-assets",
         "chatgpt-com-v0002-followup-deep-scope"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of identify font families and variants, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for identify font families and variants. Evidence E2-057; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-057"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-icon-systems",
@@ -1509,12 +1548,15 @@
       "profile": "followup",
       "queue": "assets",
       "title": "Link image resources to UI roles",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-icon-systems",
         "chatgpt-com-v0002-followup-deep-document-map"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of link image resources to ui roles, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for link image resources to ui roles. Evidence E2-057; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-057"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-media-journeys",
@@ -1523,11 +1565,11 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Trace media and audio source pathways",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of trace media and audio source pathways, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Media constructors do not prove successful end-to-end microphone or screen-capture operation. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-worker-messaging",
@@ -1536,12 +1578,15 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Study workers and messaging",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups",
         "chatgpt-com-v0002-followup-deep-cross-tab"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study workers and messaging, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for study workers and messaging. Evidence E2-054; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-054"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-a11y-landmarks",
@@ -1567,12 +1612,15 @@
       "profile": "followup",
       "queue": "accessibility",
       "title": "Analyze focus and accessible-state hooks",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-a11y-landmarks",
         "chatgpt-com-v0002-followup-deep-event-to-control"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of analyze focus and accessible-state hooks, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for analyze focus and accessible-state hooks. Evidence E2-058; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-058"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-a11y-dynamics",
@@ -1581,11 +1629,11 @@
       "profile": "followup",
       "queue": "accessibility",
       "title": "Separate static from live accessibility",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-a11y-controls"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of separate static from live accessibility, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "No live focus, keyboard, screen-reader or announcement trace is in the capture. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-performance-budget",
@@ -1594,12 +1642,15 @@
       "profile": "followup",
       "queue": "performance",
       "title": "Estimate loading and critical paths",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-lazy-loading",
         "chatgpt-com-v0002-followup-deep-style-entry"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of estimate loading and critical paths, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for estimate loading and critical paths. Evidence E2-059; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-059"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-bundle-hotspots",
@@ -1608,11 +1659,14 @@
       "profile": "followup",
       "queue": "performance",
       "title": "Classify largest bundle responsibilities",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-module-groups"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of classify largest bundle responsibilities, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for classify largest bundle responsibilities. Evidence E2-059; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-059"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-capture-gaps",
@@ -1638,12 +1692,12 @@
       "profile": "followup",
       "queue": "evolution",
       "title": "Compare evidence across capture versions",
-      "status": "queued",
+      "status": "not_observable",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-document-map",
         "chatgpt-com-v0002-followup-deep-dependency-graph"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of compare evidence across capture versions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "The two captures are not same-state, same-depth snapshots, so product changes cannot be isolated. This task is outside the supplied ZIP's observable scope."
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-system-flow",
@@ -1652,13 +1706,16 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Create an end-to-end UI and data story",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-render-pipeline",
         "chatgpt-com-v0002-followup-deep-state-transitions",
         "chatgpt-com-v0002-followup-deep-network-streams"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of create an end-to-end ui and data story, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for create an end-to-end ui and data story. Evidence E2-061; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-061"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-public-narrative",
@@ -1667,13 +1724,16 @@
       "profile": "followup",
       "queue": "quality",
       "title": "Write linked and evidence-led story chapters",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-system-flow",
         "chatgpt-com-v0002-followup-deep-layout-topology",
         "chatgpt-com-v0002-followup-deep-a11y-controls"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of write linked and evidence-led story chapters, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for write linked and evidence-led story chapters. Evidence E2-062; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-062"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-limitations-audit",
@@ -1682,12 +1742,15 @@
       "profile": "followup",
       "queue": "quality",
       "title": "Audit and qualify unknowns",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-public-narrative",
         "chatgpt-com-v0002-followup-deep-capture-gaps"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of audit and qualify unknowns, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Static source analysis completed for audit and qualify unknowns. Evidence E2-063; live behavior or exact ownership not asserted.",
+      "evidence_refs": [
+        "E2-063"
+      ]
     }
   ]
 }
