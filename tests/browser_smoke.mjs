@@ -39,6 +39,9 @@ try {
 
   assert.equal(await page.locator(".chat-source-card").count(),10);
   assert.deepEqual(await page.locator(".chat-ast-stat strong").allInnerTexts(), ["144","333","41"]);
+  assert.equal(await page.locator(".chat-implementation-card").count(),5);
+  assert.ok((await page.locator(".chat-implementation-totals").innerText()).includes("13 AST pattern matches"));
+  await page.locator(".chat-implementation-card").first().locator("summary").click();
   await page.locator(".chat-ast-details summary").click();
   assert.ok((await page.locator(".chat-ast-details").innerText()).includes("Unresolved:"));
   assert.equal(await page.locator(".chat-research-task").count(),18);
