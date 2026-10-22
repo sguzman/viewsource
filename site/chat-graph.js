@@ -384,7 +384,8 @@ window.ViewsourceChatGraph = (() => {
         row.append(element("summary","",task.title),
           element("p","graph-caption",
             "Area: "+task.queue+" · Status: "+task.status+
-            " · Dependencies: "+task.dependency_count));
+            " · Dependencies: "+task.dependency_count+
+            " · Evidence findings: "+task.evidence_count));
         grouped.append(row);
       });
       block.append(grouped);section.append(block);
