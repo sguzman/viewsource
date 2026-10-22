@@ -1772,7 +1772,7 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Classify implementation functions and exported contracts",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-entrypoints"
       ],
@@ -1785,7 +1785,7 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Reconstruct function call and dependency chains",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-functions",
         "chatgpt-com-v0002-architecture"
@@ -1939,7 +1939,7 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Chat: Trace feature controls to implementation",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-events"
       ],

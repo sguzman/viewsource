@@ -282,3 +282,12 @@ are now manually reviewed, with their source ordinals and export statuses
 recorded. This completes the **local call-edge classification for this
 specific generation dispatcher**, not the overall ChatGPT static research.
 Cross-module callers, live execution and backend behavior remain open.
+
+## Static tracing work in progress
+
+The newly generated tasks for implementation-function classification,
+direct source call tracing, and chat feature operations have moved from
+`queued` to `in_progress`. Source-anchored evidence now exists, but none
+has been marked `done` because caller coverage and complete handler
+ownership have not met the acceptance requirements. Other static tasks
+remain queued, and runtime observation remains optional.
