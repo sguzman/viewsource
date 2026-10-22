@@ -57,6 +57,44 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertNotIn("assets/a.js", process.stdout)
             self.assertNotIn(str(archive), process.stdout)
 
+    def test_transport_trace_extracts_methods_without_source_text(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-transport.zip"
+            sentinel = "PRIVATE_ONLY_SYNTHETIC_TEST_SENTINEL"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("fictional/transport.js",
+                    "class Transport {"
+                    "startCompletionStream(x){"
+                    "const h=this.createCompletionStreamHandlers({onEvent:x.onEvent});"
+                    "return Request.streamPost('fictional',h)}"
+                    "resumeCompletionStream(x){const h=this.createCompletionStreamHandlers("
+                    "{resumeState:x,onResume:x.onResume});"
+                    "return x.topic?h.startFromTopic(x.topic):Request.streamPost('fictional',h)}"
+                    "cancelStream(x){this.completionCancellations.delete(x);"
+                    "Request.cancelStream(x)}"
+                    "getStreamOptions(){return {parseEventData:x=>x}}"
+                    "createCompletionStreamHandlers(x){return {"
+                    "onPrematureTermination:x.onPrematureTermination,retryConfig:{maxRetryCount:3}}}"
+                    "};const unused='" + sentinel + "';")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--transport-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Synthetic transport probe failed")
+            report = json.loads(result.stdout)
+            self.assertEqual(report["parsed_bundles"], 1)
+            self.assertEqual(report["failed_bundles"], 0)
+            self.assertEqual(len(report["method_records"]), 5)
+            methods = {m["method"]: m for m in report["method_records"]}
+            self.assertIn("stream_post", methods["startCompletionStream"]["operations"])
+            self.assertIn("topic_start", methods["resumeCompletionStream"]["operations"])
+            self.assertIn("request_cancel", methods["cancelStream"]["operations"])
+            self.assertIn("event_decoder", methods["getStreamOptions"]["operations"])
+            self.assertIn("retry_configuration",
+                          methods["createCompletionStreamHandlers"]["operations"])
+            self.assertNotIn(sentinel, result.stdout)
+            self.assertNotIn(str(archive), result.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
