@@ -139,7 +139,7 @@ class ChatExportStructureTests(unittest.TestCase):
              "mapping": {"root": {"parent": None, "children": [], "message": None}},
              "current_node": "root"},
             {"messages": [{"body": "fictional" * 3000}, {"body": "[{},]"}]},
-            {"mixed": [1, {"items": [True, False, None]}, "escaped \\" ]"},
+            {"mixed": [1, {"items": [True, False, None]}, "plain synthetic text"]},
         ]
         payload = json.dumps(records, ensure_ascii=False)
         expected = mod.inspect_export(records)
