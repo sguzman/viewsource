@@ -7,6 +7,56 @@ window.ViewsourceChatGraph = (() => {
     return node;
   };
   const add=(container,...children)=>{children.forEach(child=>container.append(child));return container;};
+  function renderSyntheticExample(){
+    const block=element("div","chat-subsection");
+    block.append(element("h3","","Explore a synthetic message graph"));
+    block.append(element("p","graph-caption",
+      "Invented messages and relationships, not a reconstruction of ChatGPT's storage model. Switch the visible response or display a separate candidate fork."));
+    const controls=element("div","chat-example-controls");
+    const replyOne=element("button","chat-example-choice","Select response A");
+    const replyTwo=element("button","chat-example-choice","Select response B");
+    const fork=element("button","chat-example-choice","Show separate conversation fork");
+    [replyOne,replyTwo,fork].forEach(button=>{button.type="button";controls.append(button);});
+    const figure=element("div","chat-example-figure");
+    const status=element("p","chat-example-status");
+    let selected="a",forkVisible=false;
+    const makeNode=(label,detail,active=false)=>{
+      const node=element("div","chat-example-node");
+      node.setAttribute("data-selected",String(active));
+      node.append(element("strong","",label),element("small","",detail));
+      return node;
+    };
+    function draw(){
+      replyOne.setAttribute("aria-pressed",String(selected==="a"));
+      replyTwo.setAttribute("aria-pressed",String(selected==="b"));
+      fork.setAttribute("aria-pressed",String(forkVisible));
+      figure.replaceChildren();
+      const first=element("div","chat-example-conversation");
+      first.append(element("div","chat-example-caption","Conversation A · synthetic"));
+      const top=element("div","chat-example-row");
+      top.append(makeNode("User message","Node U1",true));
+      const second=element("div","chat-example-row chat-example-alternatives");
+      second.append(makeNode("Assistant response A","Node A1",selected==="a"));
+      second.append(makeNode("Assistant response B","Node A2",selected==="b"));
+      first.append(top,element("div","chat-example-connector","↓"),second);
+      figure.append(first);
+      if(forkVisible){
+        const secondChat=element("div","chat-example-conversation");
+        secondChat.append(element("div","chat-example-caption","Conversation B · synthetic fork"),
+          element("p","graph-caption","Candidate link from U1; no claim that the original messages are copied."),
+          makeNode("Separate conversation root","Node B1",true));
+        figure.append(secondChat);
+      }
+      status.textContent="Selected path in A: U1 → "+(selected==="a"?"A1":"A2")+
+        (forkVisible?" · Candidate cross-conversation fork shown":"");
+    }
+    replyOne.addEventListener("click",()=>{selected="a";draw();});
+    replyTwo.addEventListener("click",()=>{selected="b";draw();});
+    fork.addEventListener("click",()=>{forkVisible=!forkVisible;draw();});
+    draw();
+    block.append(controls,figure,status);
+    return block;
+  }
   function render(record){
     const feature=record.visuals?.feature_graph;
     if(!feature)return element("p","result-empty","No chat interaction graph for this capture.");
@@ -129,6 +179,7 @@ window.ViewsourceChatGraph = (() => {
         list.append(detail);
       });
       domain.append(list);section.append(domain);
+      section.append(renderSyntheticExample());
     }
     const machineTabs=element("div","chat-machine-tabs");
     const stateHost=element("div","chat-states");
