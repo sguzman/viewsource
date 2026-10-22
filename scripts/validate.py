@@ -38,7 +38,7 @@ def validate() -> list[str]:
     require(model["ontology_version"] == "1.0.0", "Unexpected ontology version")
     for extension in ("technology_inventory", "feature_graph"):
         artifact = model.get("extension_artifacts", {}).get(extension, {})
-        require(artifact.get("format_version") == 1 and (ROOT / artifact.get("schema", "__missing__")).is_file(),
+        require(artifact.get("format_version") == 1 and (Path(__file__).resolve().parents[1] / artifact.get("schema", "__missing__")).is_file(),
                 f"Missing or invalid ontology extension: {extension}")
     kinds = model["component_kinds"]
     relations = model["relations"]

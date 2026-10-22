@@ -5958,7 +5958,7 @@
       "id": "tech-react",
       "kind": "Dependency",
       "name": "React",
-      "description": "Captured source markers associated with UI framework. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for React: React runtime element/fragment/portal markers in multiple bundles, and React DOM references. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
@@ -5967,14 +5967,20 @@
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "UI framework"
+        "domain": "UI framework",
+        "technology_id": "react",
+        "technology_category": "UI framework",
+        "detection_strength": "strong",
+        "proposed_role": "Client component rendering",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-react-router",
       "kind": "Dependency",
       "name": "React Router",
-      "description": "Captured source markers associated with Routing. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for React Router: React Router package references, router context and RouterProvider identifiers. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
@@ -5983,14 +5989,20 @@
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Routing"
+        "domain": "Routing",
+        "technology_id": "react-router",
+        "technology_category": "Routing",
+        "detection_strength": "strong",
+        "proposed_role": "Client routing and route data conventions",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-tailwind-css",
       "kind": "Dependency",
       "name": "Tailwind CSS",
-      "description": "Captured source markers associated with CSS framework. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for Tailwind CSS: Tailwind custom-property prefix, utility layer and framework references in saved stylesheets. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
@@ -5999,14 +6011,20 @@
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "CSS framework"
+        "domain": "CSS framework",
+        "technology_id": "tailwind-css",
+        "technology_category": "CSS framework",
+        "detection_strength": "strong",
+        "proposed_role": "Utility-oriented stylesheet generation",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-radix-ui",
       "kind": "Dependency",
       "name": "Radix UI",
-      "description": "Captured source markers associated with UI primitives. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for Radix UI: Radix-specific attributes and library identifiers in both JavaScript and CSS. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
@@ -6015,14 +6033,20 @@
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "UI primitives"
+        "domain": "UI primitives",
+        "technology_id": "radix-ui",
+        "technology_category": "UI primitives",
+        "detection_strength": "strong",
+        "proposed_role": "Menu, popup or interactive primitive candidates",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-prosemirror",
       "kind": "Dependency",
       "name": "ProseMirror",
-      "description": "Captured source markers associated with Rich-text editing. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for ProseMirror: ProseMirror-specific runtime and stylesheet markers across multiple saved files. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
@@ -6031,14 +6055,20 @@
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Rich-text editing"
+        "domain": "Rich-text editing",
+        "technology_id": "prosemirror",
+        "technology_category": "Rich-text editing",
+        "detection_strength": "strong",
+        "proposed_role": "Rich-text editing infrastructure",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-katex",
       "kind": "Dependency",
       "name": "KaTeX",
-      "description": "Captured source markers associated with Math rendering. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for KaTeX: KaTeX stylesheet/JavaScript markers and a captured math font corpus. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
@@ -6047,87 +6077,123 @@
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Math rendering"
+        "domain": "Math rendering",
+        "technology_id": "katex",
+        "technology_category": "Math rendering",
+        "detection_strength": "strong",
+        "proposed_role": "Typeset mathematics",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-floating-ui",
       "kind": "Dependency",
       "name": "Floating UI",
-      "description": "Captured source markers associated with Positioning. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for Floating UI: Exact Floating UI naming in two saved JavaScript files. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
-        "confidence": "high",
+        "confidence": "medium",
         "evidence_ref": "E2-064",
         "source_scope": "saved_archive"
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Positioning"
+        "domain": "Positioning",
+        "technology_id": "floating-ui",
+        "technology_category": "Positioning",
+        "detection_strength": "likely",
+        "proposed_role": "Potential floating overlay positioning",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-tanstack-query",
       "kind": "Dependency",
       "name": "TanStack Query",
-      "description": "Captured source markers associated with Client data fetching. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for TanStack Query: QueryClientProvider signature present in saved JavaScript; generic queryKey names alone are insufficient. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
-        "confidence": "high",
+        "confidence": "medium",
         "evidence_ref": "E2-064",
         "source_scope": "saved_archive"
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Client data fetching"
+        "domain": "Client data fetching",
+        "technology_id": "tanstack-query",
+        "technology_category": "Client data fetching",
+        "detection_strength": "likely",
+        "proposed_role": "Potential client query caching and synchronization",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-react-markdown",
       "kind": "Dependency",
       "name": "React Markdown / micromark",
-      "description": "Captured source markers associated with Markdown parsing. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for React Markdown / micromark: React Markdown naming in one JavaScript file and micromark naming in two. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
-        "confidence": "high",
+        "confidence": "medium",
         "evidence_ref": "E2-064",
         "source_scope": "saved_archive"
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Markdown parsing"
+        "domain": "Markdown parsing",
+        "technology_id": "react-markdown",
+        "technology_category": "Markdown rendering",
+        "detection_strength": "likely",
+        "proposed_role": "Potential Markdown parsing and rendering",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-motion",
       "kind": "Dependency",
       "name": "Motion / Framer Motion family",
-      "description": "Captured source markers associated with Animation. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for Motion / Framer Motion family: Motion-value and visual-element implementation signatures in saved JavaScript. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
-        "confidence": "high",
+        "confidence": "medium",
         "evidence_ref": "E2-064",
         "source_scope": "saved_archive"
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Animation"
+        "domain": "Animation",
+        "technology_id": "motion",
+        "technology_category": "Animation",
+        "detection_strength": "likely",
+        "proposed_role": "Potential component animation",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
       "id": "tech-highlight",
       "kind": "Dependency",
       "name": "highlight.js-style classes",
-      "description": "Captured source markers associated with Code highlighting markers. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "description": "Captured source evidence for highlight.js-style classes: hljs-prefixed class references appear in saved CSS and JavaScript. Feature ownership and exact version are not established.",
       "evidence": {
         "evidence_class": "observed_static",
-        "confidence": "high",
+        "confidence": "low",
         "evidence_ref": "E2-064",
         "source_scope": "saved_archive"
       },
       "properties": {
         "study": "technology_inventory.json",
-        "domain": "Code highlighting markers"
+        "domain": "Code highlighting markers",
+        "technology_id": "highlight",
+        "technology_category": "Syntax highlighting",
+        "detection_strength": "indicator",
+        "proposed_role": "Code block highlighting style system",
+        "version_established": false,
+        "inventory_ref": "technology_inventory.json"
       }
     },
     {
