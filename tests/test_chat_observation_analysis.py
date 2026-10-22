@@ -109,6 +109,15 @@ class ObservationAnalysisTests(unittest.TestCase):
         )
         self.assertTrue(all(not x["internal_behavior_verified"] for x in alignment["steps"]))
 
+    def test_nonobserved_result_cannot_align_as_confirmed_even_if_phase_matches(self):
+        doc = self.example()
+        doc["steps"][1]["result"] = "not_observed"
+        doc["steps"][2]["result"] = "inconclusive"
+        alignment = mod.summarize(doc, self.graph)["candidate_sequence_alignment"]
+        self.assertEqual(alignment["steps"][1]["status"], "result_not_observed")
+        self.assertEqual(alignment["steps"][2]["status"], "result_inconclusive")
+        self.assertEqual(alignment["verified_transitions"], 0)
+
     def test_candidate_sequence_flags_state_conflict(self):
         doc = self.example()
         doc["steps"][1]["response_phase"] = "complete"

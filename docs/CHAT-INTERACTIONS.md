@@ -145,3 +145,13 @@ identifier, source message, or per-message comparison is returned. The
 comparator has no CLI and is for deliberate local, synthetic or explicitly
 authorized data processing only; never publish output from a personal export
 without separate review.
+
+## Trustworthy structural event comparisons
+
+The structural trace parser in `validate_chat_observation.py` accepts only
+bounded, unique-key, standards-compliant JSON. Its CLI and the event analyzer
+use fixed error messages rather than printing the supplied path or parser
+fragments. The sequence analyzer treats `not_observed` and `inconclusive`
+results as non-confirming even when a separate coarse state label resembles
+the target of a candidate transition. The before/after labels remain
+independent UI observations; no event alignment proves an internal handler.

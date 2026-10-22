@@ -64,6 +64,13 @@ class StructuralTraceTests(unittest.TestCase):
         data["steps"][0]["message_count_delta"]=True
         self.assertTrue(mod.validate(data))
 
+    def test_strict_json_decoder_rejects_ambiguous_or_large_records(self):
+        for payload in ('{"steps":[], "steps":[]}', '{"v":NaN}', '{"a":{"x":1,"x":2}}'):
+            with self.subTest(payload=payload[:15]), self.assertRaises(ValueError):
+                mod.decode_observation(payload)
+        with self.assertRaises(ValueError):
+            mod.decode_observation(" " * (1024 * 1024 + 1))
+
     def test_non_disposable_input_not_accepted(self):
         data=self.doc()
         data["experiment_type"]="live_account"

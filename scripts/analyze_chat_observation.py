@@ -12,7 +12,7 @@ from collections import Counter
 import json
 from pathlib import Path
 
-from validate_chat_observation import validate
+from validate_chat_observation import validate, decode_observation
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_GRAPH = ROOT / "specimens/chatgpt-com/v0002/chat-interaction.graph.json"
@@ -69,6 +69,12 @@ def compare_sequence(observation: dict, graph: dict) -> dict:
             status = "unmapped"
         elif not comparable:
             status = "insufficient_state_signal"
+        elif step["result"] == "not_observed":
+            # A non-result never confirms a candidate transition, even if
+            # the independently reported coarse phase resembles its target.
+            status = "result_not_observed"
+        elif step["result"] == "inconclusive":
+            status = "result_inconclusive"
         elif len(matches) == 0:
             status = "no_matching_candidate_edge"
         elif len(matches) != 1:
@@ -167,11 +173,12 @@ def main() -> int:
     parser.add_argument("--graph", type=Path, default=DEFAULT_GRAPH)
     args = parser.parse_args()
     try:
-        observation = json.loads(args.observation.read_text("utf-8"))
+        observation = decode_observation(args.observation.read_text("utf-8"))
         graph = json.loads(args.graph.read_text("utf-8"))
         result = summarize(observation, graph)
-    except (OSError, ValueError, KeyError, TypeError) as exc:
-        parser.exit(2, "Observation rejected: " + str(exc) + "\n")
+    except (OSError, ValueError, KeyError, TypeError, RecursionError):
+        # Never echo local paths or parser input fragments.
+        parser.exit(2, "Observation rejected (input or structure invalid)\n")
     print(json.dumps(result, indent=2))
     return 0
 

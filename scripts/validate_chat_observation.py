@@ -22,6 +22,28 @@ RESPONSE = {"idle", "editing", "sending", "receiving", "complete", "failed", "st
 RESULT = {"observed", "not_observed", "inconclusive"}
 
 
+def _unique_fields(pairs):
+    """Refuse ambiguous repeated JSON keys without echoing field contents."""
+    values = {}
+    for key, value in pairs:
+        if key in values:
+            raise ValueError("Repeated JSON object field")
+        values[key] = value
+    return values
+
+
+def _reject_constant(_value):
+    raise ValueError("Nonstandard JSON number")
+
+
+def decode_observation(raw: str) -> dict:
+    """Decode a bounded, strict JSON trace for the local CLI."""
+    if len(raw) > 1024 * 1024:
+        raise ValueError("Observation exceeds maximum size")
+    return json.loads(raw, object_pairs_hook=_unique_fields,
+                      parse_constant=_reject_constant)
+
+
 def validate(doc: dict) -> list[str]:
     errors = []
     if not isinstance(doc, dict) or set(doc) != TOP:
@@ -65,10 +87,10 @@ def main() -> int:
     parser.add_argument("file", type=Path)
     args = parser.parse_args()
     try:
-        doc = json.loads(args.file.read_text(encoding="utf-8"))
+        doc = decode_observation(args.file.read_text(encoding="utf-8"))
         errors = validate(doc)
-    except (OSError, ValueError) as exc:
-        parser.exit(2, "Invalid research input: " + str(exc) + "\n")
+    except (OSError, ValueError, TypeError, RecursionError):
+        parser.exit(2, "Invalid research input (input or structure invalid)\n")
     if errors:
         parser.exit(2, "Invalid observation: " + "; ".join(errors) + "\n")
     print("Structurally valid, not independently verified")
