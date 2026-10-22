@@ -79,7 +79,8 @@ def build(out: Path) -> dict:
                     "tasks": [
                         {"title": task["title"], "queue": task["queue"],
                          "status": task["status"],
-                         "dependency_count": len(task["depends_on"])}
+                         "dependency_count": len(task["depends_on"]),
+                         "evidence_count": len(task.get("evidence_refs", []))}
                         for task in source_tasks
                     ],
                 }
