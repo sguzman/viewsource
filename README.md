@@ -97,3 +97,7 @@ specimen results, it never includes raw text, original IDs or export files.
 ## Automatic implementation tracing
 
 Every processed capture containing JavaScript automatically schedules a source-level investigation into functions, call graphs, client data shapes, handlers, state, network parsing, streaming, failures, persistence and render ownership, regardless of archive size. Curated feature signals optionally add dedicated chat/search/authentication/commerce/media/map/editor research chains. These are **candidate investigation tasks**, not verified features, and require code-level evidence before completion. This policy is defined in [static_profiles.json](queues/static_profiles.json), alongside the separate large-dump deep research queue. Runtime observation is not a prerequisite for exhausting captured static assets.
+
+## Optional parsed-JavaScript evidence probe
+
+For source-backed implementation research, the `scripts/trace_static_archive.py` tool reads a private ZIP entirely offline, safely extracts only JavaScript into a temporary system directory, parses its AST with Acorn, and prints a **content-free structural report**. Install the small developer dependency using `npm install`, then run `python3 scripts/trace_static_archive.py --input /path/to/capture.zip`. This is a research aid, not a replacement for manual function/call-chain investigation. It does not run captured JavaScript or publish filenames, source, messages, property values or identifiers. CI verifies the parser with invented source only.
