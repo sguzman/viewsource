@@ -23,10 +23,10 @@ try {
   assert.equal(await page.locator(".inspection-card").count(),1);
   await page.locator(".chapter-link").filter({hasText:"Chat interactions"}).click();
   await page.getByRole("heading",{name:"Chat state model"}).waitFor();
-  assert.equal(await page.locator(".chat-surface").count(),4);
+  assert.equal(await page.locator(".chat-surface").count(),6);
   assert.equal(await page.locator(".chat-source-card").count(),5);
-  assert.equal(await page.locator(".chat-research-task").count(),16);
-  assert.equal(await page.locator(".chat-machine-tabs button").count(),2);
+  assert.equal(await page.locator(".chat-research-task").count(),17);
+  assert.equal(await page.locator(".chat-machine-tabs button").count(),3);
   await page.getByRole("button",{name:"Draft and response lifecycle"}).click();
   assert.equal(await page.locator(".chat-state").count(),7);
   await page.getByRole("button",{name:"Draft editing"}).click();

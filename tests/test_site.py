@@ -33,10 +33,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["technology"]["technologies"]), 11)
             self.assertEqual(len(current["visuals"]["page_map"]["nodes"]), 7)
             feature = current["visuals"]["feature_graph"]
-            self.assertEqual(len(feature["machines"]), 2)
-            self.assertEqual(len(feature["transitions"]), 14)
+            self.assertEqual(len(feature["machines"]), 3)
+            self.assertEqual(len(feature["transitions"]), 20)
             self.assertEqual(len(feature["surfaces"]), 6)
             self.assertEqual(current["visuals"]["chat_source_signals"]["summary"][0]["count"], 63)
+            self.assertEqual(current["visuals"]["chat_source_signals"]["dom_controls"]["document"]["contenteditable_true"], 1)
             self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 17)
 
             self.assertTrue(all(t["evidence_status"] == "hypothesis" for t in feature["transitions"]))

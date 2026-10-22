@@ -41,6 +41,23 @@ window.ViewsourceChatGraph = (() => {
       signals.function_relationships.forEach(x=>lines.append(element("li","",x.label+": "+x.count+" function scopes")));
       relations.append(lines);block.append(relations);
       section.append(block);
+
+      const dom=signals.dom_controls;
+      if(dom){
+        const block=element("div","chat-subsection");
+        block.append(element("h3","","Controls found in the saved page"));
+        block.append(element("p","graph-caption",
+          "The composer has one editable textbox. Main-region edit and regeneration labels were found, but their click results were not recorded."));
+        const listing=element("div","chat-signals");
+        dom.features.forEach(item=>{
+          const card=element("div","chat-source-card");
+          card.append(element("strong","",item.count),
+            element("small","",item.category.replaceAll("_"," ")+" · "+item.nearest_region));
+          listing.append(card);
+        });
+        block.append(listing,element("p","graph-caption",dom.caveat));
+        section.append(block);
+      }
     }
     const research=record.visuals?.feature_research;
     if(research){

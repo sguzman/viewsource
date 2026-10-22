@@ -205,8 +205,17 @@ def build(out: Path) -> dict:
                 if signals["specimen_id"] != item["id"] or signals["version"] != number:
                     raise ValueError("Chat source signal identity mismatch")
                 visuals["chat_source_signals"] = {
-                    "evidence_refs": ["E2-066", "E2-067", "E2-068"],
+                    "evidence_refs": ["E2-066", "E2-067", "E2-068", "E2-069"],
                     "scope": "saved_archive",
+                    "dom_controls": {
+                        "document": signals["dom_footprint"]["document"],
+                        "features": [
+                            {"category": x["category"], "count": x["count"],
+                             "nearest_region": x.get("nearest_region", "multiple")}
+                            for x in signals["dom_footprint"]["features"]
+                        ],
+                        "caveat": signals["dom_footprint"]["caveat"]
+                    },
                     "summary": [
                         {"label": "Conversation identity indicators",
                          "count": signals["identifier_categories"]["conversation_like"]["files"]},

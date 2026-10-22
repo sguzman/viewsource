@@ -41,8 +41,8 @@ class FeatureGraphTests(unittest.TestCase):
     def test_state_machines_link_events_and_are_unverified(self):
         graph=self.graph
         self.assertEqual(graph["model_status"], "candidate")
-        self.assertEqual({m["id"] for m in graph["machines"]}, {"selection","response"})
-        self.assertEqual(len(graph["transitions"]),14)
+        self.assertEqual({m["id"] for m in graph["machines"]}, {"selection","response","message_operation"})
+        self.assertEqual(len(graph["transitions"]),20)
         self.assertEqual(len(graph["surfaces"]),6)
         self.assertTrue(all(t["evidence_status"]=="hypothesis" and t["evidence_refs"]==[]
                             and t["verify"] for t in graph["transitions"]))

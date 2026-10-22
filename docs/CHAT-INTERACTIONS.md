@@ -55,3 +55,13 @@ Code can load the standalone JSON emitted by the site under `data/features/`. Th
 - Keep private traces, identity mappings and user content in a separate local workspace, outside public Viewsource publications.
 
 This contract is deliberately independent of any particular browser automation library or web framework.
+
+## Static chat controls found in the v0002 ZIP
+
+The saved rendered HTML contains one contenteditable textbox inside the form under main. Generic edit-related and regenerate-related labels occur on four main-region buttons each. Copy-related labels occur on eight main-region buttons, and new-chat-related labels appear on navigation and header buttons. Counts are label occurrences, not guaranteed distinct actions; neither actual click outcomes nor message ownership was traced.
+
+The feature graph therefore includes a separate **message edit and regeneration** candidate machine, distinct from composer sending and conversation selection. Its transitions cannot be promoted to `observed_live` without independently verified event and state changes.
+
+## Public product documentation versus internal source
+
+OpenAI's public ChatGPT release notes announced a web UI action to branch a conversation into a separate chat on September 4, 2025: https://help.openai.com/en/articles/6825453-chatgpt-release-notes . This establishes a documented user-facing action, not the server-side representation, identity mapping, message ancestry or persistence. The research model keeps separate-conversation forks distinct from alternative messages within one conversation. Neither internal relationship is asserted as verified by that documentation.

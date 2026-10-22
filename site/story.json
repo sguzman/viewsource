@@ -155,11 +155,17 @@
         "E2-065",
         "E2-066",
         "E2-067",
-        "E2-068"
+        "E2-068",
+        "E2-069"
       ],
       "metrics": [],
       "flow": [],
       "sections": [
+        {
+          "title": "Editable composer and message action controls",
+          "body": "The saved HTML contains an editable composer within the form and main-region edit and regenerate controls. Their event handlers and effects are still unknown.",
+          "link": "page-map"
+        },
         {
           "title": "What is observable",
           "body": "The saved HTML has a sidebar, two navigation regions, a composer form and a textbox role. The saved source contains storage and messaging APIs, but no traced action-to-state change.",
