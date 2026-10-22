@@ -1,0 +1,131 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "feature_id": "chat-interaction",
+  "method": "Crosswalk of captured HTML/source findings, official UI documentation and candidate graph nodes; none supplies verified live internal behavior.",
+  "privacy": "Only source evidence IDs, public action references and human-authored questions. No copied chat content, account identifiers, payloads or routes.",
+  "capabilities": [
+    {
+      "id": "select_chat",
+      "label": "Select a conversation",
+      "static_refs": [
+        "E2-065"
+      ],
+      "documented_action": null,
+      "candidate_events": [
+        "select_conversation"
+      ],
+      "candidate_relations": [],
+      "runtime_status": "not_verified",
+      "next_experiment": "Which UI state and route shape change when a synthetic conversation is selected?"
+    },
+    {
+      "id": "compose_message",
+      "label": "Edit and submit a draft",
+      "static_refs": [
+        "E2-069"
+      ],
+      "documented_action": null,
+      "candidate_events": [
+        "edit_draft",
+        "submit_draft"
+      ],
+      "candidate_relations": [
+        "draft-submission"
+      ],
+      "runtime_status": "not_verified",
+      "next_experiment": "When does a submitted draft become a durable message, and how is the pending attempt represented?"
+    },
+    {
+      "id": "receive_stream",
+      "label": "Receive and complete a response",
+      "static_refs": [
+        "E2-068"
+      ],
+      "documented_action": null,
+      "candidate_events": [
+        "response_started",
+        "response_completed"
+      ],
+      "candidate_relations": [
+        "response-attempt"
+      ],
+      "runtime_status": "not_verified",
+      "next_experiment": "What observable sequence distinguishes partial output, completion and failed generation?"
+    },
+    {
+      "id": "stop_generation",
+      "label": "Stop and retry a response",
+      "static_refs": [
+        "E2-053"
+      ],
+      "documented_action": "stop_regenerate",
+      "candidate_events": [
+        "stop_response",
+        "retry_response"
+      ],
+      "candidate_relations": [
+        "response-attempt"
+      ],
+      "runtime_status": "not_verified",
+      "next_experiment": "Does stopping preserve a partial message, and what new state or attempt follows retry?"
+    },
+    {
+      "id": "edit_prior_message",
+      "label": "Edit a previous message",
+      "static_refs": [
+        "E2-069"
+      ],
+      "documented_action": null,
+      "candidate_events": [
+        "start_message_edit",
+        "submit_message_edit"
+      ],
+      "candidate_relations": [
+        "message-ancestry"
+      ],
+      "runtime_status": "not_verified",
+      "next_experiment": "Does editing replace the original, preserve alternatives or create a new selected path?"
+    },
+    {
+      "id": "regenerate_response",
+      "label": "Regenerate an assistant response",
+      "static_refs": [
+        "E2-069"
+      ],
+      "documented_action": "regenerate_response",
+      "candidate_events": [
+        "request_regeneration",
+        "regeneration_result"
+      ],
+      "candidate_relations": [
+        "response-alternative"
+      ],
+      "runtime_status": "not_verified",
+      "next_experiment": "Are previous responses retained, and how are response attempts connected to visible messages?"
+    },
+    {
+      "id": "branch_new_chat",
+      "label": "Branch from a message into a new chat",
+      "static_refs": [],
+      "documented_action": "branch_new_chat",
+      "candidate_events": [],
+      "candidate_relations": [
+        "chat-fork"
+      ],
+      "runtime_status": "not_verified",
+      "next_experiment": "Does branching create separate conversation identity, copy prefix nodes or reference shared ancestry?"
+    },
+    {
+      "id": "pin_chat",
+      "label": "Pin a conversation",
+      "static_refs": [],
+      "documented_action": "pin_chat",
+      "candidate_events": [],
+      "candidate_relations": [],
+      "runtime_status": "not_verified",
+      "next_experiment": "Which generic state change indicates a pinned chat, and is it persistent across reload?"
+    }
+  ]
+}
