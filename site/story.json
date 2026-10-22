@@ -660,7 +660,7 @@
         },
         {
           "title": "Review is not automatic",
-          "body": "Deeper tasks are not closed by source-token counts alone. The first thirteen have specific structured evidence; the remaining investigations stay queued until supported.",
+          "body": "Deeper tasks are not closed by source-token counts alone. The first sixteen have specific structured evidence; the remaining investigations stay queued until supported.",
           "link": "evidence"
         },
         {

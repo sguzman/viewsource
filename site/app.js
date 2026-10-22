@@ -303,11 +303,51 @@ function renderDomTopology() {
   return section;
 }
 
+
+function renderCssSystem() {
+  const details = versionRecord().visuals?.css_system;
+  if (!details?.token_groups?.length) return null;
+  const section=elem("section");
+  section.append(sectionHeader("CSS DESIGN LANGUAGE","Explore the token families",
+    "Generic semantic buckets derived from anonymized CSS property names. These are not verified component ownership groups."));
+  const panel=elem("div",{className:"css-system-panel"});
+  const overview=elem("div",{className:"module-intro"},[
+    elem("div",{},[elem("strong",{text:String(details.distinct_tokens)}),elem("span",{text:"Distinct defined tokens"})]),
+    elem("div",{},[elem("strong",{text:String(details.references)}),elem("span",{text:"Variable references"})]),
+    elem("div",{},[elem("strong",{text:String(details.container_rule_occurrences)}),elem("span",{text:"Container-rule text matches"})])
+  ]);
+  panel.append(overview);
+  const chart=elem("div",{className:"css-families"});
+  const max=Math.max(1,...details.token_groups.map(x=>x.distinct));
+  details.token_groups.forEach(group=>{
+    const row=elem("div",{className:"css-family"},[
+      elem("div",{className:"dom-region-label"},[
+        elem("strong",{text:group.name}),
+        elem("span",{text:group.distinct+" names · "+group.references+" uses"})
+      ]),
+      elem("div",{className:"module-bar"},[
+        elem("span",{className:"module-bar-fill",style:"width:"+(100*group.distinct/max).toFixed(1)+"%"})
+      ])
+    ]);
+    chart.append(row);
+  });
+  panel.append(chart,elem("div",{className:"css-summary"},[
+    pill(details.media_rule_occurrences+" media at-rules"),
+    pill(details.reduced_motion_rules+" motion-preference conditions"),
+    pill(details.keyframes+" keyframe rules")
+  ]));
+  panel.append(elem("p",{className:"graph-caption",
+    text:"Prefixes are grouped heuristically. Conditions can overlap; source presence does not prove the winning computed CSS or visible animation."}));
+  section.append(panel);
+  return section;
+}
+
 function renderArticle(chapter,host) {
   append(host,makeHero(chapter),metrics(chapter));
   if(chapter.flow.length)host.append(flowRail(chapter));
   host.append(storySections(chapter));
   if (chapter.id === "javascript") { const modules=renderModuleExplorer(); if(modules) host.append(modules); }
+  if (chapter.id === "css") { const visual=renderCssSystem(); if(visual) host.append(visual); }
   if (chapter.id === "html" || chapter.id === "components") {
     const dom=renderDomTopology(); if(dom) host.append(dom);
   }

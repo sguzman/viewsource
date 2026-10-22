@@ -20,7 +20,9 @@ try {
 
   await page.locator(".chapter-link").filter({hasText:"CSS"}).click();
   await page.getByRole("heading",{name:"A design language in thousands of declarations."}).waitFor();
-  await page.getByRole("button",{name:"E2-023"}).click();
+  await page.getByRole("heading",{name:"Explore the token families"}).waitFor();
+  assert.equal(await page.locator(".css-family").count(),8);
+    await page.getByRole("button",{name:"E2-023"}).click();
   await page.getByRole("heading",{name:"Finding F2-023"}).waitFor();
 
   await page.locator(".chapter-link").filter({hasText:"JavaScript"}).click();

@@ -94,6 +94,27 @@ def build(out: Path) -> dict:
                     "matched_uses": icon["svg_uses_matching_symbol_id"],
                     "unique_symbols": icon["unique_sprite_symbols_referenced"]
                 }
+            css_study_path = ROOT / (base + "/phase4_css_analysis.json")
+            if css_study_path.is_file():
+                css_study = read(base + "/phase4_css_analysis.json")
+                if css_study["specimen_id"] != item["id"] or css_study["version"] != number:
+                    raise ValueError("CSS research identity mismatch")
+                groups = css_study["tokens"]["families"]
+                visuals["css_system"] = {
+                    "evidence_refs": ["E2-048", "E2-049", "E2-050"],
+                    "distinct_tokens": css_study["tokens"]["distinct_defined_names"],
+                    "references": css_study["tokens"]["variable_reference_occurrences"],
+                    "token_groups": [
+                        {"name": key.replace("_", " "),
+                         "distinct": value["distinct_definitions"],
+                         "references": value["references"]}
+                        for key, value in groups.items()
+                    ],
+                    "media_rule_occurrences": css_study["responsive"]["lexical_media_at_rules"],
+                    "container_rule_occurrences": css_study["responsive"]["lexical_container_at_rules"],
+                    "reduced_motion_rules": css_study["motion"]["reduced_motion_media_preludes"],
+                    "keyframes": css_study["motion"]["keyframe_rule_occurrences"]
+                }
             inventory = read(base + "/resource_inventory.json") if (ROOT / (base + "/resource_inventory.json")).is_file() else {}
             totals = inventory.get("totals", {})
             catalog["versions"].append({
