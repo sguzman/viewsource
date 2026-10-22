@@ -238,18 +238,18 @@ def iter_export_records(stream, *, chunk_size: int = 65536):
         segment_start = 0 if state == "record" else None
         for index, char in enumerate(chunk):
             if state == "done":
-                if not char.isspace():
+                if char not in " \t\r\n":
                     raise ExportShapeError("Trailing characters after array")
                 continue
             if state == "start":
-                if char.isspace():
+                if char in " \t\r\n":
                     continue
                 if char != "[":
                     raise ExportShapeError("Expected JSON export array")
                 state = "first_or_end"
                 continue
             if state in ("first_or_end", "value"):
-                if char.isspace():
+                if char in " \t\r\n":
                     continue
                 if char == "]":
                     if state == "value":

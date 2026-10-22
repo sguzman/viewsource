@@ -166,6 +166,12 @@ class ChatExportStructureTests(unittest.TestCase):
             with self.subTest(kind=payload[:3]), self.assertRaises(mod.ExportShapeError):
                 list(mod.iter_export_records(StringIO(payload),chunk_size=2))
 
+    def test_stream_reader_rejects_non_json_unicode_whitespace(self):
+        from io import StringIO
+        for payload in ("\\u00a0[]", "[]\\u2003", "[{}\\u00a0]"):
+            with self.subTest(payload=repr(payload)), self.assertRaises(ValueError):
+                list(mod.iter_export_records(StringIO(payload), chunk_size=1))
+
     def test_stream_reader_rejects_unbounded_read_sizes(self):
         from io import StringIO
         for size in (0, -1, True, 2**25):
