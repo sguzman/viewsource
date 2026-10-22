@@ -1,0 +1,109 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "scope": "saved_archive",
+  "methodology": {
+    "token_census": "Case-insensitive CSS text inspected offline, custom-property names classified by generic semantic prefixes. Classes are heuristic labels, not site-authored component ownership.",
+    "condition_census": "Bounded media and container at-rule prelude scanning; repeated/nested and complex conditions may be excluded. Counts of different query groups overlap.",
+    "privacy": "Aggregate numeric findings only; no source CSS, class names, identifiers, selectors, breakpoints, file paths, account state, captured URLs or third-party assets published."
+  },
+  "tokens": {
+    "css_files": 17,
+    "distinct_defined_names": 2509,
+    "declaration_occurrences": 8135,
+    "variable_reference_occurrences": 23269,
+    "distinct_referenced_names": 2502,
+    "distinct_defined_and_referenced": 1895,
+    "distinct_referenced_without_a_saved_definition": 607,
+    "families": {
+      "other": {
+        "distinct_definitions": 956,
+        "declarations": 4005,
+        "references": 10639
+      },
+      "color": {
+        "distinct_definitions": 1032,
+        "declarations": 2550,
+        "references": 5601
+      },
+      "spacing": {
+        "distinct_definitions": 69,
+        "declarations": 251,
+        "references": 4052
+      },
+      "typography": {
+        "distinct_definitions": 325,
+        "declarations": 1113,
+        "references": 1783
+      },
+      "dimensions": {
+        "distinct_definitions": 28,
+        "declarations": 54,
+        "references": 129
+      },
+      "border_and_shape": {
+        "distinct_definitions": 32,
+        "declarations": 74,
+        "references": 602
+      },
+      "depth_and_effects": {
+        "distinct_definitions": 53,
+        "declarations": 68,
+        "references": 186
+      },
+      "motion": {
+        "distinct_definitions": 14,
+        "declarations": 20,
+        "references": 277
+      }
+    },
+    "interpretation": "Unmatched var() names may come from runtime injection, external/missing CSS, root inheritance or unresolved conditions; they are not proven missing styles."
+  },
+  "responsive": {
+    "lexical_media_at_rules": 627,
+    "bounded_media_preludes_examined": 573,
+    "lexical_container_at_rules": 504,
+    "bounded_container_preludes_examined": 454,
+    "media_query_overlapping_families": {
+      "width": 159,
+      "height": 7,
+      "hover": 178,
+      "pointer": 60,
+      "reduced_motion": 168,
+      "color_scheme": 1,
+      "print": 11
+    },
+    "container_query_overlapping_families": {
+      "style": 258,
+      "width": 196,
+      "height": 2
+    },
+    "pixel_width_threshold_bucket_matches": {
+      "at_most_480": 11,
+      "from_481_to_768": 25,
+      "from_769_to_1024": 1
+    },
+    "unit_scope": "Width buckets cover only simple px-valued expressions matched in bounded preludes; not all thresholds, rem/em widths or actual layout breakpoints.",
+    "container_relative_unit_matches": 84,
+    "feature_support_rule_occurrences": 735
+  },
+  "motion": {
+    "keyframe_rule_occurrences": 164,
+    "css_transition_declarations": 438,
+    "css_animation_declarations": 287,
+    "css_duration_declarations": 270,
+    "reduced_motion_media_preludes": 168,
+    "stylesheet_files_with_reduced_motion_queries": 10,
+    "stylesheet_files_with_keyframes": 10,
+    "focus_visible_selector_occurrences": 493,
+    "color_mix_expression_occurrences": 1696,
+    "runtime_motion_observed": false
+  },
+  "limitations": [
+    "These are static source counts, not computed style declarations or rendered animation instances.",
+    "Query families overlap and bounded-prelude scans can exclude complex forms; at-rule lexical totals use a different counting method.",
+    "Heuristic token families do not establish which component owns a variable.",
+    "Runtime prefers-color-scheme, reduced-motion settings and cascade results were not observed."
+  ]
+}
