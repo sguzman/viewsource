@@ -234,6 +234,30 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            transport_path = ROOT / (base + "/chat_transport_trace.json")
+            if transport_path.is_file():
+                transport = read(base + "/chat_transport_trace.json")
+                if (transport["specimen_id"] != item["id"]
+                        or transport["version"] != number
+                        or transport["live_transport_verified"] is not False):
+                    raise ValueError("Transport study identity or evidence boundary mismatch")
+                visuals["chat_transport_trace"] = {
+                    "source_ref": transport["source_ref"],
+                    "reviewed_method_count": transport["reviewed_method_count"],
+                    "live_transport_verified": transport["live_transport_verified"],
+                    "methods": [
+                        {"method": row["method"],"behavior": row["behavior"],
+                         "verification_boundary": row["verification_boundary"]}
+                        for row in transport["method_observations"]
+                    ],
+                    "static_edges": [
+                        {"from": row["from"],"to": row["to"],"kind": row["kind"]}
+                        for row in transport["reviewed_static_edges"]
+                    ],
+                    "websocket_item_behavior":
+                        transport["websocket_stream_item_observation"]["behavior"],
+                    "unresolved": transport["still_unresolved"],
+                }
             implementation_path = ROOT / (base + "/chat_static_impl_trace.json")
             if implementation_path.is_file():
                 study = read(base + "/chat_static_impl_trace.json")
