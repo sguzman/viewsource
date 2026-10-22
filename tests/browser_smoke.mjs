@@ -49,6 +49,8 @@ try {
   await page.locator(".chat-ast-details summary").click();
   assert.ok((await page.locator(".chat-ast-details").innerText()).includes("Unresolved:"));
   assert.equal(await page.locator(".chat-research-task").count(),18);
+  assert.equal(await page.locator(".chat-static-task").count(),33);
+  await page.locator(".chat-static-task").first().locator("summary").click();
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
   await runtimeStudy.locator("summary").click();
   assert.ok((await runtimeStudy.innerText()).includes("Proposed study, not performed"));
