@@ -877,11 +877,14 @@
       "profile": "followup",
       "queue": "intake",
       "title": "Characterize source coverage",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-intake"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of characterize source coverage, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-037). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-037"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-document-map",
@@ -890,12 +893,15 @@
       "profile": "followup",
       "queue": "structure",
       "title": "Document HTML sections and landmarks",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-markup",
         "chatgpt-com-v0002-followup-deep-scope"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of document html sections and landmarks, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-038). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-038"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-route-graph",
@@ -904,12 +910,15 @@
       "profile": "followup",
       "queue": "navigation",
       "title": "Map route and navigation evidence",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-navigation",
         "chatgpt-com-v0002-followup-deep-document-map"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of map route and navigation evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-039). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-039"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-shell-components",
@@ -958,12 +967,15 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Find JavaScript entrypoints",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts",
         "chatgpt-com-v0002-followup-deep-scope"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of find javascript entrypoints, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-040). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-040"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-build-system",
@@ -972,11 +984,14 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Identify bundler and chunk conventions",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-script-entry"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of identify bundler and chunk conventions, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-041). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-041"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-source-maps",
@@ -985,11 +1000,14 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Inspect sourcemap and minification limits",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-script-entry"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of inspect sourcemap and minification limits, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-042). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-042"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-dependency-graph",
@@ -998,11 +1016,14 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Verify module dependency relationships",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-build-system"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of verify module dependency relationships, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-041). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-041"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-module-groups",
@@ -1317,12 +1338,15 @@
       "profile": "followup",
       "queue": "security",
       "title": "Study nonce and sandbox indicators",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-security",
         "chatgpt-com-v0002-followup-deep-scope"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study nonce and sandbox indicators, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-046). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-046"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-style-entry",
@@ -1331,12 +1355,15 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Map stylesheet origins",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-styles",
         "chatgpt-com-v0002-followup-deep-document-map"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of map stylesheet origins, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-043). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-043"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-style-layers",
@@ -1345,11 +1372,14 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Understand cascade and layers",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-style-entry"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of understand cascade and layers, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-043). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-043"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-token-taxonomy",
@@ -1453,12 +1483,15 @@
       "profile": "followup",
       "queue": "assets",
       "title": "Explain sprite and icon architecture",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-assets",
         "chatgpt-com-v0002-followup-deep-scope"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of explain sprite and icon architecture, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-044). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-044"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-asset-placement",
@@ -1508,12 +1541,15 @@
       "profile": "followup",
       "queue": "accessibility",
       "title": "Inspect semantic hierarchy",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-accessibility",
         "chatgpt-com-v0002-followup-deep-document-map"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of inspect semantic hierarchy, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-045). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-045"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-a11y-controls",
@@ -1576,12 +1612,15 @@
       "profile": "followup",
       "queue": "quality",
       "title": "Investigate missing capture evidence",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-intake",
         "chatgpt-com-v0002-followup-deep-scope"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of investigate missing capture evidence, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Offline research completed within static source scope (finding E2-047). Results are aggregate or ordinal-only. Unverified runtime and missing-source questions remain explicitly unresolved.",
+      "evidence_refs": [
+        "E2-047"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-evolution-matching",

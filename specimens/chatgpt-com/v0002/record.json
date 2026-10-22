@@ -5599,6 +5599,138 @@
         "capture_complete_for_static_review": true,
         "live_verified": false
       }
+    },
+    {
+      "id": "research-dom-landmarks",
+      "kind": "DOMRegion",
+      "name": "Nested semantic region atlas",
+      "description": "Measured navigation-aside and form-main containment and closest-landmark button groupings.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-038",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "nav_regions": 2,
+        "buttons_inside_nav": 70
+      }
+    },
+    {
+      "id": "research-route-types",
+      "kind": "Route",
+      "name": "Safe destination shape map",
+      "description": "Anchor destination categories without publishing any captured destination or query parameter.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-039",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "site_relative": 11,
+        "external_absolute": 14,
+        "fragment_only": 1
+      }
+    },
+    {
+      "id": "research-dom-scripts",
+      "kind": "Script",
+      "name": "Declared document entrypoints",
+      "description": "HTML script element categories and anonymous script-preload linkage.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-040",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "preloaded_captured_bundles": 72,
+        "linked_external": "R-JS-073"
+      }
+    },
+    {
+      "id": "research-parsed-deps",
+      "kind": "Dependency",
+      "name": "Static import syntax graph",
+      "description": "Parser-verified static import declarations and ordinal mappings, distinct from filename co-occurrence.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-041",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "import_declarations": 236,
+        "source_files": 8,
+        "target_files": 71
+      }
+    },
+    {
+      "id": "research-css-entry",
+      "kind": "StyleSheet",
+      "name": "Document CSS inclusion topology",
+      "description": "Duplicate and distinct stylesheet link targets and layer text occurrences.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-043",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "links": 18,
+        "distinct_stylesheets": 17,
+        "layer_occurrences": 33
+      }
+    },
+    {
+      "id": "research-icon-uses",
+      "kind": "Asset",
+      "name": "Resolved SVG sprite use links",
+      "description": "All saved SVG use nodes refer to one captured sprite and 23 unique symbol IDs.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-044",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "svg_use_count": 92,
+        "unique_symbol_ids": 23,
+        "sprite": "R-IMG-004"
+      }
+    },
+    {
+      "id": "research-accessible-regions",
+      "kind": "AccessibilityFeature",
+      "name": "Accessible DOM and role structure",
+      "description": "Saved aria annotations and role distribution, with live accessibility unknown.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-045",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "aria_labels": 152,
+        "status_roles": 7
+      }
+    },
+    {
+      "id": "research-missing-resources",
+      "kind": "Metadata",
+      "name": "Capture failure inventory",
+      "description": "Captured and failed attempt counts recorded separately, not interpreted as live page failures.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-047",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "captured": 234,
+        "failed_attempts": 29
+      }
     }
   ],
   "relationships": [
@@ -8692,6 +8824,116 @@
         "evidence_ref": "E2-036",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "dom",
+      "to": "research-dom-landmarks",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-038",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "research-dom-landmarks",
+      "to": "research-route-types",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-039",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "research-dom-scripts",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-040",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "research-dom-scripts",
+      "to": "research-parsed-deps",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-041",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "research-parsed-deps",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-041",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "stylesheets",
+      "to": "research-css-entry",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-043",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "images",
+      "to": "research-icon-uses",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-044",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "research-icon-uses",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-044",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "a11y",
+      "to": "research-accessible-regions",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-045",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "website",
+      "to": "research-missing-resources",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-047",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -9052,6 +9294,116 @@
         "evidence_class": "observed_static",
         "confidence": "high",
         "evidence_ref": "E2-036",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-037",
+      "statement": "The supplied ZIP contains 238 entries: 234 captured resource entries and four archive-support entries. A separate manifest lists 29 unsuccessful resource attempts. This is one snapshot, not a census of the current live website.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-037",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-038",
+      "statement": "The saved DOM nests two navigation regions inside asides and one form inside main. By closest containing landmark, its 130 buttons distribute as 70 navigation, 42 main, nine header, five aside, three form and one other. These are DOM groupings, not recovered framework component boundaries.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-038",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-039",
+      "statement": "The 26 saved anchor destinations group into eleven site-relative, fourteen external-absolute and one fragment-only forms. The two navigation elements contain eight and 62 buttons respectively; the behavior of these controls was not observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-039",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-040",
+      "statement": "The saved document has fourteen inline classic scripts, two inline module scripts, two inline JSON scripts and one external classic script. All 72 modulepreload references and the one external script match saved JS assets by source filename; declaration is not execution.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-040",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-041",
+      "statement": "An offline JavaScript syntax-tree parse completed on all 144 saved scripts without parser diagnostics. It found 236 static import declarations and eighteen dynamic import expressions. The 236 static imports resolve to 236 distinct ordinal pairs from eight source bundles to 71 targets; eight pairs are self-ordinal references whose runtime interpretation remains unknown.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-041",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-042",
+      "statement": "Only one captured JavaScript file includes a lexical source-map reference marker and no source-map resource is present in the ZIP. The build-tool identity and original unminified module structures cannot be asserted on this evidence.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-042",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-043",
+      "statement": "Eighteen stylesheet link elements resolve to seventeen distinct captured CSS resources, so one target is repeated. The CSS corpus includes 33 layer at-rule text occurrences, 627 media at-rules, 504 container at-rules and no @import at-rules; no computed cascade was tested.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-043",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-044",
+      "statement": "All 92 SVG use elements in the captured DOM reference the same captured large icon sprite and match 23 distinct symbol definitions in its 911-symbol library. This is a statically verified resource relationship, not a rendering test.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-044",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-045",
+      "statement": "The saved accessibility structure includes 152 aria-label attributes, 93 aria-expanded attributes, 61 aria-haspopup attributes, seven status roles and a dialog and textbox role; dynamic focus and screen-reader output were not observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-045",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-046",
+      "statement": "The saved markup contains eighteen scripts and 74 links with nonce attributes, plus one sandboxed iframe. HTTP response headers and runtime permissions were not captured; effective policy enforcement remains unknown.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-046",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-047",
+      "statement": "The archive records 29 unsuccessful resource attempts: seventeen HTTP 403, ten HTTP 404 and two other failures. Their effects on live application behavior cannot be determined from the offline ZIP.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-047",
         "source_scope": "saved_archive"
       }
     }
