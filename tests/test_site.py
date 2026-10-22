@@ -38,6 +38,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(feature["surfaces"]), 4)
             self.assertTrue(all(t["evidence_status"] == "hypothesis" for t in feature["transitions"]))
             self.assertTrue((dest / feature["json_path"]).exists())
+            self.assertEqual(json.loads((dest / feature["json_path"]).read_text(encoding="utf-8")), feature)
 
             self.assertEqual(current["visuals"]["module_imports"]["static_edges"], 236)
             self.assertEqual(len(current["visuals"]["module_imports"]["sources"]), 8)
