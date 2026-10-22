@@ -8,6 +8,8 @@ from pathlib import Path
 import re
 import sys
 
+from validate_feature_graph import validate_extensions
+
 ROOT = Path(__file__).resolve().parents[1]
 SLUG = re.compile(r"^[a-z][a-z0-9-]{1,47}$")
 STATES = {"queued", "in_progress", "blocked", "not_observable", "done"}
@@ -34,6 +36,10 @@ def validate() -> list[str]:
 
     model = read("ontology/ontology.json")
     require(model["ontology_version"] == "1.0.0", "Unexpected ontology version")
+    for extension in ("technology_inventory", "feature_graph"):
+        artifact = model.get("extension_artifacts", {}).get(extension, {})
+        require(artifact.get("format_version") == 1 and (ROOT / artifact.get("schema", "__missing__")).is_file(),
+                f"Missing or invalid ontology extension: {extension}")
     kinds = model["component_kinds"]
     relations = model["relations"]
     require(len(kinds) == len(set(kinds)), "Duplicate component kinds")
@@ -107,6 +113,7 @@ def validate() -> list[str]:
             require(len({f["id"] for f in findings}) == len(findings), f"Duplicate finding IDs: {directory}")
             for finding in findings:
                 check_evidence(finding["evidence"], require, directory)
+            validate_extensions(require, slug, version)
 
     disk_records = {p.relative_to(ROOT).as_posix() for p in (ROOT / "specimens").glob("*/v*/record.json")}
     require(disk_records == record_paths, "Unregistered version record or missing record")
