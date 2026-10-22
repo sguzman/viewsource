@@ -38,6 +38,9 @@ try {
   assert.ok((await page.locator(".chat-example-status").innerText()).includes("U1 → A1"));
 
   assert.equal(await page.locator(".chat-source-card").count(),10);
+  assert.deepEqual(await page.locator(".chat-ast-stat strong").allInnerTexts(), ["144","333","41"]);
+  await page.locator(".chat-ast-details summary").click();
+  assert.ok((await page.locator(".chat-ast-details").innerText()).includes("Unresolved:"));
   assert.equal(await page.locator(".chat-research-task").count(),18);
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
   await runtimeStudy.locator("summary").click();
