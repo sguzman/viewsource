@@ -7,7 +7,7 @@ const fs=require("node:fs"), path=require("node:path"), assert=require("node:ass
 const acorn=require("acorn");
 const fnTypes=new Set(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"]);
 const loopTypes=new Set(["ForStatement","WhileStatement","DoWhileStatement","ForOfStatement","ForInStatement"]);
-const vocabulary=["selected_ancestry_walk","branch_transport_call","mapping_ancestry_reconciliation"];
+const vocabulary=["selected_ancestry_walk","branch_transport_call","mapping_ancestry_reconciliation","generation_parent_selection","regeneration_request_assembly"];
 
 function member(n){
   if(!n||n.type!=="MemberExpression")return null;
@@ -55,6 +55,10 @@ function inspect(fn){
      (reads.has("current_node")||reads.has("currentNode"))&&
      (writes.has("parent")||fields.has("parent")))
     result.push("mapping_ancestry_reconciliation");
+  if(reads.has("regenerateFromMessageId")&&reads.has("parentMessageId")&&reads.has("children"))
+    result.push("generation_parent_selection");
+  if(fields.has("regenerateFromMessageId")&&fields.has("regeneration")&&reads.has("messageId"))
+    result.push("regeneration_request_assembly");
   return result;
 }
 function analyzeSource(text,ordinal){
@@ -128,7 +132,7 @@ function selfTest(){
     "const secret='synthetic-secret-must-not-be-printed'"
   ].join(";");
   const result=analyzeSource(text,1);
-  assert.deepEqual(result.candidate_functions.map(x=>x.pattern).sort(),vocabulary.slice().sort());
+  assert.deepEqual(result.candidate_functions.map(x=>x.pattern).sort(),vocabulary.slice(0,3).sort());
   assert.equal(result.function_nodes,3);
   assert(!JSON.stringify(result).includes("synthetic-secret-must-not-be-printed"));
   assert.equal(analyzeSource("function f(x){return x.branch({conversationId:1})}",2).candidate_functions.length,0);
