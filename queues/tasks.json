@@ -1799,11 +1799,11 @@
       "profile": "followup",
       "queue": "state",
       "title": "Reconstruct client data shapes and relationship rules",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-functions"
       ],
-      "notes": "Static implementation trace: Trace object creation, field reads/writes, parent-child relationships and serialization; report supported invariants and conflicting candidate schemas."
+      "notes": "Static implementation trace: Trace object creation, field reads/writes, parent-child relationships and serialization; report supported invariants and conflicting candidate schemas. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure."
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-events",
@@ -1854,12 +1854,12 @@
       "profile": "followup",
       "queue": "network",
       "title": "Trace streaming framing, cancellation and completion",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-network-contracts",
         "chatgpt-com-v0002-followup-static-source-state-flows"
       ],
-      "notes": "Static implementation trace: Follow parser/reader callbacks to UI state updates, completion, interruption and cleanup branches; avoid claiming verified server events."
+      "notes": "Static implementation trace: Follow parser/reader callbacks to UI state updates, completion, interruption and cleanup branches; avoid claiming verified server events. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure."
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-failures",
@@ -1952,12 +1952,12 @@
       "profile": "followup",
       "queue": "state",
       "title": "Chat: Trace feature entities and state updates",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-feature-chat-operations",
         "chatgpt-com-v0002-followup-static-source-data-shapes"
       ],
-      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Reconstruct source-backed property shapes, relationships and mutation/selection pathways. Report competing models explicitly."
+      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Reconstruct source-backed property shapes, relationships and mutation/selection pathways. Report competing models explicitly. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure."
     },
     {
       "id": "chatgpt-com-v0002-followup-static-feature-chat-transport",
