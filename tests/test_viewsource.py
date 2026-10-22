@@ -157,6 +157,21 @@ class OfflineIntakeTests(unittest.TestCase):
         self.assertFalse(any("-feature-chat-" in task["id"] for task in tasks))
         self.assertTrue(any("-followup-static-source-functions" in task["id"] for task in tasks))
 
+    def test_large_vendor_archive_does_not_invent_features_from_one_bundle(self):
+        source = self.base / "vendor-rich.zip"
+        with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("index.html", "<main>synthetic</main>")
+            for i in range(22):
+                text = ("const shoppingCart=1, paymentMethod=2;" if i == 0
+                        else "export const unrelated = true;")
+                archive.writestr(f"part-{i}.js", text)
+        tool.queue_specimen("vendors", "https://vendors.example.org")
+        tool.process_specimen("vendors", source)
+        tasks = tool.load_json(self.root / "queues/tasks.json")["tasks"]
+        self.assertFalse(any("-static-feature-commerce-" in x["id"] for x in tasks))
+        self.assertTrue(any("-static-source-calls" in x["id"] for x in tasks))
+        self.assertEqual(validator.validate(), [])
+
     def test_large_archive_generates_many_deep_tasks(self):
         source = self.base / "large.zip"
         with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
