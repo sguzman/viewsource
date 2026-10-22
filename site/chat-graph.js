@@ -19,6 +19,7 @@ window.ViewsourceChatGraph = (() => {
     [replyOne,replyTwo,fork].forEach(button=>{button.type="button";controls.append(button);});
     const figure=element("div","chat-example-figure");
     const status=element("p","chat-example-status");
+    const structural=element("div","chat-example-metrics");
     let selected="a",forkVisible=false;
     const makeNode=(label,detail,active=false)=>{
       const node=element("div","chat-example-node");
@@ -47,6 +48,18 @@ window.ViewsourceChatGraph = (() => {
           makeNode("Separate conversation root","Node B1",true));
         figure.append(secondChat);
       }
+      structural.replaceChildren();
+      const metrics=[
+        ["Conversations",forkVisible?2:1],
+        ["Message nodes",forkVisible?4:3],
+        ["Alternative replies",1],
+        ["Candidate cross-chat links",forkVisible?1:0]
+      ];
+      metrics.forEach(([label,value])=>{
+        const card=element("div","chat-example-metric");
+        card.append(element("strong","",value),element("small","",label));
+        structural.append(card);
+      });
       status.textContent="Selected path in A: U1 → "+(selected==="a"?"A1":"A2")+
         (forkVisible?" · Candidate cross-conversation fork shown":"");
     }
@@ -54,7 +67,7 @@ window.ViewsourceChatGraph = (() => {
     replyTwo.addEventListener("click",()=>{selected="b";draw();});
     fork.addEventListener("click",()=>{forkVisible=!forkVisible;draw();});
     draw();
-    block.append(controls,figure,status);
+    block.append(controls,figure,structural,status);
     return block;
   }
   function render(record){

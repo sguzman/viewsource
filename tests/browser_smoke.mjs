@@ -27,10 +27,12 @@ try {
   assert.equal(await page.locator(".chat-documented-action").count(),4);
   assert.equal(await page.locator(".chat-capability").count(),8);
   assert.equal(await page.locator(".chat-domain-edge").count(),8);
+  assert.deepEqual(await page.locator(".chat-example-metric strong").allInnerTexts(),["1","3","1","0"]);
   await page.getByRole("button",{name:"Select response B"}).click();
   assert.ok((await page.locator(".chat-example-status").innerText()).includes("U1 → A2"));
   await page.getByRole("button",{name:"Show separate conversation fork"}).click();
   assert.equal(await page.locator(".chat-example-conversation").count(),2);
+  assert.deepEqual(await page.locator(".chat-example-metric strong").allInnerTexts(),["2","4","1","1"]);
   await page.getByRole("button",{name:"Select response A"}).click();
   assert.ok((await page.locator(".chat-example-status").innerText()).includes("U1 → A1"));
 
