@@ -143,7 +143,10 @@
         "E2-012",
         "E2-023",
         "E2-030",
-        "E2-043"
+        "E2-043",
+        "E2-048",
+        "E2-049",
+        "E2-050"
       ],
       "metrics": [
         [
@@ -160,6 +163,11 @@
         ]
       ],
       "sections": [
+        {
+          "title": "Token families and responsive regimes",
+          "body": "The styles contain 2,509 distinct custom-property names grouped into color, typography, spacing and other families. Media, container and motion conditions form overlapping source-level regimes; no browser-computed styles were captured.",
+          "link": "components"
+        },
         {
           "title": "How styles enter the page",
           "body": "Eighteen stylesheet links resolve to seventeen saved CSS assets, with one asset referenced twice. Layer, media and container at-rules are present, but computed cascade order remains untested.",

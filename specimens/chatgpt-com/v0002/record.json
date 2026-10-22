@@ -5731,6 +5731,55 @@
         "captured": 234,
         "failed_attempts": 29
       }
+    },
+    {
+      "id": "research-css-token-families",
+      "kind": "DesignToken",
+      "name": "Heuristic CSS property families",
+      "description": "Aggregated property definitions and usages across eight semantic prefix groups, not component ownership.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-048",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "distinct": 2509,
+        "declarations": 8135,
+        "references": 23269
+      }
+    },
+    {
+      "id": "research-css-query-regimes",
+      "kind": "StyleSheet",
+      "name": "Responsive CSS condition groups",
+      "description": "Width, hover, pointer, reduced-motion and container-style queries identified in bounded CSS at-rule preludes.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-049",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "media_preludes": 573,
+        "container_preludes": 454
+      }
+    },
+    {
+      "id": "research-css-motion",
+      "kind": "StyleSheet",
+      "name": "Animation and motion-preference signals",
+      "description": "CSS keyframes, transitions and reduced-motion conditions documented without claiming live playback.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-050",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "keyframes": 164,
+        "reduced_motion_preludes": 168
+      }
     }
   ],
   "relationships": [
@@ -8934,6 +8983,39 @@
         "evidence_ref": "E2-047",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "stylesheets",
+      "to": "research-css-token-families",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-048",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "stylesheets",
+      "to": "research-css-query-regimes",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-049",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "stylesheets",
+      "to": "research-css-motion",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-050",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -9404,6 +9486,36 @@
         "evidence_class": "observed_static",
         "confidence": "high",
         "evidence_ref": "E2-047",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-048",
+      "statement": "Across seventeen saved CSS files, 2,509 distinct custom properties have 8,135 declarations and 23,269 variable references. Heuristic prefix grouping finds 1,032 color and 325 typography property names, while 607 referenced names have no corresponding definition in this saved CSS corpus; the latter are not necessarily broken variables.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-048",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-049",
+      "statement": "A bounded scan examined 573 media-condition preludes and 454 container-condition preludes from lexical totals of 627 and 504 respectively. Overlapping categories include 159 width-media, 178 hover-media, 60 pointer-media, 168 reduced-motion-media and 258 container style-query matches. These do not prove actual responsive layout states.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-049",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-050",
+      "statement": "The CSS corpus includes 164 keyframe-rule text occurrences, 438 transition declarations, 287 animation declarations, 270 duration declarations and 168 reduced-motion media preludes across ten stylesheets. These are available motion facilities, not observed animations or reduced-motion outcomes.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-050",
         "source_scope": "saved_archive"
       }
     }

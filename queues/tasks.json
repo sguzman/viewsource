@@ -1388,11 +1388,14 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Classify design tokens",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-style-entry"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of classify design tokens, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Completed source-limited static CSS study, with the named counting methodology and explicit unobservable runtime boundaries in E2-048.",
+      "evidence_refs": [
+        "E2-048"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-token-semantic-uses",
@@ -1429,11 +1432,14 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Map media and container regimes",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-style-entry"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of map media and container regimes, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Completed source-limited static CSS study, with the named counting methodology and explicit unobservable runtime boundaries in E2-049.",
+      "evidence_refs": [
+        "E2-049"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-layout-topology",
@@ -1456,11 +1462,14 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Study animations and reduced motion",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-followup-deep-style-entry"
       ],
-      "notes": "Deep research contract: Publish source-backed analysis of study animations and reduced motion, linking to evidence and recording unobservable runtime facts; do not substitute raw occurrence counts for functional understanding."
+      "notes": "Completed source-limited static CSS study, with the named counting methodology and explicit unobservable runtime boundaries in E2-050.",
+      "evidence_refs": [
+        "E2-050"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-deep-typefaces",

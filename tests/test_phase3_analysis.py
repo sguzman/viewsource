@@ -73,7 +73,7 @@ class DeepResearchIntegrity(unittest.TestCase):
         self.assertLessEqual(icons["unique_sprite_symbols_referenced"], icons["sprite_symbols"])
         deep = [t for t in self.tasks if "-followup-deep-" in t["id"]]
         self.assertEqual(len(deep), 57)
-        self.assertEqual(Counter(t["status"] for t in deep), {"done": 13, "queued": 44})
+        self.assertEqual(Counter(t["status"] for t in deep), {"done": 16, "queued": 41})
         evidence = {f["evidence"]["evidence_ref"] for f in self.record["findings"]}
         by_id = {t["id"]: t for t in self.tasks}
         for t in deep:
