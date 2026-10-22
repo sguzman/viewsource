@@ -39,7 +39,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(feature["domain_relations"]),8)
             self.assertEqual(current["visuals"]["chat_source_signals"]["summary"][0]["count"], 63)
             self.assertEqual(current["visuals"]["chat_source_signals"]["dom_controls"]["document"]["contenteditable_true"], 1)
-            self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 17)
+            self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 18)
             self.assertEqual(len(current["visuals"]["public_chat_actions"]["actions"]), 4)
             self.assertEqual(len(current["visuals"]["chat_export_format"]["fields"]), 4)
             self.assertEqual(len(current["visuals"]["chat_capabilities"]["entries"]), 8)

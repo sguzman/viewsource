@@ -38,7 +38,7 @@ try {
   assert.ok((await page.locator(".chat-example-status").innerText()).includes("U1 → A1"));
 
   assert.equal(await page.locator(".chat-source-card").count(),10);
-  assert.equal(await page.locator(".chat-research-task").count(),17);
+  assert.equal(await page.locator(".chat-research-task").count(),18);
   assert.equal(await page.locator(".chat-machine-tabs button").count(),3);
   await page.getByRole("button",{name:"Message edit and regeneration"}).click();
   assert.equal(await page.locator(".chat-state").count(),4);

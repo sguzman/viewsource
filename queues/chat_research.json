@@ -270,6 +270,27 @@
       ],
       "acceptance": "Correlate abstract event categories only; no URLs, headers, bodies or identifiers.",
       "evidence_refs": []
+    },
+    {
+      "id": "chat-export-structure",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "done",
+      "title": "Research externally documented exported chat trees",
+      "depends_on": [
+        "chat-domain-schema"
+      ],
+      "acceptance": "Separate public export-format evidence from the saved ZIP, implement a local-only incremental JSON analyzer, and test branching and selected-node path reconstruction with synthetic data.",
+      "evidence_refs": [
+        "E2-070"
+      ],
+      "artifacts": [
+        "specimens/chatgpt-com/v0002/export_format_research.json",
+        "scripts/inspect_chat_export.py",
+        "tests/test_chat_export_structure.py"
+      ]
     }
   ]
 }

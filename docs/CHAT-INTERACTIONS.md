@@ -99,7 +99,7 @@ path. See [the source-classified report](../specimens/chatgpt-com/v0002/export_f
 The local `scripts/inspect_chat_export.py` tool can inspect an export shard
 without printing conversation titles, message content, node identifiers, or
 conversation IDs. It only emits aggregate tree statistics and validation
-counts. It uses the in-memory standard-library JSON parser. Never commit,
+counts. It incrementally parses top-level export arrays using the Python standard library; memory use grows with the largest individual record, not the entire file. Never commit,
 upload, or redirect real exports or detailed analyses into the public
 repository. No real export was used for the tests.
 

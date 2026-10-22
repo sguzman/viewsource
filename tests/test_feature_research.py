@@ -25,9 +25,9 @@ class ChatFeatureQueueTests(unittest.TestCase):
         self.assertEqual(mod.validate_feature_research(),[])
 
     def test_explicit_remaining_evidence(self):
-        self.assertEqual(len(self.tasks),17)
+        self.assertEqual(len(self.tasks),18)
         self.assertEqual(Counter(t["status"] for t in self.tasks),
-                         {"done":9,"requires_new_evidence":8})
+                         {"done":10,"requires_new_evidence":8})
         self.assertFalse(any(t["status"]=="queued" for t in self.tasks))
 
     def test_deliverables_backed_by_artifacts(self):
