@@ -1,0 +1,75 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "public_reference",
+  "title": "Publicly described ChatGPT export message tree",
+  "method": "Independent secondary documentation and open-source parser references, separated from the v0002 saved-page code. No user's export has been opened or collected.",
+  "privacy": "Public field names and original summaries only. No example chat messages, real conversation identifiers, account fields, export files or raw API response content.",
+  "official": {
+    "claim": "OpenAI documents conversation JSON files as a component of ChatGPT data exports; large exports may be divided across numbered JSON files.",
+    "source_title": "OpenAI Help Center — transferring exported conversations",
+    "source_url": "https://help.openai.com/en/articles/9106926-transferring-conversations-from-1-chatgpt-account-to-another-chatgpt-account",
+    "limits": "The Help Center documentation cited here does not specify a stable message-node graph schema."
+  },
+  "community": [
+    {
+      "source_title": "openai_export_parser — supported formats",
+      "source_url": "https://github.com/temnoon/openai_export_parser/blob/master/README.md",
+      "claim": "Community-maintained export tooling describes mapping-based trees and an active current_node, including 2026 export archives."
+    },
+    {
+      "source_title": "ChatGPT to Markdown — data models",
+      "source_url": "https://difegam.github.io/chatgpt-to-markdown/reference/data-models/",
+      "claim": "Public parser models describe mapping of message nodes, parent/children references, and current_node."
+    },
+    {
+      "source_title": "chatgpt-conversation-export — format notes",
+      "source_url": "https://github.com/ThierryAbalea/chatgpt-conversation-export/blob/main/docs/format.md",
+      "claim": "Community notes distinguish older mapping trees from newer flat messages responses in a private endpoint. Those endpoint responses are not equivalent to data exports."
+    }
+  ],
+  "export_tree_fields": [
+    {
+      "field": "mapping",
+      "scope": "community_export_description",
+      "meaning": "Map of node keys to exported message-node records."
+    },
+    {
+      "field": "parent",
+      "scope": "community_export_description",
+      "meaning": "Reference from a node to its parent or null."
+    },
+    {
+      "field": "children",
+      "scope": "community_export_description",
+      "meaning": "List of possible child node references, including alternatives."
+    },
+    {
+      "field": "current_node",
+      "scope": "community_export_description",
+      "meaning": "Selected node reference used to derive an active path by following parents."
+    }
+  ],
+  "derived_operations": [
+    {
+      "operation": "selected_path",
+      "description": "Follow current_node to ancestors, then reverse; do not render all mapping nodes as one chronological list."
+    },
+    {
+      "operation": "alternatives",
+      "description": "Multiple children under a node can indicate alternate continuations in export trees."
+    },
+    {
+      "operation": "off_path",
+      "description": "Nodes outside the selected ancestry path may still exist in the export tree."
+    }
+  ],
+  "limitations": [
+    "These are externally documented/exported-data semantics, not observed runtime state or verified v0002 JavaScript handler behavior.",
+    "Some private endpoint response formats have changed; do not silently translate flat messages arrays into tree structures.",
+    "Export structure is not proof that the backend stores conversations in the same form.",
+    "No customer, user, or account export was examined; local analyzer tests use invented node trees only."
+  ],
+  "local_tool": "scripts/inspect_chat_export.py"
+}

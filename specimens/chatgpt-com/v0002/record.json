@@ -6397,6 +6397,24 @@
         "evidence_ref": "E2-069",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "exported-conversation-tree",
+      "kind": "Metadata",
+      "name": "Community-described ChatGPT export tree",
+      "description": "Externally documented message node mappings and active-path selection; separate from observed site implementation.",
+      "evidence": {
+        "evidence_class": "external_source",
+        "confidence": "medium",
+        "evidence_ref": "E2-070",
+        "source_scope": "public_reference"
+      },
+      "properties": {
+        "source_report": "export_format_research.json",
+        "evidence_source": "public_reference",
+        "local_analyzer": "scripts/inspect_chat_export.py",
+        "live_behavior_verified": false
+      }
     }
   ],
   "relationships": [
@@ -10029,6 +10047,17 @@
         "evidence_ref": "E2-069",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "website",
+      "to": "exported-conversation-tree",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "external_source",
+        "confidence": "medium",
+        "evidence_ref": "E2-070",
+        "source_scope": "public_reference"
+      }
     }
   ],
   "findings": [
@@ -10720,6 +10749,16 @@
         "confidence": "high",
         "evidence_ref": "E2-069",
         "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-070",
+      "statement": "Public documentation establishes that ChatGPT can export conversation JSON. Independent export-parser documentation describes a legacy/tree-shaped structure with mapping, parent, children and current_node fields, enabling branch and selected-path reconstruction in exported data. This does not verify that the v0002 browser client, a current private endpoint, or the backend uses the same representation.",
+      "evidence": {
+        "evidence_class": "external_source",
+        "confidence": "medium",
+        "evidence_ref": "E2-070",
+        "source_scope": "public_reference"
       }
     }
   ],
