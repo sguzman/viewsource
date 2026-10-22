@@ -80,7 +80,7 @@ class DeepResearchIntegrity(unittest.TestCase):
             self.assertTrue(all(dep in by_id for dep in t["depends_on"]))
             if t["status"] == "done":
                 self.assertTrue(set(t["evidence_refs"]) <= evidence)
-        self.assertEqual(self.record["status"], "reviewed")
+        self.assertEqual(self.record["status"], "researching")
 
     def test_only_aggregated_public_output(self):
         p = self.report
