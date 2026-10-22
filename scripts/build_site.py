@@ -234,6 +234,34 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            mutation_path = ROOT / (base + "/chat_graph_mutation_trace.json")
+            if mutation_path.is_file():
+                graph_mutation = read(base + "/chat_graph_mutation_trace.json")
+                if (graph_mutation["specimen_id"] != item["id"]
+                        or graph_mutation["version"] != number
+                        or graph_mutation["live_graph_behavior_verified"] is not False):
+                    raise ValueError("Message graph mutation scope mismatch")
+                visuals["chat_graph_mutation"] = {
+                    "source_ref": graph_mutation["source_ref"],
+                    "source_executed": graph_mutation["captured_client_executed"],
+                    "modules": [
+                        {"role": entry["role"].replace("_"," "),
+                         "entrypoint_role": entry["entrypoint_role"].replace("_"," ")}
+                        for entry in graph_mutation["source_modules"]
+                    ],
+                    "call_sequence": [
+                        {"from": edge["from"].replace("_"," "),
+                         "to": edge["to"].replace("_"," "),
+                         "kind": edge["kind"].replace("_"," ")}
+                        for edge in graph_mutation["verified_source_call_sequence"]
+                    ],
+                    "operations": [
+                        {"kind": op["kind"].replace("_"," "),
+                         "observation": op["observation"]}
+                        for op in graph_mutation["graph_operations"]
+                    ],
+                    "unverified": graph_mutation["not_verified"],
+                }
             transport_path = ROOT / (base + "/chat_transport_trace.json")
             if transport_path.is_file():
                 transport = read(base + "/chat_transport_trace.json")
