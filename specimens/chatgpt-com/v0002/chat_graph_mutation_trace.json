@@ -23,6 +23,11 @@
       "role": "message_mapping_transformer",
       "source_ref": "R-JS-018",
       "entrypoint_role": "parent_child_graph_transformer"
+    },
+    {
+      "role": "selected_message_projection_and_scoped_state",
+      "source_ref": "R-JS-018",
+      "entrypoint_role": "conversation_state_commit"
     }
   ],
   "verified_source_call_sequence": [
@@ -55,6 +60,21 @@
       "from": "client_conversation_state_writer",
       "to": "conversation_state_update",
       "kind": "local_state_mutation"
+    },
+    {
+      "from": "client_conversation_state_writer",
+      "to": "selected_path_projection",
+      "kind": "direct_state_helper_call"
+    },
+    {
+      "from": "selected_path_projection",
+      "to": "visible_message_cache",
+      "kind": "local_state_mutation"
+    },
+    {
+      "from": "client_conversation_state_writer",
+      "to": "user_ancestry_projection",
+      "kind": "conditional_client_path"
     }
   ],
   "mapping_transformer_inputs": [
@@ -104,6 +124,14 @@
     {
       "kind": "state_write_and_return",
       "observation": "The state writer constructs updated conversation state with the new mapping/current selection, sends it through a local state helper, and returns the message ID, parent ID, previous state and next state."
+    },
+    {
+      "kind": "visible_message_projection",
+      "observation": "The conversation state commit updates a visible-message projection. For a changed node it attempts an incremental projection update; otherwise it can recompute the visible selected path from the mapping and current node."
+    },
+    {
+      "kind": "user_ancestry_projection",
+      "observation": "When selected-node or relevant parent information changes, the state commit may walk the current-node parent chain, gather user-author messages in root-to-leaf order, and update a separate user-ancestry projection. The walk guards repeated identities."
     }
   ],
   "structural_guarantees_visible_in_code": [
@@ -117,7 +145,23 @@
     "No proof that every input graph is valid or that all cases preserve global acyclicity.",
     "No proof of server-side message ancestry implementation or the exact export data format.",
     "No proof that the live client exercised any specific conditional insertion or rotation.",
-    "The full imported storage helper's notification mechanism and downstream UI components remain untraced."
+    "The final component selectors, render subscriptions and reactivity triggers consuming these projected state fields remain untraced."
   ],
-  "privacy": "Capture-local semantic roles and original analytic summaries only; no source code, IDs, network endpoints, filenames, routes or user messages."
+  "privacy": "Capture-local semantic roles and original analytic summaries only; no source code, IDs, network endpoints, filenames, routes or user messages.",
+  "state_commit_observation": {
+    "source_ref": "R-JS-018",
+    "evidence_class": "observed_static",
+    "projected_state_roles": [
+      "message_mapping",
+      "selected_current_node",
+      "visible_selected_path_messages",
+      "selected_user_message_ancestry",
+      "conversation_status",
+      "stream_request_identity",
+      "error_state",
+      "optimistic_local_prompt_state"
+    ],
+    "client_behavior": "The scoped conversation commit explicitly updates a message mapping, selected node, selected-path visible-message cache, and conditional user-ancestry list, alongside request status and other client fields.",
+    "verification_boundary": "These are saved client state-set operations; how individual UI components subscribe and render remains a separate source-tracing task."
+  }
 }
