@@ -88,3 +88,8 @@ The v0002 ZIP's offline research is reviewed, but this **does not** mean chat be
 The independent [chat feature backlog](queues/chat_research.json) tracks **nine completed static or engineering tasks and eight runtime investigations requiring new authorized synthetic-session evidence**. Source analysis, graph tooling and strict content-free observation schemas are implemented, with [coding/research instructions](docs/CHAT-INTERACTIONS.md). No actual conversation, account identifier or private browser trace is included.
 
 The public atlas's Chat interactions section now includes a [per-operation capability matrix](specimens/chatgpt-com/v0002/chat_capability_matrix.json), [officially documented UI actions](specimens/chatgpt-com/v0002/public_chat_actions.json), and an interactive *synthetic* response-branch example. The synthetic software tools can export ordinal-only message topologies, compare structural events against candidate transitions, and simulate guarded state paths without contacting the website. See [the chat research contract](docs/CHAT-INTERACTIONS.md).
+
+A [local-only export normalizer](scripts/normalize_chat_export.py) is also
+available for export-compatible tree records. It constructs temporary
+ordinal message graphs and refuses broken ancestry. Unlike the public
+specimen results, it never includes raw text, original IDs or export files.

@@ -289,7 +289,9 @@
       "artifacts": [
         "specimens/chatgpt-com/v0002/export_format_research.json",
         "scripts/inspect_chat_export.py",
-        "tests/test_chat_export_structure.py"
+        "tests/test_chat_export_structure.py",
+        "scripts/normalize_chat_export.py",
+        "tests/test_export_graph_normalization.py"
       ]
     }
   ]

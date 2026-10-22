@@ -107,3 +107,21 @@ Community documentation warns that private API responses may now use
 flat message arrays rather than legacy tree mappings. The analyzer does not
 invent parent links for such arrays. Neither format should be described as
 proven backend storage or as the implementation observed in v0002.
+
+## Normalizing an exported tree without original IDs
+
+`scripts/normalize_chat_export.py` provides the pure function
+`normalize_conversation(record)` for one tree-shaped export record. It
+validates reciprocal parent/child links, selected-node ancestry and cycles,
+then generates ordinal-only nodes, roles, parent links and selected paths.
+Real message text, titles, conversation IDs, and original node IDs never
+appear in its result. The function handles a selected internal node without
+mistaking it for a leaf.
+
+There is intentionally **no command-line entrypoint** to print a complete
+real user's per-conversation graph. The `inspect_chat_export.py` CLI is
+restricted to aggregate counts. Local consumers may call the normalizer
+explicitly, but must not publish or log derived private graph structures.
+
+This is an adapter for community-documented export trees only. It does not
+validate ChatGPT's current browser interaction protocol or backend model.
