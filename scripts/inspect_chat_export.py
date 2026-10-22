@@ -39,6 +39,7 @@ def inspect_conversation(value: object) -> dict:
     """Return aggregate counts only, without any original keys or content."""
     result = {
         "shape": "unsupported",
+        "flat_message_items": 0,
         "nodes": 0,
         "message_nodes": 0,
         "null_message_nodes": 0,
@@ -61,6 +62,9 @@ def inspect_conversation(value: object) -> dict:
     if not isinstance(mapping, dict):
         if isinstance(value.get("messages"), list):
             result["shape"] = "flat_messages_no_tree"
+            # The array is only an ordered collection. There is no
+            # supported parent/alternative graph to reconstruct from it.
+            result["flat_message_items"] = len(value["messages"])
         return result
     result["shape"] = "mapping_tree"
     result["nodes"] = len(mapping)
@@ -146,7 +150,8 @@ def summarize_records(records) -> dict:
     """Accumulate counts without retaining parsed conversation records."""
     total = 0
     fields = (
-        "nodes", "message_nodes", "null_message_nodes", "parent_links",
+        "flat_message_items", "nodes", "message_nodes",
+        "null_message_nodes", "parent_links",
         "branch_points", "alternative_children", "duplicate_child_links",
         "roots",
         "dangling_parent_links", "dangling_child_links",
@@ -182,7 +187,7 @@ def summarize_records(records) -> dict:
         "limits": [
             "No message text or identifiers are returned.",
             "Counts cannot identify live ChatGPT route or backend semantics.",
-            "Flat messages arrays do not establish branching and are not guessed into trees.",
+            "Flat message-array lengths are counted separately; no ancestry or branch identity is inferred.",
             "This is a local-only export snapshot; format variants may be unsupported.",
         ],
     }

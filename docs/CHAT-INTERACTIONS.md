@@ -180,3 +180,13 @@ investigation still requires separate, explicit authorization for a
 disposable synthetic session. A protocol can be completed only after
 independently reviewed evidence; proposed alternatives must never be
 promoted to verified findings.
+
+## Distinct flat-message input shape
+
+Community research describes some private endpoint responses containing
+`messages` arrays instead of legacy `mapping` trees. This is not
+proof that a current ChatGPT data export has the same format. The local
+inspector now reports `flat_message_items` as a separate aggregate for
+array-shaped inputs while leaving tree nodes, parent links, alternatives
+and selected-path status unestablished. A flat array must never be silently
+treated as a tree or used to infer a branch switch.

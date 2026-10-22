@@ -93,10 +93,17 @@ class ChatExportStructureTests(unittest.TestCase):
         self.assertEqual(metrics["selected_path_status"], "cycle")
 
     def test_flat_format_is_not_invented_as_tree(self):
-        result = mod.inspect_export([{"messages": [{"not": "a tree"}]}])
+        result = mod.inspect_export([{"messages": [
+            {"content": "private-synthetic-placeholder"},
+            {"other": "unstructured"}
+        ]}])
         self.assertEqual(result["shapes"]["flat_messages_no_tree"], 1)
+        self.assertEqual(result["structural_counts"]["flat_message_items"], 2)
         self.assertEqual(result["structural_counts"]["nodes"], 0)
+        self.assertEqual(result["structural_counts"]["parent_links"], 0)
+        self.assertEqual(result["structural_counts"]["branch_points"], 0)
         self.assertEqual(result["selection_status"]["not_available"], 1)
+        self.assertNotIn("private-synthetic-placeholder", json.dumps(result))
 
     def test_only_aggregated_structure_is_returned(self):
         a = self.sample()
