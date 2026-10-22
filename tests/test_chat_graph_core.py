@@ -145,5 +145,62 @@ class ChatGraphCoreTests(unittest.TestCase):
         self.assertNotIn("private-placeholder",json.dumps(exported))
 
 
+    def test_structural_count_deltas_without_input_keys(self):
+        chat=core.ConversationGraph("invented-conversation")
+        before=chat.topology_metrics()
+        chat.add("first-opaque-key",None,"user")
+        chat.add("first-answer-key","first-opaque-key","assistant")
+        chat.select("first-answer-key")
+        middle=chat.topology_metrics()
+        chat.add("alternative-answer-key","first-opaque-key","assistant")
+        after=chat.topology_metrics()
+        self.assertEqual(before["node_count"],0)
+        self.assertEqual(middle["parent_edge_count"],1)
+        self.assertEqual(after["branch_point_count"],1)
+        self.assertEqual(after["alternative_child_count"],1)
+        self.assertEqual(after["selected_path_length"],0)
+        compared=core.compare_topology_metrics(middle,after)
+        self.assertEqual(compared["changes"]["node_count"],1)
+        self.assertEqual(compared["changes"]["alternative_child_count"],1)
+        self.assertEqual(compared["changes"]["selected_path_length"],-2)
+        self.assertFalse(compared["website_behavior_verified"])
+        import json
+        self.assertNotIn("opaque-key",json.dumps(compared))
+
+    def test_topology_metrics_ignore_arbitrary_keys_and_insertion_order(self):
+        chat_a=core.ConversationGraph("invented-alpha")
+        chat_a.add("root",None,"user")
+        chat_a.add("left","root","assistant")
+        chat_a.add("right","root","assistant")
+        chat_b=core.ConversationGraph("invented-beta")
+        chat_b.add("other-root",None,"user")
+        chat_b.add("other-right","other-root","assistant")
+        chat_b.add("other-left","other-root","assistant")
+        self.assertEqual(chat_a.topology_metrics(),chat_b.topology_metrics())
+
+    def test_forest_metric_counts_forks_without_names(self):
+        forest=core.ConversationForest()
+        first=forest.new_chat("fictional-first")
+        first.add("root",None,"user")
+        second=forest.new_chat("fictional-second")
+        before=forest.topology_metrics()
+        forest.annotate_candidate_fork("fictional-first","root","fictional-second")
+        after=forest.topology_metrics()
+        self.assertEqual(after["conversation_count"],2)
+        self.assertEqual(after["candidate_fork_count"],1)
+        self.assertEqual(
+            core.compare_topology_metrics(before,after)["changes"]["candidate_fork_count"],1)
+
+    def test_reject_extra_fields_in_structural_comparison(self):
+        graph=core.ConversationGraph("fiction")
+        metrics=graph.topology_metrics()
+        with self.assertRaises(core.GraphError):
+            core.compare_topology_metrics(metrics,{**metrics,"original_message_id":1})
+        with self.assertRaises(core.GraphError):
+            core.compare_topology_metrics(metrics,{**metrics,"node_count":True})
+        with self.assertRaises(core.GraphError):
+            core.compare_topology_metrics(metrics,{**metrics,"node_count":-1})
+
+
 if __name__=="__main__":
     unittest.main()
