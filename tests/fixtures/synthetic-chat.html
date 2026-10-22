@@ -16,6 +16,8 @@
     <button id="receive">Show fictional response started</button>
     <button id="complete">Complete fictional response</button>
     <button id="stop">Stop fictional response</button>
+    <button id="fail">Fail fictional response</button>
+    <button id="retry">Retry fictional response</button>
     <button id="fork">Create fictional separate conversation</button>
   </section>
   <script>
@@ -47,6 +49,10 @@
         count("parentLinks", 1);
       }),
       "stop": () => conditional(root.dataset.phase === "receiving", () => set("phase", "stopped")),
+      "fail": () => conditional(["sending", "receiving"].includes(root.dataset.phase),
+        () => set("phase", "failed")),
+      "retry": () => conditional(root.dataset.phase === "failed",
+        () => set("phase", "sending")),
       "fork": () => conditional(root.dataset.selection === "selected", () =>
         count("conversationCount", 1)),
     };

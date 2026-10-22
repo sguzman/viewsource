@@ -155,3 +155,15 @@ fragments. The sequence analyzer treats `not_observed` and `inconclusive`
 results as non-confirming even when a separate coarse state label resembles
 the target of a candidate transition. The before/after labels remain
 independent UI observations; no event alignment proves an internal handler.
+
+## Synthetic browser scenario coverage
+
+The Playwright suite uses only `tests/fixtures/synthetic-chat.html`, a
+locally authored fictional page. Its four independent scenarios are:
+completed response followed by a fictional separate conversation, stopped
+response, failure during receiving followed by retry and completion, and
+failure during sending before partial output. The suite also rejects a
+retry with no failed attempt. Every emitted trace goes through both the
+strict structural validator and candidate-event analyzer. CI asserts
+synthetic counts and sequencing but never promotes these scenarios to
+observed live ChatGPT behavior.

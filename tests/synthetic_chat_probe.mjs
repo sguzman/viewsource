@@ -87,12 +87,36 @@ try {
     ["stop", "stop_response"]
   ], "stopped", { messages: 1, conversations: 1, parent_links: 0 });
 
+  // Fictional failure during streaming, followed by retry and completion.
+  await run("failed-retry", [
+    ["select-chat", "select_conversation"],
+    ["draft", "edit_draft"],
+    ["submit", "submit_draft"],
+    ["receive", "response_started"],
+    ["fail", "response_failed"],
+    ["retry", "retry_response"],
+    ["receive", "response_started"],
+    ["complete", "response_completed"]
+  ], "complete", { messages: 2, conversations: 1, parent_links: 1 });
+
+  // Independent failure before the first partial output.
+  await run("failed-early", [
+    ["select-chat", "select_conversation"],
+    ["draft", "edit_draft"],
+    ["submit", "submit_draft"],
+    ["fail", "response_failed"]
+  ], "failed", { messages: 1, conversations: 1, parent_links: 0 });
+
   // A deliberately invalid action must not mutate synthetic chat state.
   await page.reload({ waitUntil: "load" });
   await page.locator("#complete").click();
   const rejected = await snapshot();
   assert.equal(rejected.rejected_actions, 1);
   assert.equal(rejected.response_phase, "idle");
+  await page.locator("#retry").click();
+  const invalidRetry = await snapshot();
+  assert.equal(invalidRetry.rejected_actions, 2);
+  assert.equal(invalidRetry.response_phase, "idle");
   assert.equal(rejected.messages, 0);
 } finally {
   await browser.close();
