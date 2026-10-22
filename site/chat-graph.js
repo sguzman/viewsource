@@ -111,6 +111,33 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const implTrace=record.visuals?.chat_static_impl_trace;
+    if(implTrace){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Traced client implementation"));
+      block.append(element("p","graph-caption",
+        "Actual client-side code shapes from the captured JavaScript, labeled by anonymous source/function ordinals. Static evidence only; no verified server storage or network behavior."));
+      block.append(element("p","chat-implementation-totals",
+        implTrace.match_count+" AST pattern matches across "+implTrace.matched_functions+" captured functions; "+implTrace.reviewed_operations.length+" operations examined."));
+      const items=element("div","chat-implementation-list");
+      for(const operation of implTrace.reviewed_operations){
+        const card=element("details","chat-implementation-card");
+        const summary=element("summary","");
+        summary.append(element("strong","",operation.classification),
+          element("small","",operation.source_ref+" / function "+operation.function_ordinal));
+        card.append(summary,element("p","",operation.description),
+          element("p","graph-caption",operation.limits));
+        items.append(card);
+      }
+      block.append(items);
+      const questions=element("details","chat-implementation-questions");
+      questions.append(element("summary","","Next source-level investigations"));
+      const lines=element("ul","");
+      implTrace.open_static_questions.forEach(item=>lines.append(element("li","",item)));
+      questions.append(lines);
+      block.append(questions);
+      section.append(block);
+    }
     const astStudy=record.visuals?.chat_ast_followup;
     if(astStudy){
       const block=element("div","chat-subsection");
