@@ -21,7 +21,8 @@
     "transitions",
     "branch_model",
     "open_questions",
-    "limitations"
+    "limitations",
+    "domain_relations"
   ],
   "properties": {
     "format_version": {
@@ -175,6 +176,12 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "domain_relations": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/domainRelation"
       }
     }
   },
@@ -445,6 +452,76 @@
         }
       },
       "additionalProperties": false
+    },
+    "domainRelation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "from",
+        "to",
+        "predicate",
+        "multiplicity",
+        "evidence_status",
+        "source_clue_refs",
+        "verified_evidence_refs",
+        "verify"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "predicate": {
+          "enum": [
+            "has_message",
+            "parent_of",
+            "selects_message",
+            "submitted_as",
+            "result_for",
+            "forked_from",
+            "selects_alternative",
+            "alternative_to"
+          ]
+        },
+        "multiplicity": {
+          "enum": [
+            "one",
+            "zero_or_one",
+            "zero_or_many",
+            "one_or_many"
+          ]
+        },
+        "evidence_status": {
+          "enum": [
+            "hypothesis",
+            "observed_live"
+          ]
+        },
+        "source_clue_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "verified_evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        },
+        "verify": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
     }
   }
 }

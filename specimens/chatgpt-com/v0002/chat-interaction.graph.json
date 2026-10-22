@@ -780,5 +780,111 @@
     "Observed UI surfaces do not establish exact React component, listener, endpoint or store ownership.",
     "Private conversations and account identifiers are excluded from all public research."
   ],
-  "limits": []
+  "limits": [],
+  "domain_relations": [
+    {
+      "id": "chat-messages",
+      "from": "conversation",
+      "to": "message",
+      "predicate": "has_message",
+      "multiplicity": "zero_or_many",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-066"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Compare synthetic loaded conversation roots and displayed message identities."
+    },
+    {
+      "id": "message-ancestry",
+      "from": "message",
+      "to": "message",
+      "predicate": "parent_of",
+      "multiplicity": "zero_or_many",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-067"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Distinguish actual parent relationships from rendering order; observe an edit or alternative path."
+    },
+    {
+      "id": "selected-path",
+      "from": "conversation",
+      "to": "message",
+      "predicate": "selects_message",
+      "multiplicity": "zero_or_one",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-067"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Observe which message is active after switching alternative responses and reloading."
+    },
+    {
+      "id": "draft-submission",
+      "from": "draft",
+      "to": "message",
+      "predicate": "submitted_as",
+      "multiplicity": "zero_or_one",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-069"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Submit synthetic content and check whether a durable message node appears or only a pending operation."
+    },
+    {
+      "id": "response-attempt",
+      "from": "response",
+      "to": "message",
+      "predicate": "result_for",
+      "multiplicity": "zero_or_one",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-068"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Compare attempt identity and message identity during regeneration and interruption."
+    },
+    {
+      "id": "chat-fork",
+      "from": "conversation",
+      "to": "conversation",
+      "predicate": "forked_from",
+      "multiplicity": "zero_or_many",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-068"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Use a disposable branch-to-new-chat operation and examine whether the destination is separately selectable."
+    },
+    {
+      "id": "branch-selection",
+      "from": "branch",
+      "to": "message",
+      "predicate": "selects_alternative",
+      "multiplicity": "zero_or_one",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-068"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Inspect which existing alternative becomes visible after switching branches."
+    },
+    {
+      "id": "response-alternative",
+      "from": "message",
+      "to": "message",
+      "predicate": "alternative_to",
+      "multiplicity": "zero_or_many",
+      "evidence_status": "hypothesis",
+      "source_clue_refs": [
+        "E2-067"
+      ],
+      "verified_evidence_refs": [],
+      "verify": "Verify whether alternative assistant responses remain accessible as peers."
+    }
+  ]
 }
