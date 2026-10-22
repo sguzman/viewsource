@@ -38,6 +38,79 @@ class ObservationError(ValueError):
     """The observation cannot be used as structural research input."""
 
 
+def compare_sequence(observation: dict, graph: dict) -> dict:
+    """Check coarse observations against *candidate* state transitions only.
+
+    No observed trace can verify an internal handler or causal relationship.
+    Initial states are hypothetical; later state labels come from the supplied
+    structural observations rather than assumed model progress.
+    """
+    states = {
+        "selection": "none",
+        "response": "idle",
+    }
+    previous_basis = {
+        "selection": "assumed_initial_state",
+        "response": "assumed_initial_state",
+    }
+    declared = {t["event"] for t in graph["transitions"]}
+    rows = []
+    counts = Counter()
+    for i, step in enumerate(observation["steps"]):
+        source_event = step["event"]
+        matching_events = [e for e in EVENT_MAPPING.get(source_event, ()) if e in declared]
+        candidates = [t for t in graph["transitions"] if t["event"] in matching_events]
+        reported = {"selection": step["selection"], "response": step["response_phase"]}
+        # Never treat a user-visible label as a recovered internal state.
+        comparable = [t for t in candidates if t["machine"] in states]
+        matches = [t for t in comparable if
+                   t["from"] == states[t["machine"]]]
+        if not candidates:
+            status = "unmapped"
+        elif not comparable:
+            status = "insufficient_state_signal"
+        elif len(matches) == 0:
+            status = "no_matching_candidate_edge"
+        elif len(matches) != 1:
+            status = "ambiguous_candidate_edges"
+        else:
+            edge = matches[0]
+            value = reported[edge["machine"]]
+            if value == "unknown":
+                status = "insufficient_state_signal"
+            elif value == edge["to"]:
+                status = "consistent_with_candidate"
+            else:
+                status = "conflicts_with_candidate"
+        rows.append({
+            "ordinal": i,
+            "event": source_event,
+            "status": status,
+            "candidate_transition_ids": sorted(t["id"] for t in matches),
+            "source_state_basis": {
+                machine: previous_basis[machine] for machine in states
+                if any(t["machine"] == machine for t in comparable)
+            },
+            "internal_behavior_verified": False,
+        })
+        counts[status] += 1
+        for machine, value in reported.items():
+            if value != "unknown":
+                states[machine] = value
+                previous_basis[machine] = "prior_coarse_observation"
+            else:
+                # Unknown means we cannot safely claim continuity of that
+                # machine's state through the gap.
+                states[machine] = None
+                previous_basis[machine] = "unknown"
+    return {
+        "basis": "hypothetical_machine_comparison",
+        "verified_transitions": 0,
+        "status_counts": dict(sorted(counts.items())),
+        "steps": rows,
+    }
+
+
 def summarize(observation: dict, graph: dict) -> dict:
     problems = validate(observation)
     if problems:
@@ -79,6 +152,7 @@ def summarize(observation: dict, graph: dict) -> dict:
             "parent_links": sum(s["parent_link_delta"] for s in steps),
         },
         "candidate_event_correlations": observed_classes,
+        "candidate_sequence_alignment": compare_sequence(observation, graph),
         "limits": [
             "Matching event names does not confirm action-handler ownership or causal dataflow.",
             "A structural observation, including an observed result label, is not a verified transition.",
