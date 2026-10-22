@@ -33,3 +33,9 @@ Read [CONSTITUTION.md](CONSTITUTION.md), [docs/RESEARCH.md](docs/RESEARCH.md), a
 Run \`python3 scripts/validate.py\` and \`python3 -m unittest discover -s tests -v\`. Check the entire diff and intended commit message for private information and third-party material before every public write. CI checks are safeguards, not a finding that publication is authorized.
 
 If a disclosure is suspected, stop publication and remediate without repeating the exposed content in public logs or issues.
+
+## Ongoing research and website
+
+A substantial, source-rich ZIP must spawn a persistent deep research graph using \`queues/deep_profiles.json\`, in addition to the ordinary intake queues. Do not mistake source-pattern counts or completion of the initial pass for complete understanding. Preserve unmet deep tasks and their dependencies until supported by meaningful research.
+
+Viewsource is also a **browsable research website**: maintain the public [Specimen Atlas](site/) so readers can move through HTML, CSS, JavaScript, components, logic, flow, state, evidence, and active research queues. Maintain clickable relationships and evidence boundaries; expose only original sanitized findings, never capture source. The website **must** provide a System/Light/Dark appearance dropdown with **System as the default**. Keep the atlas functional at desktop and mobile widths and use automated browser checks where available.

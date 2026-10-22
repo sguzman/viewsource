@@ -1,5 +1,7 @@
 # Specimen Atlas
 
+**Live atlas:** https://sguzman.github.io/viewsource/
+
 This is the public, browser-accessible research interface for Viewsource. It is an **original explanation of captured evidence**, not a replica of any specimen website.
 
 ## Contents

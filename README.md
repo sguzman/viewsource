@@ -53,6 +53,8 @@ See [static census](docs/STATIC-CENSUS.md) for a private, content-free structura
 
 ## Specimen Atlas website
 
+**Website:** https://sguzman.github.io/viewsource/
+
 The public, privacy-bounded research website lives in [site/](site/) and is built with [scripts/build_site.py](scripts/build_site.py). It turns curated findings, ontology relationships and persistent task queues into an accessible, searchable specimen narrative with an evidence inspector and interactive component graph.
 
 The **Appearance** dropdown provides **System** (default), **Light**, and **Dark** modes. Its selected preference is stored locally in the viewing browser. No captured source is executed by the atlas.
