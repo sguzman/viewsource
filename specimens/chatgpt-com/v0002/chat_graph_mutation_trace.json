@@ -1,0 +1,123 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_ref": "R-JS-018",
+  "evidence_class": "observed_static",
+  "review_status": "source_reviewed_client_graph_mutation",
+  "captured_client_executed": false,
+  "backend_schema_verified": false,
+  "live_graph_behavior_verified": false,
+  "source_modules": [
+    {
+      "role": "generation_scoped_event_processor",
+      "source_ref": "R-JS-018",
+      "entrypoint_role": "applyMessage"
+    },
+    {
+      "role": "client_conversation_state_writer",
+      "source_ref": "R-JS-018",
+      "entrypoint_role": "message_update_helper"
+    },
+    {
+      "role": "message_mapping_transformer",
+      "source_ref": "R-JS-018",
+      "entrypoint_role": "parent_child_graph_transformer"
+    }
+  ],
+  "verified_source_call_sequence": [
+    {
+      "from": "decoded_message_event",
+      "to": "event_processor_message_path",
+      "kind": "static_callback"
+    },
+    {
+      "from": "event_processor_message_path",
+      "to": "batch_or_replay_update",
+      "kind": "conditional_client_path"
+    },
+    {
+      "from": "batch_or_replay_update",
+      "to": "apply_message",
+      "kind": "static_client_method_call"
+    },
+    {
+      "from": "apply_message",
+      "to": "client_conversation_state_writer",
+      "kind": "imported_helper_call"
+    },
+    {
+      "from": "client_conversation_state_writer",
+      "to": "message_mapping_transformer",
+      "kind": "imported_helper_call"
+    },
+    {
+      "from": "client_conversation_state_writer",
+      "to": "conversation_state_update",
+      "kind": "local_state_mutation"
+    }
+  ],
+  "mapping_transformer_inputs": [
+    "mapping",
+    "message",
+    "fallback_parent_identity"
+  ],
+  "mapping_transformer_results": [
+    "updated_mapping",
+    "message_identity",
+    "is_new_node",
+    "did_rotate_descendant"
+  ],
+  "graph_operations": [
+    {
+      "kind": "existing_node_update",
+      "observation": "If the message's node already exists, the transformer retains and updates its graph entry while choosing a parent from available message, existing-node and fallback data."
+    },
+    {
+      "kind": "new_node_insertion",
+      "observation": "If absent, it creates a mapping entry with message, parent and child information and marks the node as new."
+    },
+    {
+      "kind": "parent_selection",
+      "observation": "Parent selection considers an existing node, the message's parent metadata, fallback identity, author type and a special merged-message-fragment continuation condition."
+    },
+    {
+      "kind": "child_link_maintenance",
+      "observation": "On an accepted parent, the transformer adds the child reference if missing and repairs obsolete links to a previous parent where needed."
+    },
+    {
+      "kind": "ancestry_guard",
+      "observation": "A parent-chain traversal is used to avoid some invalid fallback ancestry and to identify a descendant relationship before relinking."
+    },
+    {
+      "kind": "descendant_rotation",
+      "observation": "If a proposed new parent lies beneath the node in the old ancestry, the transformer can rotate a descendant relationship and adjust related parent/child links, reporting the rotation."
+    },
+    {
+      "kind": "selected_node_decision",
+      "observation": "The calling state writer conditionally preserves or changes currentNode using preserve-current-turn intent, new-node status, rotation results, and selected ancestry relationships."
+    },
+    {
+      "kind": "optimistic_state_reconciliation",
+      "observation": "The state writer can update locally optimistic prompt state for the affected message or parent before publishing the new conversation state."
+    },
+    {
+      "kind": "state_write_and_return",
+      "observation": "The state writer constructs updated conversation state with the new mapping/current selection, sends it through a local state helper, and returns the message ID, parent ID, previous state and next state."
+    }
+  ],
+  "structural_guarantees_visible_in_code": [
+    "Reciprocal parent/child rewrites are attempted when a node changes parent.",
+    "New child references are checked for existing membership before insertion.",
+    "Ancestry and rotation logic can prevent or repair some inconsistent local graphs.",
+    "The selected current node is decided by a separate caller rather than always choosing the inserted message.",
+    "The update result exposes old/new conversation state to further local processing."
+  ],
+  "not_verified": [
+    "No proof that every input graph is valid or that all cases preserve global acyclicity.",
+    "No proof of server-side message ancestry implementation or the exact export data format.",
+    "No proof that the live client exercised any specific conditional insertion or rotation.",
+    "The full imported storage helper's notification mechanism and downstream UI components remain untraced."
+  ],
+  "privacy": "Capture-local semantic roles and original analytic summaries only; no source code, IDs, network endpoints, filenames, routes or user messages."
+}
