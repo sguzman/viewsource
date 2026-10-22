@@ -5953,6 +5953,287 @@
       "properties": {
         "verified_execution": false
       }
+    },
+    {
+      "id": "tech-react",
+      "kind": "Dependency",
+      "name": "React",
+      "description": "Captured source markers associated with UI framework. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "UI framework"
+      }
+    },
+    {
+      "id": "tech-react-router",
+      "kind": "Dependency",
+      "name": "React Router",
+      "description": "Captured source markers associated with Routing. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Routing"
+      }
+    },
+    {
+      "id": "tech-tailwind-css",
+      "kind": "Dependency",
+      "name": "Tailwind CSS",
+      "description": "Captured source markers associated with CSS framework. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "CSS framework"
+      }
+    },
+    {
+      "id": "tech-radix-ui",
+      "kind": "Dependency",
+      "name": "Radix UI",
+      "description": "Captured source markers associated with UI primitives. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "UI primitives"
+      }
+    },
+    {
+      "id": "tech-prosemirror",
+      "kind": "Dependency",
+      "name": "ProseMirror",
+      "description": "Captured source markers associated with Rich-text editing. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Rich-text editing"
+      }
+    },
+    {
+      "id": "tech-katex",
+      "kind": "Dependency",
+      "name": "KaTeX",
+      "description": "Captured source markers associated with Math rendering. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Math rendering"
+      }
+    },
+    {
+      "id": "tech-floating-ui",
+      "kind": "Dependency",
+      "name": "Floating UI",
+      "description": "Captured source markers associated with Positioning. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Positioning"
+      }
+    },
+    {
+      "id": "tech-tanstack-query",
+      "kind": "Dependency",
+      "name": "TanStack Query",
+      "description": "Captured source markers associated with Client data fetching. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Client data fetching"
+      }
+    },
+    {
+      "id": "tech-react-markdown",
+      "kind": "Dependency",
+      "name": "React Markdown / micromark",
+      "description": "Captured source markers associated with Markdown parsing. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Markdown parsing"
+      }
+    },
+    {
+      "id": "tech-motion",
+      "kind": "Dependency",
+      "name": "Motion / Framer Motion family",
+      "description": "Captured source markers associated with Animation. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Animation"
+      }
+    },
+    {
+      "id": "tech-highlight",
+      "kind": "Dependency",
+      "name": "highlight.js-style classes",
+      "description": "Captured source markers associated with Code highlighting markers. Consult the technology inventory for evidence strength and qualification; exact installed version and live use are not established.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "study": "technology_inventory.json",
+        "domain": "Code highlighting markers"
+      }
+    },
+    {
+      "id": "page-region-sidebar",
+      "kind": "DOMRegion",
+      "name": "Captured sidebar",
+      "description": "An anonymized structural region of the saved DOM. See the page map for observed descendant controls and evidence limitations.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "region": "sidebar"
+      }
+    },
+    {
+      "id": "page-region-top-nav",
+      "kind": "DOMRegion",
+      "name": "Captured top nav",
+      "description": "An anonymized structural region of the saved DOM. See the page map for observed descendant controls and evidence limitations.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "region": "top-nav"
+      }
+    },
+    {
+      "id": "page-region-list-nav",
+      "kind": "DOMRegion",
+      "name": "Captured list nav",
+      "description": "An anonymized structural region of the saved DOM. See the page map for observed descendant controls and evidence limitations.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "region": "list-nav"
+      }
+    },
+    {
+      "id": "page-region-main",
+      "kind": "DOMRegion",
+      "name": "Captured main",
+      "description": "An anonymized structural region of the saved DOM. See the page map for observed descendant controls and evidence limitations.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "region": "main"
+      }
+    },
+    {
+      "id": "page-region-page-header",
+      "kind": "DOMRegion",
+      "name": "Captured page header",
+      "description": "An anonymized structural region of the saved DOM. See the page map for observed descendant controls and evidence limitations.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "region": "page-header"
+      }
+    },
+    {
+      "id": "page-region-composer",
+      "kind": "DOMRegion",
+      "name": "Captured composer",
+      "description": "An anonymized structural region of the saved DOM. See the page map for observed descendant controls and evidence limitations.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "region": "composer"
+      }
+    },
+    {
+      "id": "page-region-dialog",
+      "kind": "DOMRegion",
+      "name": "Captured dialog",
+      "description": "An anonymized structural region of the saved DOM. See the page map for observed descendant controls and evidence limitations.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "region": "dialog"
+      }
     }
   ],
   "relationships": [
@@ -9321,6 +9602,204 @@
         "evidence_ref": "E2-061",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-react",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-react-router",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-tailwind-css",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-radix-ui",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-prosemirror",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-katex",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-floating-ui",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-tanstack-query",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-react-markdown",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-motion",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "tech-highlight",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "page-region-sidebar",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "page-region-top-nav",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "page-region-list-nav",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "page-region-main",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "page-region-page-header",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "page-region-composer",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "page-region-dialog",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -9951,6 +10430,26 @@
         "evidence_class": "inferred_static",
         "confidence": "medium",
         "evidence_ref": "E2-063",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-064",
+      "statement": "The captured source contains identifiable public runtime/style signatures for React, React Router, Tailwind CSS, Radix UI, ProseMirror and KaTeX. Additional library signatures for Floating UI, TanStack Query, React Markdown/micromark, motion and highlighting have lower certainty. None of these observations establishes exact dependency versions or executed features; the separately published technology inventory records specific evidence and qualifications.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-064",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-065",
+      "statement": "The saved document has a large aside containing two navigation regions, one main landmark with a header and form, and one role=dialog region. The sidebar contains 74 descendant buttons, the two nav subtrees 8 and 62, main 51, the composer form three buttons and four file inputs, and the dialog four buttons. These descendant counts overlap and identify captured DOM structure, not an exact pixel layout or original framework component tree.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-065",
         "source_scope": "saved_archive"
       }
     }

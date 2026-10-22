@@ -6,9 +6,9 @@
     {
       "id": "overview",
       "name": "Overview",
-      "eyebrow": "01 · Field guide",
-      "title": "An interface is a living system.",
-      "lead": "Follow the source-bounded ChatGPT specimen through captured HTML, CSS, JavaScript, application state mechanisms, and explicit evidence limits. The offline study is reviewed; the live website remains outside scope.",
+      "eyebrow": "OVERVIEW",
+      "title": "ChatGPT — saved page",
+      "lead": "One rendered ChatGPT page and 234 saved resource files. Start with the page layout or libraries, then inspect HTML, CSS, JavaScript and behavior.",
       "tags": [
         "HTML",
         "CSS",
@@ -24,7 +24,9 @@
         "E2-041",
         "E2-051",
         "E2-059",
-        "E2-063"
+        "E2-063",
+        "E2-064",
+        "E2-065"
       ],
       "metrics": [
         [
@@ -42,24 +44,19 @@
       ],
       "sections": [
         {
-          "title": "Begin with the visible document",
-          "body": "The captured page exposes semantic regions, controls, serialized route data, and resource hints. It is one authenticated browser state—not a complete site crawl.",
-          "link": "html"
+          "title": "Page layout",
+          "body": "View the sidebar, both navigation regions, main content, composer and dialog as a clickable map.",
+          "link": "page-map"
         },
         {
-          "title": "Follow the code that assembles it",
-          "body": "JavaScript bundles contain bootstrap, event, state, request, and media-related syntax. Candidate references show where to investigate; they are not proof of executed imports.",
+          "title": "Libraries and frameworks",
+          "body": "Identify the React, routing, styling, editing and mathematics libraries indicated by the captured files.",
+          "link": "stack"
+        },
+        {
+          "title": "JavaScript imports",
+          "body": "Inspect 236 parsed static import relationships among anonymous captured bundle IDs.",
           "link": "javascript"
-        },
-        {
-          "title": "See the uncertainty as part of the story",
-          "body": "Source-level observations and runtime verification occupy different evidence classes. Missing files, dynamic event ownership, and actual network responses remain open research boundaries.",
-          "link": "evidence"
-        },
-        {
-          "title": "What the deep audit resolved",
-          "body": "The static study covers parsed module links, event and storage API classes, CSS-to-DOM vocabulary, font metadata and resource size. Questions requiring a live trace are listed as unobservable rather than converted into inventions.",
-          "link": "evidence"
         }
       ],
       "flow": [
@@ -73,11 +70,69 @@
       "unknown": "A static ZIP cannot independently prove runtime call order, server-side implementation, or actual user interactions."
     },
     {
+      "id": "page-map",
+      "name": "Page layout",
+      "eyebrow": "CAPTURED HTML",
+      "title": "Page layout",
+      "lead": "Click a region of the captured interface to inspect its HTML structure. This is a structural diagram, not a screenshot.",
+      "tags": [
+        "Navigation",
+        "Main",
+        "Composer",
+        "Dialog"
+      ],
+      "evidence": [
+        "E2-038",
+        "E2-045",
+        "E2-065"
+      ],
+      "metrics": [],
+      "flow": [],
+      "sections": [
+        {
+          "title": "The two side navigation areas",
+          "body": "The saved page has an aside containing two separate navigation regions. One has eight buttons; the other has 62 buttons and eleven links.",
+          "link": "html"
+        },
+        {
+          "title": "Main page and composer",
+          "body": "The main region contains a header and a form. The form has three buttons and four file inputs.",
+          "link": "components"
+        },
+        {
+          "title": "A dialog exists in this capture",
+          "body": "One region has dialog semantics and four buttons. The capture cannot establish how it was opened or dismissed.",
+          "link": "logic"
+        }
+      ],
+      "unknown": "The wireframe shows HTML regions and control counts, not exact pixels, source React components, or actual click behavior."
+    },
+    {
+      "id": "stack",
+      "name": "Libraries",
+      "eyebrow": "JS AND CSS",
+      "title": "Libraries and frameworks",
+      "lead": "Identifiable libraries from the saved JavaScript and CSS. Open a card for evidence and limitations. Package versions are not established.",
+      "tags": [
+        "Frameworks",
+        "Routing",
+        "CSS",
+        "Editors"
+      ],
+      "evidence": [
+        "E2-064"
+      ],
+      "metrics": [],
+      "flow": [],
+      "sections": [],
+      "unknown": "A marker in a saved bundle does not prove a feature ran. Strong, likely and indicator labels describe evidence strength, not installation records."
+    },
+    {
       "id": "html",
       "name": "HTML",
-      "eyebrow": "02 · Document anatomy",
-      "title": "The document is the interface's skeleton.",
-      "lead": "Landmarks, controls, links and stream placeholders reveal the rendered application structure before any assumptions about its runtime wiring.",
+      "eyebrow": "HTML",
+      "title": "HTML and controls",
+      "lead": "See what the saved HTML contains: landmarks, links, forms, buttons, scripts and accessible roles.",
       "tags": [
         "DOM",
         "Landmarks",
@@ -90,7 +145,8 @@
         "E2-038",
         "E2-039",
         "E2-040",
-        "E2-056"
+        "E2-056",
+        "E2-065"
       ],
       "metrics": [
         [
@@ -108,24 +164,19 @@
       ],
       "sections": [
         {
-          "title": "A measured navigation hierarchy",
-          "body": "Both navigation elements are inside side regions. Among 130 buttons, 70 belong to navigation as their closest semantic landmark and another 42 belong directly to the main region. This tells us about the saved document, not the source component tree.",
-          "link": "components"
+          "title": "Main structure",
+          "body": "The document contains a main landmark, two navigation regions within a sidebar, one form and a dialog.",
+          "link": "page-map"
         },
         {
-          "title": "Semantic regions",
-          "body": "The source contains one main landmark, two navigation regions, two headers, two asides and a form. This is a particular conversation-facing DOM state.",
-          "link": "components"
+          "title": "Controls",
+          "body": "The captured page includes 130 buttons, 26 anchor links, four file inputs and one textbox role.",
+          "link": "page-map"
         },
         {
-          "title": "Bootstrap alongside markup",
-          "body": "Sixteen executable inline scripts and two JSON script elements appear in the document, along with one external script reference and 72 modulepreloads.",
+          "title": "Script loading",
+          "body": "Seventy-two modulepreload entries and eighteen stylesheet links point to captured resources.",
           "link": "javascript"
-        },
-        {
-          "title": "Interactive affordances",
-          "body": "Buttons, a form and file inputs establish possible interactions, but source markup alone cannot assign live handlers or verify successful submission.",
-          "link": "logic"
         }
       ],
       "flow": [
@@ -140,9 +191,9 @@
     {
       "id": "css",
       "name": "CSS",
-      "eyebrow": "03 · Visual system",
-      "title": "A design language in thousands of declarations.",
-      "lead": "Stylesheets reveal theme tokens, layout rules, container conditions, motion preferences and a layered visual vocabulary—without reproducing the site's proprietary CSS.",
+      "eyebrow": "CSS",
+      "title": "CSS in the capture",
+      "lead": "Review stylesheet links, custom-property groups, responsive queries and motion rules from the saved CSS.",
       "tags": [
         "Tokens",
         "Theme",
@@ -156,7 +207,8 @@
         "E2-048",
         "E2-049",
         "E2-050",
-        "E2-056"
+        "E2-056",
+        "E2-064"
       ],
       "metrics": [
         [
@@ -174,28 +226,18 @@
       ],
       "sections": [
         {
-          "title": "Token families and responsive regimes",
-          "body": "The styles contain 2,509 distinct custom-property names grouped into color, typography, spacing and other families. Media, container and motion conditions form overlapping source-level regimes; no browser-computed styles were captured.",
+          "title": "Tailwind CSS markers",
+          "body": "The CSS includes Tailwind custom-property prefixes and utility layer rules. Inspect the Libraries page for the evidence.",
+          "link": "stack"
+        },
+        {
+          "title": "Token families",
+          "body": "Custom properties are grouped into color, typography, spacing and other source-level groups.",
           "link": "components"
         },
         {
-          "title": "How styles enter the page",
-          "body": "Eighteen stylesheet links resolve to seventeen saved CSS assets, with one asset referenced twice. Layer, media and container at-rules are present, but computed cascade order remains untested.",
-          "link": "components"
-        },
-        {
-          "title": "Tokens before pixels",
-          "body": "2,509 distinct custom-property names appear across 8,135 declarations, including color, type, shell and component families. Names and declarations are not the same count.",
-          "link": "components"
-        },
-        {
-          "title": "Responsive conditions",
-          "body": "The styles contain width/hover/pointer rules, 269 width-container conditions and 258 style-container conditions. Conditions may overlap.",
-          "link": "flow"
-        },
-        {
-          "title": "Motion and accessibility",
-          "body": "Reduced-motion conditions, focus-visible selectors and view-transition syntax coexist in the stylesheet corpus. Rendered behavior is not established by source counts.",
+          "title": "Responsive rules",
+          "body": "The captured CSS has media and container rules, including reduced-motion conditions. Actual computed styles were not tested.",
           "link": "evidence"
         }
       ],
@@ -211,9 +253,9 @@
     {
       "id": "javascript",
       "name": "JavaScript",
-      "eyebrow": "04 · Execution candidates",
-      "title": "Bundles describe capabilities, not verified actions.",
-      "lead": "The large source archive supplies the materials needed for meaningful module research. Its first map records candidate references and API syntax, not a validated import/call graph.",
+      "eyebrow": "JAVASCRIPT",
+      "title": "JavaScript and imports",
+      "lead": "Browse the parsed module import graph and find the JavaScript capabilities actually present in the captured files.",
       "tags": [
         "Modules",
         "Streaming",
@@ -229,7 +271,8 @@
         "E2-042",
         "E2-051",
         "E2-052",
-        "E2-055"
+        "E2-055",
+        "E2-064"
       ],
       "metrics": [
         [
@@ -247,28 +290,18 @@
       ],
       "sections": [
         {
-          "title": "Validated syntax, not simple filename sightings",
-          "body": "Offline syntax-tree parsing found 236 static import declarations resolving to captured resource ordinals across eight importing and 71 referenced scripts. These declarations are more concrete than textual filename matches but still do not prove runtime loading.",
+          "title": "Framework and library signatures",
+          "body": "React, React Router, editing and rendering library markers occur in the JavaScript. See the source-based classification.",
+          "link": "stack"
+        },
+        {
+          "title": "Parsed static imports",
+          "body": "The module graph contains 236 literal import relationships among anonymous bundle IDs. This does not prove execution order.",
           "link": "flow"
         },
         {
-          "title": "Reference graph",
-          "body": "Ten saved bundles mention public asset basenames matching 71 other saved bundles, forming 300 candidate source-to-target pairs. String matches are not parsed imports.",
-          "link": "flow"
-        },
-        {
-          "title": "Boot and update",
-          "body": "Route-loader streams and React boundary helpers are evident in inline scripts; the larger bundles suggest deferred functionality and observer-based updates.",
-          "link": "components"
-        },
-        {
-          "title": "Specialized pathways",
-          "body": "Worker, WebAssembly, WebRTC and browser media constructs appear as code signatures, without evidence of execution in this session.",
-          "link": "state"
-        },
-        {
-          "title": "A full syntax-tree census",
-          "body": "144 captured bundles contain around 9.27 million AST nodes. React-like, event, network, state and worker API-signature groups overlap rather than uniquely assigning a bundle to a product feature.",
+          "title": "Browser APIs",
+          "body": "Event, storage, worker and network callsites occur in the bundles. Their original feature ownership is not fully recoverable.",
           "link": "logic"
         }
       ],
@@ -284,9 +317,9 @@
     {
       "id": "components",
       "name": "Components",
-      "eyebrow": "05 · Interface composition",
-      "title": "From document regions to reusable behavior.",
-      "lead": "Rather than mistake every bundle or DOM element for a component, Viewsource separates observed structure from inferred component boundaries.",
+      "eyebrow": "COMPONENTS",
+      "title": "Component clues",
+      "lead": "Compare the observed DOM regions with the limits of identifying original React components in minified code.",
       "tags": [
         "Shell",
         "Controls",
@@ -297,7 +330,8 @@
         "E2-027",
         "E2-033",
         "E2-038",
-        "E2-060"
+        "E2-060",
+        "E2-065"
       ],
       "metrics": [
         [
@@ -315,19 +349,14 @@
       ],
       "sections": [
         {
-          "title": "Application shell",
-          "body": "Navigation, sidebars and main content form the observable layout. Their separation is a useful research hypothesis about rendering boundaries, not a recovered React component tree.",
-          "link": "html"
+          "title": "Known DOM structure",
+          "body": "Sidebar, nested navigation, main header, composer and a dialog are present as HTML regions.",
+          "link": "page-map"
         },
         {
-          "title": "Controls and state",
-          "body": "130 button elements, popover state attributes and ARIA hooks suggest a rich interactive surface. The exact component props and owning handlers remain open tasks.",
-          "link": "logic"
-        },
-        {
-          "title": "Styled composition",
-          "body": "Generated CSS tokens, focus selectors and grid/flex rules can be organized by surface, provided that inferred ownership is labeled as inference.",
-          "link": "css"
+          "title": "UI libraries",
+          "body": "Radix UI and ProseMirror markers appear in the code. Their exact React component instances were not reconstructed.",
+          "link": "stack"
         }
       ],
       "flow": [
@@ -342,9 +371,9 @@
     {
       "id": "logic",
       "name": "Logic",
-      "eyebrow": "06 · Event machinery",
-      "title": "Actions change state; state can change the view.",
-      "lead": "Event and observer signatures make the mechanism visible, while specific control-to-handler ownership remains unobservable from this capture.",
+      "eyebrow": "LOGIC",
+      "title": "Events and UI logic",
+      "lead": "Listener, observer and hook callsites found in JavaScript. Click handlers were not mapped to individual controls.",
       "tags": [
         "Listeners",
         "Reactivity",
@@ -405,9 +434,9 @@
     {
       "id": "flow",
       "name": "Flow",
-      "eyebrow": "07 · System journey",
-      "title": "Read the page as a sequence of boundaries.",
-      "lead": "The end-to-end model ties captured markup, preload declarations, styling, candidate client modules, and state/network mechanisms together without asserting runtime timing.",
+      "eyebrow": "FLOW",
+      "title": "Loading and network",
+      "lead": "See preload declarations, static imports, fetch/streaming syntax and how much of the runtime sequence remains unknown.",
       "tags": [
         "Bootstrap",
         "Data",
@@ -479,9 +508,9 @@
     {
       "id": "state",
       "name": "State",
-      "eyebrow": "08 · Memory and coordination",
-      "title": "Some state lives in the page; some survives it.",
-      "lead": "The source includes browser persistence, serialization and messaging mechanisms. The values and user-specific keys are deliberately excluded from the research.",
+      "eyebrow": "STATE",
+      "title": "Client state and storage",
+      "lead": "Storage, channels and worker APIs found in the source. The actual stored values and state transitions were not captured.",
       "tags": [
         "Persistence",
         "Messages",
@@ -541,9 +570,9 @@
     {
       "id": "assets",
       "name": "Assets",
-      "eyebrow": "09 · Visual resources",
-      "title": "Typography, icons, and media are infrastructure.",
-      "lead": "Font tables and image structure reveal meaningful asset roles, while individual UI placements and download successes stay evidence-bounded.",
+      "eyebrow": "ASSETS",
+      "title": "Fonts and icons",
+      "lead": "Inspect captured font types and the SVG sprite used by the saved document.",
       "tags": [
         "Fonts",
         "Icons",
@@ -572,29 +601,14 @@
       ],
       "sections": [
         {
-          "title": "The icon sprite connects to the saved DOM",
-          "body": "Ninety-two SVG use references all resolve to the same captured vector sprite and to 23 unique symbol definitions. This direct resource-to-markup link is distinct from merely counting icon files.",
-          "link": "html"
+          "title": "Font groups",
+          "body": "The ZIP includes three interface sans files and 57 math-typesetting font files.",
+          "link": "stack"
         },
         {
-          "title": "Typography families",
-          "body": "The captured files include OpenAI Sans Regular, Medium and Semibold, plus twelve KaTeX font families. Repeated formats do not imply different visual typefaces.",
-          "link": "css"
-        },
-        {
-          "title": "Symbol systems",
-          "body": "One vector resource acts as a large sprite with 911 symbol definitions, separate from the inline SVG markup present in the HTML.",
-          "link": "components"
-        },
-        {
-          "title": "Capture completeness",
-          "body": "The manifest reports 29 missing resource attempts: 17 HTTP 403, ten HTTP 404, and two timeouts. These are capture outcomes rather than proof of broken features.",
-          "link": "evidence"
-        },
-        {
-          "title": "Sixty saved font faces, two broad roles",
-          "body": "Font metadata distinguishes 57 mathematical typesetting assets and three interface sans assets. The saved sizes and weights do not establish which glyphs were displayed.",
-          "link": "css"
+          "title": "Icon sprite",
+          "body": "Ninety-two SVG use elements reference a saved sprite, using 23 distinct symbols.",
+          "link": "page-map"
         }
       ],
       "flow": [
@@ -608,9 +622,9 @@
     {
       "id": "evidence",
       "name": "Evidence",
-      "eyebrow": "10 · Research record",
-      "title": "Every claim needs an observation boundary.",
-      "lead": "Browse original findings by evidence class and confidence, and distinguish completed static interpretation from live questions still awaiting defensible evidence.",
+      "eyebrow": "EVIDENCE",
+      "title": "Findings and limitations",
+      "lead": "Read the source-backed findings. Claims about real execution are kept separate from static observations.",
       "tags": [
         "Findings",
         "Limitations",
@@ -674,9 +688,9 @@
     {
       "id": "work",
       "name": "Research queue",
-      "eyebrow": "11 · Active investigations",
-      "title": "The work remains visible until it is earned.",
-      "lead": "Research possible from the saved v0002 ZIP has reached terminal evidence-based dispositions: 69 tasks completed and 22 classified not observable across both phases. No research task remains queued for this capture.",
+      "eyebrow": "RESEARCH QUEUE",
+      "title": "Research tasks",
+      "lead": "See what was completed and which questions cannot be answered from this ZIP.",
       "tags": [
         "57 tasks",
         "Dependencies",
