@@ -215,6 +215,27 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            implementation_path = ROOT / (base + "/chat_static_impl_trace.json")
+            if implementation_path.is_file():
+                study = read(base + "/chat_static_impl_trace.json")
+                if (study["specimen_id"] != item["id"] or study["version"] != number
+                        or study["server_contract_verified"] is not False):
+                    raise ValueError("Static chat trace scope mismatch")
+                visuals["chat_static_impl_trace"] = {
+                    "asset_files_parsed": study["asset_files_parsed"],
+                    "match_count": study["match_count"],
+                    "matched_functions": study["matched_functions"],
+                    "patterns": study["patterns"],
+                    "reviewed_operations": [
+                        {"source_ref": row["source_ref"],
+                         "function_ordinal": row["function_ordinal"],
+                         "classification": row["classification"].replace("_", " "),
+                         "description": row["description"],
+                         "limits": row["limits"]}
+                        for row in study["reviewed_client_operations"]
+                    ],
+                    "open_static_questions": study["open_static_questions"],
+                }
             static_ast_path = ROOT / (base + "/chat_ast_followup.json")
             if static_ast_path.is_file():
                 ast_study = read(base + "/chat_ast_followup.json")
