@@ -1,0 +1,128 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "feature_id": "chat-interaction",
+  "source_scope": "saved_archive_plus_public_docs",
+  "policy": "UI label matches and public documentation can establish that a feature affordance exists, but they do not verify underlying message graph changes, runtime transitions, storage fields or network endpoints.",
+  "operations": [
+    {
+      "id": "new_chat",
+      "label": "Start a new chat",
+      "support": "captured_dom",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "No per-click trace; multiple matching labels were counted.",
+      "test_goal": "Observe disposable new-chat navigation and any conversation identity change."
+    },
+    {
+      "id": "select_chat",
+      "label": "Select an existing chat",
+      "support": "structural_candidate",
+      "evidence_refs": [
+        "E2-065"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "Sidebar navigation is captured, but exact selection controls were not mapped.",
+      "test_goal": "Observe selected UI region, loading state and selected path after a synthetic chat selection."
+    },
+    {
+      "id": "compose",
+      "label": "Edit the draft",
+      "support": "captured_dom",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "A contenteditable textbox is present within the main form. Draft lifecycle was not traced.",
+      "test_goal": "Measure generic editor dirty state and submit enablement without recording typed contents."
+    },
+    {
+      "id": "submit",
+      "label": "Submit a message",
+      "support": "structural_candidate",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "A composer form exists but a submit-to-network trace is absent.",
+      "test_goal": "Correlate synthetic submission with coarse pending and completed states."
+    },
+    {
+      "id": "edit_message",
+      "label": "Edit a prior message",
+      "support": "captured_dom",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "Main-region edit-related button labels are present; message ownership and result unknown.",
+      "test_goal": "Observe whether an original message persists after a synthetic edit."
+    },
+    {
+      "id": "regenerate",
+      "label": "Regenerate a response",
+      "support": "captured_dom",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "Main-region regeneration-related button labels are present; no resulting response observed.",
+      "test_goal": "Measure whether a new attempt or alternative message appears."
+    },
+    {
+      "id": "copy_message",
+      "label": "Copy a message",
+      "support": "captured_dom",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "Main-region copy labels are present; clipboard results were not observed.",
+      "test_goal": "Observe a synthetic copy action in an isolated browser without retaining copied text."
+    },
+    {
+      "id": "branch_new_chat",
+      "label": "Branch into a separate chat",
+      "support": "public_documentation",
+      "evidence_refs": [],
+      "public_docs": [
+        "https://help.openai.com/en/articles/6825453-chatgpt-release-notes"
+      ],
+      "behavior_verified": false,
+      "limits": "The public release notes document a Branch in new chat action; this capture does not establish internal ancestry.",
+      "test_goal": "Observe a disposable branch and compare distinct conversation roots without logging identifiers."
+    },
+    {
+      "id": "response_stream",
+      "label": "Receive a streamed response",
+      "support": "source_syntax_only",
+      "evidence_refs": [
+        "E2-068"
+      ],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "Stream-related syntax is present, but no actual request or stream event order was captured.",
+      "test_goal": "Record coarse response phase transitions and relative event timings."
+    },
+    {
+      "id": "stop_response",
+      "label": "Stop a response",
+      "support": "not_established",
+      "evidence_refs": [],
+      "public_docs": [],
+      "behavior_verified": false,
+      "limits": "The saved snapshot does not establish a visible stop control or its action outcome.",
+      "test_goal": "Observe stop availability and terminal state during a disposable synthetic response."
+    }
+  ]
+}
