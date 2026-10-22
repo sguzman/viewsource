@@ -56,8 +56,8 @@ class AtlasTests(unittest.TestCase):
             trace = current["visuals"]["chat_static_impl_trace"]
             self.assertEqual((trace["match_count"], trace["matched_functions"]), (15, 14))
             self.assertEqual(len(trace["reviewed_operations"]), 7)
-            self.assertEqual(len(trace["direct_calls"]), 4)
-            self.assertEqual(len(trace["reviewed_module_exports"]), 7)
+            self.assertEqual(len(trace["direct_calls"]), 6)
+            self.assertEqual(len(trace["reviewed_module_exports"]), 9)
             self.assertTrue(trace["open_static_questions"])
             ast = current["visuals"]["chat_ast_followup"]
             self.assertEqual((ast["parsed_bundles"], ast["candidate_functions"],
