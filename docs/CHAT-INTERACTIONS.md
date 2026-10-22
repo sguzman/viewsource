@@ -291,3 +291,26 @@ direct source call tracing, and chat feature operations have moved from
 has been marked `done` because caller coverage and complete handler
 ownership have not met the acceptance requirements. Other static tasks
 remain queued, and runtime observation remains optional.
+
+## Transport, resumption and cancellation source trace
+
+The [transport trace](../specimens/chatgpt-com/v0002/chat_transport_trace.json)
+documents five directly inspected client methods from captured JavaScript
+resource R-JS-018: starting a completion stream, resuming a completion
+stream, canceling a stream, obtaining stream options, and constructing stream
+handlers. Eight source-level relationships distinguish direct calls,
+conditional topic-versus-request resume routes, local/request cancellation,
+and recovery configuration.
+
+A separate static WebSocket item handler tracks previously seen item
+identities, duplicate-item suppression and missing-parent checks before
+forwarding decoded events. The saved client also declares retry, timeout,
+resume-token, and lifecycle callback support. None of these implementation
+facts verifies server delivery, persistence or which transport an actual
+session selects.
+
+The offline ZIP inspector now supports `--transport-trace`, which parses
+saved JavaScript without executing it and emits allowlisted transport method
+and callback signals without source text or network details. The dedicated
+report includes manually reviewed behavior and explicit remaining gaps; AST
+signal presence alone is not sufficient evidence of a working live path.
