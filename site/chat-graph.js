@@ -136,6 +136,15 @@ window.ViewsourceChatGraph = (() => {
           "; callbacks: "+transport.generation_bridge.callbacks.join(", ")+
           "; recovery inputs: "+transport.generation_bridge.recovery_inputs.join(", ")));
       block.append(bridge);
+      const decode=element("details","chat-transport-decode");
+      decode.append(element("summary","","Decoded events → message updates"));
+      const steps=element("ol","");
+      transport.decoded_pipeline.sequence.forEach(item=>{
+        steps.append(element("li","",item.stage+": "+item.relationship));
+      });
+      decode.append(steps,element("p","graph-caption",
+        transport.decoded_pipeline.verification_boundary));
+      block.append(decode);
       const flow=element("details","chat-transport-edges");
       flow.append(element("summary","","Reviewed client-side transport relationships"));
       const rows=element("ul","");
