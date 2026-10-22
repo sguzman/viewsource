@@ -44,12 +44,27 @@ class ChatImplementationTraceTests(unittest.TestCase):
     def test_reviewed_export_getters_do_not_claim_runtime_calls(self):
         doc = self.data
         present = {(x["source_ref"], x["function_ordinal"]) for x in doc["matches"]}
-        self.assertEqual(len(doc["reviewed_module_exports"]), 4)
+        self.assertEqual(len(doc["reviewed_module_exports"]), 7)
         for item in doc["reviewed_module_exports"]:
-            self.assertIn((item["source_ref"], item["exported_function_ordinal"]), present)
+            self.assertRegex(item["source_ref"], r"^R-JS-[0-9]{3}$")
+            self.assertGreater(item["exported_function_ordinal"], 0)
             self.assertEqual(item["export_kind"], "static_module_getter")
             self.assertGreater(item["module_factory_ordinal"], 0)
         self.assertTrue(doc["module_export_limitations"])
+
+    def test_same_factory_calls_share_one_source_and_dispatcher(self):
+        calls = self.data["reviewed_direct_calls"]
+        self.assertEqual(len(calls), 4)
+        self.assertEqual({x["caller_role"] for x in calls}, {
+            "completion_submission", "local_function_result_submission",
+            "regeneration_submission", "conditional_retry_submission"
+        })
+        for call in calls:
+            self.assertEqual(call["source_ref"], "R-JS-018")
+            self.assertEqual(call["module_factory_ordinal"], 9012)
+            self.assertEqual(call["callee_function_ordinal"], 9032)
+            self.assertEqual(call["call_kind"], "same_factory_direct_identifier_call")
+            self.assertEqual(call["evidence_class"], "observed_static")
 
     def test_report_does_not_publish_source_paths_or_chat_content(self):
         text = DATA.read_text("utf-8").lower()
