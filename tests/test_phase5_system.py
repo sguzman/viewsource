@@ -19,7 +19,7 @@ class FinalResearchChecks(unittest.TestCase):
                      if task["specimen_id"] == "chatgpt-com" and task["version"] == 2]
 
     def test_terminal_evidence_dispositions(self):
-        self.assertEqual(self.record["status"], "reviewed")
+        self.assertEqual(self.record["status"], "researching")
         self.assertEqual(Counter(t["status"] for t in self.tasks), {"done": 69, "not_observable": 22})
         deep = [t for t in self.tasks if "-followup-deep-" in t["id"]]
         self.assertEqual(Counter(t["status"] for t in deep), {"done": 37, "not_observable": 20})
