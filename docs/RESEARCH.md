@@ -101,3 +101,7 @@ A previously reviewed current snapshot re-enters `researching` status
 when unfinished static implementation work is added, while the original
 findings and terminal task dispositions remain intact. This is a research
 scope extension, not a claim that older reviewed evidence was invalid.
+
+## Offline AST tracing
+
+`scripts/trace_static_archive.py` can inspect the captured scripts in a private temporary directory using `scripts/static_ast_probe.cjs`, which requires the small Acorn development dependency. It walks function scopes, records allowlisted literal field operations and field assignments, and emits only aggregate candidate counts. Parsing performs **no evaluation**. Module/file names, source spans, string values, real request paths, and captured code never enter the report. Function co-occurrence is only a starting point for the new source-level queue; function ownership and calls still require evidence-based tracing, and no runtime claims can be promoted from this probe.
