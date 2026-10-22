@@ -101,6 +101,32 @@ class ConversationGraph:
             "selected_path": list(self.select(self.selected_leaf)) if self.selected_leaf else [],
         }
 
+    def topology_metrics(self) -> dict[str, int]:
+        """Count structural features without exposing local node identity.
+
+        This measures the synthetic model only; it cannot identify which real
+        chat action, if any, caused a change in an observed interface.
+        """
+        children: dict[str, int] = {}
+        depth: dict[str, int] = {}
+        nodes = self.nodes
+        for node in nodes:
+            if node.parent_key is None:
+                depth[node.local_key] = 0
+            else:
+                children[node.parent_key] = children.get(node.parent_key, 0) + 1
+                depth[node.local_key] = depth[node.parent_key] + 1
+        return {
+            "node_count": len(nodes),
+            "root_count": sum(node.parent_key is None for node in nodes),
+            "parent_edge_count": sum(node.parent_key is not None for node in nodes),
+            "branch_point_count": sum(count >= 2 for count in children.values()),
+            "alternative_child_count": sum(max(count - 1, 0) for count in children.values()),
+            "max_depth": max(depth.values(), default=0),
+            "selected_path_length": (depth[self.selected_leaf] + 1)
+            if self.selected_leaf is not None else 0,
+        }
+
     def anonymous_topology(self) -> dict:
         """Return topology only; NEVER include caller-supplied node/chat keys.
 
@@ -165,6 +191,19 @@ class ConversationForest:
         self.forks.append(fork)
         return fork
 
+    def topology_metrics(self) -> dict[str, int]:
+        """Aggregate only counts; no opaque keys or stable fingerprints."""
+        per_chat = [chat.topology_metrics() for chat in self.chats.values()]
+        return {
+            "conversation_count": len(self.chats),
+            "node_count": sum(m["node_count"] for m in per_chat),
+            "parent_edge_count": sum(m["parent_edge_count"] for m in per_chat),
+            "branch_point_count": sum(m["branch_point_count"] for m in per_chat),
+            "alternative_child_count": sum(m["alternative_child_count"] for m in per_chat),
+            "candidate_fork_count": len(self.forks),
+            "selected_conversation_count": sum(m["selected_path_length"] > 0 for m in per_chat),
+        }
+
     def anonymous_topology(self) -> dict:
         """Return anonymized per-conversation trees and hypothetical fork edges.
 
@@ -192,3 +231,37 @@ class ConversationForest:
                 for edge in self.forks
             ]
         }
+
+
+CHAT_STRUCTURE_KEYS = frozenset((
+    "node_count", "root_count", "parent_edge_count", "branch_point_count",
+    "alternative_child_count", "max_depth", "selected_path_length"
+))
+FOREST_STRUCTURE_KEYS = frozenset((
+    "conversation_count", "node_count", "parent_edge_count",
+    "branch_point_count", "alternative_child_count",
+    "candidate_fork_count", "selected_conversation_count"
+))
+
+
+def compare_topology_metrics(before: dict, after: dict) -> dict:
+    """Return structural deltas, never object identities or semantic claims.
+
+    Matching counts are NOT proof that message graphs are the same, and a
+    count change alone cannot distinguish editing, regeneration or branching.
+    """
+    if not isinstance(before, dict) or not isinstance(after, dict):
+        raise GraphError("Metrics must be maps")
+    fields = frozenset(before)
+    if fields != frozenset(after) or fields not in (
+            CHAT_STRUCTURE_KEYS, FOREST_STRUCTURE_KEYS):
+        raise GraphError("Only supported structural metrics can be compared")
+    if any(type(before[key]) is not int or type(after[key]) is not int
+           or before[key] < 0 or after[key] < 0 for key in fields):
+        raise GraphError("All structural counts must be nonnegative integers")
+    return {
+        "basis": "anonymous_structural_counts_only",
+        "website_behavior_verified": False,
+        "changes": {key: after[key] - before[key] for key in sorted(fields)},
+        "limits": "Equal counts do not prove identical graphs; deltas do not identify the action that caused them."
+    }
