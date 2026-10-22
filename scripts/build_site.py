@@ -243,6 +243,13 @@ def build(out: Path) -> dict:
                         for row in study["reviewed_module_exports"]
                     ],
                     "module_export_limitations": study["module_export_limitations"],
+                    "direct_calls": [
+                        {"caller": row["caller_function_ordinal"],
+                         "callee": row["callee_function_ordinal"],
+                         "role": row["caller_role"].replace("_", " "),
+                         "source_ref": row["source_ref"]}
+                        for row in study["reviewed_direct_calls"]
+                    ],
                 }
             static_ast_path = ROOT / (base + "/chat_ast_followup.json")
             if static_ast_path.is_file():
