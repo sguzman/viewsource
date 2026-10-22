@@ -1,0 +1,372 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "capture_scope": "saved_archive",
+  "method": "Offline exact-marker scan of the supplied captured JavaScript and CSS; generic public package/runtime signatures only. This is not a package-lock inventory, dependency install record or runtime execution trace.",
+  "privacy": "Library names, fixed public marker families and aggregate counts only. Captured source, private identifiers, URLs, class/element text, asset paths and copied third-party code are excluded.",
+  "technologies": [
+    {
+      "id": "react",
+      "name": "React",
+      "category": "UI framework",
+      "confidence": "strong",
+      "evidence": "React runtime element/fragment/portal markers in multiple bundles, and React DOM references.",
+      "observations": [
+        {
+          "marker": "react.element",
+          "matches": 3,
+          "files": 3
+        },
+        {
+          "marker": "react-dom",
+          "matches": 2,
+          "files": 2
+        }
+      ],
+      "role": "Client component rendering",
+      "version": null,
+      "note": "Runtime markers support identification; the exact build/version and executed route were not recovered."
+    },
+    {
+      "id": "react-router",
+      "name": "React Router",
+      "category": "Routing",
+      "confidence": "strong",
+      "evidence": "React Router package references, router context and RouterProvider identifiers.",
+      "observations": [
+        {
+          "marker": "react-router-dom",
+          "matches": 1,
+          "files": 1
+        },
+        {
+          "marker": "@remix-run/router",
+          "matches": 2,
+          "files": 1
+        },
+        {
+          "marker": "__reactRouterContext",
+          "matches": 8,
+          "files": 1
+        }
+      ],
+      "role": "Client routing and route data conventions",
+      "version": null,
+      "note": "Router code is present. Specific routes and loader execution were not traced."
+    },
+    {
+      "id": "tailwind-css",
+      "name": "Tailwind CSS",
+      "category": "CSS framework",
+      "confidence": "strong",
+      "evidence": "Tailwind custom-property prefix, utility layer and framework references in saved stylesheets.",
+      "observations": [
+        {
+          "marker": "--tw- prefix",
+          "matches": 5810,
+          "files": 9
+        },
+        {
+          "marker": "@layer utilities",
+          "matches": 5,
+          "files": 4
+        },
+        {
+          "marker": "tailwindcss",
+          "matches": 4,
+          "files": 3
+        }
+      ],
+      "role": "Utility-oriented stylesheet generation",
+      "version": null,
+      "note": "Static generated CSS is present; no complete Tailwind build configuration was captured."
+    },
+    {
+      "id": "radix-ui",
+      "name": "Radix UI",
+      "category": "UI primitives",
+      "confidence": "strong",
+      "evidence": "Radix-specific attributes and library identifiers in both JavaScript and CSS.",
+      "observations": [
+        {
+          "marker": "data-radix- prefix",
+          "matches": 33,
+          "files": 11
+        },
+        {
+          "marker": "radix-ui",
+          "matches": 2,
+          "files": 2
+        }
+      ],
+      "role": "Menu, popup or interactive primitive candidates",
+      "version": null,
+      "note": "Package markers do not establish the exact source component or live interaction."
+    },
+    {
+      "id": "prosemirror",
+      "name": "ProseMirror",
+      "category": "Rich-text editing",
+      "confidence": "strong",
+      "evidence": "ProseMirror-specific runtime and stylesheet markers across multiple saved files.",
+      "observations": [
+        {
+          "marker": "ProseMirror",
+          "matches": 587,
+          "files": 6
+        }
+      ],
+      "role": "Rich-text editing infrastructure",
+      "version": null,
+      "note": "Presence does not establish which captured textbox used it or its plugin inventory."
+    },
+    {
+      "id": "katex",
+      "name": "KaTeX",
+      "category": "Math rendering",
+      "confidence": "strong",
+      "evidence": "KaTeX stylesheet/JavaScript markers and a captured math font corpus.",
+      "observations": [
+        {
+          "marker": "katex",
+          "matches": 526,
+          "files": 7
+        }
+      ],
+      "role": "Typeset mathematics",
+      "version": null,
+      "note": "Math renderer assets are present; individual rendered expressions were not analyzed."
+    },
+    {
+      "id": "floating-ui",
+      "name": "Floating UI",
+      "category": "Positioning",
+      "confidence": "likely",
+      "evidence": "Exact Floating UI naming in two saved JavaScript files.",
+      "observations": [
+        {
+          "marker": "floating-ui",
+          "matches": 9,
+          "files": 2
+        }
+      ],
+      "role": "Potential floating overlay positioning",
+      "version": null,
+      "note": "Marker evidence does not independently establish use in the captured dialog."
+    },
+    {
+      "id": "tanstack-query",
+      "name": "TanStack Query",
+      "category": "Client data fetching",
+      "confidence": "likely",
+      "evidence": "QueryClientProvider signature present in saved JavaScript; generic queryKey names alone are insufficient.",
+      "observations": [
+        {
+          "marker": "QueryClientProvider",
+          "matches": 1,
+          "files": 1
+        }
+      ],
+      "role": "Potential client query caching and synchronization",
+      "version": null,
+      "note": "Do not infer concrete queries or cache contents from this signature."
+    },
+    {
+      "id": "react-markdown",
+      "name": "React Markdown / micromark",
+      "category": "Markdown rendering",
+      "confidence": "likely",
+      "evidence": "React Markdown naming in one JavaScript file and micromark naming in two.",
+      "observations": [
+        {
+          "marker": "react-markdown",
+          "matches": 1,
+          "files": 1
+        },
+        {
+          "marker": "micromark",
+          "matches": 7,
+          "files": 2
+        }
+      ],
+      "role": "Potential Markdown parsing and rendering",
+      "version": null,
+      "note": "The markers do not prove a precise package/version combination or which view uses it."
+    },
+    {
+      "id": "motion",
+      "name": "Motion / Framer Motion family",
+      "category": "Animation",
+      "confidence": "likely",
+      "evidence": "Motion-value and visual-element implementation signatures in saved JavaScript.",
+      "observations": [
+        {
+          "marker": "motionValue",
+          "matches": 47,
+          "files": 3
+        },
+        {
+          "marker": "visualElement",
+          "matches": 2,
+          "files": 2
+        }
+      ],
+      "role": "Potential component animation",
+      "version": null,
+      "note": "No version or runtime animation was verified."
+    },
+    {
+      "id": "highlight",
+      "name": "highlight.js-style classes",
+      "category": "Syntax highlighting",
+      "confidence": "indicator",
+      "evidence": "hljs-prefixed class references appear in saved CSS and JavaScript.",
+      "observations": [
+        {
+          "marker": "hljs- prefix",
+          "matches": 40,
+          "files": 3
+        }
+      ],
+      "role": "Code block highlighting style system",
+      "version": null,
+      "note": "Class naming alone does not prove highlight.js was the active engine."
+    }
+  ],
+  "unresolved": [
+    {
+      "technology": "Remix",
+      "reason": "singleFetch and React Router markers occur, but a full Remix framework installation/runtime was not verified."
+    },
+    {
+      "technology": "Next.js",
+      "reason": "The inspected markers did not establish a Next.js runtime; this is not proof of absence."
+    },
+    {
+      "technology": "Zustand / Redux",
+      "reason": "Generic state-store signatures cannot uniquely identify application state management packages."
+    },
+    {
+      "technology": "Exact versions",
+      "reason": "The ZIP did not establish a trustworthy version for the named packages."
+    }
+  ],
+  "page_map": {
+    "method": "Structural and whitelisted-control classification of one saved rendered DOM. Nested region counts overlap; none of the labels below are copied page text.",
+    "nodes": [
+      {
+        "id": "sidebar",
+        "title": "Left sidebar",
+        "kind": "aside",
+        "description": "A large side region contains two navigation subtrees.",
+        "counts": {
+          "buttons": 74,
+          "links": 11,
+          "svg": 89
+        },
+        "evidence": "E2-038"
+      },
+      {
+        "id": "top-nav",
+        "title": "Primary navigation",
+        "kind": "nav",
+        "parent": "sidebar",
+        "description": "First navigation region inside the sidebar.",
+        "counts": {
+          "buttons": 8,
+          "links": 0,
+          "svg": 8
+        },
+        "evidence": "E2-038"
+      },
+      {
+        "id": "list-nav",
+        "title": "Secondary navigation",
+        "kind": "nav",
+        "parent": "sidebar",
+        "description": "Second navigation region, with most of the captured side controls.",
+        "counts": {
+          "buttons": 62,
+          "links": 11,
+          "svg": 75
+        },
+        "evidence": "E2-038"
+      },
+      {
+        "id": "main",
+        "title": "Main content",
+        "kind": "main",
+        "description": "Main region containing the page header and the composer form.",
+        "counts": {
+          "buttons": 51,
+          "links": 14,
+          "svg": 83
+        },
+        "evidence": "E2-038"
+      },
+      {
+        "id": "page-header",
+        "title": "Main header",
+        "kind": "header",
+        "parent": "main",
+        "description": "Header nested inside main.",
+        "counts": {
+          "buttons": 6,
+          "svg": 9
+        },
+        "evidence": "E2-038"
+      },
+      {
+        "id": "composer",
+        "title": "Composer form",
+        "kind": "form",
+        "parent": "main",
+        "description": "One form with three buttons and four file inputs. A textbox role is present elsewhere in the captured document; direct ownership is not asserted.",
+        "counts": {
+          "buttons": 3,
+          "file_inputs": 4
+        },
+        "evidence": "E2-038"
+      },
+      {
+        "id": "dialog",
+        "title": "Dialog",
+        "kind": "dialog",
+        "description": "One region labeled as a dialog in the saved DOM.",
+        "counts": {
+          "buttons": 4,
+          "svg": 3
+        },
+        "evidence": "E2-045"
+      }
+    ],
+    "observed_control_categories": [
+      {
+        "label": "New-chat labeling",
+        "aria_matches": 17
+      },
+      {
+        "label": "Search labeling",
+        "aria_matches": 4
+      },
+      {
+        "label": "Project labeling",
+        "aria_matches": 16
+      },
+      {
+        "label": "Share labeling",
+        "aria_matches": 9
+      },
+      {
+        "label": "Upload/attachment labeling",
+        "aria_matches": 4
+      },
+      {
+        "label": "Voice labeling",
+        "aria_matches": 1
+      }
+    ],
+    "note": "Control-category figures count matching aria-label attribute text (including duplicates); they are not unique features, distinct active controls or UI states."
+  }
+}
