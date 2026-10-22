@@ -1,0 +1,274 @@
+{
+  "format_version": 1,
+  "method": "Capture-driven, source-first backlog. Lexical feature markers trigger candidate research only; never count as proof of functionality.",
+  "profiles": [
+    {
+      "id": "source-entrypoints",
+      "queue": "scripts",
+      "title": "Trace captured script entrypoints to loaded modules",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "base:scripts"
+      ],
+      "acceptance": "Locate concrete entrypoint functions and imports, distinguishing executed wiring candidates from generic library presence; provide a sanitized structural graph or an explicit evidence gap."
+    },
+    {
+      "id": "source-functions",
+      "queue": "scripts",
+      "title": "Classify implementation functions and exported contracts",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-entrypoints"
+      ],
+      "acceptance": "Parse functions and exported symbols; group by responsibility, inspect handlers and type/property usage; identify testable call chains, not only string counts."
+    },
+    {
+      "id": "source-calls",
+      "queue": "architecture",
+      "title": "Reconstruct function call and dependency chains",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-functions",
+        "base:architecture"
+      ],
+      "acceptance": "Trace calls across bundle/module boundaries where resolvable; label unresolved dynamic imports, aliases and minified identities rather than guessing."
+    },
+    {
+      "id": "source-data-shapes",
+      "queue": "state",
+      "title": "Reconstruct client data shapes and relationship rules",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-functions"
+      ],
+      "acceptance": "Trace object creation, field reads/writes, parent-child relationships and serialization; report supported invariants and conflicting candidate schemas."
+    },
+    {
+      "id": "source-events",
+      "queue": "behavior",
+      "title": "Connect interface controls to specific handlers",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-calls",
+        "base:interaction"
+      ],
+      "acceptance": "Trace actual handler registration, event dispatch and state effects from captured DOM toward implementation functions; distinguish unreachable handlers."
+    },
+    {
+      "id": "source-state-flows",
+      "queue": "state",
+      "title": "Trace state setters, selectors and lifecycle",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-data-shapes",
+        "static:source-events"
+      ],
+      "acceptance": "Map named candidate state owners, action producers, reducers or updates, selectors and consumers; identify uncertainty around runtime choices."
+    },
+    {
+      "id": "source-network-contracts",
+      "queue": "network",
+      "title": "Trace request construction and response decoding",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-calls",
+        "base:services"
+      ],
+      "acceptance": "Locate request builders and response parsers, correlate call sites and data-field usage, distinguish symbolic paths from proven external service behavior."
+    },
+    {
+      "id": "source-streaming",
+      "queue": "network",
+      "title": "Trace streaming framing, cancellation and completion",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-network-contracts",
+        "static:source-state-flows"
+      ],
+      "acceptance": "Follow parser/reader callbacks to UI state updates, completion, interruption and cleanup branches; avoid claiming verified server events."
+    },
+    {
+      "id": "source-failures",
+      "queue": "network",
+      "title": "Trace retries, error handling and cancellation",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-network-contracts",
+        "static:source-events"
+      ],
+      "acceptance": "Trace caught errors, abort mechanisms, retry gates and UI recovery paths with supported call edges."
+    },
+    {
+      "id": "source-persistence",
+      "queue": "state",
+      "title": "Trace caches, persistence and cross-tab effects",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-state-flows"
+      ],
+      "acceptance": "Follow concrete cache/storage reads, writes and invalidation; separate saved browser state from speculative backend durability."
+    },
+    {
+      "id": "source-render-bindings",
+      "queue": "architecture",
+      "title": "Trace data to rendered interface paths",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-state-flows",
+        "base:markup"
+      ],
+      "acceptance": "Connect state selectors and component props to rendered regions; record boundaries where minification or lazy imports obscure paths."
+    },
+    {
+      "id": "source-flow-review",
+      "queue": "quality",
+      "title": "Reconcile feature call chains and unverified edges",
+      "requires": [
+        "script"
+      ],
+      "depends_on": [
+        "static:source-render-bindings",
+        "static:source-streaming",
+        "static:source-failures",
+        "static:source-persistence"
+      ],
+      "acceptance": "Publish an evidence-graded end-to-end client flow with file/function ordinal references, alternative explanations and remaining static analysis tasks; do not close merely after counting indicators."
+    },
+    {
+      "id": "source-css-hooks",
+      "queue": "styling",
+      "title": "Trace stylesheet ownership and dynamic class usage",
+      "requires": [
+        "stylesheet"
+      ],
+      "depends_on": [
+        "base:styles",
+        "base:markup"
+      ],
+      "acceptance": "Relate markup/class hooks and CSS definitions, check responsive and dynamically applied states; distinguish captured declarations from interaction outcomes."
+    }
+  ],
+  "features": [
+    {
+      "id": "chat",
+      "label": "Chat",
+      "signals": {
+        "conversations": "(?:conversation|thread|chat)[A-Za-z_]*",
+        "messages": "(?:message|prompt|regenerat)[A-Za-z_]*"
+      }
+    },
+    {
+      "id": "search",
+      "label": "Search",
+      "signals": {
+        "queries": "(?:searchQuery|searchTerm|searchRequest|queryText)",
+        "results": "(?:searchResults|resultItems|searchResponse|searchHits)"
+      }
+    },
+    {
+      "id": "authentication",
+      "label": "Authentication",
+      "signals": {
+        "identity": "(?:authentication|authenticate|authSession|loginForm|signIn)",
+        "session": "(?:sessionToken|accessToken|refreshToken|signOut|logOut)"
+      }
+    },
+    {
+      "id": "commerce",
+      "label": "Commerce",
+      "signals": {
+        "basket": "(?:cartItems|shoppingCart|addToCart|basketItems)",
+        "payment": "(?:checkout|paymentMethod|orderTotal|placeOrder)"
+      }
+    },
+    {
+      "id": "media",
+      "label": "Media playback",
+      "signals": {
+        "media": "(?:videoElement|audioElement|mediaSession|mediaPlayer)",
+        "playback": "(?:playbackRate|pausePlayback|currentTime|playbackState)"
+      }
+    },
+    {
+      "id": "maps",
+      "label": "Geographic map",
+      "signals": {
+        "map": "(?:mapLibre|mapbox|leaflet|mapCanvas|mapInstance)",
+        "geometry": "(?:tileLayer|mapTiles|geojson|mapBounds|mapCenter)"
+      }
+    },
+    {
+      "id": "editor",
+      "label": "Document editor",
+      "signals": {
+        "editor": "(?:contentEditable|editorState|richTextEditor|proseMirror)",
+        "operations": "(?:insertText|applyTransaction|selectionChange|undoStack)"
+      }
+    }
+  ],
+  "feature_tasks": [
+    {
+      "id": "operations",
+      "queue": "behavior",
+      "title": "Trace feature controls to implementation",
+      "depends_on": [
+        "static:source-events"
+      ],
+      "acceptance": "Identify exact candidate handler/function relationships for this feature from parsed code, not from label occurrences."
+    },
+    {
+      "id": "data-model",
+      "queue": "state",
+      "title": "Trace feature entities and state updates",
+      "depends_on": [
+        "feature:operations",
+        "static:source-data-shapes"
+      ],
+      "acceptance": "Reconstruct source-backed property shapes, relationships and mutation/selection pathways. Report competing models explicitly."
+    },
+    {
+      "id": "transport",
+      "queue": "network",
+      "title": "Trace feature requests, streams and persistence",
+      "depends_on": [
+        "feature:data-model",
+        "static:source-network-contracts"
+      ],
+      "acceptance": "Follow feature-specific request serialization, response decoding, streaming and cache effects, if present; distinguish absent code from unknown runtime."
+    },
+    {
+      "id": "end-to-end",
+      "queue": "architecture",
+      "title": "Reconstruct evidence-graded feature lifecycle",
+      "depends_on": [
+        "feature:operations",
+        "feature:data-model",
+        "feature:transport",
+        "static:source-render-bindings"
+      ],
+      "acceptance": "Connect captured controls through handlers, state, transports and UI outputs; publish supported call edges, hypotheses, and remaining static questions."
+    }
+  ]
+}

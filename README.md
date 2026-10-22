@@ -93,3 +93,7 @@ A [local-only export normalizer](scripts/normalize_chat_export.py) is also
 available for export-compatible tree records. It constructs temporary
 ordinal message graphs and refuses broken ancestry. Unlike the public
 specimen results, it never includes raw text, original IDs or export files.
+
+## Automatic implementation tracing
+
+Every processed capture containing JavaScript automatically schedules a source-level investigation into functions, call graphs, client data shapes, handlers, state, network parsing, streaming, failures, persistence and render ownership, regardless of archive size. Curated feature signals optionally add dedicated chat/search/authentication/commerce/media/map/editor research chains. These are **candidate investigation tasks**, not verified features, and require code-level evidence before completion. This policy is defined in [static_profiles.json](queues/static_profiles.json), alongside the separate large-dump deep research queue. Runtime observation is not a prerequisite for exhausting captured static assets.

@@ -23,6 +23,10 @@ MAX_ARCHIVE_BYTES = 1024 * 1024 * 1024
 MAX_TOTAL_UNCOMPRESSED = 512 * 1024 * 1024
 MAX_MEMBER_COUNT = 30000
 MAX_SCAN_BYTES = 8 * 1024 * 1024
+# Candidate feature markers create research work, never verified findings.
+# Only allowlisted feature labels enter public task metadata.
+FEATURE_SCAN_MAX = 8 * 1024 * 1024
+
 CATEGORIES = {
     ".html": "html", ".htm": "html", ".xhtml": "html",
     ".js": "script", ".mjs": "script", ".cjs": "script",
@@ -142,6 +146,17 @@ def category(name: str) -> str:
     return CATEGORIES.get(PurePosixPath(name).suffix.lower(), "other")
 
 
+def scan_feature_signals(text: str, config: dict) -> dict[str, list[str]]:
+    """Return only fixed signal category labels; discard all matched source text."""
+    found = {}
+    for feature in config["features"]:
+        hits = [tag for tag, pattern in feature["signals"].items()
+                if re.search(pattern, text, flags=re.I)]
+        if hits:
+            found[feature["id"]] = hits
+    return found
+
+
 def scan_text(name: str, contents: bytes) -> dict:
     text = contents.decode("utf-8", errors="replace")
     kind = category(name)
@@ -156,7 +171,9 @@ def scan_text(name: str, contents: bytes) -> dict:
                 "font_faces": len(re.findall(r"@font-face\b", text, flags=re.I)),
                 "custom_properties": len(re.findall(r"--[a-zA-Z][\w-]*\s*:", text))}
     if kind == "script":
-        return {"static_imports": len(re.findall(r"\bimport\s*(?:\(|[\"'{*])", text)),
+        feature_config = load_json(ROOT / "queues/static_profiles.json")
+        return {"feature_signals": scan_feature_signals(text, feature_config),
+                "static_imports": len(re.findall(r"\bimport\s*(?:\(|[\"'{*])", text)),
                 "fetch_references": len(re.findall(r"\bfetch\s*\(", text)),
                 "storage_references": len(re.findall(r"\b(?:localStorage|sessionStorage|indexedDB)\b", text)),
                 "event_listeners": len(re.findall(r"\baddEventListener\s*\(", text))}
@@ -285,6 +302,71 @@ def spawn_deep_research(slug: str, version: int, inventory: dict, config: dict) 
     return tasks
 
 
+def available_static_kinds(inventory: dict) -> set[str]:
+    kinds = set(inventory["categories"])
+    if any(item["category"] == "html" and
+           item.get("observations", {}).get("inline_script_characters", 0) > 0
+           for item in inventory["files"]):
+        kinds.add("script")
+    return kinds
+
+
+def candidate_static_features(inventory: dict, config: dict) -> list[str]:
+    """Require all feature signal families in at least one captured script."""
+    qualified = set()
+    required = {f["id"]: set(f["signals"]) for f in config["features"]}
+    for item in inventory["files"]:
+        if item["category"] != "script":
+            continue
+        observations = item.get("observations", {})
+        for feature, hits in observations.get("feature_signals", {}).items():
+            if feature in required and required[feature] <= set(hits):
+                qualified.add(feature)
+    return sorted(qualified)
+
+
+def spawn_static_research(slug: str, version: int, inventory: dict,
+                          config: dict) -> list[dict]:
+    """Schedule source tracing for any qualifying dump, not just large ZIPs."""
+    prefix = f"{slug}-v{version:04d}-"
+    available = available_static_kinds(inventory)
+    selected = [p for p in config["profiles"] if set(p["requires"]) <= available]
+    ids = {p["id"]: prefix + "followup-static-" + p["id"] for p in selected}
+    tasks = []
+
+    def dependency(dep: str, feature: str | None = None) -> str | None:
+        if dep.startswith("base:"):
+            return prefix + dep[5:]
+        if dep.startswith("static:"):
+            return ids.get(dep[7:])
+        if dep.startswith("feature:") and feature is not None:
+            return prefix + "followup-static-feature-" + feature + "-" + dep[8:]
+        raise ValueError("Unsupported static research dependency")
+
+    for p in selected:
+        deps = [d for item in p["depends_on"] if (d := dependency(item))]
+        tasks.append({
+            "id": ids[p["id"]], "specimen_id": slug, "version": version,
+            "profile": "followup", "queue": p["queue"], "title": p["title"],
+            "status": "queued", "depends_on": deps or [prefix + "intake"],
+            "notes": "Static implementation trace: " + p["acceptance"]
+        })
+    for feature in candidate_static_features(inventory, config):
+        name = next(f["label"] for f in config["features"] if f["id"] == feature)
+        for item in config["feature_tasks"]:
+            deps = [d for ref in item["depends_on"]
+                    if (d := dependency(ref, feature))]
+            tasks.append({
+                "id": prefix + "followup-static-feature-" + feature + "-" + item["id"],
+                "specimen_id": slug, "version": version, "profile": "followup",
+                "queue": item["queue"], "title": name + ": " + item["title"],
+                "status": "queued", "depends_on": deps or [prefix + "intake"],
+                "notes": ("Candidate feature inferred only from static signal vocabulary. "
+                          "Confirm module ownership before closing. " + item["acceptance"])
+            })
+    return tasks
+
+
 def process_specimen(slug: str, input_path: Path) -> int:
     index_path = ROOT / "specimens/index.json"
     index = load_json(index_path)
@@ -309,6 +391,8 @@ def process_specimen(slug: str, input_path: Path) -> int:
     ]
     spawned.extend(spawn_deep_research(slug, version, inventory,
                                       load_json(ROOT / "queues/deep_profiles.json")))
+    spawned.extend(spawn_static_research(slug, version, inventory,
+                                        load_json(ROOT / "queues/static_profiles.json")))
     if {t["id"] for t in spawned} & {t["id"] for t in tasks_doc["tasks"]}:
         raise ValueError("Duplicate task identifiers")
     processed_at = datetime.now(timezone.utc).isoformat(timespec="seconds")

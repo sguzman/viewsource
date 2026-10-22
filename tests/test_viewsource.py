@@ -36,7 +36,7 @@ class OfflineIntakeTests(unittest.TestCase):
         tool.ROOT = self.root
         tool.WORKDIR = self.root / ".work"
         validator.ROOT = self.root
-        for resource in ("queues/profiles.json", "queues/deep_profiles.json", "ontology/ontology.json",
+        for resource in ("queues/profiles.json", "queues/deep_profiles.json", "queues/static_profiles.json", "ontology/ontology.json",
                          "tarium.json", "gallery/index.json"):
             source = REPO / resource
             target = self.root / resource
@@ -83,7 +83,10 @@ class OfflineIntakeTests(unittest.TestCase):
         self.assertEqual(private["files"][0]["observations"]["scripts"][0]["src"], "site.js")
         self.assertEqual(private["files"][1]["observations"]["fetch_references"], 1)
         tasks = tool.load_json(self.root / "queues/tasks.json")["tasks"]
-        self.assertEqual(len(tasks), len(tool.load_json(self.root / "queues/profiles.json")["profiles"]))
+        self.assertGreater(len(tasks), len(tool.load_json(self.root / "queues/profiles.json")["profiles"]))
+        source_tasks = [t for t in tasks if "-followup-static-" in t["id"]]
+        self.assertTrue(source_tasks)
+        self.assertTrue(all("Static implementation trace:" in t["notes"] for t in source_tasks))
         self.assertTrue(all(t["status"] == "queued" for t in tasks))
         record = tool.load_json(self.root / "specimens/example/v0001/record.json")
         self.assertEqual(record["components"], [])
@@ -128,6 +131,31 @@ class OfflineIntakeTests(unittest.TestCase):
         self.assertGreaterEqual(len(profiles), 15)
         self.assertTrue(all(set(p["depends_on"]) <= keys for p in profiles))
 
+
+    def test_chat_feature_trace_is_automatically_queued(self):
+        source = self.base / "chat.zip"
+        with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("index.html", "<main>fictional chat</main>")
+            archive.writestr("client.js",
+                "function submitMessage(conversationId,messageId){return messageId;}")
+        tool.queue_specimen("chatdemo", "https://chatdemo.example.org")
+        self.assertEqual(tool.process_specimen("chatdemo", source), 1)
+        tasks = tool.load_json(self.root / "queues/tasks.json")["tasks"]
+        feature_tasks = [t for t in tasks if "-followup-static-feature-chat-" in t["id"]]
+        self.assertEqual(len(feature_tasks), 4)
+        self.assertTrue(all(t["status"] == "queued" for t in feature_tasks))
+        self.assertTrue(all(t["depends_on"] and t["notes"] for t in feature_tasks))
+        self.assertEqual(validator.validate(), [])
+
+    def test_unrelated_site_does_not_get_a_chat_feature(self):
+        source = self.base / "plain.zip"
+        with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as archive:
+            archive.writestr("client.js", "export function draw(){return 42}")
+        tool.queue_specimen("plain", "https://plain.example.org")
+        tool.process_specimen("plain", source)
+        tasks = tool.load_json(self.root / "queues/tasks.json")["tasks"]
+        self.assertFalse(any("-feature-chat-" in task["id"] for task in tasks))
+        self.assertTrue(any("-followup-static-source-functions" in task["id"] for task in tasks))
 
     def test_large_archive_generates_many_deep_tasks(self):
         source = self.base / "large.zip"

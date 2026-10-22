@@ -61,3 +61,28 @@ When possible, add a sanitized `resource_inventory.json` with category-local ord
 For a feature such as chat interaction, keep the **observed interface** separate from a **candidate state machine**. First record the visible controls and their version-scoped ontology references, then map proposed events, states and transitions. Each graph transition must list guards, anticipated effects, evidence status, and a specific verification experiment. Never interpret an unobserved state edge as a recovered product API.
 
 Use synthetic, disposable test cases if the owner separately authorizes live tests. Collect only structural deltas (for example an abstract selected-chat state), timing and generic event categories. Do not extract real conversation IDs, session values, message text, request payloads, network endpoints or browser profiles into the public repository. A reviewed static snapshot may have a candidate feature graph with unverified transitions; future observations belong to separately sourced evidence and versioned research.
+
+## Automatic source-level research on every dump
+
+Any processed site dump containing JavaScript now queues implementation-level
+tasks, **even when it is a small ZIP or a standalone page with inline script**.
+The separate `queues/static_profiles.json` contract enumerates required
+work on functions, call chains, object shapes, UI handlers, state flows,
+requests/decoders, streaming, retries, persistence, render connections, and
+evidence reconciliation. CSS captures additionally queue style-hook tracing.
+Large-archive deep-profile tasks remain in force independently.
+
+Fixed, curated lexical markers in captured JavaScript may also enqueue
+candidate feature investigations (chat, search, authentication, commerce,
+media playback, maps, document editing), four detailed tasks per detected
+feature. Co-occurring words only **trigger questions**; they never constitute
+verified feature behavior. Feature signal matches and raw file references stay
+in the ignored private inventory. A site not matching the predefined
+vocabulary still receives the general source function and end-to-end research
+tasks. All tasks stay queued until actual source-level evidence is reviewed;
+no task is automatically closed by a frequency census.
+
+The requirement is to reconstruct real captured client implementation before
+declaring static analysis exhausted. Runtime authorization is not required to
+study the downloaded JavaScript. Only claims that source cannot establish,
+such as actual server responses or account-specific execution, remain unknown.
