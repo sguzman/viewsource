@@ -469,6 +469,59 @@ Not reviewed. Source rights, technical identifiers, evidence classifications, an
     return version
 
 
+def enqueue_static_for_current_version(slug: str, input_path: Path) -> int:
+    """Add newly introduced static research to a previously processed capture.
+
+    This does not create a fake new capture version or erase reviewed findings.
+    A prior ignored inventory digest is checked when available; otherwise,
+    a curated aggregate resource census must be consistent with the input.
+    """
+    index_path = ROOT / "specimens/index.json"
+    index = load_json(index_path)
+    specimen = next((s for s in index["specimens"] if s["id"] == slug), None)
+    if specimen is None or specimen["current_version"] < 1:
+        raise ValueError("A processed specimen version is required")
+    version = specimen["current_version"]
+    inventory = inspect_capture(input_path)
+    prior_path = WORKDIR / slug / f"v{version:04d}" / "inventory.json"
+    if prior_path.is_file():
+        prior = load_json(prior_path)
+        if prior["capture_sha256"] != inventory["capture_sha256"]:
+            raise ValueError("Input does not match the original captured version")
+    else:
+        census_path = ROOT / "specimens" / slug / f"v{version:04d}" / "resource_inventory.json"
+        if not census_path.is_file():
+            raise ValueError("Original capture identity cannot be checked")
+        census = load_json(census_path)["totals"]["captured_by_category"]
+        if any(inventory["categories"].get(kind, 0) < count
+               for kind, count in census.items()):
+            raise ValueError("Capture differs from the published resource census")
+    path = ROOT / "queues/tasks.json"
+    tasks_doc = load_json(path)
+    proposed = spawn_static_research(
+        slug, version, inventory, load_json(ROOT / "queues/static_profiles.json"))
+    existing = {task["id"] for task in tasks_doc["tasks"]}
+    new = [task for task in proposed if task["id"] not in existing]
+    if not new:
+        return 0
+    tasks_doc["tasks"].extend(new)
+    save_json(path, tasks_doc)
+    # A completed capture-specific research pass remains historically
+    # documented, but new source research makes current review incomplete.
+    record_path = ROOT / "specimens" / slug / f"v{version:04d}" / "record.json"
+    record = load_json(record_path)
+    if record["status"] == "reviewed":
+        record["status"] = "researching"
+        for section in ("scripts", "interaction", "state", "services",
+                        "architecture", "review"):
+            if record["coverage"].get(section) == "analyzed":
+                record["coverage"][section] = "partial"
+        save_json(record_path, record)
+        specimen["status"] = "researching"
+        save_json(index_path, index)
+    return len(new)
+
+
 def show_status() -> None:
     specimens = load_json(ROOT / "specimens/index.json")["specimens"]
     tasks = load_json(ROOT / "queues/tasks.json")["tasks"]
@@ -488,6 +541,10 @@ def main() -> int:
     process = sub.add_parser("process", help="Process offline ZIP/HTML and create tasks")
     process.add_argument("slug")
     process.add_argument("--input", required=True, type=Path, help="Capture located outside the repository")
+    backfill = sub.add_parser("enqueue-static", help="Reopen current capture for newly added static research")
+    backfill.add_argument("slug")
+    backfill.add_argument("--input", required=True, type=Path,
+                          help="Original ZIP or HTML input, outside this repository")
     sub.add_parser("status", help="Display queued work summary")
     args = parser.parse_args()
     try:
@@ -497,6 +554,9 @@ def main() -> int:
         elif args.command == "process":
             version = process_specimen(args.slug, args.input)
             print(f"Capture processed as internal version v{version:04d}; research tasks queued.")
+        elif args.command == "enqueue-static":
+            count = enqueue_static_for_current_version(args.slug, args.input)
+            print(f"Queued {count} new static-analysis tasks for the current version.")
         elif args.command == "status":
             show_status()
     except (ValueError, OSError, zipfile.BadZipFile, KeyError) as exc:

@@ -86,3 +86,18 @@ The requirement is to reconstruct real captured client implementation before
 declaring static analysis exhausted. Runtime authorization is not required to
 study the downloaded JavaScript. Only claims that source cannot establish,
 such as actual server responses or account-specific execution, remain unknown.
+
+## Requeueing existing captures after improved research profiles
+
+When a new static research profile becomes available after an earlier
+review, run `python3 scripts/viewsource.py enqueue-static <slug> --input
+/path/to/original.zip`. It does **not** invent a new snapshot version or
+replace captured evidence. It checks the private original capture digest
+when available; for older reviewed snapshots with no retained private
+inventory, it requires compatibility with the published aggregate resource
+census. It creates only missing tasks and is idempotent.
+
+A previously reviewed current snapshot re-enters `researching` status
+when unfinished static implementation work is added, while the original
+findings and terminal task dispositions remain intact. This is a research
+scope extension, not a claim that older reviewed evidence was invalid.

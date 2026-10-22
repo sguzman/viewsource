@@ -98,6 +98,46 @@ class OfflineIntakeTests(unittest.TestCase):
         self.assertTrue((self.root / "specimens/example/v0001/record.json").exists())
         self.assertEqual(validator.validate(), [])
 
+    def test_requeue_static_research_is_idempotent_and_capture_checked(self):
+        tool.queue_specimen("revisit", "https://revisit.example.org")
+        source = self.example_zip()
+        tool.process_specimen("revisit", source)
+        tasks = tool.load_json(self.root / "queues/tasks.json")["tasks"]
+        old_count = len(tasks)
+        self.assertEqual(tool.enqueue_static_for_current_version("revisit", source), 0)
+        self.assertEqual(len(tool.load_json(self.root / "queues/tasks.json")["tasks"]), old_count)
+        # A different capture must not be silently treated as the same version.
+        mismatched = self.base / "mismatch.zip"
+        with zipfile.ZipFile(mismatched, "w") as z:
+            z.writestr("client.js", "const x = 1;")
+        with self.assertRaisesRegex(ValueError, "does not match"):
+            tool.enqueue_static_for_current_version("revisit", mismatched)
+
+    def test_static_backfill_reopens_incomplete_source_work(self):
+        tool.queue_specimen("reopened", "https://reopened.example.org")
+        source = self.example_zip()
+        tool.process_specimen("reopened", source)
+        doc = tool.load_json(self.root / "queues/tasks.json")
+        doc["tasks"] = [task for task in doc["tasks"]
+                        if "-followup-static-" not in task["id"]]
+        tool.save_json(self.root / "queues/tasks.json", doc)
+        record_path = self.root / "specimens/reopened/v0001/record.json"
+        record = tool.load_json(record_path)
+        record["status"] = "reviewed"
+        record["coverage"] = {key: "analyzed" for key in record["coverage"]}
+        tool.save_json(record_path, record)
+        index_path = self.root / "specimens/index.json"
+        index = tool.load_json(index_path)
+        index["specimens"][0]["status"] = "reviewed"
+        tool.save_json(index_path, index)
+        added = tool.enqueue_static_for_current_version("reopened", source)
+        self.assertGreater(added, 0)
+        self.assertEqual(tool.load_json(record_path)["status"], "researching")
+        self.assertEqual(tool.load_json(index_path)["specimens"][0]["status"], "researching")
+        self.assertEqual(tool.load_json(record_path)["coverage"]["scripts"], "partial")
+        self.assertEqual(tool.enqueue_static_for_current_version("reopened", source), 0)
+        self.assertEqual(validator.validate(), [])
+
     def test_html_input_outside_repo(self) -> None:
         tool.queue_specimen("simple", "https://www.example.com/")
         html = self.base / "saved.html"
