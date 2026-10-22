@@ -20,7 +20,8 @@ class ChatQueueDocumentationTests(unittest.TestCase):
                             if x["status"] == "requires_new_evidence"))
         readme = (ROOT / "README.md").read_text("utf-8")
         match = re.search(
-            r"tracks \*\*(\d+) completed offline tasks and (\d+) runtime investigations",
+            r"tracks \*\*(\d+) completed (?:offline|earlier) tasks and (\d+) "
+            r"(?:runtime investigations|optional runtime verification questions)",
             readme,
         )
         self.assertIsNotNone(match, "README queue overview missing or stale")
