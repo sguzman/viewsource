@@ -15,7 +15,8 @@ KEY_PATTERNS = [
     re.compile(r"-----BEGIN" + r" (?:RSA |EC |OPENSSH )?PRIVATE KEY-----", re.I),
     re.compile(r"\bgh[pousr]_[A-Za-z0-9]{30,}\b"),
     re.compile(r"\bAIza[0-9A-Za-z_-]{30,}\b"),
-    re.compile(r"(?i)\bauthorization\s*:\s*bearer\s+[a-z0-9._~+/=-]{16,}")
+    re.compile(r"(?i)\bauthorization\s*:\s*bearer\s+[a-z0-9._~+/=-]{16,}"),
+    re.compile(r"\b[A-Za-z0-9._%+-]+@(?:gmail|yahoo|hotmail|outlook)\.[A-Za-z]{2,}\b", re.I)
 ]
 
 
@@ -42,7 +43,7 @@ def scan() -> list[str]:
         if path.stat().st_size > 1024 * 1024:
             failures.append(f"Review unusually large tracked file: {normalized}")
             continue
-        if path.suffix.lower() not in {".py", ".md", ".json", ".yaml", ".yml", ".toml", ".txt", ".gitignore"} and path.name not in {"LICENSE", ".gitignore"}:
+        if path.suffix.lower() not in {".py", ".md", ".json", ".yaml", ".yml", ".toml", ".txt", ".gitignore", ".html", ".js", ".css"} and path.name not in {"LICENSE", ".gitignore"}:
             continue
         content = path.read_text(encoding="utf-8", errors="replace")
         for signature in KEY_PATTERNS:
