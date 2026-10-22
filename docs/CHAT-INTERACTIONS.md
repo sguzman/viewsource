@@ -403,3 +403,15 @@ source-backed evidence of the client-side representation used to support
 conversation rendering, **not** proof that a particular UI component
 subscribes to each field. Concrete render selectors remain an active
 research question.
+
+## Canonical evidence references for partially completed static tasks
+
+Five source-reviewed findings (E2-071 through E2-075) now live in the
+specimen's main `record.json` evidence ledger. The six in-progress source
+investigations link to those findings even while their broader acceptance
+criteria remain unsatisfied. The queue validator now verifies **all**
+nonempty task evidence references, including partial in-progress work; it
+still refuses to close a task at 100% without valid evidence. Queued and
+not-observable tasks cannot carry evidence references. The Atlas displays
+the number of grounded findings associated with each static task without
+publishing source code or private identifiers.
