@@ -13,5 +13,9 @@ jobs:
         run: python3 scripts/validate.py
       - name: Exercise offline capture workflow
         run: python3 -m unittest discover -s tests -v
+      - name: Check atlas JavaScript syntax
+        run: node --check site/app.js
+      - name: Build static specimen atlas
+        run: python3 scripts/build_site.py --out _site
       - name: Check tracked publication boundaries
         run: python3 scripts/publication_guard.py
