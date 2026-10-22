@@ -356,3 +356,27 @@ transport callbacks, decoded event handling and message-state mutation
 invocation. The imported helper's internal reducer/storage operation and
 eventual UI updates are still open static-analysis tasks. Neither a server
 write nor an actual browser state change has been observed.
+
+## Recovered message graph mutation and selection logic
+
+A deeper source trace reaches the imported mapping transformer called by
+the event processor's state writer. The transformer receives the existing
+message mapping, an incoming message, and a fallback parent identity;
+it returns a revised mapping, message identity, new-node flag, and
+descendant-rotation flag.
+
+The captured implementation updates existing or missing nodes, chooses
+parent relationships with metadata and ancestry guards, repairs child lists
+when reparenting, and handles a special merged-fragment continuation case.
+A higher-level state writer uses the resulting graph together with
+preserve-current-turn intent, selected ancestry and optimistic-local
+message state to decide the next selected node and publish the updated
+conversation state. Its return value exposes the previous and next
+client state.
+
+The [sanitized graph mutation study](../specimens/chatgpt-com/v0002/chat_graph_mutation_trace.json)
+enumerates nine source-backed operations and six function-level edges.
+This is a captured client algorithm, not merely a candidate graph model.
+It does **not** establish that arbitrary malformed mappings are always
+repaired, how the backend stores messages, or whether a particular live
+action selected a given branch.
