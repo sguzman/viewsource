@@ -26,16 +26,17 @@ class TransportTraceTests(unittest.TestCase):
             "getStreamOptions","createCompletionStreamHandlers"
         })
         allowed=names|{"generation_dispatcher","topic_based_stream","streaming_request",
-                       "local_and_request_cancellation","resume_recovery"}
+                       "local_and_request_cancellation","resume_recovery",
+                       "decoded_update_processor","message_update_callback"}
         edges=report["reviewed_static_edges"]
-        self.assertEqual(len(edges),9)
+        self.assertEqual(len(edges),11)
         for row in edges:
             self.assertIn(row["from"],allowed)
             self.assertIn(row["to"],allowed)
             self.assertIn(row["kind"],{
                 "direct_method_call","conditional_client_path",
                 "direct_client_sequence","client_recovery_configuration",
-                "scoped_service_method_call"
+                "scoped_service_method_call","static_callback_wiring"
             })
         self.assertTrue(report["still_unresolved"])
 
@@ -51,6 +52,17 @@ class TransportTraceTests(unittest.TestCase):
         self.assertIn("conversation_mapping",bridge["recovery_state_inputs"])
         self.assertIn("selected_message_node",bridge["recovery_state_inputs"])
         self.assertFalse(self.report["live_transport_verified"])
+
+    def test_transport_decoded_event_to_message_update_wiring(self):
+        pipeline=self.report["decoded_update_pipeline"]
+        self.assertEqual(pipeline["source_ref"],"R-JS-018")
+        self.assertEqual(pipeline["dispatcher_function_ordinal"],9032)
+        self.assertEqual(pipeline["evidence_class"],"observed_static")
+        self.assertEqual([x["stage"] for x in pipeline["sequence"]],[
+            "transport_decoded_event","event_processor",
+            "message_update","message_marker","terminal_or_metadata"
+        ])
+        self.assertTrue(pipeline["verification_boundary"])
 
     def test_no_capture_data_escapes_to_public_report(self):
         output=REPORT.read_text("utf-8").lower()
