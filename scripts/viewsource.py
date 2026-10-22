@@ -313,7 +313,7 @@ def available_static_kinds(inventory: dict) -> set[str]:
 
 def candidate_static_features(inventory: dict, config: dict) -> list[str]:
     """Require all feature signal families in at least one captured script."""
-    qualified = set()
+    counts: Counter[str] = Counter()
     required = {f["id"]: set(f["signals"]) for f in config["features"]}
     for item in inventory["files"]:
         if item["category"] != "script":
@@ -321,8 +321,12 @@ def candidate_static_features(inventory: dict, config: dict) -> list[str]:
         observations = item.get("observations", {})
         for feature, hits in observations.get("feature_signals", {}).items():
             if feature in required and required[feature] <= set(hits):
-                qualified.add(feature)
-    return sorted(qualified)
+                counts[feature] += 1
+    # Large captures often vendor unrelated libraries; do not promote a
+    # single lexical hit into a feature-specific task chain. Small sites
+    # may legitimately ship all feature code in one JavaScript bundle.
+    minimum = 2 if inventory["categories"].get("script", 0) >= 20 else 1
+    return sorted(feature for feature, total in counts.items() if total >= minimum)
 
 
 def spawn_static_research(slug: str, version: int, inventory: dict,
