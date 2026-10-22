@@ -1,0 +1,301 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_archive",
+  "methodology": {
+    "javascript": "Locally parse all 144 privately stored JavaScript resources as syntax trees; aggregate fixed whitelist of public browser API call/constructor names and nearest enclosing function scopes. Identifiers, literal values, function names, call arguments and source are not exported.",
+    "html_css": "Offline DOM parsing and CSS stylesheet rule parsing; compare anonymous sets of DOM class identifiers to plain unescaped class-selector identifiers without publishing any class name.",
+    "fonts": "Read embedded font name, weight and container metadata offline without redistributing font bytes or arbitrary embedded strings.",
+    "performance": "Byte sizes are retained capture sizes, not network transfer sizes or timing measurements.",
+    "privacy": "All output is original numeric, fixed-label research. No raw captures, URLs, CSS source, JavaScript source, DOM content, personal/account identifiers, or user text."
+  },
+  "js_ast": {
+    "files": 144,
+    "total_source_bytes": 28066928,
+    "tree_nodes": 9273632,
+    "call_nodes": 417374,
+    "constructor_nodes": 10496,
+    "functions": 120699,
+    "try_blocks": 3562,
+    "catch_clauses": 3167,
+    "static_import_declarations": 236,
+    "dynamic_import_expressions": 18,
+    "fixed_api_indicators": {
+      "fetch": 178,
+      "abort_controller_constructors": 244,
+      "stream_reader_calls": 16,
+      "text_decoder_constructors": 33,
+      "readable_stream_constructors": 5,
+      "websocket_constructors": 6,
+      "peer_connection_constructors": 3,
+      "user_media_calls": 3,
+      "display_media_calls": 1,
+      "media_recorder_constructors": 2,
+      "audio_context_constructors": 4,
+      "listener_add_calls": 997,
+      "listener_remove_calls": 822,
+      "animation_frame_calls": 144,
+      "mutation_observer_constructors": 67,
+      "resize_observer_constructors": 90,
+      "intersection_observer_constructors": 57,
+      "storage_get_item_calls": 118,
+      "storage_set_item_calls": 102,
+      "storage_remove_item_calls": 78,
+      "broadcast_channel_constructors": 11,
+      "message_channel_constructors": 25,
+      "post_message_calls": 77,
+      "worker_constructors": 8,
+      "match_media_calls": 46,
+      "react_like_use_state_calls": 133,
+      "react_like_use_effect_calls": 134,
+      "react_like_use_reducer_calls": 9,
+      "react_like_sync_external_store_calls": 10,
+      "react_like_portal_calls": 1
+    },
+    "same_lexical_function_scope_cooccurrences": {
+      "fetch_and_stream": 5,
+      "fetch_and_abort": 6,
+      "fetch_and_storage": 2,
+      "fetch_and_event": 4,
+      "stream_and_abort": 5,
+      "storage_and_event": 3,
+      "worker_and_message_channel": 12
+    },
+    "api_family_callsite_occurrences_and_file_coverage": {
+      "react_like": {
+        "occurrences": 1137,
+        "files": 48
+      },
+      "network": {
+        "occurrences": 524,
+        "files": 54
+      },
+      "browser_state": {
+        "occurrences": 448,
+        "files": 46
+      },
+      "event_observer": {
+        "occurrences": 3270,
+        "files": 89
+      },
+      "media": {
+        "occurrences": 15,
+        "files": 7
+      },
+      "security_related": {
+        "occurrences": 32,
+        "files": 13
+      },
+      "worker_messaging": {
+        "occurrences": 67,
+        "files": 17
+      }
+    },
+    "large_bundle_census": [
+      {
+        "ordinal": "R-JS-011",
+        "bytes": 2179367,
+        "react_like": 355,
+        "network": 20,
+        "event_observer": 248,
+        "browser_state": 23
+      },
+      {
+        "ordinal": "R-JS-025",
+        "bytes": 2121464,
+        "react_like": 24,
+        "network": 80,
+        "event_observer": 276,
+        "browser_state": 17
+      },
+      {
+        "ordinal": "R-JS-018",
+        "bytes": 2103147,
+        "react_like": 6,
+        "network": 67,
+        "event_observer": 209,
+        "browser_state": 15
+      },
+      {
+        "ordinal": "R-JS-027",
+        "bytes": 2042380,
+        "react_like": 6,
+        "network": 58,
+        "event_observer": 329,
+        "browser_state": 63
+      },
+      {
+        "ordinal": "R-JS-024",
+        "bytes": 1763198,
+        "react_like": 7,
+        "network": 35,
+        "event_observer": 194,
+        "browser_state": 40
+      },
+      {
+        "ordinal": "R-JS-120",
+        "bytes": 1652978,
+        "react_like": 1,
+        "network": 0,
+        "event_observer": 57,
+        "browser_state": 0
+      },
+      {
+        "ordinal": "R-JS-015",
+        "bytes": 1257698,
+        "react_like": 5,
+        "network": 32,
+        "event_observer": 245,
+        "browser_state": 38
+      },
+      {
+        "ordinal": "R-JS-019",
+        "bytes": 1230826,
+        "react_like": 14,
+        "network": 18,
+        "event_observer": 285,
+        "browser_state": 17
+      },
+      {
+        "ordinal": "R-JS-004",
+        "bytes": 1109107,
+        "react_like": 7,
+        "network": 8,
+        "event_observer": 21,
+        "browser_state": 27
+      },
+      {
+        "ordinal": "R-JS-029",
+        "bytes": 736905,
+        "react_like": 41,
+        "network": 6,
+        "event_observer": 50,
+        "browser_state": 19
+      },
+      {
+        "ordinal": "R-JS-007",
+        "bytes": 653675,
+        "react_like": 63,
+        "network": 10,
+        "event_observer": 46,
+        "browser_state": 8
+      },
+      {
+        "ordinal": "R-JS-069",
+        "bytes": 608800,
+        "react_like": 11,
+        "network": 14,
+        "event_observer": 59,
+        "browser_state": 7
+      }
+    ],
+    "interpretation": "Counts are syntax-level. Fixed-name method calls can be methods of nonstandard objects; tree proximity is not dataflow; callsites in vendors or never-loaded code are included. No bundle is assigned authoritative component ownership."
+  },
+  "document_css": {
+    "dom_elements": 2183,
+    "elements_with_css_classes": 1688,
+    "distinct_dom_classes": 744,
+    "qualified_css_rule_count": 16983,
+    "plain_class_selector_occurrences": 21264,
+    "distinct_plain_selector_class_names": 3776,
+    "distinct_overlap_class_names": 359,
+    "dom_elements_with_at_least_one_plain_css_class_overlap": 1666,
+    "css_rules_containing_a_dom_class_label": 2639,
+    "css_at_rules_parsed": {
+      "layer": 33,
+      "supports": 735,
+      "media": 573,
+      "container": 454,
+      "keyframes": 164,
+      "starting_style": 19,
+      "property": 222,
+      "font_face": 26
+    },
+    "css_url_function_occurrences_in_parsed_declarations": 16,
+    "interface_layout_indicators": {
+      "display_grid": 88,
+      "display_flex": 334,
+      "css_logical_padding_inline": 306,
+      "css_logical_inset_inline": 137
+    },
+    "css_reduced_motion_media_conditions": 168,
+    "caveat": "Plain unescaped selector comparison ignores escaping, selector specificity, pseudo-classes, combinator matching, runtime classes and winning cascade. Counts indicate vocabulary overlap only, not actual computed styles or source component ownership."
+  },
+  "fonts": {
+    "files": 60,
+    "semantic_groups": {
+      "math_typesetting": 57,
+      "interface_sans": 3
+    },
+    "containers": {
+      "woff2": 21,
+      "woff": 20,
+      "ttf": 19
+    },
+    "metadata_weight_classes": {
+      "400": 40,
+      "500": 1,
+      "600": 1,
+      "700": 18
+    },
+    "variable_fonts": 0,
+    "distinct_family_count": 13,
+    "caveat": "Font metadata shows saved variants, not exact glyph usage, display substitution, or live font download timing."
+  },
+  "captured_resource_budget": {
+    "scripts": {
+      "files": 144,
+      "bytes": 28066928
+    },
+    "styles": {
+      "files": 17,
+      "bytes": 2341104
+    },
+    "fonts": {
+      "files": 60,
+      "bytes": 1169636
+    },
+    "images": {
+      "files": 12,
+      "bytes": 725265
+    },
+    "supplemental_document": {
+      "files": 1,
+      "bytes": 13236
+    },
+    "largest_five_script_share": 0.3638,
+    "largest_ten_script_share": 0.5771,
+    "caveat": "ZIP-saved bytes do not establish page transfer bytes, network compression, cache hits, critical path, timing or memory footprint."
+  },
+  "observability": {
+    "verified_static": [
+      "saved DOM nesting",
+      "resource-link references",
+      "parsed JS syntax",
+      "generic fixed browser API signatures",
+      "anonymous bundle size groups",
+      "basic CSS selector vocabulary overlap",
+      "font weights and containers"
+    ],
+    "not_observable_from_capture": [
+      "original framework component boundaries and props",
+      "exact event-to-control ownership",
+      "completed form or upload actions",
+      "live permissions and media sessions",
+      "actual network endpoints and responses",
+      "authentication implementation",
+      "dynamic keyboard and accessibility traces",
+      "computed CSS cascade",
+      "executed module loading and hydration timing",
+      "like-for-like release differences",
+      "actual performance waterfall",
+      "server-side operations"
+    ]
+  },
+  "limits": [
+    "One saved snapshot is not a complete website implementation.",
+    "No live browser execution, session replay, network interception, source maps or server files are available.",
+    "The prototype classification scheme is intentionally conservative and refuses to infer precise runtime ownership."
+  ]
+}
