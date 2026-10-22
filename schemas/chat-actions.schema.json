@@ -1,0 +1,93 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Public chat action evidence inventory",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "specimen_id",
+    "version",
+    "feature_id",
+    "source_scope",
+    "policy",
+    "operations"
+  ],
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "specimen_id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "feature_id": {
+      "type": "string"
+    },
+    "source_scope": {
+      "type": "string"
+    },
+    "policy": {
+      "type": "string"
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "label",
+          "support",
+          "evidence_refs",
+          "public_docs",
+          "behavior_verified",
+          "limits",
+          "test_goal"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          },
+          "support": {
+            "enum": [
+              "captured_dom",
+              "structural_candidate",
+              "public_documentation",
+              "source_syntax_only",
+              "not_established"
+            ]
+          },
+          "evidence_refs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "public_docs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "uniqueItems": true
+          },
+          "behavior_verified": {
+            "type": "boolean"
+          },
+          "limits": {
+            "type": "string"
+          },
+          "test_goal": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}
