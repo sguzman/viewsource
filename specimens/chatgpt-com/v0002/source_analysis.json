@@ -1,0 +1,306 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "scope": "saved_archive",
+  "methodology": {
+    "analysis_type": "Static, offline, syntax and metadata census; no code execution",
+    "reference_matching": "Each captured JavaScript asset's public-facing basename (as privately mapped from the manifest) is searched as literal text in every other captured JavaScript asset. Length >=14 characters; ordinals are the only published identifiers.",
+    "graph_semantics": "Filename textual co-occurrence only, not an import, dependency loaded, code execution, route activation or network transaction",
+    "privacy": "No script bodies, site asset file names, captured URLs, query strings, account identifiers, conversation data, or source excerpts are published."
+  },
+  "dom": {
+    "modulepreload_links": 72,
+    "modulepreload_links_resolved_to_captured_assets": 72,
+    "stylesheet_links": 18,
+    "unique_stylesheet_link_targets": 17,
+    "stylesheet_links_resolved_to_captured_assets": 18,
+    "button_types": {
+      "button": 130
+    },
+    "file_input_elements": 4,
+    "forms": 1
+  },
+  "javascript": {
+    "captured_files": 144,
+    "reference_graph": {
+      "pairs": 300,
+      "mentions": 5469,
+      "source_bundles": 10,
+      "target_bundles": 71,
+      "source_to_target_ranges": {
+        "R-JS-001": [
+          [
+            2,
+            72
+          ]
+        ],
+        "R-JS-002": [
+          [
+            3,
+            29
+          ]
+        ],
+        "R-JS-003": [
+          [
+            14,
+            14
+          ]
+        ],
+        "R-JS-030": [
+          [
+            3,
+            29
+          ]
+        ],
+        "R-JS-031": [
+          [
+            3,
+            29
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "R-JS-033": [
+          [
+            3,
+            29
+          ]
+        ],
+        "R-JS-034": [
+          [
+            3,
+            29
+          ],
+          [
+            32,
+            32
+          ]
+        ],
+        "R-JS-035": [
+          [
+            3,
+            29
+          ]
+        ],
+        "R-JS-036": [
+          [
+            3,
+            3
+          ]
+        ],
+        "R-JS-037": [
+          [
+            3,
+            29
+          ],
+          [
+            32,
+            32
+          ],
+          [
+            38,
+            72
+          ]
+        ]
+      },
+      "range_semantics": "Each inclusive numeric range denotes script ordinals R-JS-NNN matching that source script. It does not imply actual imports."
+    },
+    "syntax_indicators": {
+      "fetch_call": {
+        "files": 30,
+        "occurrences": 186
+      },
+      "websocket_constructor": {
+        "files": 6,
+        "occurrences": 6
+      },
+      "worker_constructor": {
+        "files": 8,
+        "occurrences": 8
+      },
+      "webassembly_member": {
+        "files": 1,
+        "occurrences": 6
+      },
+      "dynamic_import": {
+        "files": 10,
+        "occurrences": 23
+      },
+      "media_devices": {
+        "files": 3,
+        "occurrences": 9
+      },
+      "audio_context": {
+        "files": 5,
+        "occurrences": 9
+      },
+      "indexeddb": {
+        "files": 4,
+        "occurrences": 25
+      },
+      "localstorage": {
+        "files": 18,
+        "occurrences": 162
+      },
+      "sessionstorage": {
+        "files": 17,
+        "occurrences": 126
+      },
+      "broadcastchannel": {
+        "files": 7,
+        "occurrences": 17
+      },
+      "serviceworker": {
+        "files": 1,
+        "occurrences": 5
+      },
+      "postmessage": {
+        "files": 23,
+        "occurrences": 82
+      },
+      "webcrypto": {
+        "files": 8,
+        "occurrences": 17
+      },
+      "intersection_observer": {
+        "files": 30,
+        "occurrences": 86
+      },
+      "resize_observer": {
+        "files": 41,
+        "occurrences": 125
+      },
+      "mutation_observer": {
+        "files": 32,
+        "occurrences": 82
+      }
+    }
+  },
+  "css": {
+    "captured_stylesheets": 17,
+    "unique_custom_property_spellings": 2509,
+    "custom_property_declaration_occurrences": 8135,
+    "media_rule_categories": {
+      "width": 167,
+      "height": 8,
+      "hover": 209,
+      "pointer": 68,
+      "reduced_motion": 168,
+      "color_scheme": 1,
+      "print": 11
+    },
+    "container_rule_categories": {
+      "width": 269,
+      "height": 2,
+      "style": 258
+    },
+    "query_category_caveat": "A rule may match multiple categories; totals are neither disjoint nor exhaustive.",
+    "top_custom_property_name_prefixes": [
+      [
+        "color-token",
+        318
+      ],
+      [
+        "color-background",
+        156
+      ],
+      [
+        "color-text",
+        121
+      ],
+      [
+        "app-color",
+        70
+      ],
+      [
+        "dil-font",
+        66
+      ],
+      [
+        "color-codex",
+        47
+      ],
+      [
+        "color-ring",
+        41
+      ],
+      [
+        "color-border",
+        36
+      ],
+      [
+        "font-heading",
+        36
+      ],
+      [
+        "font-text",
+        30
+      ],
+      [
+        "gray-fixed",
+        25
+      ],
+      [
+        "app-shell",
+        24
+      ],
+      [
+        "learning-block",
+        16
+      ],
+      [
+        "segmented-control",
+        14
+      ],
+      [
+        "app-menu",
+        14
+      ]
+    ]
+  },
+  "fonts": {
+    "total_files": 60,
+    "distinct_families": 13,
+    "distinct_family_style_pairs": 23,
+    "weights": {
+      "regular_400": 40,
+      "medium_500": 1,
+      "semibold_600": 1,
+      "bold_700": 18
+    },
+    "file_counts_by_family": {
+      "OpenAI Sans": 3,
+      "KaTeX_AMS": 3,
+      "KaTeX_Caligraphic": 6,
+      "KaTeX_Fraktur": 6,
+      "KaTeX_Main": 10,
+      "KaTeX_Math": 6,
+      "KaTeX_SansSerif": 9,
+      "KaTeX_Script": 3,
+      "KaTeX_Size1": 3,
+      "KaTeX_Size2": 3,
+      "KaTeX_Size3": 2,
+      "KaTeX_Size4": 3,
+      "KaTeX_Typewriter": 3
+    },
+    "typography_notes": "OpenAI Sans has three captured WOFF2 weights; KaTeX font families mostly have WOFF, WOFF2 and TTF format variants. Family and style determined from local font name tables; font bytes not distributed."
+  },
+  "images": {
+    "captured_files": 12,
+    "svg": 8,
+    "png": 3,
+    "webp": 1,
+    "svg_with_viewbox": 7,
+    "semantic_roles": "Not established for each asset from format alone."
+  },
+  "limitations": [
+    "Javascript string matches are not a parsed ES module dependency graph; concatenated/minified asset maps can repeat references many times.",
+    "No bundle was executed and no runtime browser, waterfall, server, or session instrumentation was performed.",
+    "Private manifest-to-resource ID mapping stays local; reference ordinals are v0002-local.",
+    "The code pattern census is lexical, not a verified source-level control-flow or data-flow analysis.",
+    "Font metadata and style taxonomy do not prove actual rendered usage in the captured view."
+  ]
+}

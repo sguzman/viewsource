@@ -12,18 +12,18 @@
     "markup": "analyzed",
     "navigation": "analyzed",
     "scripts": "analyzed",
-    "modules": "partial",
+    "modules": "analyzed",
     "styles": "analyzed",
     "responsive": "analyzed",
     "assets": "analyzed",
     "interaction": "partial",
-    "state": "partial",
-    "services": "partial",
+    "state": "analyzed",
+    "services": "analyzed",
     "accessibility": "analyzed",
     "metadata": "analyzed",
     "performance": "analyzed",
     "security": "partial",
-    "architecture": "partial",
+    "architecture": "analyzed",
     "comparison": "partial",
     "review": "pending"
   },
@@ -5246,6 +5246,144 @@
         "content_committed": false,
         "bytes": 13236
       }
+    },
+    {
+      "id": "filename-graph",
+      "kind": "Dependency",
+      "name": "Referenced bundle-name graph",
+      "description": "A v0002-local textual reference graph from ten saved JavaScript bundles to 71 distinct referenced script ordinals; actual imports are unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-018",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "pairs": 300,
+        "source_files": 10,
+        "target_files": 71,
+        "source_analysis": "source_analysis.json"
+      }
+    },
+    {
+      "id": "preload-coverage",
+      "kind": "PerformanceSignal",
+      "name": "Modulepreload coverage",
+      "description": "The saved document's 72 preload references match captured JavaScript resources, independent of whether those modules executed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-019",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "modulepreloads": 72,
+        "matched_capture": 72
+      }
+    },
+    {
+      "id": "api-call-patterns",
+      "kind": "APIReference",
+      "name": "Network syntax categories",
+      "description": "Static JS corpus contains fetch-like syntax and WebSocket constructor patterns; request targets and outcomes not documented.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-020",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "fetch_pattern_files": 30,
+        "websocket_constructor_files": 6
+      }
+    },
+    {
+      "id": "persistence-patterns",
+      "kind": "Storage",
+      "name": "Browser storage primitives",
+      "description": "Lexical inspection reveals localStorage, sessionStorage, IndexedDB and BroadcastChannel references across captured JS resources.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-021",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "localstorage_files": 18,
+        "sessionstorage_files": 17,
+        "indexeddb_files": 4,
+        "broadcastchannel_files": 7
+      }
+    },
+    {
+      "id": "execution-primitives",
+      "kind": "Dependency",
+      "name": "Worker and module syntax",
+      "description": "Captured JavaScript contains worker construction, dynamic import, WebAssembly member access and message passing signatures. No actual execution observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-022",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "worker_constructor_files": 8,
+        "dynamic_import_files": 10,
+        "webassembly_member_files": 1
+      }
+    },
+    {
+      "id": "responsive-taxonomy",
+      "kind": "DesignToken",
+      "name": "CSS token and query taxonomy",
+      "description": "Custom-property names and responsive query categories classified in the captured stylesheets; generated repeated declarations remain distinct from named tokens.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-023",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "unique_property_names": 2509,
+        "declarations": 8135,
+        "width_media_rules": 167,
+        "reduced_motion_media_rules": 168,
+        "container_width_rules": 269
+      }
+    },
+    {
+      "id": "font-taxonomy",
+      "kind": "Font",
+      "name": "Captured font identity metadata",
+      "description": "Font name tables identify 13 distinct font families and 23 family/style combinations, including OpenAI Sans and KaTeX family variants.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-024",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "files": 60,
+        "families": 13,
+        "family_style_pairs": 23
+      }
+    },
+    {
+      "id": "observer-primitives",
+      "kind": "Interaction",
+      "name": "DOM observation syntax",
+      "description": "Static JS references intersection, resize and mutation observers; their instances and actual UI attachment remain untested.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-025",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "intersection_files": 30,
+        "resize_files": 41,
+        "mutation_files": 32
+      }
     }
   ],
   "relationships": [
@@ -8009,6 +8147,127 @@
         "evidence_ref": "E2-017",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "javascript",
+      "to": "filename-graph",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-018",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "filename-graph",
+      "to": "preload-coverage",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-019",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "preload-coverage",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-019",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "api-call-patterns",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-020",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "persistence-patterns",
+      "predicate": "references",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-021",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "execution-primitives",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-022",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "stylesheets",
+      "to": "responsive-taxonomy",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-023",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "fonts",
+      "to": "font-taxonomy",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-024",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "observer-primitives",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-025",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "persistence-patterns",
+      "to": "storage",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-021",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "responsive-taxonomy",
+      "to": "design-system",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-023",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -8179,6 +8438,86 @@
         "evidence_class": "observed_static",
         "confidence": "high",
         "evidence_ref": "E2-017",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-018",
+      "statement": "Exact public asset-filename matches create 300 directed candidate references from ten captured scripts to 71 distinct JS assets, with 5,469 total string occurrences. They are neither verified imports nor evidence that referenced assets were loaded.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-018",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-019",
+      "statement": "Seventy-two modulepreload references in the captured DOM map to saved JavaScript resources; all 18 stylesheet links resolve to the seventeen distinct saved CSS resources, with one duplicated stylesheet link.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-019",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-020",
+      "statement": "Across 144 JavaScript files, a lexical scan finds 186 fetch-call patterns in 30 files, six WebSocket constructor patterns in six files, and 23 dynamic import patterns in ten files. These are source indicators rather than transactions or verified control paths.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-020",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-021",
+      "statement": "The captured scripts include localStorage terms in 18 files, sessionStorage in 17, IndexedDB in four and BroadcastChannel in seven; storage keys, values and user/session data were excluded from publication.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-021",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-022",
+      "statement": "Worker constructor patterns appear in eight files; WebAssembly member access in one, service worker references in one, and postMessage calls in 23. These do not demonstrate any worker launch or WebAssembly invocation in this session.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-022",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-023",
+      "statement": "The seventeen CSS files contain 2,509 distinct custom-property spellings across 8,135 declarations. Width-based media rules (167), hover-related (209), reduced-motion (168), width container rules (269) and container style queries (258) describe distinct static styling mechanisms, with overlaps.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-023",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-024",
+      "statement": "Reading the 60 captured font files' internal naming metadata yields thirteen font families and 23 family/style combinations. OpenAI Sans appears in three WOFF2 weights and the other twelve families are KaTeX-related; this does not establish which assets rendered in a given browser frame.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-024",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-025",
+      "statement": "Captured JavaScript contains lexical references to IntersectionObserver in 30 files, ResizeObserver in 41 and MutationObserver in 32. The actual listener graph, updates and visible effects were not executed or verified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-025",
         "source_scope": "saved_archive"
       }
     }

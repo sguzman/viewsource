@@ -369,11 +369,16 @@
       "profile": "modules",
       "queue": "scripts",
       "title": "Modules, frameworks, build and dependency clues",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Completed as source-limited static research only; execution, true module imports, and private source identifiers remain outside scope.",
+      "evidence_refs": [
+        "E2-018",
+        "E2-019",
+        "E2-022"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-styles",
@@ -445,12 +450,16 @@
       "profile": "state",
       "queue": "state",
       "title": "Client state, storage and lifecycle",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-interaction",
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Completed as source-limited static research only; execution, true module imports, and private source identifiers remain outside scope.",
+      "evidence_refs": [
+        "E2-021",
+        "E2-008"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-services",
@@ -459,11 +468,15 @@
       "profile": "services",
       "queue": "network",
       "title": "Static API and third-party service references",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Completed as source-limited static research only; execution, true module imports, and private source identifiers remain outside scope.",
+      "evidence_refs": [
+        "E2-020",
+        "E2-009"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-accessibility",
@@ -537,14 +550,19 @@
       "profile": "architecture",
       "queue": "architecture",
       "title": "Cross-cutting component relationships",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-markup",
         "chatgpt-com-v0002-modules",
         "chatgpt-com-v0002-styles",
         "chatgpt-com-v0002-services"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Completed as source-limited static research only; execution, true module imports, and private source identifiers remain outside scope.",
+      "evidence_refs": [
+        "E2-018",
+        "E2-019",
+        "E2-022"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-comparison",

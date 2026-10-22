@@ -80,3 +80,35 @@ The v0002 task graph has 18 standard research profiles plus 16 source-driven fol
 - E2-015: excluded private capture data
 - E2-016: v0001 comparison constraints
 - E2-017: sanitized 234-resource ordinal inventory
+
+## Deeper offline source analysis (E2-018 through E2-025)
+
+### Candidate module-reference graph
+
+The submitted manifest identifies 144 JavaScript resources. Comparing their captured public asset basenames as literal text within the other saved JavaScript bundles yields **300 distinct directed source-to-target reference pairs**, across ten source bundles and 71 target bundles, with **5,469 aggregate textual occurrences**. The often-repeated matches are consistent with generated asset maps; they are not a parsed JavaScript import graph and should not be interpreted as executed network fetches.
+
+A version-local machine-readable graph appears in [source_analysis.json](source_analysis.json), represented by ordinal ranges instead of publishing captured asset filenames. The source list and target list are independently counted; source files can also be targets. Future versions must re-establish mappings rather than comparing ordinals.
+
+### Preloaded versus bundled resources
+
+All 72 modulepreload references observed in the DOM have corresponding saved JS resource entries. All 18 linked stylesheet references resolve to captured CSS, comprising 17 unique files. Presence and preload linkage establish resource discoverability in this snapshot, not whether the browser evaluated each module.
+
+### Source-code primitives
+
+More specific pattern matching across the JavaScript assets identifies **186 fetch-call patterns** in 30 files and six \`new WebSocket(...)\` syntax patterns in six. Dynamic \`import(...)\` syntax appears 23 times in ten files. Terms for EventSource were visible in the initial census, but this pass did not find a corresponding explicit constructor expression. No API request/response, endpoint behavior, or authentication property was observed.
+
+State and coordination signatures include \`localStorage\` in 18 files, \`sessionStorage\` in 17, IndexedDB in four, \`BroadcastChannel\` in seven, and \`postMessage\` call patterns in 23. Worker constructors appear in eight files, service-worker references in one, and WebAssembly member access in one. JavaScript also contains media-device and audio-context indicators, plus IntersectionObserver, ResizeObserver and MutationObserver names. These categorize **available source code**, not enabled or user-visible features.
+
+### CSS organization and responsive regimes
+
+The captured CSS contains **2,509 distinct custom-property names** across 8,135 declarations. Prefix families include color tokens, application colors, text/heading font tokens, border and focus-ring colors, shell layout values, and component-specific tokens. Since repeated generated variants can redeclare a property, the number of declarations is not the number of individual design tokens.
+
+The source includes 167 width-media queries, 209 hover-related conditions, 68 pointer-related conditions, 168 reduced-motion conditions, and 11 print conditions. Captured container queries include 269 width checks, 258 \`style(...)\` tests, and two height checks. Some queries satisfy more than one category; each count is a tagged source occurrence, not a unique rendered layout state.
+
+### True font metadata
+
+The 60 fonts were inspected using internal name tables, not guessed from their extensions. They represent thirteen families and 23 family/style combinations. **OpenAI Sans** has three WOFF2 variants (Regular, Medium, Semibold); the other twelve families belong to **KaTeX's mathematical typography** and mostly repeat across WOFF2, WOFF and TTF formats. No font binary, licensing assertion over its content, or copied font metadata record was committed.
+
+### Evidence boundaries and work queue
+
+The linked-source, static storage, responsive taxonomy, and font-identity research tasks have been closed **within the available capture scope**. Other tasks remain queued for qualified control-flow interpretation, DOM event-to-bundle linkage, media behavior, image roles, accessibility behavior, and final review. This dossier is still in **researching** status. The source_analysis file contains aggregates and ordinal links only; it is not a raw source extraction.
