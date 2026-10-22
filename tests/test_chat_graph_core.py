@@ -102,5 +102,48 @@ class ChatGraphCoreTests(unittest.TestCase):
             forest.annotate_candidate_fork("original","missing","original")
 
 
+    def test_anonymous_topology_does_not_retain_input_keys(self):
+        chat=core.ConversationGraph("caller-supplied-chat-key")
+        chat.add("caller-supplied-first",None,"user")
+        chat.add("caller-supplied-second","caller-supplied-first","assistant")
+        chat.select("caller-supplied-second")
+        exported=chat.anonymous_topology()
+        self.assertEqual(exported["selected_path"],["n0001","n0002"])
+        self.assertEqual(exported["nodes"][1]["parent"],"n0001")
+        self.assertEqual(exported["node_count"],2)
+        import json
+        serialized=json.dumps(exported)
+        self.assertNotIn("caller-supplied",serialized)
+
+    def test_structural_equivalence_ignores_arbitrary_local_keys(self):
+        a=core.ConversationGraph("synthetic-a")
+        a.add("first",None,"user")
+        a.add("response-one","first","assistant")
+        a.add("response-two","first","assistant")
+        a.select("response-two")
+        b=core.ConversationGraph("synthetic-b")
+        b.add("alpha",None,"user")
+        b.add("beta","alpha","assistant")
+        b.add("gamma","alpha","assistant")
+        b.select("gamma")
+        self.assertEqual(a.anonymous_topology(),b.anonymous_topology())
+        self.assertEqual(a.anonymous_topology(),a.anonymous_topology())
+
+    def test_cross_chat_projection_contains_only_ordinal_links(self):
+        forest=core.ConversationForest()
+        original=forest.new_chat("private-placeholder-origin")
+        original.add("node-placeholder",None,"user")
+        branch=forest.new_chat("private-placeholder-branch")
+        branch.add("other-node",None,"user")
+        forest.annotate_candidate_fork("private-placeholder-origin",
+                                       "node-placeholder","private-placeholder-branch")
+        exported=forest.anonymous_topology()
+        self.assertEqual(exported["conversation_count"],2)
+        self.assertEqual(exported["candidate_forks"],[
+            {"source_chat":"c0001","source_node":"n0001","destination_chat":"c0002"}])
+        import json
+        self.assertNotIn("private-placeholder",json.dumps(exported))
+
+
 if __name__=="__main__":
     unittest.main()
