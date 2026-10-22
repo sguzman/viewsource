@@ -1,0 +1,332 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_archive",
+  "method": "Offline bounded lexical and structural inspection of locally supplied ZIP; source never executed; counts may include libraries, comments, and dead code.",
+  "network": {
+    "fetch_syntax": {
+      "files": 30,
+      "occurrences": 186,
+      "argument_shape_counts": {
+        "identifier_or_call": 141,
+        "other_expression": 31,
+        "literal_or_template": 14
+      }
+    },
+    "websocket_construction": {
+      "files": 6,
+      "occurrences": 6
+    },
+    "eventsource_symbol": {
+      "files": 6,
+      "occurrences": 14
+    },
+    "explicit_eventsource_constructor": {
+      "files": 0,
+      "occurrences": 0
+    },
+    "xmlhttprequest_constructor": {
+      "files": 0,
+      "occurrences": 0
+    },
+    "streaming_reader": {
+      "files": 9,
+      "occurrences": 16
+    },
+    "text_decoder_constructor": {
+      "files": 18,
+      "occurrences": 27
+    },
+    "observed_requests": 0,
+    "request_observation_method": "none",
+    "remote_destinations_published": 0
+  },
+  "interaction": {
+    "document": {
+      "buttons": 130,
+      "button_type_button": 130,
+      "forms": 1,
+      "file_inputs": 4,
+      "anchors": 26,
+      "inline_handler_attributes": 0,
+      "role_dialog": 1,
+      "role_textbox": 1,
+      "role_button": 16,
+      "role_status": 7,
+      "aria_busy": 13,
+      "aria_pressed": 5,
+      "aria_haspopup": 61,
+      "aria_expanded": 93,
+      "aria_live": 5,
+      "data_state": 146
+    },
+    "javascript": {
+      "add_event_listener": {
+        "files": 69,
+        "occurrences": 987
+      },
+      "remove_event_listener": {
+        "files": 64,
+        "occurrences": 815
+      },
+      "mutation_observer_constructor": {
+        "files": 29,
+        "occurrences": 65
+      },
+      "resize_observer_constructor": {
+        "files": 40,
+        "occurrences": 90
+      },
+      "intersection_observer_constructor": {
+        "files": 25,
+        "occurrences": 52
+      },
+      "request_animation_frame": {
+        "files": 40,
+        "occurrences": 144
+      }
+    },
+    "note": "This is a source-level capability and handler-pattern inventory, not a verified DOM-to-handler ownership graph or behavior test."
+  },
+  "persistence": {
+    "local_storage_read": {
+      "files": 16,
+      "occurrences": 55
+    },
+    "local_storage_write": {
+      "files": 12,
+      "occurrences": 34
+    },
+    "local_storage_remove": {
+      "files": 12,
+      "occurrences": 37
+    },
+    "session_storage_read": {
+      "files": 16,
+      "occurrences": 40
+    },
+    "session_storage_write": {
+      "files": 16,
+      "occurrences": 46
+    },
+    "indexeddb_open": {
+      "files": 2,
+      "occurrences": 4
+    },
+    "broadcast_channel_constructor": {
+      "files": 7,
+      "occurrences": 10
+    },
+    "webcrypto_subtle": {
+      "files": 7,
+      "occurrences": 15
+    },
+    "storage_keys_published": 0,
+    "actual_storage_io_observed": false
+  },
+  "media": {
+    "rtc_peer_connection_constructor": {
+      "files": 1,
+      "occurrences": 1
+    },
+    "user_media_request": {
+      "files": 2,
+      "occurrences": 3
+    },
+    "display_media_request": {
+      "files": 1,
+      "occurrences": 1
+    },
+    "audio_context_constructor": {
+      "files": 1,
+      "occurrences": 1
+    },
+    "no_live_microphone_camera_or_screenshare_test": true
+  },
+  "workers": {
+    "worker_constructor": {
+      "files": 8,
+      "occurrences": 8
+    },
+    "service_worker_register": {
+      "files": 1,
+      "occurrences": 1
+    },
+    "wasm_instantiate_literal_form": {
+      "files": 0,
+      "occurrences": 0
+    },
+    "dynamic_import": {
+      "files": 10,
+      "occurrences": 23
+    },
+    "post_message": {
+      "files": 23,
+      "occurrences": 80
+    },
+    "note": "A zero for one WebAssembly call spelling is not proof that no WASM exists or is used."
+  },
+  "styling": {
+    "stylesheet_files": 17,
+    "selectors": {
+      "has": {
+        "files": 9,
+        "occurrences": 570
+      },
+      "where": {
+        "files": 12,
+        "occurrences": 4081
+      },
+      "focus_visible": {
+        "files": 10,
+        "occurrences": 493
+      }
+    },
+    "layout": {
+      "display_grid": {
+        "files": 9,
+        "occurrences": 88
+      },
+      "display_flex": {
+        "files": 14,
+        "occurrences": 334
+      },
+      "logical_padding_inline": {
+        "files": 9,
+        "occurrences": 306
+      },
+      "logical_inset_inline": {
+        "files": 11,
+        "occurrences": 137
+      }
+    },
+    "dynamics": {
+      "container_queries": 504,
+      "css_layers": {
+        "files": 17,
+        "occurrences": 33
+      },
+      "view_transition_signatures": {
+        "files": 5,
+        "occurrences": 103
+      },
+      "animation_declarations": {
+        "files": 10,
+        "occurrences": 287
+      },
+      "css_anchor_calls": {
+        "files": 3,
+        "occurrences": 12
+      }
+    },
+    "math_colors": {
+      "calc_calls": {
+        "files": 14,
+        "occurrences": 4783
+      },
+      "color_mix_calls": {
+        "files": 11,
+        "occurrences": 1696
+      }
+    },
+    "reduced_motion_mentions": 168,
+    "note": "Textual occurrences are not distinct selectors, unique properties, rendered elements, or proven browser support."
+  },
+  "graphics": {
+    "captured_image_files": 12,
+    "svg_files": 8,
+    "png_files": 3,
+    "webp_files": 1,
+    "icon_sprite": {
+      "resource_id": "R-IMG-004",
+      "symbol_definitions": 911,
+      "path_elements": 1349,
+      "source_redistributed": false
+    },
+    "png_dimensions": [
+      {
+        "width": 48,
+        "height": 48
+      },
+      {
+        "width": 180,
+        "height": 180
+      },
+      {
+        "width": 120,
+        "height": 120
+      }
+    ],
+    "webp_dimensions": {
+      "width": 512,
+      "height": 512
+    },
+    "svg_structure": {
+      "files_with_viewbox": 8,
+      "files_with_gradients": 4,
+      "files_with_filters": 3
+    },
+    "roles": "One clear icon-sprite structure, small application icon-size rasters, one square WebP and several small vectors; exact on-screen placement of individual assets not established.",
+    "file_bytes_published": false
+  },
+  "auxiliary_html": {
+    "captured_documents": 1,
+    "html_elements": 1,
+    "head_elements": 1,
+    "body_elements": 1,
+    "script_elements": 3,
+    "script_src_references": 1,
+    "meta_elements": 3,
+    "note": "An embedded resource, not an independently observed route or proof of iframe execution."
+  },
+  "security": {
+    "markup": {
+      "script_nonce_attributes": 18,
+      "link_nonce_attributes": 74,
+      "sandboxed_iframes": 1,
+      "iframe_referrerpolicy_attributes": 1,
+      "meta_csp_policy_count": 0
+    },
+    "static_webcrypto_references": {
+      "files": 7,
+      "occurrences": 15
+    },
+    "tls_certificate_audit_performed": false,
+    "http_response_header_audit_performed": false,
+    "session_values_published": false,
+    "note": "Nonce presence, an iframe sandbox and cryptographic API symbols do not prove effective CSP, permission enforcement, transport security or an exploitable vulnerability."
+  },
+  "evolution": {
+    "previous": "v0001",
+    "current": "v0002",
+    "dom_counts": {
+      "buttons": {
+        "previous": 102,
+        "current": 130
+      },
+      "inline_svgs": {
+        "previous": 131,
+        "current": 175
+      },
+      "anchors": {
+        "previous": 15,
+        "current": 26
+      }
+    },
+    "source_scope_difference": {
+      "previous": "single saved HTML page; missing external bundles",
+      "current": "saved HTML and resource ZIP with 144 JS, 17 CSS and 60 fonts",
+      "verified_site_product_changes": 0
+    },
+    "caveat": "Different session/page state and capture methods prevent attribution of numeric differences to a product release."
+  },
+  "limitations": [
+    "No scripts executed, no live interaction or accessibility test, no real network traffic or response headers.",
+    "Static matching cannot establish successful API calls, endpoint contracts, server-side implementation, or user-facing feature availability.",
+    "Minified and framework-vendored code can cause duplicate references and misleading callsite ownership.",
+    "DOM event listeners in compiled bundles cannot be uniquely matched to captured button elements without qualified runtime or AST-level call path evidence.",
+    "Raw capture bytes, personal state, filenames, URLs, identifiers, and externally owned assets are not republished.",
+    "No numeric performance or accessibility compliance conclusions follow from a static saved archive."
+  ]
+}

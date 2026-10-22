@@ -12,6 +12,18 @@
       "resource_inventory": "specimens/chatgpt-com/v0001/resource_inventory.json",
       "provenance": "Original, sanitized research performed on an individually supplied saved-page snapshot; no source capture or third-party site assets republished.",
       "license": "MIT (project-authored analysis only)"
+    },
+    {
+      "id": "chatgpt-com-v0002",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "title": "ChatGPT ZIP source architecture study",
+      "description": "Evidence-bounded structural and source analysis of an offline ZIP containing 144 JS resources, 17 CSS files, 60 fonts, 12 images and a supplemental document.",
+      "path": "specimens/chatgpt-com/v0002/analysis.md",
+      "record": "specimens/chatgpt-com/v0002/record.json",
+      "resource_inventory": "specimens/chatgpt-com/v0002/resource_inventory.json",
+      "provenance": "Original, sanitized technical research derived from a separately supplied website capture. Captured website files, private state, raw URLs and third-party code were excluded.",
+      "license": "MIT (original project-authored research only)"
     }
   ]
 }

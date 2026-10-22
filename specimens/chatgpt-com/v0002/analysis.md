@@ -112,3 +112,49 @@ The 60 fonts were inspected using internal name tables, not guessed from their e
 ### Evidence boundaries and work queue
 
 The linked-source, static storage, responsive taxonomy, and font-identity research tasks have been closed **within the available capture scope**. Other tasks remain queued for qualified control-flow interpretation, DOM event-to-bundle linkage, media behavior, image roles, accessibility behavior, and final review. This dossier is still in **researching** status. The source_analysis file contains aggregates and ordinal links only; it is not a raw source extraction.
+
+## Final source-limited deep analysis
+
+The following results were obtained by **reading the provided ZIP offline**, without running scripts, replaying the page, making network requests, collecting browser telemetry or publishing untrusted site source. Cross-reference [source_analysis.json](source_analysis.json) for the candidate asset-text graph and CSS/font taxonomy, and [deep_analysis.json](deep_analysis.json) for the new aggregate inspection.
+
+### Remote invocation syntax and streaming (E2-026)
+
+The 144 captured JavaScript files contain 186 text-pattern matches to a fetch call in 30 bundles. At the start of their first argument, 141 are identifier-or-call expressions, 31 other expressions, and fourteen literal or template starts. This is a **lexical categorization**, not a complete callsite AST, request destination list, or live trace. Six explicit WebSocket construction patterns were found. EventSource is mentioned by the available source, but this scan found no literal \`new EventSource(...)\` constructor expression. Sixteen \`getReader()\` and 27 \`new TextDecoder()\` patterns show code associated with streaming and decoding. None establishes which requests actually ran or succeeded.
+
+### Event and component machinery (E2-027)
+
+The captured HTML contains 130 buttons, all explicitly \`type="button"\`, one form with four file-type inputs, and no inline \`on*\` event-handler attributes. JavaScript references \`addEventListener\` in 69 bundles (987 call patterns) and \`removeEventListener\` in 64 bundles (815 patterns). Constructors for mutation, resize and intersection observers occur 65, 90 and 52 times respectively; animation-frame scheduling appears in 40 bundles, totaling 144 patterns. This documents a substantial event/observer machinery. A compiled listener factory may be used by many components, and **which listener belongs to which DOM control cannot be proven from this capture**.
+
+### Client state, persistence and coordination (E2-028)
+
+Explicit browser storage patterns comprise 55 localStorage reads, 34 writes and 37 removals; 40 sessionStorage reads and 46 writes; four IndexedDB open calls and ten BroadcastChannel constructors. Twenty-three bundles also contain postMessage call patterns, and seven contain Web Crypto \`crypto.subtle\` member access. These are potential state-transport mechanisms present in captured code; no keys, values, cross-tab messages or authorization materials are included.
+
+### Media behavior clues (E2-029)
+
+Saved JavaScript contains one \`RTCPeerConnection\` construction pattern, three \`getUserMedia\` calls, one \`getDisplayMedia\` call, and one \`AudioContext\` construction pattern. These support a **source-code pathway classification** involving real-time media, microphone/camera requests, screen capture, and audio processing; they do not establish that the saved session used any of them. Permission outcomes, media routing and successful connections remain unknown.
+
+### Styling, selectors and accessibility-sensitive UI (E2-030, E2-033)
+
+The captured CSS includes 570 \`:has()\` selector occurrences, 4,081 \`:where()\` occurrences, 493 \`:focus-visible\` occurrences, 88 grid-display and 334 flex-display declarations, 504 container rules, 33 \`@layer\` occurrences, and 103 view-transition-related text matches. A large number of generated declarations and shared utilities can multiply occurrence counts. Its static focus and motion rules **do not prove accessible interaction**.
+
+In the DOM, accessible-state markup includes 61 \`aria-haspopup\`, 13 \`aria-busy\`, five \`aria-live\`, a dialog role and a textbox role, beyond the previously counted labels, expanded attributes and tabindex markers. Focus movement, status announcements and assistive-technology behavior require execution and were not tested.
+
+### Visual resources and supplemental document (E2-031, E2-032)
+
+The asset set includes a large SVG sprite (ordinal \`R-IMG-004\`) with **911 reusable symbol definitions** and 1,349 path elements, alongside smaller SVGs. Three PNG dimensions are 48×48, 180×180 and 120×120; a WebP is 512×512. The icon-sprite structure and icon-size raster dimensions are grounded observations; a screenshot-to-asset placement map is not. All binary graphics and vector source remain outside Git.
+
+The separate embedded HTML resource is a lightweight document containing three script tags and one linked script reference, not an independently visited route. Its runtime relationship to the main page was not demonstrated.
+
+### Security and capture boundaries (E2-034)
+
+The saved DOM has nonce attributes on 18 script and 74 link elements, a sandboxed iframe, and an iframe referrer-policy attribute. JavaScript also contains Web Crypto API syntax. Nonces in a saved HTML file do not prove effective CSP header enforcement. No HTTP response-header, authentication, transport, cryptographic implementation, or exploit validation occurred, and none should be inferred.
+
+### Comparison to v0001 (E2-035)
+
+The original HTML capture had 102 buttons, 131 SVG elements and fifteen anchors. v0002 has 130 buttons, 175 SVGs and 26 anchors. The new ZIP contains an extensive bundle corpus absent from the initial standalone HTML. These are **differences in observations and capture completeness**, not verified changes in ChatGPT releases. No stable asset identity or matched route/session state was established between the captures.
+
+### Completion and explicitly unobservable tasks (E2-036)
+
+All 34 v0002 research tasks now have terminal dispositions: 32 complete within available **static** evidence, two not observable. The unobservable items are dynamic accessibility behavior and reliable mapping of saved DOM controls to runtime event-handler ownership. They are not replaced with invented execution traces. Remaining unknowns about live network calls, remote services, server internals, feature flags, or device permissions are documented as intrinsic capture limitations.
+
+**Reviewed** means the supplied ZIP has been exhausted for this evidence-bounded research pass. It does not mean the complete ChatGPT website, runtime, or private infrastructure has been reconstructed.

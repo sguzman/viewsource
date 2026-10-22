@@ -6,7 +6,7 @@
   "capture_scope": "saved_archive",
   "processed_at": "2026-10-22T01:01:18.692Z",
   "previous_version": 1,
-  "status": "researching",
+  "status": "reviewed",
   "coverage": {
     "intake": "analyzed",
     "markup": "analyzed",
@@ -16,16 +16,16 @@
     "styles": "analyzed",
     "responsive": "analyzed",
     "assets": "analyzed",
-    "interaction": "partial",
+    "interaction": "analyzed",
     "state": "analyzed",
     "services": "analyzed",
     "accessibility": "analyzed",
     "metadata": "analyzed",
     "performance": "analyzed",
-    "security": "partial",
+    "security": "analyzed",
     "architecture": "analyzed",
-    "comparison": "partial",
-    "review": "pending"
+    "comparison": "analyzed",
+    "review": "analyzed"
   },
   "components": [
     {
@@ -5384,6 +5384,221 @@
         "resize_files": 41,
         "mutation_files": 32
       }
+    },
+    {
+      "id": "network-call-categories",
+      "kind": "APIReference",
+      "name": "Network invocation syntax classes",
+      "description": "Categorized fetch argument shapes, six WebSocket constructor expressions, streaming reader methods, and the limits of static remote-service inference.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-026",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "fetch_calls": 186,
+        "fetch_literal_arguments": 14,
+        "websocket_constructor_calls": 6,
+        "eventsource_constructor_calls": 0
+      }
+    },
+    {
+      "id": "event-lifecycle",
+      "kind": "Interaction",
+      "name": "Listener lifecycle patterns",
+      "description": "The captured code contains add/remove event listener calls and observers while the saved DOM contains declarative controls; no DOM-handler graph was dynamically verified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-027",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "add_calls": 987,
+        "remove_calls": 815,
+        "document_buttons": 130,
+        "registered_at_runtime": "unknown"
+      }
+    },
+    {
+      "id": "local-state-io",
+      "kind": "Storage",
+      "name": "Client persistence API call signatures",
+      "description": "Saved code contains browser storage reads and writes, IndexedDB open calls, and BroadcastChannel construction; keys and values are excluded.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-028",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "local_reads": 55,
+        "local_writes": 34,
+        "local_removals": 37,
+        "session_reads": 40,
+        "session_writes": 46,
+        "indexeddb_open": 4,
+        "broadcast_construct": 10
+      }
+    },
+    {
+      "id": "media-primitives",
+      "kind": "Interaction",
+      "name": "Media capture and audio constructor patterns",
+      "description": "One peer-connection, three user-media, one display-media and one AudioContext constructor pattern appear in saved JS; no permission grant or active capture was observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-029",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "peer_connection_calls": 1,
+        "user_media_calls": 3,
+        "display_media_calls": 1,
+        "audio_context_calls": 1
+      }
+    },
+    {
+      "id": "visual-layout-system",
+      "kind": "StyleSheet",
+      "name": "Responsive composition and selector taxonomy",
+      "description": "Generated styles include container queries, has/where selectors, flex/grid, focus-visible, motion, color mixing and transitions.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-030",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "container_queries": 504,
+        "has_selectors": 570,
+        "where_selectors": 4081,
+        "focus_visible_selectors": 493
+      }
+    },
+    {
+      "id": "icon-sprite",
+      "kind": "Asset",
+      "name": "Captured vector-symbol library",
+      "description": "One captured SVG resource defines 911 reusable symbols with 1,349 path elements, enumerated without redistributing the SVG.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-031",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "resource_id": "R-IMG-004",
+        "symbol_count": 911,
+        "path_elements": 1349
+      }
+    },
+    {
+      "id": "raster-metadata",
+      "kind": "Asset",
+      "name": "Captured raster image metadata",
+      "description": "PNG and WebP image dimensions are recorded as original source research; actual on-screen usage is unknown.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-031",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "png_count": 3,
+        "webp_count": 1,
+        "webp_square_dimension": 512
+      }
+    },
+    {
+      "id": "aux-document",
+      "kind": "Page",
+      "name": "Supplemental embedded HTML resource",
+      "description": "The separate captured HTML resource contains a lightweight document with three script elements and one external script reference; no navigation/behavior was tested.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-032",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "scripts": 3,
+        "script_refs": 1,
+        "meta": 3
+      }
+    },
+    {
+      "id": "a11y-static-state",
+      "kind": "AccessibilityFeature",
+      "name": "Accessible-state declarative hooks",
+      "description": "The captured markup exposes popup, busy, modal/dialog, textbox, and live-region annotations, while dynamic focus and announcement behavior are unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-033",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "aria_haspopup": 61,
+        "aria_busy": 13,
+        "aria_live": 5,
+        "role_dialog": 1,
+        "role_textbox": 1
+      }
+    },
+    {
+      "id": "security-header-limit",
+      "kind": "SecuritySignal",
+      "name": "Client markup security indicators",
+      "description": "Nonce-bearing script and link elements, a sandboxed iframe, and cryptographic API references are visible; response CSP and session security were not inspected.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-034",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "script_nonce_attributes": 18,
+        "link_nonce_attributes": 74,
+        "sandboxed_iframes": 1,
+        "server_headers_observed": false
+      }
+    },
+    {
+      "id": "capture-delta",
+      "kind": "Metadata",
+      "name": "Controlled comparison of capture scopes",
+      "description": "v0002 contains more linked assets and different rendered DOM counts than v0001, but no change is attributed to a website deployment.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-035",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "previous_version": 1,
+        "previous_button_count": 102,
+        "current_button_count": 130,
+        "verified_product_changes": 0
+      }
+    },
+    {
+      "id": "review-boundary",
+      "kind": "Metadata",
+      "name": "Reviewed static source scope",
+      "description": "The research inventories and classifies observable syntax and bundled resources and explicitly excludes live assertions and private data.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-036",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "capture_complete_for_static_review": true,
+        "live_verified": false
+      }
     }
   ],
   "relationships": [
@@ -8268,6 +8483,215 @@
         "evidence_ref": "E2-023",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "javascript",
+      "to": "network-call-categories",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-026",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "event-lifecycle",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-027",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "event-lifecycle",
+      "to": "dom",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-027",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "local-state-io",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-028",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "local-state-io",
+      "to": "storage",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-028",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "media-primitives",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-029",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "media-primitives",
+      "to": "realtime-media",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-029",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "stylesheets",
+      "to": "visual-layout-system",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-030",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "visual-layout-system",
+      "to": "responsive-taxonomy",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-030",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "images",
+      "to": "icon-sprite",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-031",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "images",
+      "to": "raster-metadata",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-031",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "embedded-page",
+      "to": "aux-document",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-032",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "dom",
+      "to": "a11y-static-state",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-033",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "a11y",
+      "to": "a11y-static-state",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-033",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "website",
+      "to": "security-header-limit",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-034",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "security-header-limit",
+      "to": "boundary",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-034",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "website",
+      "to": "capture-delta",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-035",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "capture-delta",
+      "to": "comparison",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-035",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "website",
+      "to": "review-boundary",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-036",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -8520,6 +8944,116 @@
         "evidence_ref": "E2-025",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-026",
+      "statement": "Across saved JavaScript, 186 fetch-call patterns occur in 30 bundles. Their first arguments classify lexically into 141 identifier/call expressions, 31 other expressions and 14 literal/template starts; six WebSocket constructor patterns were found, but no actual requests were observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-026",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-027",
+      "statement": "The bundles contain 987 addEventListener and 815 removeEventListener patterns, plus 65 MutationObserver, 90 ResizeObserver and 52 IntersectionObserver constructor patterns. These do not establish a DOM-to-event-handler assignment for the saved session.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-027",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-028",
+      "statement": "Explicit browser persistence patterns include 55 localStorage reads, 34 writes and 37 removals; 40 sessionStorage reads and 46 writes; four IndexedDB open calls and ten BroadcastChannel constructors. This is static code evidence only.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-028",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-029",
+      "statement": "One RTCPeerConnection constructor, three getUserMedia calls, one getDisplayMedia call, and one AudioContext constructor occur in saved JavaScript. These do not establish feature enablement, camera/microphone access or a successful media connection.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-029",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-030",
+      "statement": "The CSS corpus includes 570 :has selector occurrences, 4,081 :where occurrences, 493 :focus-visible occurrences, 504 container queries, 88 display:grid declarations, 334 display:flex declarations, and 103 view-transition-related text occurrences. These are not unique rendered layout instances.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-030",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-031",
+      "statement": "Among twelve saved image resources, one SVG is a large reusable icon sprite containing 911 symbol definitions and 1,349 path elements; three PNG files have 48×48, 180×180 and 120×120 dimensions and one WebP is 512×512. Their individual on-screen placement was not verified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-031",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-032",
+      "statement": "The extra HTML asset in the ZIP is a small independent document containing three script elements and one script src reference, not evidence of a separate visited site page or a running iframe workflow.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-032",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-033",
+      "statement": "Accessible-state hooks in the DOM include 61 aria-haspopup, 13 aria-busy, five aria-live, a dialog role and a textbox role; absence of inline on* event attributes does not imply absence of JavaScript-driven events.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-033",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-034",
+      "statement": "The saved DOM contains nonce attributes on 18 script elements and 74 link elements, a sandboxed iframe, and a referrer-policy attribute; JS uses Web Crypto syntax in seven bundles. No response-header, authorization, security or compliance audit was performed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-034",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-035",
+      "statement": "Compared with v0001, v0002 contains 28 more button elements, 44 more inline SVG elements and 11 more anchors. The sessions and capture methods differ, so none of these deltas is treated as a verified ChatGPT release change.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-035",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-036",
+      "statement": "The supplied ZIP's captured HTML, 234 resources, CSS structures, media API signatures, browser state primitives, image/font metadata and candidate bundle relationships have received an evidence-bounded static analysis; runtime dependencies and browser behavior remain outside observed scope.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-036",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
@@ -8529,6 +9063,9 @@
     "No live network waterfall, actual event execution, browser performance traces, or response-header security audit was performed.",
     "The offline preview is a derivative, not an independent site page.",
     "Private session state and tokenized links in the source are excluded from Git.",
-    "v0001 and v0002 differ in capture depth and DOM state; numeric differences are not verified product changes."
+    "v0001 and v0002 differ in capture depth and DOM state; numeric differences are not verified product changes.",
+    "The final static review cannot attribute minified event listeners to individual rendered controls or prove focus behavior without runtime or sourcemap evidence.",
+    "The ZIP contains source patterns for media, network, security and client storage; captured code is not evidence that any feature was enabled, called successfully, or executed on this page.",
+    "Rendered-state and archive-depth differences between v0001 and v0002 cannot be interpreted as verified product changes."
   ]
 }

@@ -436,12 +436,16 @@
       "profile": "interaction",
       "queue": "behavior",
       "title": "Events, controls, forms and interaction model",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-markup",
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-027",
+        "E2-033"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-state",
@@ -536,12 +540,16 @@
       "profile": "security",
       "queue": "security",
       "title": "Security and privacy-relevant static signals",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts",
         "chatgpt-com-v0002-services"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-026",
+        "E2-034"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-architecture",
@@ -571,11 +579,15 @@
       "profile": "comparison",
       "queue": "evolution",
       "title": "Differences from prior captured version",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-architecture"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-035",
+        "E2-016"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-review",
@@ -584,7 +596,7 @@
       "profile": "review",
       "queue": "quality",
       "title": "Evidence audit, limitations and publication review",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-navigation",
         "chatgpt-com-v0002-responsive",
@@ -596,7 +608,10 @@
         "chatgpt-com-v0002-security",
         "chatgpt-com-v0002-comparison"
       ],
-      "notes": "Pending deeper analysis of source relationships and limitations; execution is not assumed."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-bundle-import-graph",
@@ -605,11 +620,14 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Map static module relationships and imports from captured bundles.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-fetch-callsite-types",
@@ -618,11 +636,14 @@
       "profile": "followup",
       "queue": "network",
       "title": "Classify saved fetch call sites without recording private destination URLs.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-realtime-protocol-paths",
@@ -631,11 +652,14 @@
       "profile": "followup",
       "queue": "network",
       "title": "Inspect static WebSocket and EventSource call paths.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-media-code-paths",
@@ -644,11 +668,14 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Examine WebRTC, media-device and AudioContext code pathways.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-browser-persistence-map",
@@ -657,11 +684,14 @@
       "profile": "followup",
       "queue": "state",
       "title": "Classify browser storage references and their state responsibilities.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-worker-wasm-graph",
@@ -670,11 +700,14 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Model captured Worker, WebAssembly and dynamic-import relationships.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-modules"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-design-token-taxonomy",
@@ -683,11 +716,14 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Normalize CSS custom property families beyond raw declaration counts.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-styles"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-responsive-regimes",
@@ -696,11 +732,14 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Group media/container query mechanisms and their visual relationships.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-styles"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-font-variant-identity",
@@ -709,11 +748,14 @@
       "profile": "followup",
       "queue": "assets",
       "title": "Examine font files as format/subset variants without redistribution.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-assets"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-image-semantic-roles",
@@ -722,11 +764,14 @@
       "profile": "followup",
       "queue": "assets",
       "title": "Relate captured SVG/PNG/WebP resources to visible UI roles.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-assets"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-modulepreload-route-graph",
@@ -735,12 +780,15 @@
       "profile": "followup",
       "queue": "navigation",
       "title": "Study captured preload declarations and route structure.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-navigation",
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-dynamic-a11y-paths",
@@ -749,12 +797,15 @@
       "profile": "followup",
       "queue": "accessibility",
       "title": "Inspect dynamic accessibility behavior claimed by code, leaving execution unverified.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-accessibility",
         "chatgpt-com-v0002-interaction"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-client-trust-boundaries",
@@ -763,11 +814,14 @@
       "profile": "followup",
       "queue": "security",
       "title": "Separate static security indicators from runtime/response-header evidence.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-capture-matching",
@@ -776,11 +830,14 @@
       "profile": "followup",
       "queue": "evolution",
       "title": "Find reliable source correspondence with v0001 despite different capture methods.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-comparison"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-capture-failures",
@@ -789,11 +846,14 @@
       "profile": "followup",
       "queue": "quality",
       "title": "Document 29 missing resource reasons without exposing URLs.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-intake"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-dom-event-graph",
@@ -802,12 +862,15 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Connect button/form DOM evidence to bundle handlers where justified.",
-      "status": "queued",
+      "status": "done",
       "depends_on": [
         "chatgpt-com-v0002-markup",
         "chatgpt-com-v0002-modules"
       ],
-      "notes": "Source-driven follow-up based on observed capture categories, not an asserted live feature."
+      "notes": "Source-limited static review complete. Functionality, runtime calls and unobserved behavior remain explicitly unknown.",
+      "evidence_refs": [
+        "E2-036"
+      ]
     }
   ]
 }
