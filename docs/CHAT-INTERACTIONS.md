@@ -201,3 +201,7 @@ over the top-level array and bounded by the largest individual record
 (current safety cap: 128 MiB of characters). Malformed or duplicate-key
 records still fail closed. This does not parse or infer undocumented
 message ancestry in a flat response.
+
+## Newly queued source-first continuation
+
+The original captured JavaScript is accessible for further analysis. The specimen's initial audit and its 91 terminal tasks remain in the historical record, while 33 new static research tasks are now queued in `queues/tasks.json`. The current capture has returned to `researching` because function call chains, domain shapes, UI handlers, streaming, retries, and persistence have not yet been fully traced. The optional runtime research queue does not block this source-first work.
