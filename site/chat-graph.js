@@ -111,6 +111,38 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const transport=record.visuals?.chat_transport_trace;
+    if(transport){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Completion transport: source-backed lifecycle"));
+      block.append(element("p","graph-caption",
+        "From saved JavaScript "+transport.source_ref+
+        ". Static client code, not an observed server session."));
+      const methods=element("div","chat-transport-grid");
+      transport.methods.forEach(item=>{
+        const row=element("details","chat-transport-method");
+        row.append(element("summary","",item.method),
+          element("p","",item.behavior),
+          element("p","graph-caption",item.verification_boundary));
+        methods.append(row);
+      });
+      block.append(methods);
+      const flow=element("details","chat-transport-edges");
+      flow.append(element("summary","","Reviewed client-side transport relationships"));
+      const rows=element("ul","");
+      transport.static_edges.forEach(item=>{
+        rows.append(element("li","",item.from+" → "+item.to+
+          " ("+item.kind.replaceAll("_"," ")+")"));
+      });
+      flow.append(rows,element("p","graph-caption",
+        "Conditional pathways are alternatives visible in the source; no server outcome is inferred."));
+      block.append(flow);
+      const ws=element("details","chat-transport-websocket");
+      ws.append(element("summary","","WebSocket stream-item validation"),
+        element("p","",transport.websocket_item_behavior));
+      block.append(ws);
+      section.append(block);
+    }
     const implTrace=record.visuals?.chat_static_impl_trace;
     if(implTrace){
       const block=element("div","chat-subsection");
