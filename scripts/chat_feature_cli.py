@@ -31,6 +31,15 @@ class FeatureGraphModel:
             raise FeatureGraphError("Repeated event key")
         if len(self.transitions) != len(graph["transitions"]):
             raise FeatureGraphError("Repeated transition key")
+        self.entities = {e["id"]: e for e in graph["entities"]}
+        self.domain_relations = graph.get("domain_relations", [])
+        for rel in self.domain_relations:
+            if rel["from"] not in self.entities or rel["to"] not in self.entities:
+                raise FeatureGraphError("Unknown domain entity in relation")
+            if rel["evidence_status"] not in {"hypothesis", "observed_live"}:
+                raise FeatureGraphError("Unrecognized domain relation evidence")
+            if rel["evidence_status"] == "hypothesis" and rel["verified_evidence_refs"]:
+                raise FeatureGraphError("Hypothetical relationship cannot carry verified evidence")
         for machine in graph["machines"]:
             allowed = {s["id"] for s in machine["states"]}
             if machine["initial_state"] not in allowed or len(allowed) != len(machine["states"]):
@@ -80,6 +89,19 @@ class FeatureGraphModel:
             raise FeatureGraphError("Transition has no independent live verification")
         return transition
 
+    def to_domain_dot(self) -> str:
+        """Return an illustrative entity graph, never an executable site map."""
+        lines = ["digraph domain {", '  label="Hypothetical chat entity relationships";',
+                 "  rankdir=LR;"]
+        for entity in self.graph["entities"]:
+            lines.append("  " + json.dumps(entity["id"]) + " [shape=box];")
+        for relation in self.domain_relations:
+            style = "dashed" if relation["evidence_status"] == "hypothesis" else "solid"
+            lines.append("  " + json.dumps(relation["from"]) + " -> " +
+                         json.dumps(relation["to"]) + " [style=" + style +
+                         ",label=" + json.dumps(relation["predicate"]) + "];")
+        return "\\n".join(lines + ["}"])
+
     def to_dot(self, machine: str) -> str:
         if machine not in self.machines:
             raise FeatureGraphError("Unknown machine")
@@ -100,6 +122,7 @@ def main() -> int:
     parser = argparse.ArgumentParser(description="Inspect non-executable feature transition evidence")
     parser.add_argument("--graph", type=Path, default=DEFAULT_GRAPH)
     parser.add_argument("--machine", default="response")
+    parser.add_argument("--domain", action="store_true",help="Inspect entity relations instead of state machines")
     parser.add_argument("--state", default=None)
     parser.add_argument("--event", default=None)
     parser.add_argument("--format", choices=("json", "dot"), default="json")
@@ -108,7 +131,17 @@ def main() -> int:
     args = parser.parse_args()
     try:
         model = FeatureGraphModel.from_file(args.graph)
-        if args.resolve_verified:
+        if args.domain and args.resolve_verified:
+            raise FeatureGraphError("Domain research cannot be executed")
+        if args.domain:
+            output = model.to_domain_dot() if args.format == "dot" else {
+                "feature_id": model.graph["feature_id"],
+                "source_scope": model.graph["source_scope"],
+                "execution_supported": False,
+                "entities": model.graph["entities"],
+                "relations": model.domain_relations
+            }
+        elif args.resolve_verified:
             if args.state is None or args.event is None:
                 raise FeatureGraphError("A source state and event are required")
             output: Any = model.resolve_verified(args.machine, args.state, args.event)
