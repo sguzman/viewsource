@@ -13,11 +13,13 @@
   "patterns": {
     "selected_ancestry_walk": 11,
     "branch_transport_call": 1,
-    "mapping_ancestry_reconciliation": 1
+    "mapping_ancestry_reconciliation": 1,
+    "generation_parent_selection": 1,
+    "regeneration_request_assembly": 1
   },
   "matched_source_bundles": 4,
-  "match_count": 13,
-  "matched_functions": 12,
+  "match_count": 15,
+  "matched_functions": 14,
   "matches": [
     {
       "source_ref": "R-JS-013",
@@ -101,6 +103,22 @@
     },
     {
       "source_ref": "R-JS-018",
+      "function_ordinal": 9032,
+      "parent_ordinal": 9012,
+      "pattern": "generation_parent_selection",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 9110,
+      "parent_ordinal": 9012,
+      "pattern": "regeneration_request_assembly",
+      "evidence_status": "observed_static_syntax",
+      "domain_ownership_verified": false
+    },
+    {
+      "source_ref": "R-JS-018",
       "function_ordinal": 9351,
       "parent_ordinal": 9347,
       "pattern": "selected_ancestry_walk",
@@ -164,6 +182,22 @@
       "evidence_class": "observed_static",
       "description": "An asynchronous client function invokes a branch method with the conversation identity and selected message identity; the call returns a new thread identity and conversation object that the client processes further.",
       "limits": "The method call and result handling are present statically, but endpoint names, wire protocol, actual server behavior and resulting persistence remain outside this proof."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 9032,
+      "classification": "generation_parent_selection",
+      "evidence_class": "observed_static",
+      "description": "A generation-dispatch routine selects a parent message using continuation, explicit parent, regeneration-from-message and existing child-branch information before preparing a new generation request.",
+      "limits": "The routine's static fallback order is visible, but no particular branch was observed being chosen during a live request."
+    },
+    {
+      "source_ref": "R-JS-018",
+      "function_ordinal": 9110,
+      "classification": "regeneration_request_assembly",
+      "evidence_class": "observed_static",
+      "description": "A client routine assembles the regeneration inputs, including the targeted message identity, a regeneration-options object and an explicit regeneration-from-message field, before dispatching the work.",
+      "limits": "The source supports request assembly and delegation, not a verified transport payload or actual server outcome."
     }
   ],
   "open_static_questions": [
