@@ -101,6 +101,26 @@ class ConversationGraph:
             "selected_path": list(self.select(self.selected_leaf)) if self.selected_leaf else [],
         }
 
+    def anonymous_topology(self) -> dict:
+        """Return topology only; NEVER include caller-supplied node/chat keys.
+
+        Ordinals follow insertion order. They provide structural comparison
+        within one export, not stable site identities or cross-run correlation.
+        """
+        names = {node.local_key: f"n{i:04d}"
+                 for i, node in enumerate(self.nodes, start=1)}
+        path = self.lineage(self.selected_leaf) if self.selected_leaf else ()
+        return {
+            "node_count": len(names),
+            "nodes": [
+                {"ordinal": names[node.local_key],
+                 "parent": names[node.parent_key] if node.parent_key else None,
+                 "actor": node.actor}
+                for node in self.nodes
+            ],
+            "selected_path": [names[node.local_key] for node in path],
+        }
+
 
 class ConversationForest:
     """Independent conversation graphs plus possible cross-chat fork links.
@@ -144,3 +164,31 @@ class ConversationForest:
             raise GraphError("Duplicate candidate fork")
         self.forks.append(fork)
         return fork
+
+    def anonymous_topology(self) -> dict:
+        """Return anonymized per-conversation trees and hypothetical fork edges.
+
+        Local keys never leave this projection. Fork and node ordinals are
+        temporary presentation positions, not real product identifiers.
+        """
+        chat_ordinals = {key: f"c{i:04d}"
+                         for i, key in enumerate(self.chats, start=1)}
+        node_ordinals = {
+            key: {node.local_key: f"n{i:04d}"
+                  for i, node in enumerate(chat.nodes, start=1)}
+            for key, chat in self.chats.items()
+        }
+        return {
+            "conversation_count": len(self.chats),
+            "chats": [
+                {"ordinal": chat_ordinals[key],
+                 **chat.anonymous_topology()}
+                for key, chat in self.chats.items()
+            ],
+            "candidate_forks": [
+                {"source_chat": chat_ordinals[edge.source_chat_key],
+                 "source_node": node_ordinals[edge.source_chat_key][edge.source_message_key],
+                 "destination_chat": chat_ordinals[edge.destination_chat_key]}
+                for edge in self.forks
+            ]
+        }
