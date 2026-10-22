@@ -254,6 +254,15 @@ def build(out: Path) -> dict:
                         {"from": row["from"],"to": row["to"],"kind": row["kind"]}
                         for row in transport["reviewed_static_edges"]
                     ],
+                    "generation_bridge": {
+                        "caller_function_ordinal":
+                            transport["generation_transport_bridge"]["caller_function_ordinal"],
+                        "callee_method":
+                            transport["generation_transport_bridge"]["callee_method"],
+                        "behavior": transport["generation_transport_bridge"]["client_behavior"],
+                        "callbacks": transport["generation_transport_bridge"]["observed_callback_wiring"],
+                        "recovery_inputs": transport["generation_transport_bridge"]["recovery_state_inputs"],
+                    },
                     "websocket_item_behavior":
                         transport["websocket_stream_item_observation"]["behavior"],
                     "unresolved": transport["still_unresolved"],
