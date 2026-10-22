@@ -199,6 +199,29 @@ def build(out: Path) -> dict:
                     "observed_control_categories": page_map["observed_control_categories"],
                     "note": page_map["note"]
                 }
+            feature_path = ROOT / (base + "/chat-interaction.graph.json")
+            if feature_path.is_file():
+                feature = read(base + "/chat-interaction.graph.json")
+                if feature["specimen_id"] != item["id"] or feature["version"] != number:
+                    raise ValueError("Feature graph identity mismatch")
+                # Export only authored, allowlisted ontology graph fields.
+                graph_public = {
+                    "format_version": 1, "feature_id": feature["feature_id"],
+                    "title": feature["title"], "model_status": feature["model_status"],
+                    "source_scope": feature["source_scope"],
+                    "technology_links": feature["technology_links"],
+                    "surfaces": feature["surfaces"],
+                    "entities": feature["entities"],
+                    "machines": feature["machines"],
+                    "events": feature["events"],
+                    "transitions": feature["transitions"],
+                    "branch_model": feature["branch_model"],
+                    "open_questions": feature["open_questions"],
+                    "limitations": feature["limitations"]
+                }
+                filename = f"{item['id']}-v{number:04d}-{feature['feature_id']}.json"
+                graph_public["json_path"] = "./data/features/" + filename
+                visuals["feature_graph"] = graph_public
             inventory = read(base + "/resource_inventory.json") if (ROOT / (base + "/resource_inventory.json")).is_file() else {}
             totals = inventory.get("totals", {})
             catalog["versions"].append({
@@ -217,7 +240,15 @@ def build(out: Path) -> dict:
             })
     out.mkdir(parents=True, exist_ok=True)
     (out / "data").mkdir(exist_ok=True)
-    for name in ("index.html", "app.css", "explorer.js", "app.js"):
+    (out / "data" / "features").mkdir(exist_ok=True)
+    for version in catalog["versions"]:
+        graph = version.get("visuals", {}).get("feature_graph")
+        if graph:
+            filename = graph["json_path"].split("/")[-1]
+            (out / "data" / "features" / filename).write_text(
+                json.dumps(graph, ensure_ascii=True, indent=2) + "\\n", encoding="utf-8"
+            )
+    for name in ("index.html", "app.css", "explorer.js", "chat-graph.js", "app.js"):
         shutil.copyfile(SITE / name, out / name)
     (out / ".nojekyll").write_text("", encoding="utf-8")
     (out / "data/catalog.json").write_text(

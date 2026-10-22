@@ -21,7 +21,15 @@ try {
   await page.getByRole("heading",{name:"Libraries and frameworks"}).first().waitFor();
   await page.getByRole("button",{name:"Inspect Left sidebar"}).first().click();
   assert.equal(await page.locator(".inspection-card").count(),1);
-  await page.locator(".chapter-link").filter({hasText:"Libraries"}).click();
+  await page.locator(".chapter-link").filter({hasText:"Chat interactions"}).click();
+  await page.getByRole("heading",{name:"Chat state model"}).waitFor();
+  assert.equal(await page.locator(".chat-surface").count(),4);
+  assert.equal(await page.locator(".chat-machine-tabs button").count(),2);
+  await page.getByRole("button",{name:"Draft and response lifecycle"}).click();
+  assert.equal(await page.locator(".chat-state").count(),7);
+  await page.getByRole("button",{name:"Draft editing"}).click();
+  assert.equal(await page.locator(".chat-transition").count(),2);
+    await page.locator(".chapter-link").filter({hasText:"Libraries"}).click();
   await page.getByRole("heading",{name:"Libraries and frameworks"}).first().waitFor();
   assert.equal(await page.locator(".technology-card").count(),11);
   await page.locator(".technology-card").first().locator("summary").click();

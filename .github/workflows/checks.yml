@@ -16,6 +16,7 @@ jobs:
       - name: Check atlas JavaScript syntax
         run: |
           node --check site/explorer.js
+          node --check site/chat-graph.js
           node --check site/app.js
       - name: Build static specimen atlas
         run: python3 scripts/build_site.py --out _site

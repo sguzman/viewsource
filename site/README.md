@@ -39,3 +39,7 @@ New specimens appear in the selector after their public records are added. A ver
 The workflow uses the GitHub Pages Actions deployment source. If GitHub Pages has not been enabled for this repository, the workflow may require selecting **GitHub Actions** as the Pages source in repository Settings → Pages. The repo alone cannot guarantee Pages is enabled.
 
 The default ChatGPT v0002 page opens with the HTML-region diagram and named libraries. These are public, curated summaries, not copied screenshot or site source. Named library inventories are in each specimen version's technology inventory when available.
+
+## Chat interaction feature graph
+
+The ChatGPT v0002 **Chat interactions** section lets visitors inspect two candidate state machines, their events, candidate transitions and explicit verification steps. The standalone generated machine-readable JSON is served under `data/features/`, separate from the aggregated catalogue. It is a proposed programming model, not a verified implementation of live ChatGPT behavior. The source is `specimens/chatgpt-com/v0002/chat-interaction.graph.json`, checked against `schemas/feature-graph.schema.json` and repository integrity rules.

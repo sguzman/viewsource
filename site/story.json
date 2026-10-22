@@ -54,6 +54,11 @@
           "link": "stack"
         },
         {
+          "title": "Chat interactions",
+          "body": "Inspect candidate conversation and response state machines, message-branch questions, and tests needed before implementing against live behavior.",
+          "link": "chat-interaction"
+        },
+        {
           "title": "JavaScript imports",
           "body": "Inspect 236 parsed static import relationships among anonymous captured bundle IDs.",
           "link": "javascript"
@@ -126,6 +131,44 @@
       "flow": [],
       "sections": [],
       "unknown": "A marker in a saved bundle does not prove a feature ran. Strong, likely and indicator labels describe evidence strength, not installation records."
+    },
+    {
+      "id": "chat-interaction",
+      "name": "Chat interactions",
+      "eyebrow": "FEATURE MODEL",
+      "title": "How chat interactions could work",
+      "lead": "The captured page shows a sidebar and composer. The state diagrams below are hypotheses for code and testing, not observed chat behavior.",
+      "tags": [
+        "Chat",
+        "Events",
+        "State",
+        "Branches"
+      ],
+      "evidence": [
+        "E2-045",
+        "E2-054",
+        "E2-065"
+      ],
+      "metrics": [],
+      "flow": [],
+      "sections": [
+        {
+          "title": "What is observable",
+          "body": "The saved HTML has a sidebar, two navigation regions, a composer form and a textbox role. The saved source contains storage and messaging APIs, but no traced action-to-state change.",
+          "link": "page-map"
+        },
+        {
+          "title": "Proposed model",
+          "body": "Conversation selection and response progress have separate states. Each candidate transition names the event, guards, possible effects and a way to verify the relationship.",
+          "link": "state"
+        },
+        {
+          "title": "Branch semantics are unknown",
+          "body": "The static ZIP cannot establish whether edits or regeneration create nodes, replace nodes or select alternative branches.",
+          "link": "evidence"
+        }
+      ],
+      "unknown": "All candidate transitions remain unverified. No live chat identity, request payload, endpoint or account data is published."
     },
     {
       "id": "html",

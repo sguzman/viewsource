@@ -401,7 +401,11 @@ function renderResourceBudget() {
 }
 
 function renderArticle(chapter,host) {
-  if (chapter.id === "stack" || chapter.id === "page-map") {
+  if (chapter.id === "chat-interaction") {
+    host.append(makeHero(chapter), ViewsourceChatGraph.render(versionRecord()), showEvidenceLinks(chapter));
+    return;
+  }
+    if (chapter.id === "stack" || chapter.id === "page-map") {
     host.append(makeHero(chapter));
     host.append(chapter.id === "stack"
       ? ViewsourceExplorer.renderStack(versionRecord())
