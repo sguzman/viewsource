@@ -254,6 +254,15 @@ def build(out: Path) -> dict:
                         {"from": row["from"],"to": row["to"],"kind": row["kind"]}
                         for row in transport["reviewed_static_edges"]
                     ],
+                    "decoded_pipeline": {
+                        "sequence": [
+                            {"stage": step["stage"].replace("_"," "),
+                             "relationship": step["relationship"]}
+                            for step in transport["decoded_update_pipeline"]["sequence"]
+                        ],
+                        "verification_boundary":
+                            transport["decoded_update_pipeline"]["verification_boundary"],
+                    },
                     "generation_bridge": {
                         "caller_function_ordinal":
                             transport["generation_transport_bridge"]["caller_function_ordinal"],
