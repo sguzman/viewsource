@@ -1,0 +1,85 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_archive",
+  "method": "Offline AST scan of 144 saved JavaScript bundles: only fixed generic categories of identifier spellings, object literal names and cooccurrence within lexical function scopes. Source was not executed.",
+  "privacy": "Numeric counts and original explanation only. No literal names from source, URLs, values, message contents, account identifiers, code excerpts or raw assets.",
+  "sample": {
+    "javascript_files": 144,
+    "object_literals": 113643,
+    "function_like_nodes": 120699
+  },
+  "identifier_categories": {
+    "conversation_like": {
+      "files": 63,
+      "occurrences": 5704
+    },
+    "message_like": {
+      "files": 43,
+      "occurrences": 1638
+    },
+    "parent_like": {
+      "files": 16,
+      "occurrences": 167
+    },
+    "branch_like": {
+      "files": 16,
+      "occurrences": 90
+    },
+    "stream_like": {
+      "files": 65,
+      "occurrences": 798
+    }
+  },
+  "object_literal_pairs": {
+    "conversation_message": {
+      "objects": 391,
+      "files": 30
+    },
+    "message_parent": {
+      "objects": 1,
+      "files": 1
+    },
+    "parent_graph_edge": {
+      "objects": 2,
+      "files": 1
+    },
+    "branch_conversation": {
+      "objects": 5,
+      "files": 2
+    }
+  },
+  "lexical_function_pairs": {
+    "conversation_message": {
+      "functions": 510,
+      "files": 38
+    },
+    "message_parent": {
+      "functions": 18,
+      "files": 4
+    },
+    "parent_graph_edge": {
+      "functions": 19,
+      "files": 3
+    },
+    "branch_message": {
+      "functions": 7,
+      "files": 2
+    },
+    "branch_conversation": {
+      "functions": 20,
+      "files": 7
+    },
+    "network_stream": {
+      "functions": 5,
+      "files": 3
+    }
+  },
+  "limits": [
+    "Fixed-name identifiers are not recovered schema fields; minified, vendor and unexecuted code can contribute.",
+    "Object and function cooccurrence cannot establish true dataflow or selected conversation graph.",
+    "Actual message parenthood, branch selection, submit lifecycle, streaming grammar and response persistence remain unobserved.",
+    "Only an authorized disposable test session can provide runtime confirmation."
+  ]
+}

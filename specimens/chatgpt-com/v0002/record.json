@@ -6300,6 +6300,71 @@
       "properties": {
         "region": "dialog"
       }
+    },
+    {
+      "id": "chat-identity-source-signals",
+      "kind": "ClientState",
+      "name": "Chat identity syntax indicators",
+      "description": "Chat- and message-identity-like tokens were found; actual identity fields and storage are unknown.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-066",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "source_report": "chat_source_signals.json",
+        "conversation_files": 63,
+        "message_files": 43
+      }
+    },
+    {
+      "id": "chat-parent-source-signals",
+      "kind": "ClientState",
+      "name": "Message ancestry source indicators",
+      "description": "Syntactic proximity of message, parent, and graph-edge categories; message ancestry semantics remain unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-067",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "source_report": "chat_source_signals.json",
+        "message_parent_object_literals": 1
+      }
+    },
+    {
+      "id": "chat-branch-source-signals",
+      "kind": "Interaction",
+      "name": "Branch behavior source candidates",
+      "description": "Branch-related names share several source scopes with chat categories but actual branch behavior has not been observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-068",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "source_report": "chat_source_signals.json",
+        "branch_message_function_scopes": 7
+      }
+    },
+    {
+      "id": "chat-stream-source-signals",
+      "kind": "APIReference",
+      "name": "Streaming source candidates",
+      "description": "Network and stream-related syntax occurs in common function scopes without proving request/response behavior.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-068",
+        "source_scope": "saved_archive"
+      },
+      "properties": {
+        "source_report": "chat_source_signals.json",
+        "network_stream_function_scopes": 5
+      }
     }
   ],
   "relationships": [
@@ -9866,6 +9931,50 @@
         "evidence_ref": "E2-065",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "javascript",
+      "to": "chat-identity-source-signals",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-066",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "chat-identity-source-signals",
+      "to": "chat-parent-source-signals",
+      "predicate": "associated_with",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-067",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "chat-branch-source-signals",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-068",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "javascript",
+      "to": "chat-stream-source-signals",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-068",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -10516,6 +10625,36 @@
         "evidence_class": "observed_static",
         "confidence": "high",
         "evidence_ref": "E2-065",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-066",
+      "statement": "A source-level AST scan of 144 captured JavaScript resources found generic conversation-identity-like identifiers in 63 resources, message-identity-like identifiers in 43, and parent-reference-like identifiers in sixteen. These are program token categories, not recovered API data fields.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-066",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-067",
+      "statement": "Of 113,643 parsed object literals, 391 contain conversation and message-like property categories, one contains message and parent categories, and two contain parent and graph-edge categories. Static co-location cannot verify the meaning of message ancestry or the running data model.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-067",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-068",
+      "statement": "Across 120,699 function-like nodes, eighteen scopes contain message and parent categories, nineteen parent and graph-edge categories, seven branch and message categories, and five network and streaming categories. These are static syntactic associations, not executed chat behavior.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-068",
         "source_scope": "saved_archive"
       }
     }
