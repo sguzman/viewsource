@@ -1,0 +1,235 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "scope": "saved_archive",
+  "method": "Offline DOM parsing and JavaScript syntax-tree parsing of a supplied private ZIP. Asset names were resolved locally and replaced with anonymous ordinals. No source executed.",
+  "privacy": "This report contains only aggregated original findings and ordinal resource relationships; it omits source code, original site filenames, captured URLs, identifiers, text contents, account data and asset bytes.",
+  "capture": {
+    "archive_entries": 238,
+    "resource_entries": 234,
+    "archive_support_entries": 4,
+    "unsuccessful_resource_attempts": 29,
+    "http_403": 17,
+    "http_404": 10,
+    "other_failed_attempts": 2,
+    "script_files": 144,
+    "stylesheets": 17,
+    "font_files": 60,
+    "image_files": 12
+  },
+  "document": {
+    "element_count": 2183,
+    "landmarks": {
+      "main": 1,
+      "nav": 2,
+      "aside": 2,
+      "header": 2,
+      "form": 1,
+      "section": 5
+    },
+    "nav_inside_aside": 2,
+    "form_inside_main": 1,
+    "buttons": 130,
+    "closest_landmark_buttons": {
+      "nav": 70,
+      "main": 42,
+      "header": 9,
+      "aside": 5,
+      "form": 3,
+      "other": 1
+    },
+    "per_nav_button_counts": [
+      8,
+      62
+    ],
+    "anchors": 26,
+    "anchor_destination_classes": {
+      "site_relative": 11,
+      "external_absolute": 14,
+      "fragment_only": 1
+    },
+    "input_types": {
+      "file": 4
+    },
+    "headings": {
+      "h1": 9,
+      "h2": 8,
+      "h3": 0,
+      "h4": 9
+    },
+    "scripts": {
+      "inline_classic": 14,
+      "inline_module": 2,
+      "inline_json": 2,
+      "external_classic": 1
+    },
+    "aria": {
+      "label": 152,
+      "expanded": 93,
+      "haspopup": 61,
+      "busy": 13,
+      "live": 5
+    },
+    "roles": {
+      "navigation": 1,
+      "button": 16,
+      "group": 11,
+      "status": 7,
+      "dialog": 1,
+      "textbox": 1,
+      "region": 1,
+      "list": 3,
+      "listitem": 26
+    }
+  },
+  "load_declarations": {
+    "modulepreload_links": 72,
+    "matched_unique_scripts": 72,
+    "script_preload_ordinals": "R-JS-001 through R-JS-072",
+    "external_classic_scripts": 1,
+    "matched_external_ordinal": "R-JS-073",
+    "css_link_elements": 18,
+    "distinct_css_assets": 17,
+    "css_links_resolved": 18
+  },
+  "javascript_ast": {
+    "parser": "JavaScript syntax mode via TypeScript parser (offline)",
+    "scripts_parsed": 144,
+    "parse_diagnostics": 0,
+    "static_import_declarations": 236,
+    "dynamic_import_expressions": 18,
+    "require_calls": 1,
+    "mapped_static_import_edges": 236,
+    "unique_edge_pairs": 236,
+    "source_bundle_count": 8,
+    "target_bundle_count": 71,
+    "ordinal_self_edges": 8,
+    "unmatched_literal_specifiers": 8,
+    "nonliteral_import_specifiers": 11,
+    "source_to_target_ranges": {
+      "R-JS-002": [
+        [
+          2,
+          29
+        ]
+      ],
+      "R-JS-030": [
+        [
+          3,
+          30
+        ]
+      ],
+      "R-JS-031": [
+        [
+          3,
+          29
+        ],
+        [
+          31,
+          32
+        ]
+      ],
+      "R-JS-033": [
+        [
+          3,
+          29
+        ],
+        [
+          33,
+          33
+        ]
+      ],
+      "R-JS-034": [
+        [
+          3,
+          29
+        ],
+        [
+          32,
+          32
+        ],
+        [
+          34,
+          34
+        ]
+      ],
+      "R-JS-035": [
+        [
+          3,
+          29
+        ],
+        [
+          35,
+          35
+        ]
+      ],
+      "R-JS-036": [
+        [
+          3,
+          3
+        ],
+        [
+          36,
+          36
+        ]
+      ],
+      "R-JS-037": [
+        [
+          3,
+          29
+        ],
+        [
+          32,
+          32
+        ],
+        [
+          37,
+          72
+        ]
+      ]
+    },
+    "interpretation": "Edges represent parsed literal static import specifiers resolved to captured asset ordinals, not executed dependencies or load order. The earlier 300 text-reference pairs are a separate weaker signal."
+  },
+  "build_hints": {
+    "source_map_reference_comment_files": 1,
+    "captured_source_map_resources": 0,
+    "module_meta_text_matches": 11,
+    "webpack_require_text_matches": 9,
+    "bundler_identity_verified": false,
+    "original_source_available": false
+  },
+  "style_architecture": {
+    "stylesheets": 17,
+    "html_stylesheet_declarations": 18,
+    "distinct_linked_assets": 17,
+    "at_layer_text_occurrences": 33,
+    "stylesheets_with_layer_occurrences": 17,
+    "at_import_text_occurrences": 0,
+    "media_rule_occurrences": 627,
+    "container_rule_occurrences": 504,
+    "font_face_rule_occurrences": 26,
+    "computed_cascade_verified": false
+  },
+  "icon_linkage": {
+    "sprite_resource_ordinal": "R-IMG-004",
+    "sprite_symbols": 911,
+    "dom_svg_use_elements": 92,
+    "svg_uses_matching_sprite_asset": 92,
+    "svg_uses_matching_symbol_id": 92,
+    "unique_sprite_symbols_referenced": 23
+  },
+  "security_bounds": {
+    "nonce_script_elements": 18,
+    "nonce_link_elements": 74,
+    "sandboxed_iframe_elements": 1,
+    "observed_http_response_headers": 0,
+    "csp_enforcement_verified": false
+  },
+  "limits": [
+    "One saved rendered page state, not a whole-site census.",
+    "Imports do not prove runtime execution or identify server operations.",
+    "No runtime accessibility, computed CSS, network, storage values or actual permission grants verified.",
+    "Captured account text, filenames, URLs, source and identifiers are intentionally excluded."
+  ]
+}
