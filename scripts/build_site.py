@@ -64,6 +64,25 @@ def build(out: Path) -> dict:
             # Only explicitly allowlisted anonymous graph and structural metrics
             # are passed to the website. The full analysis file is not copied.
             visuals = {}
+            source_tasks = [
+                task for task in tasks
+                if task["specimen_id"] == item["id"] and task["version"] == number
+                and "-followup-static-" in task["id"]
+            ]
+            if source_tasks:
+                visuals["static_source_queue"] = {
+                    "task_count": len(source_tasks),
+                    "task_statuses": {
+                        state: sum(task["status"] == state for task in source_tasks)
+                        for state in ("queued", "in_progress", "done", "not_observable")
+                    },
+                    "tasks": [
+                        {"title": task["title"], "queue": task["queue"],
+                         "status": task["status"],
+                         "dependency_count": len(task["depends_on"])}
+                        for task in source_tasks
+                    ],
+                }
             phase3_path = ROOT / (base + "/phase3_analysis.json")
             if phase3_path.is_file():
                 study = read(base + "/phase3_analysis.json")
