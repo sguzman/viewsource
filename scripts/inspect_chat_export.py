@@ -4,7 +4,7 @@
 No captured records, user IDs, titles, messages, routes or filenames are
 included in output. This tool is not called by the public website builder.
 It analyzes documented legacy export-style mapping trees, NOT the live API.
-Uses Python's in-memory JSON parser; process one export shard at a time.
+Uses incremental JSON-array parsing; huge individual records can still consume memory.
 """
 from __future__ import annotations
 
@@ -117,10 +117,9 @@ def inspect_conversation(value: object) -> dict:
     return result
 
 
-def inspect_export(data: object) -> dict:
-    """Summarize one export shard; never expose record-level identifiers."""
-    if not isinstance(data, list):
-        raise ExportShapeError("Expected a list of conversation records")
+def summarize_records(records) -> dict:
+    """Accumulate counts without retaining parsed conversation records."""
+    total = 0
     fields = (
         "nodes", "message_nodes", "null_message_nodes", "parent_links",
         "branch_points", "alternative_children", "roots",
@@ -133,7 +132,8 @@ def inspect_export(data: object) -> dict:
                  ("resolved", "missing", "dangling", "cycle", "unresolved", "not_available")}
     selected_length_total = 0
     off_path_total = 0
-    for conversation in data:
+    for conversation in records:
+        total += 1
         item = inspect_conversation(conversation)
         shapes[item["shape"]] += 1
         selection[item["selected_path_status"]] += 1
@@ -147,7 +147,7 @@ def inspect_export(data: object) -> dict:
         "source": "local_export_structure",
         "external_format_evidence_only": True,
         "live_chat_implementation_verified": False,
-        "conversation_count": len(data),
+        "conversation_count": total,
         "shapes": shapes,
         "selection_status": selection,
         "structural_counts": counts,
@@ -162,6 +162,92 @@ def inspect_export(data: object) -> dict:
     }
 
 
+def inspect_export(data: object) -> dict:
+    """Compatibility entrypoint for in-memory synthetic tests."""
+    if not isinstance(data, list):
+        raise ExportShapeError("Expected a list of conversation records")
+    return summarize_records(iter(data))
+
+
+def iter_export_records(stream, *, chunk_size: int = 65536):
+    """Yield one top-level array item at a time from a text stream.
+
+    No input fragment or identity is logged. Memory is bounded by the
+    largest single conversation record plus a fixed read buffer.
+    """
+    decoder = json.JSONDecoder()
+    buffer = ""
+    eof = False
+    state = "start"
+    max_record_chars = 128 * 1024 * 1024
+    while True:
+        buffer = buffer.lstrip()
+        if not buffer and not eof:
+            chunk = stream.read(chunk_size)
+            if chunk:
+                buffer += chunk
+            else:
+                eof = True
+            continue
+        if state == "done":
+            if buffer:
+                raise ExportShapeError("Trailing characters after array")
+            if eof:
+                return
+            chunk = stream.read(chunk_size)
+            if chunk:
+                buffer += chunk
+            else:
+                eof = True
+            continue
+        if not buffer:
+            raise ExportShapeError("Truncated export array")
+        if state == "start":
+            if buffer[0] != "[":
+                raise ExportShapeError("Expected JSON export array")
+            buffer = buffer[1:]
+            state = "first_or_end"
+            continue
+        if state in ("first_or_end", "value"):
+            if buffer[0] == "]":
+                if state == "value":
+                    raise ExportShapeError("Trailing comma")
+                buffer = buffer[1:]
+                state = "done"
+                continue
+            try:
+                record, end = decoder.raw_decode(buffer)
+            except json.JSONDecodeError:
+                if eof or len(buffer) >= max_record_chars:
+                    raise ExportShapeError("Invalid or oversized export record") from None
+                chunk = stream.read(chunk_size)
+                if not chunk:
+                    eof = True
+                else:
+                    buffer += chunk
+                continue
+            yield record
+            buffer = buffer[end:]
+            state = "separator"
+            continue
+        if state == "separator":
+            if buffer[0] == ",":
+                buffer = buffer[1:]
+                state = "value"
+                continue
+            if buffer[0] == "]":
+                buffer = buffer[1:]
+                state = "done"
+                continue
+            raise ExportShapeError("Invalid export array separator")
+
+
+def inspect_file(path: Path) -> dict:
+    """Read one record at a time and return only aggregate counts."""
+    with path.open("r", encoding="utf-8") as source:
+        return summarize_records(iter_export_records(source))
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Inspect only the structure of a local ChatGPT export")
     parser.add_argument("input", type=Path)
@@ -169,8 +255,7 @@ def main() -> int:
     try:
         # This file can contain sensitive user information: never copy it
         # into Git, stdout, diagnostic logs or a public specimen record.
-        data = json.loads(args.input.read_text(encoding="utf-8"))
-        summary = inspect_export(data)
+        summary = inspect_file(args.input)
     except (OSError, ValueError, TypeError, MemoryError):
         parser.exit(2, "Local export inspection failed (input/path details suppressed)\n")
     print(json.dumps(summary, indent=2))
