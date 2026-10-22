@@ -265,6 +265,7 @@ def build(out: Path) -> dict:
                     "technology_links": feature["technology_links"],
                     "surfaces": feature["surfaces"],
                     "entities": feature["entities"],
+                    "domain_relations": feature["domain_relations"],
                     "machines": feature["machines"],
                     "events": feature["events"],
                     "transitions": feature["transitions"],

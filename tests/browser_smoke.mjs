@@ -24,6 +24,7 @@ try {
   await page.locator(".chapter-link").filter({hasText:"Chat interactions"}).click();
   await page.getByRole("heading",{name:"Chat state model"}).waitFor();
   assert.equal(await page.locator(".chat-surface").count(),6);
+  assert.equal(await page.locator(".chat-domain-edge").count(),8);
   assert.equal(await page.locator(".chat-source-card").count(),10);
   assert.equal(await page.locator(".chat-research-task").count(),17);
   assert.equal(await page.locator(".chat-machine-tabs button").count(),3);

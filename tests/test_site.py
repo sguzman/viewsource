@@ -36,6 +36,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(feature["machines"]), 3)
             self.assertEqual(len(feature["transitions"]), 20)
             self.assertEqual(len(feature["surfaces"]), 6)
+            self.assertEqual(len(feature["domain_relations"]),8)
             self.assertEqual(current["visuals"]["chat_source_signals"]["summary"][0]["count"], 63)
             self.assertEqual(current["visuals"]["chat_source_signals"]["dom_controls"]["document"]["contenteditable_true"], 1)
             self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 17)

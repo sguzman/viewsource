@@ -78,6 +78,27 @@ def validate_extensions(require, specimen_id: str, version: int) -> None:
         if link["evidence_status"] != "verified_feature_use":
             require(link["feature_ownership_verified"] is False,
                     f"Library source presence cannot claim feature ownership: {ref}")
+    entity_ids = {entity["id"] for entity in graph["entities"]}
+    relation_ids = set()
+    for relation in graph.get("domain_relations", []):
+        key = relation["id"]
+        require(key not in relation_ids, f"Repeated domain relation: {key}")
+        relation_ids.add(key)
+        require(relation["from"] in entity_ids and relation["to"] in entity_ids,
+                f"Dangling domain entity reference: {key}")
+        require(relation["evidence_status"] in {"hypothesis", "observed_live"},
+                f"Invalid domain relation evidence status: {key}")
+        require(bool(relation["verify"]), f"Missing domain relation test: {key}")
+        require(set(relation["source_clue_refs"]) <= evidence,
+                f"Unknown static relation clues: {key}")
+        require(set(relation["verified_evidence_refs"]) <= evidence,
+                f"Unknown verified relation evidence: {key}")
+        if relation["evidence_status"] == "hypothesis":
+            require(not relation["verified_evidence_refs"],
+                    f"Unobserved domain relation cannot claim verification: {key}")
+        else:
+            require(graph["source_scope"] == "live_test" and bool(relation["verified_evidence_refs"]),
+                    f"Live domain relation lacks independent runtime evidence: {key}")
     ids = [t["id"] for t in graph["transitions"]]
     require(len(ids) == len(set(ids)), "Repeated transition IDs")
     for t in graph["transitions"]:

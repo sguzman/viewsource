@@ -44,6 +44,8 @@ class FeatureGraphTests(unittest.TestCase):
         self.assertEqual({m["id"] for m in graph["machines"]}, {"selection","response","message_operation"})
         self.assertEqual(len(graph["transitions"]),20)
         self.assertEqual(len(graph["surfaces"]),6)
+        self.assertEqual(len(graph["domain_relations"]),8)
+        self.assertTrue(all(x["evidence_status"]=="hypothesis" for x in graph["domain_relations"]))
         self.assertTrue(all(t["evidence_status"]=="hypothesis" and t["evidence_refs"]==[]
                             and t["verify"] for t in graph["transitions"]))
         event_ids={e["id"] for e in graph["events"]}

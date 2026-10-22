@@ -90,6 +90,22 @@ window.ViewsourceChatGraph = (() => {
       surface.append(node);
     });
     section.append(add(element("div","chat-subsection"),element("h3","","Observed page regions"),surface));
+    if(feature.domain_relations?.length){
+      const domain=element("div","chat-subsection");
+      domain.append(element("h3","","Candidate message data relationships"));
+      domain.append(element("p","graph-caption",
+        "Typed entity links for coding and testing. All edges are hypotheses; source clues do not verify their runtime meaning."));
+      const list=element("div","chat-domain-links");
+      feature.domain_relations.forEach(relation=>{
+        const detail=element("details","chat-domain-edge");
+        const title=element("summary","",relation.from+" → "+relation.predicate.replaceAll("_"," ")+" → "+relation.to);
+        detail.append(title,element("p","",
+          "Possible multiplicity: "+relation.multiplicity.replaceAll("_"," ")+". Status: "+relation.evidence_status+"."));
+        detail.append(element("p","graph-caption","How to verify: "+relation.verify));
+        list.append(detail);
+      });
+      domain.append(list);section.append(domain);
+    }
     const machineTabs=element("div","chat-machine-tabs");
     const stateHost=element("div","chat-states");
     const transitionHost=element("div","chat-transitions");

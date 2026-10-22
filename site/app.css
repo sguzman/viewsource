@@ -353,3 +353,9 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-research-head small { color: var(--muted); font-size: 10px; }
 .chat-research-task p { font-size: 11px; color: var(--muted); line-height: 1.6; }
 @media(max-width:720px){ .chat-research-list { grid-template-columns: 1fr; } }
+
+.chat-domain-links { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+.chat-domain-edge { padding: 13px; border: 1px solid var(--line); border-radius: 8px; min-width: 0; }
+.chat-domain-edge summary { cursor: pointer; font-size: 12px; font-weight: 600; }
+.chat-domain-edge p { color: var(--muted); font-size: 11px; line-height: 1.6; }
+@media(max-width:720px){ .chat-domain-links { grid-template-columns: 1fr; } }
