@@ -34,7 +34,16 @@ try {
   await page.locator(".graph-node").first().click();
   assert.equal(await page.locator(".inspection-card").count(),1);
 
-  await page.locator(".chapter-link").filter({hasText:"Research queue"}).click();
+  await page.locator(".chapter-link").filter({hasText:"Logic"}).click();
+  await page.getByRole("heading",{name:"The event and observer machinery"}).waitFor();
+  assert.equal(await page.locator(".signal-row").count(),6);
+  await page.locator(".chapter-link").filter({hasText:"State"}).click();
+  await page.getByRole("heading",{name:"Browser persistence and channels"}).waitFor();
+  assert.equal(await page.locator(".signal-row").count(),7);
+  await page.locator(".chapter-link").filter({hasText:"Flow"}).click();
+  await page.getByRole("heading",{name:"Streaming and transport code"}).waitFor();
+  assert.equal(await page.locator(".signal-row").count(),6);
+    await page.locator(".chapter-link").filter({hasText:"Research queue"}).click();
   await page.getByRole("heading",{name:"Work that stays on the map."}).waitFor();
   assert.ok(await page.locator(".queue-group").count()>=10);
   await page.locator(".queue-group").first().locator("summary").click();

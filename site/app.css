@@ -253,3 +253,9 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .css-summary { display: flex; flex-wrap: wrap; gap: 7px; margin: 26px 0 15px; border-top: 1px solid var(--line); padding-top: 18px; }
 @media (max-width:720px) { .css-system-panel { padding: 15px; } .css-families { grid-template-columns: 1fr; gap: 16px; } }
 
+/* Original source-signal charts. All data come from the allowlisted numeric atlas. */
+.signal-panel { background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow); border-radius: var(--round); padding: 24px; margin: 10px 0 25px; }
+.signal-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px 30px; }
+.signal-row { min-width: 0; }
+.signal-row .dom-region-label { align-items: baseline; }
+@media (max-width:720px) { .signal-panel { padding: 15px; } .signal-list { grid-template-columns: 1fr; gap: 17px; } }

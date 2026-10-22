@@ -342,12 +342,72 @@ function renderCssSystem() {
   return section;
 }
 
+
+function renderSourceSignals(chapterId) {
+  const signals=versionRecord().visuals?.source_system;
+  if (!signals) return null;
+  const variants={
+    logic:{title:"The event and observer machinery",key:"event_signals",description:"AST-level listener, observer and animation-frame syntax; these are not observed user interactions."},
+    state:{title:"Browser persistence and channels",key:"state_signals",description:"Fixed-name call and constructor syntax in captured bundles. No storage values, session identifiers or actual messages were observed."},
+    flow:{title:"Streaming and transport code",key:"network_signals",description:"Syntax-tree API callsites indicate possible pathways, not verified API responses or a chronological runtime flow."}
+  };
+  const variant=variants[chapterId];
+  if(!variant)return null;
+  const items=signals[variant.key];
+  const section=elem("section");
+  section.append(sectionHeader("SOURCE SIGNALS",variant.title,variant.description));
+  const panel=elem("div",{className:"signal-panel"});
+  const max=Math.max(1,...items.map(x=>x.count));
+  const list=elem("div",{className:"signal-list"});
+  items.forEach(item=>{
+    list.append(elem("div",{className:"signal-row"},[
+      elem("div",{className:"dom-region-label"},[
+        elem("strong",{text:item.label}),elem("span",{text:String(item.count)+" source matches"})
+      ]),
+      elem("div",{className:"module-bar"},[
+        elem("span",{className:"module-bar-fill",style:"width:"+(item.count/max*100).toFixed(2)+"%"})
+      ])
+    ]));
+  });
+  panel.append(list);
+  if(chapterId==="flow"){
+    const scopes=signals.lexical_scopes;
+    panel.append(elem("div",{className:"css-summary"},[
+      pill(scopes.fetch_and_stream+" function scopes: fetch + stream"),
+      pill(scopes.fetch_and_abort+" function scopes: fetch + abort")
+    ]));
+  }
+  panel.append(elem("p",{className:"graph-caption",
+    text:"Only generic platform API names are represented. Repeated calls may occur in libraries or unused code. No captured names, account data, remote endpoints or code are displayed."}));
+  section.append(panel);return section;
+}
+function renderResourceBudget() {
+  const budget=versionRecord().visuals?.source_system?.bytes;
+  if(!budget)return null;
+  const items=[["JavaScript",budget.scripts],["CSS",budget.css],["Fonts",budget.fonts],["Images",budget.images]];
+  const section=elem("section");
+  section.append(sectionHeader("CAPTURE BYTE BUDGET","Where the saved bytes are","Capture sizes, not real transfer sizes or a measured performance waterfall."));
+  const panel=elem("div",{className:"signal-panel"});const max=Math.max(...items.map(x=>x[1]),1);
+  const list=elem("div",{className:"signal-list"});
+  items.forEach(([name,count])=>list.append(elem("div",{className:"signal-row"},[
+    elem("div",{className:"dom-region-label"},[
+      elem("strong",{text:name}),elem("span",{text:(count/1000000).toFixed(2)+" MB captured"})
+    ]),
+    elem("div",{className:"module-bar"},[
+      elem("span",{className:"module-bar-fill",style:"width:"+(count/max*100).toFixed(1)+"%"})
+    ])
+  ])));
+  panel.append(list);section.append(panel);return section;
+}
+
 function renderArticle(chapter,host) {
   append(host,makeHero(chapter),metrics(chapter));
   if(chapter.flow.length)host.append(flowRail(chapter));
   host.append(storySections(chapter));
   if (chapter.id === "javascript") { const modules=renderModuleExplorer(); if(modules) host.append(modules); }
   if (chapter.id === "css") { const visual=renderCssSystem(); if(visual) host.append(visual); }
+  { const panel=renderSourceSignals(chapter.id); if(panel) host.append(panel); }
+  if (chapter.id === "overview") { const budget=renderResourceBudget(); if(budget) host.append(budget); }
   if (chapter.id === "html" || chapter.id === "components") {
     const dom=renderDomTopology(); if(dom) host.append(dom);
   }

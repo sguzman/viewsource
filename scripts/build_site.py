@@ -115,6 +115,52 @@ def build(out: Path) -> dict:
                     "reduced_motion_rules": css_study["motion"]["reduced_motion_media_preludes"],
                     "keyframes": css_study["motion"]["keyframe_rule_occurrences"]
                 }
+            system_path = ROOT / (base + "/phase5_system_analysis.json")
+            if system_path.is_file():
+                report = read(base + "/phase5_system_analysis.json")
+                if report["specimen_id"] != item["id"] or report["version"] != number:
+                    raise ValueError("System report identity mismatch")
+                api = report["js_ast"]["fixed_api_indicators"]
+                co = report["js_ast"]["same_lexical_function_scope_cooccurrences"]
+                budget = report["captured_resource_budget"]
+                visuals["source_system"] = {
+                    "evidence_refs": ["E2-053", "E2-054", "E2-055", "E2-059"],
+                    "event_signals": [
+                        {"label": "Listener registration", "count": api["listener_add_calls"]},
+                        {"label": "Listener removal", "count": api["listener_remove_calls"]},
+                        {"label": "Animation frame", "count": api["animation_frame_calls"]},
+                        {"label": "Mutation observer", "count": api["mutation_observer_constructors"]},
+                        {"label": "Resize observer", "count": api["resize_observer_constructors"]},
+                        {"label": "Intersection observer", "count": api["intersection_observer_constructors"]}
+                    ],
+                    "state_signals": [
+                        {"label": "Get item", "count": api["storage_get_item_calls"]},
+                        {"label": "Set item", "count": api["storage_set_item_calls"]},
+                        {"label": "Remove item", "count": api["storage_remove_item_calls"]},
+                        {"label": "Channel", "count": api["broadcast_channel_constructors"]},
+                        {"label": "Message channel", "count": api["message_channel_constructors"]},
+                        {"label": "Post message", "count": api["post_message_calls"]},
+                        {"label": "Worker", "count": api["worker_constructors"]}
+                    ],
+                    "network_signals": [
+                        {"label": "Fetch", "count": api["fetch"]},
+                        {"label": "Abort controller", "count": api["abort_controller_constructors"]},
+                        {"label": "Stream reader", "count": api["stream_reader_calls"]},
+                        {"label": "Text decoder", "count": api["text_decoder_constructors"]},
+                        {"label": "WebSocket", "count": api["websocket_constructors"]},
+                        {"label": "Peer connection", "count": api["peer_connection_constructors"]}
+                    ],
+                    "lexical_scopes": {
+                        "fetch_and_stream": co["fetch_and_stream"],
+                        "fetch_and_abort": co["fetch_and_abort"]
+                    },
+                    "bytes": {
+                        "scripts": budget["scripts"]["bytes"],
+                        "css": budget["styles"]["bytes"],
+                        "fonts": budget["fonts"]["bytes"],
+                        "images": budget["images"]["bytes"]
+                    }
+                }
             inventory = read(base + "/resource_inventory.json") if (ROOT / (base + "/resource_inventory.json")).is_file() else {}
             totals = inventory.get("totals", {})
             catalog["versions"].append({
