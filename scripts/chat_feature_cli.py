@@ -100,7 +100,7 @@ class FeatureGraphModel:
             lines.append("  " + json.dumps(relation["from"]) + " -> " +
                          json.dumps(relation["to"]) + " [style=" + style +
                          ",label=" + json.dumps(relation["predicate"]) + "];")
-        return "\\n".join(lines + ["}"])
+        return "\n".join(lines + ["}"])
 
     def to_dot(self, machine: str) -> str:
         if machine not in self.machines:

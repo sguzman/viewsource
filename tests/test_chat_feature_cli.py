@@ -45,6 +45,25 @@ class FeatureConsumerTests(unittest.TestCase):
         self.assertNotIn("style=solid",dot)
         self.assertIn('"editing" -> "sending"',dot)
 
+    def test_domain_graph_remains_hypothetical(self):
+        graph=self.model.graph
+        self.assertEqual(len(self.model.domain_relations),8)
+        self.assertTrue(all(e["evidence_status"]=="hypothesis" for e in self.model.domain_relations))
+        self.assertTrue(all(e["verified_evidence_refs"]==[] for e in self.model.domain_relations))
+        dot=self.model.to_domain_dot()
+        self.assertIn("digraph domain",dot)
+        self.assertIn('"message" -> "message"',dot)
+        self.assertIn("style=dashed",dot)
+        self.assertNotIn("style=solid",dot)
+        self.assertIn("\\n",dot)
+
+    def test_domain_relation_rejects_bad_entity(self):
+        import copy
+        data=copy.deepcopy(self.model.graph)
+        data["domain_relations"][0]["to"]="missing"
+        with self.assertRaises(module.FeatureGraphError):
+            module.FeatureGraphModel(data)
+
     def test_reject_unknown_references(self):
         with self.assertRaises(module.FeatureGraphError):
             self.model.query("missing")

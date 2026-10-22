@@ -65,3 +65,9 @@ The feature graph therefore includes a separate **message edit and regeneration*
 ## Public product documentation versus internal source
 
 OpenAI's public ChatGPT release notes announced a web UI action to branch a conversation into a separate chat on September 4, 2025: https://help.openai.com/en/articles/6825453-chatgpt-release-notes . This establishes a documented user-facing action, not the server-side representation, identity mapping, message ancestry or persistence. The research model keeps separate-conversation forks distinct from alternative messages within one conversation. Neither internal relationship is asserted as verified by that documentation.
+
+## Code-consumer tools
+
+A standard-library reader at `scripts/chat_feature_cli.py` exports machine-scoped transition metadata and DOT graphs. Use `--machine response --format dot` for a candidate response state diagram; `--machine message_operation --format json` lists unverified edit/regeneration steps; `--domain --format dot` shows the entity-to-entity relationship graph. The default execution-verification path fails closed: `--resolve-verified` rejects every edge in the current snapshot because none has independent live evidence. These interfaces perform no browser operations.
+
+A separate synthetic model at `scripts/chat_graph_core.py` demonstrates immutable parent links, visible selected paths, alternative replies and cross-conversation fork annotations without storing any chat text. Fork annotations do not clone messages or claim a specific remote implementation.
