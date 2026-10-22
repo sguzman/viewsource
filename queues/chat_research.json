@@ -52,6 +52,22 @@
       ]
     },
     {
+      "id": "chat-source-controls",
+      "feature_id": "chat-interaction",
+      "specimen_id": "chatgpt-com",
+      "version": 2,
+      "scope": "offline",
+      "status": "done",
+      "title": "Inspect captured chat controls",
+      "depends_on": [
+        "chat-source-identity"
+      ],
+      "acceptance": "Locate sanitized edit, regeneration, composer and new-chat affordances in the saved DOM with closest semantic regions.",
+      "evidence_refs": [
+        "E2-069"
+      ]
+    },
+    {
       "id": "chat-domain-schema",
       "feature_id": "chat-interaction",
       "specimen_id": "chatgpt-com",

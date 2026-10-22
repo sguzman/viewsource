@@ -35,9 +35,9 @@ class AtlasTests(unittest.TestCase):
             feature = current["visuals"]["feature_graph"]
             self.assertEqual(len(feature["machines"]), 2)
             self.assertEqual(len(feature["transitions"]), 14)
-            self.assertEqual(len(feature["surfaces"]), 4)
+            self.assertEqual(len(feature["surfaces"]), 6)
             self.assertEqual(current["visuals"]["chat_source_signals"]["summary"][0]["count"], 63)
-            self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 16)
+            self.assertEqual(len(current["visuals"]["feature_research"]["tasks"]), 17)
 
             self.assertTrue(all(t["evidence_status"] == "hypothesis" for t in feature["transitions"]))
             self.assertTrue((dest / feature["json_path"]).exists())
@@ -54,7 +54,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 68)
+            self.assertEqual(len(current["findings"]), 69)
             self.assertEqual(len(current["tasks"]), 91)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "reviewed")

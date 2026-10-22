@@ -90,6 +90,26 @@
         "E2-065"
       ],
       "description": "A role=dialog region exists; opening, closing and focus behavior were not observed."
+    },
+    {
+      "id": "editor-control",
+      "label": "Editable composer",
+      "component_ref": "chat-composer-editor",
+      "basis": "observed_static",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "description": "One editable textbox lies inside the captured form. Draft lifecycle and submission are not traced."
+    },
+    {
+      "id": "message-actions",
+      "label": "Message action controls",
+      "component_ref": "chat-message-action-controls",
+      "basis": "observed_static",
+      "evidence_refs": [
+        "E2-069"
+      ],
+      "description": "Edit and regeneration indicators occur on main-region buttons. No outcomes or handler ownership were observed."
     }
   ],
   "entities": [

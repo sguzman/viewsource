@@ -81,5 +81,54 @@
     "Object and function cooccurrence cannot establish true dataflow or selected conversation graph.",
     "Actual message parenthood, branch selection, submit lifecycle, streaming grammar and response persistence remain unobserved.",
     "Only an authorized disposable test session can provide runtime confirmation."
-  ]
+  ],
+  "dom_footprint": {
+    "method": "Offline HTML parse of one captured rendered page. Generic action groups counted only in selected semantic attributes, without copying their values.",
+    "document": {
+      "forms": 1,
+      "textbox_roles": 1,
+      "contenteditable_true": 1,
+      "file_inputs": 4,
+      "buttons": 130
+    },
+    "features": [
+      {
+        "category": "edit_controls",
+        "count": 4,
+        "nearest_region": "main",
+        "node_type": "button"
+      },
+      {
+        "category": "regenerate_controls",
+        "count": 4,
+        "nearest_region": "main",
+        "node_type": "button"
+      },
+      {
+        "category": "copy_controls",
+        "count": 8,
+        "nearest_region": "main",
+        "node_type": "button"
+      },
+      {
+        "category": "new_chat_controls",
+        "count": 17,
+        "nearest_regions": {
+          "navigation": 15,
+          "header": 2
+        },
+        "node_type": "button"
+      },
+      {
+        "category": "voice_affordance",
+        "count": 2,
+        "nearest_regions": {
+          "form": 1,
+          "other": 1
+        },
+        "node_type": "mixed"
+      }
+    ],
+    "caveat": "Counts are matched label occurrences, not distinct working capabilities. Actions, click handlers and successful outcomes were not recorded. Unmatched words do not imply absent controls."
+  }
 }

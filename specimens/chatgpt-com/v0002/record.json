@@ -6365,6 +6365,38 @@
         "source_report": "chat_source_signals.json",
         "network_stream_function_scopes": 5
       }
+    },
+    {
+      "id": "chat-composer-editor",
+      "kind": "DOMRegion",
+      "name": "Editable chat composer surface",
+      "description": "One contenteditable textbox lies within the form inside main. Input handling and message submission are not observed.",
+      "properties": {
+        "contenteditable_elements": 1,
+        "nearest_region": "form"
+      },
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-069",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "chat-message-action-controls",
+      "kind": "Interaction",
+      "name": "Main-region message action controls",
+      "description": "Main-region button label categories include edit and regenerate. Exact message ownership and effects are unobserved.",
+      "properties": {
+        "edit_related_buttons": 4,
+        "regenerate_related_buttons": 4
+      },
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-069",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "relationships": [
@@ -9975,6 +10007,28 @@
         "evidence_ref": "E2-068",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "from": "page-region-composer",
+      "to": "chat-composer-editor",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-069",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "from": "page-region-main",
+      "to": "chat-message-action-controls",
+      "predicate": "contains",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-069",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "findings": [
@@ -10655,6 +10709,16 @@
         "evidence_class": "observed_static",
         "confidence": "high",
         "evidence_ref": "E2-068",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-069",
+      "statement": "The saved document has one contenteditable textbox within the main form and four file inputs. Four buttons in the main region carry edit-related label indicators, four carry regeneration indicators, eight carry copy indicators, and seventeen new-chat indicators occur across navigation and headers. These are matched attribute labels, not observed action outcomes or distinct functional controls.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-069",
         "source_scope": "saved_archive"
       }
     }
