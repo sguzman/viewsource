@@ -126,6 +126,16 @@
       "from": "decoded_update_processor",
       "to": "message_update_callback",
       "kind": "static_callback_wiring"
+    },
+    {
+      "from": "message_update_callback",
+      "to": "message_batch_or_replay",
+      "kind": "conditional_client_flow"
+    },
+    {
+      "from": "message_batch_or_replay",
+      "to": "client_graph_mutation_helper",
+      "kind": "static_imported_helper_call"
     }
   ],
   "websocket_stream_item_observation": {
@@ -143,7 +153,7 @@
     "The generation dispatcher directly calls the completion-stream service and connects decoded events and recovery callbacks."
   ],
   "still_unresolved": [
-    "Trace the imported event processor's internal accumulator and exact data mutation path from onUpdate into selected-message and mapping state.",
+    "Trace the imported client-state graph mutation helper's implementation, including selected-node and fallback-parent update rules.",
     "Trace callback implementations from transport decoded-event callbacks into message reducers, selectors and visible conversation UI.",
     "Resolve whether request-layer transport fallback and resumption are gated by runtime settings.",
     "Distinguish cancellation of local rendering, local request handlers and server-side generation.",
@@ -210,5 +220,45 @@
       }
     ],
     "verification_boundary": "These connections are directly visible within the captured generation-dispatch routine, but the implementation inside the event processor's imported class and final UI state reducer still require separate examination."
+  },
+  "message_state_write_pipeline": {
+    "source_ref": "R-JS-018",
+    "evidence_class": "observed_static",
+    "live_state_changes_observed": false,
+    "exported_processor_role": "decoded_generation_event_processor",
+    "source_steps": [
+      {
+        "stage": "decoded_update",
+        "detail": "The transport's decoded-event callback supplies events to the generation-scoped event processor."
+      },
+      {
+        "stage": "message_classification",
+        "detail": "The processor checks an update's type and places message-class updates on a separate path from markers, telemetry, and completion states."
+      },
+      {
+        "stage": "batch_or_replay",
+        "detail": "The submission path sends message updates through a batcher with an apply callback; a resume path may queue updates for replay when the message already exists locally."
+      },
+      {
+        "stage": "apply_message",
+        "detail": "The event processor's applyMessage method checks whether the current message placement is accepted before constructing a state-mutation closure."
+      },
+      {
+        "stage": "graph_mutation_helper",
+        "detail": "The closure delegates to an imported client-state helper with conversation context, the message, a preserve-current-turn flag, and an optional fallback parent identity."
+      }
+    ],
+    "message_writer_argument_roles": [
+      "conversation_context",
+      "message_object",
+      "preserve_selected_turn",
+      "fallback_parent_message"
+    ],
+    "not_yet_traced": [
+      "Complete implementation and invariants of the imported client graph-mutation helper.",
+      "Callers and conditions determining every batching and replay branch.",
+      "How message-map writes notify specific visible rendered components."
+    ],
+    "verification_boundary": "The captured event processor directly calls the imported helper with these argument roles. The helper's internal state mutation and any real runtime result require further source analysis or separate observation."
   }
 }
