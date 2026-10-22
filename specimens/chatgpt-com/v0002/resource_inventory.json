@@ -52,6 +52,15 @@
     },
     "AudioContext_term": {
       "asset_files": 5
+    },
+    "service-worker": {
+      "asset_files": 1
+    },
+    "react-runtime": {
+      "asset_files": 2
+    },
+    "worker-construction": {
+      "asset_files": 8
     }
   },
   "stylesheet_indicators": {
@@ -74,7 +83,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 286092
+      "bytes": 286092,
+      "code_indicators": []
     },
     {
       "id": "R-JS-002",
@@ -84,7 +94,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 5756
+      "bytes": 5756,
+      "code_indicators": []
     },
     {
       "id": "R-JS-003",
@@ -94,7 +105,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 219486
+      "bytes": 219486,
+      "code_indicators": [
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-004",
@@ -104,7 +118,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1109107
+      "bytes": 1109107,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-005",
@@ -114,7 +132,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 53376
+      "bytes": 53376,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-006",
@@ -124,7 +145,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 573
+      "bytes": 573,
+      "code_indicators": []
     },
     {
       "id": "R-JS-007",
@@ -134,7 +156,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 653675
+      "bytes": 653675,
+      "code_indicators": [
+        "client-storage",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-008",
@@ -144,7 +170,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 100233
+      "bytes": 100233,
+      "code_indicators": []
     },
     {
       "id": "R-JS-009",
@@ -154,7 +181,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 75251
+      "bytes": 75251,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-010",
@@ -164,7 +194,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 366407
+      "bytes": 366407,
+      "code_indicators": []
     },
     {
       "id": "R-JS-011",
@@ -174,7 +205,13 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 2179367
+      "bytes": 2179367,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage",
+        "dynamic-import",
+        "react-runtime"
+      ]
     },
     {
       "id": "R-JS-012",
@@ -184,7 +221,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 187683
+      "bytes": 187683,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-013",
@@ -194,7 +234,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 573954
+      "bytes": 573954,
+      "code_indicators": [
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-014",
@@ -204,7 +247,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 40605
+      "bytes": 40605,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-015",
@@ -214,7 +260,12 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1257698
+      "bytes": 1257698,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-websocket",
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-016",
@@ -224,7 +275,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 239517
+      "bytes": 239517,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-017",
@@ -234,7 +289,12 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 428761
+      "bytes": 428761,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-websocket",
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-018",
@@ -244,7 +304,14 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 2103147
+      "bytes": 2103147,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-websocket",
+        "service-worker",
+        "client-storage",
+        "audio-processing"
+      ]
     },
     {
       "id": "R-JS-019",
@@ -254,7 +321,13 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1230826
+      "bytes": 1230826,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage",
+        "audio-processing",
+        "wasm-reference"
+      ]
     },
     {
       "id": "R-JS-020",
@@ -264,7 +337,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 98723
+      "bytes": 98723,
+      "code_indicators": [
+        "network-fetch",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-021",
@@ -274,7 +351,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 472940
+      "bytes": 472940,
+      "code_indicators": [
+        "client-storage",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-022",
@@ -284,7 +365,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 39783
+      "bytes": 39783,
+      "code_indicators": []
     },
     {
       "id": "R-JS-023",
@@ -294,7 +376,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 244
+      "bytes": 244,
+      "code_indicators": []
     },
     {
       "id": "R-JS-024",
@@ -304,7 +387,12 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1763198
+      "bytes": 1763198,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage",
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-025",
@@ -314,7 +402,14 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 2121464
+      "bytes": 2121464,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-websocket",
+        "client-storage",
+        "realtime-webrtc",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-026",
@@ -324,7 +419,13 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 546942
+      "bytes": 546942,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-webrtc",
+        "audio-processing",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-027",
@@ -334,7 +435,14 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 2042380
+      "bytes": 2042380,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-websocket",
+        "client-storage",
+        "audio-processing",
+        "wasm-reference"
+      ]
     },
     {
       "id": "R-JS-028",
@@ -344,7 +452,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 89478
+      "bytes": 89478,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-029",
@@ -354,7 +465,14 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 736905
+      "bytes": 736905,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-websocket",
+        "client-storage",
+        "react-runtime",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-030",
@@ -364,7 +482,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 7843
+      "bytes": 7843,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-031",
@@ -374,7 +495,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 25083
+      "bytes": 25083,
+      "code_indicators": [
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-032",
@@ -384,7 +508,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 105875
+      "bytes": 105875,
+      "code_indicators": []
     },
     {
       "id": "R-JS-033",
@@ -394,7 +519,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 5620
+      "bytes": 5620,
+      "code_indicators": []
     },
     {
       "id": "R-JS-034",
@@ -404,7 +530,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 25071
+      "bytes": 25071,
+      "code_indicators": [
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-035",
@@ -414,7 +543,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 79609
+      "bytes": 79609,
+      "code_indicators": [
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-036",
@@ -424,7 +556,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 345
+      "bytes": 345,
+      "code_indicators": []
     },
     {
       "id": "R-JS-037",
@@ -434,7 +567,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 11228
+      "bytes": 11228,
+      "code_indicators": [
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-038",
@@ -444,7 +580,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 206
+      "bytes": 206,
+      "code_indicators": []
     },
     {
       "id": "R-JS-039",
@@ -454,7 +591,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 17370
+      "bytes": 17370,
+      "code_indicators": [
+        "realtime-websocket"
+      ]
     },
     {
       "id": "R-JS-040",
@@ -464,7 +604,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 43842
+      "bytes": 43842,
+      "code_indicators": []
     },
     {
       "id": "R-JS-041",
@@ -474,7 +615,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 70529
+      "bytes": 70529,
+      "code_indicators": []
     },
     {
       "id": "R-JS-042",
@@ -484,7 +626,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 68462
+      "bytes": 68462,
+      "code_indicators": []
     },
     {
       "id": "R-JS-043",
@@ -494,7 +637,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 46561
+      "bytes": 46561,
+      "code_indicators": []
     },
     {
       "id": "R-JS-044",
@@ -504,7 +648,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 125730
+      "bytes": 125730,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-045",
@@ -514,7 +661,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 448361
+      "bytes": 448361,
+      "code_indicators": []
     },
     {
       "id": "R-JS-046",
@@ -524,7 +672,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 51962
+      "bytes": 51962,
+      "code_indicators": []
     },
     {
       "id": "R-JS-047",
@@ -534,7 +683,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 53916
+      "bytes": 53916,
+      "code_indicators": []
     },
     {
       "id": "R-JS-048",
@@ -544,7 +694,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 49687
+      "bytes": 49687,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-049",
@@ -554,7 +707,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 58928
+      "bytes": 58928,
+      "code_indicators": []
     },
     {
       "id": "R-JS-050",
@@ -564,7 +718,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 41871
+      "bytes": 41871,
+      "code_indicators": []
     },
     {
       "id": "R-JS-051",
@@ -574,7 +729,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 42657
+      "bytes": 42657,
+      "code_indicators": []
     },
     {
       "id": "R-JS-052",
@@ -584,7 +740,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 48275
+      "bytes": 48275,
+      "code_indicators": []
     },
     {
       "id": "R-JS-053",
@@ -594,7 +751,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 41560
+      "bytes": 41560,
+      "code_indicators": []
     },
     {
       "id": "R-JS-054",
@@ -604,7 +762,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 60379
+      "bytes": 60379,
+      "code_indicators": []
     },
     {
       "id": "R-JS-055",
@@ -614,7 +773,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 66593
+      "bytes": 66593,
+      "code_indicators": []
     },
     {
       "id": "R-JS-056",
@@ -624,7 +784,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 106591
+      "bytes": 106591,
+      "code_indicators": []
     },
     {
       "id": "R-JS-057",
@@ -634,7 +795,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 54298
+      "bytes": 54298,
+      "code_indicators": []
     },
     {
       "id": "R-JS-058",
@@ -644,7 +806,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 47136
+      "bytes": 47136,
+      "code_indicators": []
     },
     {
       "id": "R-JS-059",
@@ -654,7 +817,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 84799
+      "bytes": 84799,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-060",
@@ -664,7 +830,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 70996
+      "bytes": 70996,
+      "code_indicators": []
     },
     {
       "id": "R-JS-061",
@@ -674,7 +841,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 55582
+      "bytes": 55582,
+      "code_indicators": []
     },
     {
       "id": "R-JS-062",
@@ -684,7 +852,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 54616
+      "bytes": 54616,
+      "code_indicators": []
     },
     {
       "id": "R-JS-063",
@@ -694,7 +863,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 523765
+      "bytes": 523765,
+      "code_indicators": []
     },
     {
       "id": "R-JS-064",
@@ -704,7 +874,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 48058
+      "bytes": 48058,
+      "code_indicators": []
     },
     {
       "id": "R-JS-065",
@@ -714,7 +885,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 113242
+      "bytes": 113242,
+      "code_indicators": []
     },
     {
       "id": "R-JS-066",
@@ -724,7 +896,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 100778
+      "bytes": 100778,
+      "code_indicators": []
     },
     {
       "id": "R-JS-067",
@@ -734,7 +907,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 80833
+      "bytes": 80833,
+      "code_indicators": []
     },
     {
       "id": "R-JS-068",
@@ -744,7 +918,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 48890
+      "bytes": 48890,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-069",
@@ -754,7 +931,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 608800
+      "bytes": 608800,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-070",
@@ -764,7 +945,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 31672
+      "bytes": 31672,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-071",
@@ -774,7 +958,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 57931
+      "bytes": 57931,
+      "code_indicators": []
     },
     {
       "id": "R-JS-072",
@@ -784,7 +969,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 251168
+      "bytes": 251168,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-073",
@@ -794,7 +982,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 5106
+      "bytes": 5106,
+      "code_indicators": []
     },
     {
       "id": "R-JS-074",
@@ -804,7 +993,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 8680
+      "bytes": 8680,
+      "code_indicators": []
     },
     {
       "id": "R-JS-075",
@@ -814,7 +1004,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1332
+      "bytes": 1332,
+      "code_indicators": []
     },
     {
       "id": "R-JS-076",
@@ -824,7 +1015,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1923
+      "bytes": 1923,
+      "code_indicators": []
     },
     {
       "id": "R-JS-077",
@@ -834,7 +1026,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 16929
+      "bytes": 16929,
+      "code_indicators": []
     },
     {
       "id": "R-JS-078",
@@ -844,7 +1037,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 4721
+      "bytes": 4721,
+      "code_indicators": []
     },
     {
       "id": "R-JS-079",
@@ -854,7 +1048,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 5802
+      "bytes": 5802,
+      "code_indicators": []
     },
     {
       "id": "R-JS-080",
@@ -864,7 +1059,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 36660
+      "bytes": 36660,
+      "code_indicators": []
     },
     {
       "id": "R-JS-081",
@@ -874,7 +1070,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 924
+      "bytes": 924,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-082",
@@ -884,7 +1083,13 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 62829
+      "bytes": 62829,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage",
+        "realtime-webrtc",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-083",
@@ -894,7 +1099,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 58715
+      "bytes": 58715,
+      "code_indicators": [
+        "audio-processing",
+        "worker-construction"
+      ]
     },
     {
       "id": "R-JS-084",
@@ -904,7 +1113,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 247
+      "bytes": 247,
+      "code_indicators": []
     },
     {
       "id": "R-JS-085",
@@ -914,7 +1124,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 720
+      "bytes": 720,
+      "code_indicators": []
     },
     {
       "id": "R-JS-086",
@@ -924,7 +1135,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 38086
+      "bytes": 38086,
+      "code_indicators": []
     },
     {
       "id": "R-JS-087",
@@ -934,7 +1146,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 97735
+      "bytes": 97735,
+      "code_indicators": []
     },
     {
       "id": "R-JS-088",
@@ -944,7 +1157,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 54474
+      "bytes": 54474,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-089",
@@ -954,7 +1170,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 16289
+      "bytes": 16289,
+      "code_indicators": []
     },
     {
       "id": "R-JS-090",
@@ -964,7 +1181,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 16289
+      "bytes": 16289,
+      "code_indicators": []
     },
     {
       "id": "R-JS-091",
@@ -974,7 +1192,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 86759
+      "bytes": 86759,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-092",
@@ -984,7 +1205,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 17503
+      "bytes": 17503,
+      "code_indicators": []
     },
     {
       "id": "R-JS-093",
@@ -994,7 +1216,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 3645
+      "bytes": 3645,
+      "code_indicators": [
+        "realtime-webrtc"
+      ]
     },
     {
       "id": "R-JS-094",
@@ -1004,7 +1229,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 95147
+      "bytes": 95147,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-095",
@@ -1014,7 +1242,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 4455
+      "bytes": 4455,
+      "code_indicators": []
     },
     {
       "id": "R-JS-096",
@@ -1024,7 +1253,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 11700
+      "bytes": 11700,
+      "code_indicators": []
     },
     {
       "id": "R-JS-097",
@@ -1034,7 +1264,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 12101
+      "bytes": 12101,
+      "code_indicators": []
     },
     {
       "id": "R-JS-098",
@@ -1044,7 +1275,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 9895
+      "bytes": 9895,
+      "code_indicators": []
     },
     {
       "id": "R-JS-099",
@@ -1054,7 +1286,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1324
+      "bytes": 1324,
+      "code_indicators": []
     },
     {
       "id": "R-JS-100",
@@ -1064,7 +1297,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 30200
+      "bytes": 30200,
+      "code_indicators": []
     },
     {
       "id": "R-JS-101",
@@ -1074,7 +1308,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 10110
+      "bytes": 10110,
+      "code_indicators": []
     },
     {
       "id": "R-JS-102",
@@ -1084,7 +1319,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 92102
+      "bytes": 92102,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-103",
@@ -1094,7 +1332,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 11167
+      "bytes": 11167,
+      "code_indicators": []
     },
     {
       "id": "R-JS-104",
@@ -1104,7 +1343,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 14011
+      "bytes": 14011,
+      "code_indicators": []
     },
     {
       "id": "R-JS-105",
@@ -1114,7 +1354,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 2088
+      "bytes": 2088,
+      "code_indicators": []
     },
     {
       "id": "R-JS-106",
@@ -1124,7 +1365,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 505
+      "bytes": 505,
+      "code_indicators": []
     },
     {
       "id": "R-JS-107",
@@ -1134,7 +1376,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 3772
+      "bytes": 3772,
+      "code_indicators": []
     },
     {
       "id": "R-JS-108",
@@ -1144,7 +1387,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 40804
+      "bytes": 40804,
+      "code_indicators": []
     },
     {
       "id": "R-JS-109",
@@ -1154,7 +1398,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 69535
+      "bytes": 69535,
+      "code_indicators": []
     },
     {
       "id": "R-JS-110",
@@ -1164,7 +1409,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 127255
+      "bytes": 127255,
+      "code_indicators": [
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-JS-111",
@@ -1174,7 +1422,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 125214
+      "bytes": 125214,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-112",
@@ -1184,7 +1435,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 23138
+      "bytes": 23138,
+      "code_indicators": []
     },
     {
       "id": "R-JS-113",
@@ -1194,7 +1446,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 41665
+      "bytes": 41665,
+      "code_indicators": []
     },
     {
       "id": "R-JS-114",
@@ -1204,7 +1457,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 251290
+      "bytes": 251290,
+      "code_indicators": []
     },
     {
       "id": "R-JS-115",
@@ -1214,7 +1468,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 211538
+      "bytes": 211538,
+      "code_indicators": []
     },
     {
       "id": "R-JS-116",
@@ -1224,7 +1479,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 38353
+      "bytes": 38353,
+      "code_indicators": []
     },
     {
       "id": "R-JS-117",
@@ -1234,7 +1490,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 49909
+      "bytes": 49909,
+      "code_indicators": []
     },
     {
       "id": "R-JS-118",
@@ -1244,7 +1501,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 321121
+      "bytes": 321121,
+      "code_indicators": []
     },
     {
       "id": "R-JS-119",
@@ -1254,7 +1512,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 36925
+      "bytes": 36925,
+      "code_indicators": []
     },
     {
       "id": "R-JS-120",
@@ -1264,7 +1523,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1652978
+      "bytes": 1652978,
+      "code_indicators": []
     },
     {
       "id": "R-JS-121",
@@ -1274,7 +1534,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 47784
+      "bytes": 47784,
+      "code_indicators": []
     },
     {
       "id": "R-JS-122",
@@ -1284,7 +1545,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 58807
+      "bytes": 58807,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-123",
@@ -1294,7 +1558,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 47425
+      "bytes": 47425,
+      "code_indicators": []
     },
     {
       "id": "R-JS-124",
@@ -1304,7 +1569,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 43978
+      "bytes": 43978,
+      "code_indicators": []
     },
     {
       "id": "R-JS-125",
@@ -1314,7 +1580,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 70133
+      "bytes": 70133,
+      "code_indicators": [
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-126",
@@ -1324,7 +1593,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 169441
+      "bytes": 169441,
+      "code_indicators": []
     },
     {
       "id": "R-JS-127",
@@ -1334,7 +1604,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 50473
+      "bytes": 50473,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-128",
@@ -1344,7 +1617,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 10473
+      "bytes": 10473,
+      "code_indicators": []
     },
     {
       "id": "R-JS-129",
@@ -1354,7 +1628,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 68395
+      "bytes": 68395,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-130",
@@ -1364,7 +1641,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 774
+      "bytes": 774,
+      "code_indicators": []
     },
     {
       "id": "R-JS-131",
@@ -1374,7 +1652,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 970
+      "bytes": 970,
+      "code_indicators": []
     },
     {
       "id": "R-JS-132",
@@ -1384,7 +1663,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 27990
+      "bytes": 27990,
+      "code_indicators": []
     },
     {
       "id": "R-JS-133",
@@ -1394,7 +1674,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 342
+      "bytes": 342,
+      "code_indicators": []
     },
     {
       "id": "R-JS-134",
@@ -1404,7 +1685,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 65800
+      "bytes": 65800,
+      "code_indicators": []
     },
     {
       "id": "R-JS-135",
@@ -1414,7 +1696,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 30563
+      "bytes": 30563,
+      "code_indicators": [
+        "network-fetch"
+      ]
     },
     {
       "id": "R-JS-136",
@@ -1424,7 +1709,10 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 120845
+      "bytes": 120845,
+      "code_indicators": [
+        "realtime-webrtc"
+      ]
     },
     {
       "id": "R-JS-137",
@@ -1434,7 +1722,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 62177
+      "bytes": 62177,
+      "code_indicators": []
     },
     {
       "id": "R-JS-138",
@@ -1444,7 +1733,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 124284
+      "bytes": 124284,
+      "code_indicators": []
     },
     {
       "id": "R-JS-139",
@@ -1454,7 +1744,11 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 167168
+      "bytes": 167168,
+      "code_indicators": [
+        "network-fetch",
+        "client-storage"
+      ]
     },
     {
       "id": "R-JS-140",
@@ -1464,7 +1758,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1013
+      "bytes": 1013,
+      "code_indicators": []
     },
     {
       "id": "R-JS-141",
@@ -1474,7 +1769,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 23721
+      "bytes": 23721,
+      "code_indicators": []
     },
     {
       "id": "R-JS-142",
@@ -1484,7 +1780,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 48556
+      "bytes": 48556,
+      "code_indicators": []
     },
     {
       "id": "R-JS-143",
@@ -1494,7 +1791,8 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1180
+      "bytes": 1180,
+      "code_indicators": []
     },
     {
       "id": "R-JS-144",
@@ -1504,7 +1802,13 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 40677
+      "bytes": 40677,
+      "code_indicators": [
+        "network-fetch",
+        "realtime-websocket",
+        "wasm-reference",
+        "dynamic-import"
+      ]
     },
     {
       "id": "R-CSS-001",
@@ -1514,7 +1818,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 1752008
+      "bytes": 1752008,
+      "style_metrics": {
+        "media": 451,
+        "supports": 670,
+        "container": 472,
+        "font_face": 26,
+        "keyframes": 85,
+        "custom_properties": 5672,
+        "variable_uses": 17432,
+        "focus_visible": 429
+      }
     },
     {
       "id": "R-CSS-002",
@@ -1524,7 +1838,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 10696
+      "bytes": 10696,
+      "style_metrics": {
+        "media": 5,
+        "supports": 0,
+        "container": 4,
+        "font_face": 0,
+        "keyframes": 0,
+        "custom_properties": 0,
+        "variable_uses": 105,
+        "focus_visible": 8
+      }
     },
     {
       "id": "R-CSS-003",
@@ -1534,7 +1858,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 27818
+      "bytes": 27818,
+      "style_metrics": {
+        "media": 10,
+        "supports": 4,
+        "container": 3,
+        "font_face": 0,
+        "keyframes": 0,
+        "custom_properties": 92,
+        "variable_uses": 185,
+        "focus_visible": 0
+      }
     },
     {
       "id": "R-CSS-004",
@@ -1544,7 +1878,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 4932
+      "bytes": 4932,
+      "style_metrics": {
+        "media": 0,
+        "supports": 0,
+        "container": 0,
+        "font_face": 0,
+        "keyframes": 0,
+        "custom_properties": 8,
+        "variable_uses": 63,
+        "focus_visible": 0
+      }
     },
     {
       "id": "R-CSS-005",
@@ -1554,7 +1898,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 235
+      "bytes": 235,
+      "style_metrics": {
+        "media": 0,
+        "supports": 0,
+        "container": 0,
+        "font_face": 0,
+        "keyframes": 1,
+        "custom_properties": 0,
+        "variable_uses": 0,
+        "focus_visible": 0
+      }
     },
     {
       "id": "R-CSS-006",
@@ -1564,7 +1918,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 28594
+      "bytes": 28594,
+      "style_metrics": {
+        "media": 11,
+        "supports": 27,
+        "container": 0,
+        "font_face": 0,
+        "keyframes": 0,
+        "custom_properties": 48,
+        "variable_uses": 486,
+        "focus_visible": 4
+      }
     },
     {
       "id": "R-CSS-007",
@@ -1574,7 +1938,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 269
+      "bytes": 269,
+      "style_metrics": {
+        "media": 0,
+        "supports": 0,
+        "container": 0,
+        "font_face": 0,
+        "keyframes": 1,
+        "custom_properties": 0,
+        "variable_uses": 1,
+        "focus_visible": 0
+      }
     },
     {
       "id": "R-CSS-008",
@@ -1584,7 +1958,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 28586
+      "bytes": 28586,
+      "style_metrics": {
+        "media": 17,
+        "supports": 2,
+        "container": 2,
+        "font_face": 0,
+        "keyframes": 0,
+        "custom_properties": 112,
+        "variable_uses": 385,
+        "focus_visible": 2
+      }
     },
     {
       "id": "R-CSS-009",
@@ -1594,7 +1978,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 88151
+      "bytes": 88151,
+      "style_metrics": {
+        "media": 18,
+        "supports": 2,
+        "container": 3,
+        "font_face": 0,
+        "keyframes": 31,
+        "custom_properties": 441,
+        "variable_uses": 632,
+        "focus_visible": 9
+      }
     },
     {
       "id": "R-CSS-010",
@@ -1604,7 +1998,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 109488
+      "bytes": 109488,
+      "style_metrics": {
+        "media": 25,
+        "supports": 0,
+        "container": 3,
+        "font_face": 0,
+        "keyframes": 9,
+        "custom_properties": 735,
+        "variable_uses": 1208,
+        "focus_visible": 13
+      }
     },
     {
       "id": "R-CSS-011",
@@ -1614,7 +2018,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 44114
+      "bytes": 44114,
+      "style_metrics": {
+        "media": 11,
+        "supports": 4,
+        "container": 2,
+        "font_face": 0,
+        "keyframes": 2,
+        "custom_properties": 136,
+        "variable_uses": 456,
+        "focus_visible": 7
+      }
     },
     {
       "id": "R-CSS-012",
@@ -1624,7 +2038,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 236
+      "bytes": 236,
+      "style_metrics": {
+        "media": 0,
+        "supports": 0,
+        "container": 0,
+        "font_face": 0,
+        "keyframes": 0,
+        "custom_properties": 0,
+        "variable_uses": 0,
+        "focus_visible": 0
+      }
     },
     {
       "id": "R-CSS-013",
@@ -1634,7 +2058,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 7975
+      "bytes": 7975,
+      "style_metrics": {
+        "media": 4,
+        "supports": 0,
+        "container": 0,
+        "font_face": 0,
+        "keyframes": 1,
+        "custom_properties": 31,
+        "variable_uses": 95,
+        "focus_visible": 0
+      }
     },
     {
       "id": "R-CSS-014",
@@ -1644,7 +2078,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 87813
+      "bytes": 87813,
+      "style_metrics": {
+        "media": 23,
+        "supports": 2,
+        "container": 4,
+        "font_face": 0,
+        "keyframes": 16,
+        "custom_properties": 392,
+        "variable_uses": 705,
+        "focus_visible": 10
+      }
     },
     {
       "id": "R-CSS-015",
@@ -1654,7 +2098,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 8281
+      "bytes": 8281,
+      "style_metrics": {
+        "media": 0,
+        "supports": 3,
+        "container": 1,
+        "font_face": 0,
+        "keyframes": 0,
+        "custom_properties": 11,
+        "variable_uses": 86,
+        "focus_visible": 0
+      }
     },
     {
       "id": "R-CSS-016",
@@ -1664,7 +2118,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 10798
+      "bytes": 10798,
+      "style_metrics": {
+        "media": 3,
+        "supports": 0,
+        "container": 0,
+        "font_face": 0,
+        "keyframes": 1,
+        "custom_properties": 1,
+        "variable_uses": 78,
+        "focus_visible": 1
+      }
     },
     {
       "id": "R-CSS-017",
@@ -1674,7 +2138,17 @@
       "available_in_capture": true,
       "content_committed": false,
       "analysis_status": "captured_source_not_redistributed",
-      "bytes": 130634
+      "bytes": 130634,
+      "style_metrics": {
+        "media": 49,
+        "supports": 21,
+        "container": 10,
+        "font_face": 0,
+        "keyframes": 17,
+        "custom_properties": 456,
+        "variable_uses": 1352,
+        "focus_visible": 14
+      }
     },
     {
       "id": "R-FONT-001",
@@ -2412,5 +2886,27 @@
     "The resource inventory reflects captured files, not all resources the website can serve or all code executed in this session.",
     "Code indicators are static text-pattern matches that require further review for actual call paths.",
     "The ZIP, manifest URLs, original resource filenames, user-linked page content and source binaries are not part of this public repository."
+  ],
+  "code_indicator_vocabulary": [
+    "network-fetch",
+    "realtime-websocket",
+    "service-worker",
+    "client-storage",
+    "realtime-webrtc",
+    "audio-processing",
+    "wasm-reference",
+    "dynamic-import",
+    "react-runtime",
+    "worker-construction"
+  ],
+  "style_metric_vocabulary": [
+    "media",
+    "supports",
+    "container",
+    "font_face",
+    "keyframes",
+    "custom_properties",
+    "variable_uses",
+    "focus_visible"
   ]
 }

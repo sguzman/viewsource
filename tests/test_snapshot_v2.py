@@ -25,4 +25,7 @@ class SecondSnapshot(unittest.TestCase):
         self.assertTrue(all(not(set(a)&{"path","url","source","text","filename"}) for a in inv["resources"]))
         self.assertEqual(len(set(a["id"] for a in inv["resources"])),234)
         self.assertEqual(sum(a["bytes"] for a in inv["resources"]),32315693)
+        self.assertEqual(sum(bool(a.get("code_indicators")) for a in inv["resources"] if a["category"] == "script") > 0, True)
+        self.assertEqual(sum(a.get("style_metrics",{}).get("media",0) for a in inv["resources"]),627)
+        self.assertEqual(sum("network-fetch" in a.get("code_indicators",[]) for a in inv["resources"]),30)
 if __name__=="__main__":unittest.main()

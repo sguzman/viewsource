@@ -193,7 +193,15 @@ def validate() -> list[str]:
                             f"Unsupported resource origin class: {reference}")
                 else:
                     permitted = {"id","category","ordinal","format","bytes","available_in_capture","content_committed","analysis_status"}
-                    require(set(row) == permitted, f"Unreviewed v2 resource fields: {reference}")
+                    optional_fields = {"code_indicators","style_metrics"}
+                    require(permitted <= set(row) and set(row) <= permitted | optional_fields,
+                            f"Unreviewed v2 resource fields: {reference}")
+                    require(set(row.get("code_indicators", [])) <= set(doc.get("code_indicator_vocabulary", [])),
+                            f"Unrecognized static code indicator: {reference}")
+                    require(set(row.get("style_metrics", {})) <= set(doc.get("style_metric_vocabulary", [])),
+                            f"Unrecognized static CSS metric: {reference}")
+                    require(all(isinstance(v, int) and v >= 0 for v in row.get("style_metrics", {}).values()),
+                            f"Invalid CSS metric values: {reference}")
                     require(row["available_in_capture"] is True and row["content_committed"] is False,
                             f"Resource source publication prohibited: {reference}")
                     require(row["category"] in {"script","stylesheet","font","image","html"},
@@ -207,6 +215,14 @@ def validate() -> list[str]:
                         f"Capture resource bytes mismatch: {reference}")
                 require(sum(row["bytes"] for row in entries) == doc["totals"]["bytes_captured"],
                         f"Per-resource bytes do not sum to capture total: {reference}")
+                for k, v in doc.get("code_indicators", {}).items():
+                    if k in doc.get("code_indicator_vocabulary", []):
+                        require(sum(k in row.get("code_indicators", []) for row in entries) == v["asset_files"],
+                                f"Code indicator count mismatch: {reference}")
+                for k, v in doc.get("stylesheet_indicators", {}).items():
+                    if k in doc.get("style_metric_vocabulary", []):
+                        require(sum(row.get("style_metrics", {}).get(k, 0) for row in entries) == v,
+                                f"Stylesheet indicator count mismatch: {reference}")
 
     gallery = read("gallery/index.json")
     require(gallery["format_version"] == 1, "Gallery format")
