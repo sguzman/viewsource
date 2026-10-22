@@ -215,6 +215,30 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            static_ast_path = ROOT / (base + "/chat_ast_followup.json")
+            if static_ast_path.is_file():
+                ast_study = read(base + "/chat_ast_followup.json")
+                if ast_study["specimen_id"] != item["id"] or ast_study["version"] != number:
+                    raise ValueError("Chat AST follow-up identity mismatch")
+                visuals["chat_ast_followup"] = {
+                    "status": ast_study["review_status"],
+                    "source_scope": ast_study["source_scope"],
+                    "verified_live_behavior": ast_study["live_behavior_verified"],
+                    "parsed_bundles": ast_study["ast_census"]["parsed_javascript_bundles"],
+                    "candidate_functions": ast_study["structural_candidates"]["candidate_function_nodes"],
+                    "candidate_bundles": ast_study["structural_candidates"]["source_bundles_with_candidate_functions"],
+                    "cooccurrences": [
+                        {"label": key.replace("_and_", " + ").replace("_", " "),
+                         "count": count}
+                        for key, count in ast_study["member_property_cooccurrence_functions"].items()
+                    ],
+                    "member_writes": [
+                        {"label": name, "count": count}
+                        for name, count in ast_study["member_property_assignment_functions"].items()
+                    ],
+                    "unresolved": ast_study["unresolved"],
+                    "limitations": ast_study["limitations"],
+                }
             export_format_path = ROOT / (base + "/export_format_research.json")
             if export_format_path.is_file():
                 research = read(base + "/export_format_research.json")
