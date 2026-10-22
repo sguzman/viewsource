@@ -227,3 +227,13 @@ ZIP is read under a temporary private directory; its scripts are never
 executed or copied into the repository. For this specimen, function
 ordinals are one-based indices in a deterministic AST pre-order within
 captured JavaScript resources sorted by original archive name.
+
+## Reviewed static module export bindings
+
+AST-backed source review also identified four captured module export getters
+exposing the selected-path, predicate-limited ancestry, conversation-refetch,
+and branch operations. Each relationship is recorded by module factory and
+function ordinal in the sanitized implementation-trace report. The export
+bindings establish that the relevant functions are exposed within these
+captured bundles; the identity and actual execution of importing UI code
+remain open research tasks, not established runtime behavior.
