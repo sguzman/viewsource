@@ -19,6 +19,22 @@ KEY_PATTERNS = [
     re.compile(r"\b[A-Za-z0-9._%+-]+@(?:gmail|yahoo|hotmail|outlook)\.[A-Za-z]{2,}\b", re.I)
 ]
 
+# Catch common public-account identity formats and credential-bearing URLs.
+# This checks text shapes, not user-specific values. Real personal identifiers
+# must never be used as test fixtures or scanner examples.
+SENSITIVE_PATTERNS = KEY_PATTERNS + [
+    re.compile(r"\buser-[A-Za-z0-9_-]{16,}\b"),
+    re.compile(r"\borg-[A-Za-z0-9_-]{16,}\b"),
+    re.compile(r"\bsk-(?:proj-)?[A-Za-z0-9_-]{20,}\b"),
+    re.compile(r"\beyJ[A-Za-z0-9_-]{16,}\.[A-Za-z0-9_-]{16,}\.[A-Za-z0-9_-]{12,}\b"),
+    re.compile(r'https?://[^\s"<>]+[?&](?:access_token|session|api_key|auth|token|code)=[^\s&#"<>]+', re.I),
+]
+
+
+def contains_sensitive_shape(content: str) -> bool:
+    """Check patterns without echoing matched material into logs."""
+    return any(signature.search(content) is not None for signature in SENSITIVE_PATTERNS)
+
 
 def scan() -> list[str]:
     listed = subprocess.run(["git", "ls-files", "-z"], cwd=ROOT, capture_output=True, check=True).stdout
@@ -46,10 +62,8 @@ def scan() -> list[str]:
         if path.suffix.lower() not in {".py", ".md", ".json", ".yaml", ".yml", ".toml", ".txt", ".gitignore", ".html", ".js", ".css"} and path.name not in {"LICENSE", ".gitignore"}:
             continue
         content = path.read_text(encoding="utf-8", errors="replace")
-        for signature in KEY_PATTERNS:
-            if signature.search(content):
-                failures.append(f"Potential credential content: {normalized}")
-                break
+        if contains_sensitive_shape(content):
+            failures.append(f"Potential secret or private identifier: {normalized}")
     return failures
 
 
