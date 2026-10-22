@@ -1,4 +1,17 @@
 {
   "format_version": 1,
-  "entries": []
+  "entries": [
+    {
+      "id": "chatgpt-com-v0001",
+      "specimen_id": "chatgpt-com",
+      "version": 1,
+      "title": "ChatGPT saved-page structural study",
+      "description": "Evidence-bounded ontology and original technical dossier from a single saved HTML page; four research dimensions remain unobservable.",
+      "path": "specimens/chatgpt-com/v0001/analysis.md",
+      "record": "specimens/chatgpt-com/v0001/record.json",
+      "resource_inventory": "specimens/chatgpt-com/v0001/resource_inventory.json",
+      "provenance": "Original, sanitized research performed on an individually supplied saved-page snapshot; no source capture or third-party site assets republished.",
+      "license": "MIT (project-authored analysis only)"
+    }
+  ]
 }

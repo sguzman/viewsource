@@ -146,6 +146,23 @@ def validate() -> list[str]:
             for profile in ids:
                 require(task_groups[(specimen["id"], version, profile)] == 1, f"Missing profile task: {specimen['id']} v{version} {profile}")
 
+    # Ensure a reviewed current version is synchronized with its specimen
+    # status and that the research queue is genuinely terminal.
+    for specimen in specimens:
+        if not specimen["versions"]:
+            continue
+        slug = specimen["id"]
+        latest = specimen["current_version"]
+        record = read(f"specimens/{slug}/v{latest:04d}/record.json")
+        require((specimen["status"] == "reviewed") == (record["status"] == "reviewed"),
+                f"Specimen review status mismatch: {slug}")
+        if record["status"] == "reviewed":
+            require(all(value in {"analyzed", "not_observable"} for value in record["coverage"].values()),
+                    f"Reviewed version contains incomplete coverage: {slug}")
+            related = [t for t in tasks if t["specimen_id"] == slug and t["version"] == latest]
+            require(all(t["status"] in {"done", "not_observable"} for t in related),
+                    f"Reviewed version contains unfinished tasks: {slug}")
+
     # Optional sanitized resource inventory; captures that have only just been
     # processed may not have reached the detailed inventory research phase.
     for specimen in specimens:

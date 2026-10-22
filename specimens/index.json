@@ -4,7 +4,7 @@
     {
       "id": "chatgpt-com",
       "origin": "https://chatgpt.com",
-      "status": "researching",
+      "status": "reviewed",
       "current_version": 1,
       "versions": [
         1

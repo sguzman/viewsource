@@ -33,7 +33,7 @@ python3 scripts/validate.py
 python3 -m unittest discover -s tests -v
 ~~~
 
-The intake input path must point **outside** the repository. It is read only. For an HTML file, the same \`--input\` flag is used. Private inventory output is placed under ignored \`.work/\`; only controlled templates and task metadata are written to tracked paths. Review all generated public changes before pushing; automatic generation is not a publication-rights determination. \`process\` does not execute site scripts or request any network resources.
+The intake input path must point **outside** the repository. It is read only. For an HTML file, the same `--input` flag is used. Private inventory output is placed under ignored `.work/`; only controlled templates and task metadata are written to tracked paths. Review all generated public changes before pushing; automatic generation is not a publication-rights determination. `process` does not execute site scripts or request any network resources.
 
 ## Repository map
 
@@ -44,7 +44,7 @@ The intake input path must point **outside** the repository. It is read only. Fo
 | [schemas/](schemas/) | JSON schemas for version records and tasks |
 | [specimens/](specimens/README.md) | Approved research dossiers and immutable numbered versions |
 | [queues/](queues/README.md) | Task profiles and open research items |
-| [gallery/](gallery/README.md) | Human-readable gallery and machine-readable index (currently empty) |
+| [gallery/](gallery/README.md) | Human-readable gallery and machine-readable index |
 | [docs/](docs/RESEARCH.md) | Research, evidence, limitations, and versioning procedures |
 | [scripts/](scripts/) | Offline intake and validation |
 | [tarium.json](tarium.json) | Independent public-project resource manifest |
@@ -59,7 +59,7 @@ These are research **queues**, not automatic guarantees of complete observation.
 
 ## Current contents
 
-No website specimens have been supplied or analyzed. The gallery is intentionally empty.
+**One reviewed, evidence-bounded specimen:** [chatgpt.com v0001](specimens/chatgpt-com/v0001/analysis.md), with a [machine-readable ontology record](specimens/chatgpt-com/v0001/record.json), [31-entry sanitized resource inventory](specimens/chatgpt-com/v0001/resource_inventory.json), and [gallery entry](gallery/README.md). The first-capture task graph has 14 completed tasks and four explicitly unobservable tasks; no research tasks remain queued for v0001. This status does not imply full knowledge of the live website.
 
 ## License
 
