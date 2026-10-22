@@ -116,6 +116,16 @@
       "from": "generation_dispatcher",
       "to": "startCompletionStream",
       "kind": "scoped_service_method_call"
+    },
+    {
+      "from": "generation_dispatcher",
+      "to": "decoded_update_processor",
+      "kind": "static_callback_wiring"
+    },
+    {
+      "from": "decoded_update_processor",
+      "to": "message_update_callback",
+      "kind": "static_callback_wiring"
     }
   ],
   "websocket_stream_item_observation": {
@@ -133,8 +143,8 @@
     "The generation dispatcher directly calls the completion-stream service and connects decoded events and recovery callbacks."
   ],
   "still_unresolved": [
+    "Trace the imported event processor's internal accumulator and exact data mutation path from onUpdate into selected-message and mapping state.",
     "Trace callback implementations from transport decoded-event callbacks into message reducers, selectors and visible conversation UI.",
-    "Trace decoder outputs to message mapping reconciliation and rendered selected-message changes.",
     "Resolve whether request-layer transport fallback and resumption are gated by runtime settings.",
     "Distinguish cancellation of local rendering, local request handlers and server-side generation.",
     "Trace timeout/retry error classification into visible retry controls.",
@@ -172,5 +182,33 @@
       "selected_message_node"
     ],
     "verification_boundary": "The scoped-service call and callback wiring are present in saved client source. This does not establish executed runtime behavior, transport delivery, or authoritative server storage."
+  },
+  "decoded_update_pipeline": {
+    "source_ref": "R-JS-018",
+    "dispatcher_function_ordinal": 9032,
+    "evidence_class": "observed_static",
+    "sequence": [
+      {
+        "stage": "transport_decoded_event",
+        "relationship": "The generation dispatcher passes an event processor's onEvent method as the transport's onDecodedEvent callback."
+      },
+      {
+        "stage": "event_processor",
+        "relationship": "The event processor is constructed with a generation-scoped onUpdate callback and the current conversation context."
+      },
+      {
+        "stage": "message_update",
+        "relationship": "For updates classified as messages, the onUpdate callback dispatches message and model-message callbacks plus auxiliary tracking."
+      },
+      {
+        "stage": "message_marker",
+        "relationship": "For updates classified as message markers, the callback records coarse milestone timing and forwards markers to the render tracker."
+      },
+      {
+        "stage": "terminal_or_metadata",
+        "relationship": "Completion and statistics-class updates are handled in separate source branches rather than the ordinary message branch."
+      }
+    ],
+    "verification_boundary": "These connections are directly visible within the captured generation-dispatch routine, but the implementation inside the event processor's imported class and final UI state reducer still require separate examination."
   }
 }
