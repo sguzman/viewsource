@@ -210,3 +210,9 @@ The site's navigable research story connects observed DOM/landmark structures, d
 Precise React/component props and ownership, control-to-handler mapping, network contracts, authentication enforcement, actual uploads, state transitions, media operations, assistive-technology interaction and like-for-like release changes are **not observable from this static ZIP**. They are recorded explicitly as unknown or unobservable, not counted as completed product reverse engineering.
 
 **Final v0002 task audit:** 37 deep tasks supported within static scope, twenty deep tasks not observable. Together with the first pass, the version has **69 completed, 22 explicitly unobservable, and zero queued** tasks. The record is reviewed **for the supplied offline evidence only**. Further investigation of the live product would require new, separately scoped and authorized evidence.
+
+## Reopened static implementation research — 2026-10-22
+
+The earlier source-limited review remains preserved as historical evidence, but a closer AST investigation revealed that implementation tracing had not been exhausted. The original 144 JavaScript assets have therefore been made the basis for 33 additional research tasks on this same capture version, without claiming a new snapshot. Existing conclusions and terminal dispositions were not erased.
+
+The new queue requires tracing concrete client function relationships, message/data shapes, handler-to-UI connections, state mutations, network/streaming logic, cancellation, caches, and persistence. Candidate feature work has been queued for chat, search, authentication, media playback and editing on the basis of repeated source indicators. Each feature assignment is explicitly provisional until module ownership and call chains are verified. Previously reviewed work does not substitute for these investigations; live testing remains optional corroboration rather than a prerequisite for extracting static source structure.
