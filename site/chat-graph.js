@@ -130,6 +130,16 @@ window.ViewsourceChatGraph = (() => {
         items.append(card);
       }
       block.append(items);
+      const exportsInfo=element("details","chat-implementation-exports");
+      exportsInfo.append(element("summary","","Module export relationships"));
+      const exportList=element("ul","");
+      implTrace.reviewed_module_exports.forEach(item=>{
+        exportList.append(element("li","",item.source_ref+" / function "+
+          item.exported_function_ordinal+": "+item.meaning));
+      });
+      exportsInfo.append(exportList,element("p","graph-caption",
+        "Export bindings do not establish which consumers executed."));
+      block.append(exportsInfo);
       const questions=element("details","chat-implementation-questions");
       questions.append(element("summary","","Next source-level investigations"));
       const lines=element("ul","");
