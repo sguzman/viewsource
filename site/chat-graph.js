@@ -147,7 +147,9 @@ window.ViewsourceChatGraph = (() => {
         link.source_ref+" / "+link.role+": function "+link.caller+
         " → function "+link.callee)));
       direct.append(edges,element("p","graph-caption",
-        "Direct calls in captured source. This does not verify server execution."));
+        "Four reviewed direct calls among "+implTrace.direct_call_candidate_count+
+        " source-local candidates; "+implTrace.unreviewed_direct_call_count+
+        " require inspection. No actual execution or server result is verified."));
       block.append(direct);
       const questions=element("details","chat-implementation-questions");
       questions.append(element("summary","","Next source-level investigations"));
