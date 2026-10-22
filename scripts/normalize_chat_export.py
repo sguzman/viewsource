@@ -22,7 +22,8 @@ def normalize_conversation(conversation: dict) -> dict:
     if metrics["shape"] != "mapping_tree":
         raise ExportGraphError("A tree mapping is required")
     for key in ("dangling_parent_links", "dangling_child_links",
-                "parent_child_conflicts", "ancestry_cycles"):
+                "parent_child_conflicts", "duplicate_child_links",
+                "ancestry_cycles"):
         if metrics[key]:
             raise ExportGraphError("Cannot normalize an inconsistent tree")
     if metrics["selected_path_status"] not in ("resolved", "missing"):

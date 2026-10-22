@@ -17,6 +17,24 @@ class ExportShapeError(ValueError):
     """The input is not a supported local export container."""
 
 
+def _reject_duplicate_keys(pairs):
+    """Fail closed on duplicate JSON fields, including nested message objects.
+
+    No offending field name or content is reflected into the exception.
+    """
+    fields = {}
+    for name, value in pairs:
+        if name in fields:
+            raise ExportShapeError("Duplicate JSON object key")
+        fields[name] = value
+    return fields
+
+
+def _reject_nonfinite(_value):
+    """Reject nonstandard NaN/Infinity literals without printing source data."""
+    raise ExportShapeError("Non-finite JSON number")
+
+
 def inspect_conversation(value: object) -> dict:
     """Return aggregate counts only, without any original keys or content."""
     result = {
@@ -27,6 +45,7 @@ def inspect_conversation(value: object) -> dict:
         "parent_links": 0,
         "branch_points": 0,
         "alternative_children": 0,
+        "duplicate_child_links": 0,
         "roots": 0,
         "dangling_parent_links": 0,
         "dangling_child_links": 0,
@@ -68,8 +87,14 @@ def inspect_conversation(value: object) -> dict:
             result["parent_child_conflicts"] += 1
             child_list = []
         children[key] = child_list
-        result["branch_points"] += int(len(child_list) >= 2)
-        result["alternative_children"] += max(0, len(child_list) - 1)
+        # Only distinct, string-valued links count as possible alternatives.
+        # Duplicates are invalid links, not extra replies.
+        unique_children = {child for child in child_list if isinstance(child, str)}
+        result["duplicate_child_links"] += sum(
+            isinstance(child, str) for child in child_list
+        ) - len(unique_children)
+        result["branch_points"] += int(len(unique_children) >= 2)
+        result["alternative_children"] += max(0, len(unique_children) - 1)
     for key, child_list in children.items():
         for child in child_list:
             if not isinstance(child, str) or child not in mapping:
@@ -122,7 +147,8 @@ def summarize_records(records) -> dict:
     total = 0
     fields = (
         "nodes", "message_nodes", "null_message_nodes", "parent_links",
-        "branch_points", "alternative_children", "roots",
+        "branch_points", "alternative_children", "duplicate_child_links",
+        "roots",
         "dangling_parent_links", "dangling_child_links",
         "parent_child_conflicts", "ancestry_cycles",
     )
@@ -177,7 +203,10 @@ def iter_export_records(stream, *, chunk_size: int = 65536):
     """
     if type(chunk_size) is not int or not (1 <= chunk_size <= 1024 * 1024):
         raise ExportShapeError("Chunk size must be a bounded positive integer")
-    decoder = json.JSONDecoder()
+    decoder = json.JSONDecoder(
+        object_pairs_hook=_reject_duplicate_keys,
+        parse_constant=_reject_nonfinite,
+    )
     buffer = ""
     eof = False
     state = "start"
@@ -258,7 +287,7 @@ def main() -> int:
         # This file can contain sensitive user information: never copy it
         # into Git, stdout, diagnostic logs or a public specimen record.
         summary = inspect_file(args.input)
-    except (OSError, ValueError, TypeError, MemoryError):
+    except (OSError, ValueError, TypeError, MemoryError, RecursionError):
         parser.exit(2, "Local export inspection failed (input/path details suppressed)\n")
     print(json.dumps(summary, indent=2))
     return 0

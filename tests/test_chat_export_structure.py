@@ -46,6 +46,21 @@ class ChatExportStructureTests(unittest.TestCase):
         self.assertEqual(item["off_path_nodes"], 1)
         self.assertEqual(item["selected_path_status"], "resolved")
 
+    def test_duplicate_children_are_not_counted_as_alternatives(self):
+        item = self.sample()
+        item["mapping"]["user"]["children"] = ["reply-a", "reply-a", "reply-b"]
+        metrics = mod.inspect_conversation(item)
+        self.assertEqual(metrics["duplicate_child_links"], 1)
+        self.assertEqual(metrics["branch_points"], 1)
+        self.assertEqual(metrics["alternative_children"], 1)
+
+    def test_nonstring_children_do_not_count_as_branches(self):
+        item = self.sample()
+        item["mapping"]["user"]["children"] = ["reply-a", ["bad"], "reply-b"]
+        metrics = mod.inspect_conversation(item)
+        self.assertGreater(metrics["dangling_child_links"], 0)
+        self.assertEqual(metrics["alternative_children"], 1)
+
     def test_selected_branch_switch_does_not_change_node_count(self):
         original = self.sample()
         alternative = self.sample()
@@ -121,6 +136,17 @@ class ChatExportStructureTests(unittest.TestCase):
         for size in (0, -1, True, 2**25):
             with self.subTest(size=size), self.assertRaises(mod.ExportShapeError):
                 list(mod.iter_export_records(StringIO("[]"), chunk_size=size))
+
+    def test_stream_reader_rejects_duplicate_keys_and_nonfinite_literals(self):
+        from io import StringIO
+        for payload in (
+            '[{"mapping":{}, "mapping":{}}]',
+            '[{"outer":{"id":1,"id":2}}]',
+            '[{"value":NaN}]', '[{"value":Infinity}]',
+            '[{"value":-Infinity}]',
+        ):
+            with self.subTest(payload=payload[:24]), self.assertRaises(mod.ExportShapeError):
+                list(mod.iter_export_records(StringIO(payload), chunk_size=2))
 
     def test_stream_reader_accepts_empty_and_whitespace_arrays(self):
         from io import StringIO

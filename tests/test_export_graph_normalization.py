@@ -84,6 +84,18 @@ class ExportGraphNormalizationTests(unittest.TestCase):
         with self.assertRaises(mod.ExportGraphError):
             mod.normalize_conversation(item)
 
+    def test_duplicate_child_link_refused_even_when_parent_matches(self):
+        item = self.example()
+        item["mapping"]["prompt"]["children"].append("reply-z")
+        with self.assertRaises(mod.ExportGraphError):
+            mod.normalize_conversation(item)
+
+    def test_nonstring_child_refused(self):
+        item = self.example()
+        item["mapping"]["prompt"]["children"].append({"not": "a node"})
+        with self.assertRaises(mod.ExportGraphError):
+            mod.normalize_conversation(item)
+
     def test_flat_list_not_turned_into_invented_tree(self):
         with self.assertRaises(mod.ExportGraphError):
             mod.normalize_conversation({"messages": [{"actor": "assistant"}]})
