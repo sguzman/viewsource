@@ -55,7 +55,7 @@ class FeatureConsumerTests(unittest.TestCase):
         self.assertIn('"message" -> "message"',dot)
         self.assertIn("style=dashed",dot)
         self.assertNotIn("style=solid",dot)
-        self.assertIn("\\n",dot)
+        self.assertIn("\n",dot)
 
     def test_domain_relation_rejects_bad_entity(self):
         import copy
