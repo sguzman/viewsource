@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Content-free structural chat interaction observations",
+  "description": "Manual structural summaries from an expressly authorized disposable session; no captured content or identifiers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "format_version",
+    "feature_id",
+    "experiment_type",
+    "evidence_status",
+    "privacy_boundary",
+    "steps"
+  ],
+  "properties": {
+    "format_version": {
+      "const": 1
+    },
+    "feature_id": {
+      "const": "chat-interaction"
+    },
+    "experiment_type": {
+      "const": "disposable_synthetic"
+    },
+    "evidence_status": {
+      "const": "unreviewed"
+    },
+    "privacy_boundary": {
+      "const": "structural_counts_and_fixed_event_labels_only"
+    },
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 300,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "ordinal",
+          "offset_ms",
+          "event",
+          "source",
+          "selection",
+          "response_phase",
+          "message_count_delta",
+          "conversation_count_delta",
+          "parent_link_delta",
+          "result"
+        ],
+        "properties": {
+          "ordinal": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "offset_ms": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 3600000
+          },
+          "event": {
+            "enum": [
+              "select_conversation",
+              "clear_selection",
+              "edit_draft",
+              "submit_draft",
+              "response_started",
+              "response_completed",
+              "stop_response",
+              "response_failed",
+              "retry_response",
+              "edit_message",
+              "regenerate",
+              "branch_new_chat",
+              "reload",
+              "other"
+            ]
+          },
+          "source": {
+            "enum": [
+              "synthetic_user_action",
+              "visible_ui_change",
+              "sanitized_transport_signal",
+              "unknown"
+            ]
+          },
+          "selection": {
+            "enum": [
+              "none",
+              "selected",
+              "unknown"
+            ]
+          },
+          "response_phase": {
+            "enum": [
+              "idle",
+              "editing",
+              "sending",
+              "receiving",
+              "complete",
+              "failed",
+              "stopped",
+              "unknown"
+            ]
+          },
+          "message_count_delta": {
+            "type": "integer",
+            "minimum": -100,
+            "maximum": 100
+          },
+          "conversation_count_delta": {
+            "type": "integer",
+            "minimum": -100,
+            "maximum": 100
+          },
+          "parent_link_delta": {
+            "type": "integer",
+            "minimum": -100,
+            "maximum": 100
+          },
+          "result": {
+            "enum": [
+              "observed",
+              "not_observed",
+              "inconclusive"
+            ]
+          }
+        }
+      }
+    }
+  }
+}
