@@ -359,3 +359,12 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-domain-edge summary { cursor: pointer; font-size: 12px; font-weight: 600; }
 .chat-domain-edge p { color: var(--muted); font-size: 11px; line-height: 1.6; }
 @media(max-width:720px){ .chat-domain-links { grid-template-columns: 1fr; } }
+
+.chat-documented-list { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 10px; }
+.chat-documented-action { min-width: 0; border: 1px solid var(--line); border-radius: 9px; padding: 13px; }
+.chat-documented-action summary { cursor: pointer; display: flex; gap: 9px; justify-content: space-between; align-items: baseline; }
+.chat-documented-action strong { font-size: 12px; }
+.chat-documented-action small { font-size: 10px; color: var(--accent); white-space: nowrap; }
+.chat-documented-action p { font-size: 11px; color: var(--muted); line-height: 1.6; }
+.chat-document-limit { border-top: 1px solid var(--line); margin-top: 11px; padding-top: 11px; }
+@media(max-width:720px) { .chat-documented-list { grid-template-columns: 1fr; } }

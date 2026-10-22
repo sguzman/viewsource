@@ -167,6 +167,11 @@
           "link": "page-map"
         },
         {
+          "title": "Documented user actions",
+          "body": "ChatGPT's public Help Center describes branching into a new chat, retrying or regenerating responses, and sidebar pinning. These claims do not establish server-side message ancestry.",
+          "link": "chat-interaction"
+        },
+        {
           "title": "What is observable",
           "body": "The saved HTML has a sidebar, two navigation regions, a composer form and a textbox role. The saved source contains storage and messaging APIs, but no traced action-to-state change.",
           "link": "page-map"

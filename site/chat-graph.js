@@ -21,6 +21,30 @@ window.ViewsourceChatGraph = (() => {
     link.href=feature.json_path;
     link.target="_blank";link.rel="noopener noreferrer";
     section.append(head,warning,link);
+    const documented=record.visuals?.public_chat_actions;
+    if(documented?.actions?.length){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Documented ChatGPT actions"));
+      block.append(element("p","graph-caption",
+        "Public Help Center descriptions. These confirm user-facing controls, not internal handler code, API contracts or graph storage."));
+      const entries=element("div","chat-documented-list");
+      documented.actions.forEach(action=>{
+        const card=element("details","chat-documented-action");
+        const heading=element("summary","");
+        heading.append(element("strong","",action.name),
+          element("small","","Documented UI"));
+        card.append(heading,element("p","",action.summary));
+        const source=element("a","text-link","Source: "+action.source_title+" ↗");
+        source.href=action.source_url;
+        source.target="_blank";
+        source.rel="noopener noreferrer";
+        card.append(source);
+        card.append(element("p","chat-document-limit","Not established: "+action.unknown));
+        entries.append(card);
+      });
+      block.append(entries);
+      section.append(block);
+    }
     const signals=record.visuals?.chat_source_signals;
     if(signals){
       const block=element("div","chat-subsection");

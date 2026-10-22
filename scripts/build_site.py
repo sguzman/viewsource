@@ -199,6 +199,25 @@ def build(out: Path) -> dict:
                     "observed_control_categories": page_map["observed_control_categories"],
                     "note": page_map["note"]
                 }
+            public_actions_path = ROOT / (base + "/public_chat_actions.json")
+            if public_actions_path.is_file():
+                documented = read(base + "/public_chat_actions.json")
+                if documented["specimen_id"] != item["id"] or documented["version"] != number:
+                    raise ValueError("Public chat action inventory identity mismatch")
+                visuals["public_chat_actions"] = {
+                    "scope": "official_public_documentation",
+                    "actions": [{
+                        "id": action["id"], "name": action["name"],
+                        "status": action["status"],
+                        "summary": action["summary"],
+                        "documented_date": action["documented_date"],
+                        "source_title": action["source_title"],
+                        "source_url": action["source_url"],
+                        "graph_events": action["graph_events"],
+                        "capture_ref": action["capture_ref"],
+                        "unknown": action["unknown"]
+                    } for action in documented["actions"]]
+                }
             chat_signals_path = ROOT / (base + "/chat_source_signals.json")
             if chat_signals_path.is_file():
                 signals = read(base + "/chat_source_signals.json")
