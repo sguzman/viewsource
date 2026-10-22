@@ -133,6 +133,13 @@ window.ViewsourceChatGraph = (() => {
         element("li","",edge.from+" → "+edge.to+" ("+edge.kind+")")));
       graph.append(list);
       block.append(graph);
+      const projection=element("details","chat-mutation-projection");
+      projection.append(element("summary","","Selected-message and ancestry projections"),
+        element("p","",graphWrite.state_projection.behavior),
+        element("p","graph-caption",
+          "State roles: "+graphWrite.state_projection.field_roles.join(", ")),
+        element("p","graph-caption",graphWrite.state_projection.limits));
+      block.append(projection);
       section.append(block);
     }
     const transport=record.visuals?.chat_transport_trace;
