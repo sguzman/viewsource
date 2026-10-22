@@ -71,3 +71,20 @@ OpenAI's public ChatGPT release notes announced a web UI action to branch a conv
 A standard-library reader at `scripts/chat_feature_cli.py` exports machine-scoped transition metadata and DOT graphs. Use `--machine response --format dot` for a candidate response state diagram; `--machine message_operation --format json` lists unverified edit/regeneration steps; `--domain --format dot` shows the entity-to-entity relationship graph. The default execution-verification path fails closed: `--resolve-verified` rejects every edge in the current snapshot because none has independent live evidence. These interfaces perform no browser operations.
 
 A separate synthetic model at `scripts/chat_graph_core.py` demonstrates immutable parent links, visible selected paths, alternative replies and cross-conversation fork annotations without storing any chat text. Fork annotations do not clone messages or claim a specific remote implementation.
+
+## Using the candidate graph for software
+
+These tools describe *possible* structures. They are not browser automation and cannot verify the site's internal API.
+
+- `scripts/chat_graph_core.py` builds synthetic message ancestry and separate-conversation fork examples. `anonymous_topology()` emits temporary ordinal-only graph structure, discarding supplied local keys. Ordinals must never be assumed stable across independently generated graphs.
+- `scripts/chat_feature_cli.py --domain --format dot` generates a hypothetical entity relationship diagram; `--machine response --format dot` generates the response machine.
+- `scripts/simulate_chat_scenario.py examples/chat_scenario_synthetic.json --assume-guards` exercises a fictional interaction sequence across separate machines. Guard assumptions are explicit; without the flag, guarded edges are rejected. It performs no site actions and reports zero verified behavior.
+- `scripts/validate_chat_observation.py` accepts only fixed structural-event fields in a disposable synthetic test record. `scripts/analyze_chat_observation.py` can then compare the fixed event categories with candidate graph transitions. It does not infer causal ownership or promote a transition to verified.
+
+## Three separate evidence layers
+
+The [capability matrix](../specimens/chatgpt-com/v0002/chat_capability_matrix.json) maps eight chat operations across static evidence, public product documentation, candidate graph references, and the specific unanswered question. The [public chat actions](../specimens/chatgpt-com/v0002/public_chat_actions.json) are documented user-interface behaviors from the official Help Center; they are not derived from the private capture and do not expose any server implementation. The [feature graph](../specimens/chatgpt-com/v0002/chat-interaction.graph.json) remains entirely hypothetical for message ancestry and runtime transitions.
+
+The website includes a synthetic branch-selection visualization. Its messages, alternatives and separate conversation fork are invented for demonstration, **not** extracted from a user's chats.
+
+A future controlled test should yield content-free structural evidence and independent verification. Until then, the current research has no verified live transition, request contract, response stream grammar or backend message identity mapping.
