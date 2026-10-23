@@ -252,3 +252,18 @@ The resulting hierarchy is a **candidate static dependency frontier**, not evide
 that a bundle was bootstrapped, loaded by the browser or executed in a chat session.
 Keep private analysis reports outside Git; only publish original conclusions after
 manual examination and release review.
+
+## Conservative module bootstrap candidates
+
+The ordinal-only `--module-trace` report also detects a narrow
+startup pattern: a literal module-key request through
+`__webpack_require__` in top-level expressions or an immediately invoked
+function. Matches are resolved against the captured registry in temporary
+memory and only anonymous module ordinals, duplicate-key status and counts
+are returned. Calls in declarations and callbacks not immediately invoked
+are excluded. Other bundler initializers, aliased/minified require functions,
+dynamically calculated keys, loading policy and script execution are
+**not** captured by this probe. A candidate therefore offers a starting
+module for manually seeded frontier analysis, never proof of startup or
+browser module execution. Private module keys, filenames and source remain
+unpublished.

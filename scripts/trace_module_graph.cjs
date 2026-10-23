@@ -89,10 +89,53 @@ function scanModuleSignatures(fn,requireName,exportName){
  return {exportedSlots:[...exported],
    requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
 }
+
+/* Very conservative startup syntax: only direct, top-level webpack calls
+ * and immediately invoked function bodies. Never infer activation from a
+ * function merely declared, stored as a callback or present in a module. */
+function bootstrapCalls(ast,sourceOrdinal) {
+ const found=new Set();
+ function startKey(arg){
+  if(arg?.type==="Literal"&&typeof arg.value==="string")return arg.value;
+  if(arg?.type==="AssignmentExpression"&&arg.operator==="="&&
+     arg.left?.type==="MemberExpression"&&
+     arg.left.object?.type==="Identifier"&&arg.left.object.name==="__webpack_require__"&&
+     literalMember(arg.left)==="s"&&
+     arg.right?.type==="Literal"&&typeof arg.right.value==="string")
+   return arg.right.value;
+  return null;
+ }
+ function visit(node){
+  if(!node||typeof node!=="object")return;
+  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type))
+   return;
+  if(node.type==="CallExpression"){
+   if(node.callee?.type==="Identifier"&&node.callee.name==="__webpack_require__"){
+    const key=startKey(node.arguments[0]);
+    if(key)found.add(key);
+   }
+   if(["FunctionExpression","ArrowFunctionExpression"].includes(node.callee?.type))
+    visit(node.callee.body);
+  }
+  for(const [name,value] of Object.entries(node)){
+   if(["start","end","loc","raw","callee"].includes(name))continue;
+   if(Array.isArray(value))for(const child of value)visit(child);
+   else if(value&&typeof value==="object")visit(value);
+  }
+ }
+ for(const stmt of ast.body){
+  if(stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")continue;
+  visit(stmt);
+ }
+ return [...found].map(key=>({key,sourceOrdinal}));
+}
+
 function analyzeJS(source,sourceOrdinal){
  const ast=acorn.parse(source,{ecmaVersion:"latest",sourceType:"module",
    allowReturnOutsideFunction:true,allowImportExportEverywhere:true});
  const entries=registry(ast),result=[];
+ Object.defineProperty(result,"bootstrapCandidates",
+   {value:bootstrapCalls(ast,sourceOrdinal),enumerable:false});
  for(let i=0;i<entries.length;i++){
   const module=entries[i],identifier=keyName(module.key),fn=module.value;
   if(!identifier||!["FunctionExpression","ArrowFunctionExpression"].includes(fn?.type)){
@@ -125,7 +168,7 @@ function analyzeJS(source,sourceOrdinal){
  }
  return result;
 }
-function buildGraph(all,scanned,parseFailures){
+function buildGraph(all,scanned,parseFailures,bootstrap=[]){
  if(all.length>MAX_MODULES)throw Error("Too many modules");
  const index=new Map();
  for(const x of all){
@@ -134,6 +177,21 @@ function buildGraph(all,scanned,parseFailures){
   index.get(x.identifier).push(x);
  }
  const links=[],shapeCandidates=[];
+ const bootstrapCandidates=[];
+ for(const candidate of bootstrap){
+  const matches=index.get(candidate.key)||[];
+  bootstrapCandidates.push({
+   callsite_ref:"R-JS-"+String(candidate.sourceOrdinal).padStart(3,"0"),
+   classification:matches.length===1?"unique_registry_key_candidate":
+     matches.length>1?"ambiguous_registry_key":"missing_saved_module",
+   ...(matches.length===1?{
+    target_ref:"R-JS-"+String(matches[0].sourceOrdinal).padStart(3,"0"),
+    target_module:matches[0].moduleOrdinal
+   }:{}),
+   registry_definition_candidates:matches.length,
+   bootstrap_execution_verified:false
+  });
+ }
  let candidateCalls=0,unresolved=0,ambiguous=0;
  for(const item of all){
   for(const id of item.imports){
@@ -181,6 +239,9 @@ function buildGraph(all,scanned,parseFailures){
   format_version:1,scope:"private_saved_javascript_modules",
   source_executed:false,module_runtime_loaded_verified:false,
   parsed_bundles:scanned,failed_bundles:parseFailures,
+  bootstrap_call_candidates:bootstrapCandidates.length,
+  bootstrap_candidates:bootstrapCandidates,
+  bootstrap_runtime_verified:false,
   modules_total:all.length,
   modules_with_import_parameter:all.filter(x=>x.eligible).length,
   import_candidates:candidateCalls,unique_resolved_links:links.length,
@@ -197,6 +258,8 @@ function buildGraph(all,scanned,parseFailures){
   export_shape_candidates:shapeCandidates,
   export_shape_candidate_count:shapeCandidates.length,
   limitations:[
+   "Bootstrap candidates require direct top-level or immediately-invoked __webpack_require__ literal calls; other startup patterns are not covered.",
+   "Candidate bootstrap calls do not show that a browser invoked or loaded a module.",
    "Static require calls may be conditional, dead, or nested in inactive closures.",
    "A resolved bundled module reference is not proof that a module loaded or ran.",
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
@@ -211,16 +274,21 @@ function scan(directory){
  const entries=fs.readdirSync(directory).filter(x=>/^bundle-[0-9]{3,4}\.js$/.test(x)).sort();
  if(entries.length>MAX_FILES)throw Error("Too many bundles");
  let parsed=0,failed=0;
- const modules=[];
+ const modules=[],bootstrap=[];
  for(const entry of entries){
   const full=path.join(directory,entry),stat=fs.lstatSync(full);
   if(!stat.isFile()||stat.isSymbolicLink())throw Error("Unsupported file");
   if(stat.size>8*1024*1024){failed++;continue;}
   const ordinal=Number(entry.match(/^bundle-([0-9]+)\.js$/)[1]);
-  try{modules.push(...analyzeJS(fs.readFileSync(full,"utf8"),ordinal));parsed++;}
+  try{
+   const report=analyzeJS(fs.readFileSync(full,"utf8"),ordinal);
+   modules.push(...report);
+   bootstrap.push(...report.bootstrapCandidates);
+   parsed++;
+  }
   catch(_){failed++;}
  }
- return buildGraph(modules,parsed,failed);
+ return buildGraph(modules,parsed,failed,bootstrap);
 }
 function selfTest(){
  const s1="export const __webpack_modules__={A:(function(e,t,n){const b=n('B');t.a=()=>b.a}),B:(function(e,t,n){t.a=()=>1})};";
@@ -237,6 +305,18 @@ function selfTest(){
  assert.equal(o.resolved_links[0].to_module,2);
  assert(!JSON.stringify(o).includes("External"));
  assert(!JSON.stringify(o).includes("const b"));
+ const boot='export const __webpack_modules__={Startup:(function(e,t,n){t.a=1})};__webpack_require__("Startup");';
+ const source=analyzeJS(boot,4);
+ const startup=buildGraph(source,1,0,source.bootstrapCandidates);
+ assert.equal(startup.bootstrap_call_candidates,1);
+ assert.equal(startup.bootstrap_candidates[0].classification,"unique_registry_key_candidate");
+ assert.equal(startup.bootstrap_candidates[0].target_module,1);
+ assert.equal(startup.bootstrap_candidates[0].bootstrap_execution_verified,false);
+ const delayed=analyzeJS('export const __webpack_modules__={A:function(){}};function dormant(){__webpack_require__("A")}',5);
+ assert.equal(delayed.bootstrapCandidates.length,0);
+ const invoked=analyzeJS('export const __webpack_modules__={A:function(){}};(()=>__webpack_require__("A"))()',5);
+ assert.equal(invoked.bootstrapCandidates.length,1);
+ assert(!JSON.stringify(startup).includes("Startup"));
  const ambiguous=buildGraph([...a,...analyzeJS(s1,3)],3,0);
  assert(ambiguous.ambiguous_import_candidates>=1);
  const shapeSource1="export const __webpack_modules__={X:(function(e,t,n){const recovery=n('K');recovery.h();recovery.p()}),K:(function(e,t,n){n.d(t,{h:()=>1,p:()=>2})})};";

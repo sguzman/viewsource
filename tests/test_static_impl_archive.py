@@ -241,6 +241,32 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                            str(archive), "a.js", "b.js"):
                 self.assertNotIn(secret, result.stdout)
 
+    def test_bootstrap_candidates_are_ordinals_not_execution(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "bootstrap-fiction.zip"
+            sentinel = "SYNTHETIC_MODULE_PRIVATE_VALUE"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js",
+                    "export const __webpack_modules__={"
+                    "Entry:(function(e,t,n){t.a='" + sentinel + "'}),"
+                    "Dormant:(function(e,t,n){const b=n('Entry');})};"
+                    "__webpack_require__('Entry');"
+                    "function unused(){__webpack_require__('Dormant')}")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Synthetic startup probe failed")
+            graph = json.loads(result.stdout)
+            self.assertEqual(graph["bootstrap_call_candidates"], 1)
+            self.assertEqual(graph["bootstrap_candidates"][0]["classification"],
+                             "unique_registry_key_candidate")
+            self.assertEqual(graph["bootstrap_candidates"][0]["target_module"], 1)
+            self.assertFalse(graph["bootstrap_runtime_verified"])
+            self.assertFalse(graph["bootstrap_candidates"][0]["bootstrap_execution_verified"])
+            for term in ("Entry", "Dormant", sentinel, "bootstrap-fiction.zip"):
+                self.assertNotIn(term, result.stdout)
+
     def test_colliding_module_keys_yield_candidate_export_shape_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-collision.zip"
