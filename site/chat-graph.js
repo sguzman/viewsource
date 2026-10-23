@@ -111,6 +111,37 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const lifecycle=record.visuals?.chat_end_to_end_trace;
+    if(lifecycle){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","End-to-end captured client lifecycle"));
+      block.append(element("p","graph-caption",
+        "Source-composed flow. Direct calls, callbacks and state dependencies are distinguished; no live session or server outcome is verified."));
+      const stages=element("ol","chat-lifecycle-stages");
+      lifecycle.stages.forEach(stage=>{
+        const item=element("li","chat-lifecycle-stage");
+        item.append(element("strong","",stage.id.replaceAll("_"," ")),
+          element("p","",stage.behavior),
+          element("small","",stage.source_refs.join(", ")+" · "+
+            stage.evidence_refs.join(", ")));
+        stages.append(item);
+      });
+      block.append(stages);
+      const edges=element("details","chat-lifecycle-edges");
+      edges.append(element("summary","","Evidence-graded source connections"));
+      const edgeList=element("ol","");
+      lifecycle.connections.forEach(link=>edgeList.append(element("li","",
+        link.from.replaceAll("_"," ")+" → "+link.to.replaceAll("_"," ")+
+        " ["+link.kind.replaceAll("_"," ")+"]: "+link.limits)));
+      edges.append(edgeList);block.append(edges);
+      const variants=element("details","chat-lifecycle-alternatives");
+      variants.append(element("summary","","Alternative client paths"));
+      const alts=element("ul","");
+      lifecycle.alternatives.forEach(x=>alts.append(element("li","",
+        x.name.replaceAll("_"," ")+": "+x.behavior)));
+      variants.append(alts);block.append(variants);
+      section.append(block);
+    }
     const cssHooks=record.visuals?.chat_css_hooks;
     if(cssHooks){
       const block=element("div","chat-subsection");
