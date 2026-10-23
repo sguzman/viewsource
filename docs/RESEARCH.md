@@ -532,3 +532,12 @@ from an `exports.handler = () => {}` function-valued property
 assignment. Shadowed nested `module` parameters are excluded.
 Neither category establishes that the exported callable was invoked,
 or that its enclosing module belongs to a specific UI feature.
+
+### Deterministic dependency-frontier order
+
+The private frontier reader sorts unique source/module root ordinals and
+the outgoing static-import candidate targets before breadth-first
+exploration. Predecessor paths, output node order and node-limit
+truncation therefore no longer depend on input JSON edge order or the
+order in which roots were supplied. This improves reproducible review;
+it does not imply a browser's import or execution order.

@@ -97,6 +97,23 @@ test("malformed roots, out-of-scope data, and fake runtime imports are rejected"
  const h=graph();h.module_census.push({source_ref:"R-JS-001",count:3});
  assert.throws(()=>frontier(h,["R-JS-001:1"]));
 });
+test("frontier paths and node limits are deterministic under permuted evidence",()=>{
+ const a=graph();
+ const b=graph();
+ b.resolved_links.reverse();
+ const roots=["R-JS-001:2","R-JS-001:1"];
+ const reversed=[...roots].reverse();
+ const first=frontier(a,roots,{nodeLimit:3});
+ const second=frontier(b,reversed,{nodeLimit:3});
+ assert.deepEqual(first,second);
+ const full=frontier(b,roots);
+ const fullReversed=frontier(a,reversed);
+ assert.deepEqual(full,fullReversed);
+ assert.deepEqual(full.roots,[
+  {source_ref:"R-JS-001",module_ordinal:1},
+  {source_ref:"R-JS-001",module_ordinal:2}
+ ]);
+});
 test("multiple roots deduplicate, order-independent under fixed limits",()=>{
  const a=frontier(graph(),["R-JS-002:1","R-JS-001:1","R-JS-001:1"]);
  assert.equal(a.roots.length,2);
