@@ -304,6 +304,30 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_integer_registry_keys_resolve_without_publishing_numbers(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "integer-module-specimen.zip"
+            keys = ("871997334455", "871997334456")
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("synthetic.js", "export const __webpack_modules__={"
+                    + keys[0] + ":(function(e,t,n){const x=n(" + keys[1] + ");"
+                    "const later=n.bind(n," + keys[1] + ")}),"
+                    + keys[1] + ":(function(e,t,n){t.a=1})};"
+                    "__webpack_require__(" + keys[0] + ");")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            report = json.loads(proc.stdout)
+            self.assertEqual(report["unique_resolved_links"], 1)
+            self.assertEqual(report["bootstrap_call_candidates"], 1)
+            self.assertEqual(report["bound_import_candidate_count"], 1)
+            self.assertEqual(report["dynamic_boundary_count"], 0)
+            for private in (*keys, "integer-module-specimen.zip", "synthetic.js"):
+                self.assertNotIn(private, proc.stdout)
+
     def test_computed_module_keys_cannot_be_mistaken_for_resolved_imports(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-dynamic-require.zip"

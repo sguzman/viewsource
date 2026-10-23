@@ -18,10 +18,16 @@ function registry(ast){
  }
  return found;
 }
+function moduleKey(node){
+ if(node?.type!=="Literal")return null;
+ if(typeof node.value==="string")return node.value;
+ if(typeof node.value==="number"&&Number.isSafeInteger(node.value)&&node.value>=0)
+  return String(node.value);
+ return null;
+}
 function keyName(node){
  if(node?.type==="Identifier")return node.name;
- if(node?.type==="Literal"&&typeof node.value==="string")return node.value;
- return null;
+ return moduleKey(node);
 }
 function literalMember(node){
  if(node?.type!=="MemberExpression")return null;
@@ -56,9 +62,8 @@ function scanScopedRequiredSlots(fn,requireName,required){
      init?.type!=="CallExpression"||
      init.callee?.type!=="Identifier"||
      init.callee.name!==requireName||
-     init.arguments[0]?.type!=="Literal"||
-     typeof init.arguments[0].value!=="string")return null;
-  return init.arguments[0].value;
+     init.arguments.length<1)return null;
+  return moduleKey(init.arguments[0]);
  }
  function walk(node,env){
   if(!node||typeof node!=="object")return;
@@ -209,13 +214,13 @@ function scanModuleSignatures(fn,requireName,exportName){
 function bootstrapCalls(ast,sourceOrdinal) {
  const found=new Set();
  function startKey(arg){
-  if(arg?.type==="Literal"&&typeof arg.value==="string")return arg.value;
+  if(moduleKey(arg)!==null)return moduleKey(arg);
   if(arg?.type==="AssignmentExpression"&&arg.operator==="="&&
      arg.left?.type==="MemberExpression"&&
      arg.left.object?.type==="Identifier"&&arg.left.object.name==="__webpack_require__"&&
      literalMember(arg.left)==="s"&&
-     arg.right?.type==="Literal"&&typeof arg.right.value==="string")
-   return arg.right.value;
+     moduleKey(arg.right)!==null)
+   return moduleKey(arg.right);
   return null;
  }
  function visit(node){
@@ -330,17 +335,16 @@ function scanScopedModuleCalls(fn,requireName){
   if(node.type==="CallExpression"&&env.get(requireName)===loaderIdentity){
    if(node.callee?.type==="Identifier"&&node.callee.name===requireName&&
       node.arguments.length>=1){
-    if(node.arguments[0]?.type==="Literal"&&
-       typeof node.arguments[0].value==="string")imports.add(node.arguments[0].value);
+    const key=moduleKey(node.arguments[0]);
+    if(key!==null)imports.add(key);
     else computedRequire=true;
    }
    if(memberOf(node.callee,requireName)==="e")chunkLoader=true;
    if(memberOf(node.callee,requireName)==="bind"&&
       node.arguments[0]?.type==="Identifier"&&
       node.arguments[0].name===requireName&&
-      node.arguments[1]?.type==="Literal"&&
-      typeof node.arguments[1].value==="string")
-    boundImports.add(node.arguments[1].value);
+      moduleKey(node.arguments[1])!==null)
+    boundImports.add(moduleKey(node.arguments[1]));
   }
   for(const [k,v] of Object.entries(node)){
    if(["start","end","loc","raw"].includes(k))continue;
@@ -631,6 +635,17 @@ function selfTest(){
   "Q:(function(e,t,n){n.d(t,{[someRuntimeValue]:()=>1})})};";
  assert.equal(buildGraph([...analyzeJS(computedExport,1),
    ...analyzeJS(otherExport,2)],2,0).export_shape_candidate_count,0);
+ const numericSource=analyzeJS("export const __webpack_modules__={"+
+  "871997334455:(function(e,t,n){const x=n(871997334456);const later=n.bind(n,871997334456)}),"+
+  "871997334456:(function(e,t,n){t.a=1})};"+
+  "__webpack_require__(871997334455);",12);
+ const numericGraph=buildGraph(numericSource,1,0,numericSource.bootstrapCandidates);
+ assert.equal(numericGraph.unique_resolved_links,1);
+ assert.equal(numericGraph.bootstrap_candidates[0].classification,"unique_registry_key_candidate");
+ assert.equal(numericGraph.bound_import_candidate_count,1);
+ assert.equal(numericGraph.dynamic_boundary_count,0);
+ assert(!JSON.stringify(numericGraph).includes("871997334455"));
+ assert(!JSON.stringify(numericGraph).includes("871997334456"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

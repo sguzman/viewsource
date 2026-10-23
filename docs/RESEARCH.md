@@ -356,3 +356,12 @@ excluded. No string representation of the key or its source expression is
 emitted, and computed keys never count as uniquely resolved dependency
 edges. The dependency-frontier report exposes the category only at reached
 module ordinals.
+
+### Numeric module registry keys
+
+Literal webpack module identifiers can be strings or nonnegative safe
+integers. The module analyzer now normalizes integer keys internally for
+direct imports, bootstrap candidates, export-shape matching and bound
+loader callbacks. Numeric keys never enter public reports: only
+capture-local resource/module ordinals and aggregate classifications
+are emitted. Computed expressions remain unresolved boundaries.
