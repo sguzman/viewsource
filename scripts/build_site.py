@@ -255,6 +255,16 @@ def build(out: Path) -> dict:
                         for name,val in recovery["captured_default_fallbacks"].items()
                     ],
                     "fallback_scope": recovery["fallback_scope"],
+                    "preparation_fallback": {
+                        "method": recovery["preparation_fallback"]["method"],
+                        "delay_min_ms": recovery["preparation_fallback"]["minimum_delay_ms"],
+                        "delay_max_exclusive_ms": recovery["preparation_fallback"]["maximum_delay_exclusive_ms"],
+                        "conditions": recovery["preparation_fallback"]["required_conditions"],
+                        "changes": recovery["preparation_fallback"]["fallback_changes"],
+                        "distinguished_from": recovery["preparation_fallback"]["distinguished_from"],
+                        "limits": recovery["preparation_fallback"]["limit"],
+                        "client_execution_observed": recovery["preparation_fallback"]["client_execution_observed"],
+                    },
                     "questions": recovery["open_questions"],
                 }
             lifecycle_path = ROOT / (base + "/chat_end_to_end_trace.json")
