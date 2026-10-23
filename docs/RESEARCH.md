@@ -173,3 +173,11 @@ research instrument available to the queued worker; its fixed labels and
 module ordinals can direct source review but cannot close a task by
 vocabulary counts alone. No runtime access is required to investigate
 the saved client scripts.
+
+The same transcript AST candidate scan now recognizes bounded Markdown
+selection range guards and code-block copy recovery paths with AbortController
+cancellation. These are **candidate** syntax signals, not independently
+verified user actions. The saved ChatGPT capture's reviewed interpretation
+is separately documented in the selection/copy study (E2-087 and E2-088).
+A synthetic ZIP test exercises these two candidate classes without exposing
+source literals, user text, file names or account data.
