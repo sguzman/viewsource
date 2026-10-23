@@ -675,3 +675,15 @@ These eight source-backed mechanisms are collected in the
 No keyboard gesture, actual screen-reader speech, successful history fetch,
 or accessibility audit was performed; the client source alone cannot prove
 conformance or the accessibility of unmounted virtual rows.
+
+## Capture-local module anchors for edit and accessibility evidence
+
+Independent AST inspection of the private module registry resolved the edit
+renderer to R-JS-069 module 12 and its page submit handler to R-JS-072
+module 13. The latest-response focus landmark is R-JS-066 module 7 and the
+older-message status component is R-JS-066 module 13; their import/consumer
+sites are in R-JS-072 modules 13 and 30 respectively. The public reports
+record only 1-based module ordinals, source resource references and reviewed
+relationships, never source symbols, original filenames, or site code.
+Module placement is valid for this exact saved capture only; it does not
+verify a current deployment or runtime mount of the component.
