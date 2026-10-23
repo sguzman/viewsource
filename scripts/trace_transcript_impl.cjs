@@ -11,7 +11,8 @@ const FUNCTION_KINDS=new Set(["FunctionDeclaration","FunctionExpression","ArrowF
 const CLASSES=[
  "render_turn_derivation","pending_turn_preparation","first_user_item_filter",
  "typed_turn_renderer","message_dom_identity_wrapper","alternate_selected_render",
- "response_variant_navigation","response_selection_request"
+ "response_variant_navigation","response_selection_request",
+ "eligible_variant_derivation"
 ];
 function name(node){
  if(!node)return null;
@@ -70,6 +71,9 @@ function profile(fn){
    matches.push("response_variant_navigation");
  if(keys.has("current_node_id")&&calls.has("safePatch"))
    matches.push("response_selection_request");
+ if(has(keys,"rawVariantCount","variantIds","activeVariantIndex")&&
+    has(reads,"parent","children")&&calls.has("findIndex"))
+   matches.push("eligible_variant_derivation");
  return matches;
 }
 function inspect(text,ordinal){
@@ -139,10 +143,11 @@ function selfTest(){
  "function page(e){return {hideInitialUserMessage:e.hideInitialUserMessage,renderedTurns:e.turns.map(x=>x.promptMessageId)}}",
  "function variants(e){return e.variantIds[e.activeVariantIndex]+'Previous response'+'Next response'}",
  "function persist(e){return API.safePatch('fictional',{requestBody:{current_node_id:e.id}})}",
+ "function eligible(x){let p=x.parent,c=x.children;return {rawVariantCount:c.length,variantIds:c,activeVariantIndex:c.findIndex(Boolean)}}",
  "const privateText='SYNTHETIC_PRIVATE_MESSAGE_DO_NOT_PUBLISH'"
  ].join(";");
  const d=inspect(synthetic,1);
- assert.equal(d.function_nodes,11); // includes the inline callback arrows
+ assert.equal(d.function_nodes,12); // includes the inline callback arrows
  for(const term of CLASSES)
   assert(d.matches.some(x=>x.pattern===term),term);
  assert(!JSON.stringify(d).includes("SYNTHETIC_PRIVATE_MESSAGE"));
