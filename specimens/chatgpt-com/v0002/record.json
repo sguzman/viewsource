@@ -10840,6 +10840,16 @@
         "evidence_ref": "E2-078",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-079",
+      "statement": "Static inspection of the saved transcript renderer establishes distinct presentation rules for pending-message insertion/deduplication, loading indicators, first-user-item hiding, latest-turn error/attachment placement, an alternate selected-message derivation, simplified sidebar/moderation item treatment, reasoning/tool/streaming grouping and DOM role/telemetry wrappers. These are source-level conditional display paths, not evidence of server data mutation or runtime execution.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-079",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
