@@ -214,6 +214,29 @@ window.ViewsourceChatGraph = (() => {
       block.append(limits);
       section.append(block);
     }
+    const editStudy=record.visuals?.chat_edit_submission_trace;
+    if(editStudy){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","User-message editing — guarded source lifecycle"));
+      block.append(element("p","graph-caption",
+        "Source-reviewed target validation, active-response stop, replacement completion submission and cleanup. No live edit or server mutation was observed."));
+      const steps=element("div","chat-edit-grid");
+      editStudy.stages.forEach((stage,i)=>{
+        const item=element("details","chat-edit-stage");
+        item.append(element("summary","",(i+1)+". "+stage.id.replaceAll("_"," ")),
+          element("p","",stage.behavior),
+          element("p","graph-caption",stage.source_ref+" · "+stage.kind.replaceAll("_"," ")));
+        steps.append(item);
+      });
+      block.append(steps);
+      const open=element("details","chat-edit-boundaries");
+      open.append(element("summary","","Still unverified"));
+      const list=element("ul","");
+      editStudy.unverified.forEach(x=>list.append(element("li","",x)));
+      open.append(list);
+      block.append(open);
+      section.append(block);
+    }
     const selectionCopy=record.visuals?.chat_selection_copy_trace;
     if(selectionCopy){
       const block=element("div","chat-subsection");
