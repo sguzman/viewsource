@@ -1,0 +1,233 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_class": "observed_static",
+  "source_scope": "captured_client_javascript",
+  "live_execution_verified": false,
+  "server_contract_verified": false,
+  "message_durability_verified": false,
+  "method": "Review and compose independently recorded, source-backed client call paths. Direct calls are distinguished from static callback wiring and state-dependent composition. Only semantic stages, capture-local resource ordinals and canonical evidence IDs are published.",
+  "stages": [
+    {
+      "id": "composer_submission",
+      "source_refs": [
+        "R-JS-072"
+      ],
+      "evidence_refs": [
+        "E2-086",
+        "E2-089"
+      ],
+      "behavior": "The page composer accepts a submitted prompt, coordinates transient response placement and forwards accepted submission state to a completion path."
+    },
+    {
+      "id": "generation_dispatch",
+      "source_refs": [
+        "R-JS-018"
+      ],
+      "evidence_refs": [
+        "E2-072",
+        "E2-083"
+      ],
+      "behavior": "Completion, regeneration, conditional retry, local function results, work handoff, and answer-now steering converge on a shared generation dispatcher."
+    },
+    {
+      "id": "completion_transport",
+      "source_refs": [
+        "R-JS-018"
+      ],
+      "evidence_refs": [
+        "E2-075"
+      ],
+      "behavior": "The dispatcher invokes the stream service with decoded-event, completion, error, response and recovery callbacks. The transport implements request and topic-resumption alternatives plus cancellation."
+    },
+    {
+      "id": "decoded_event_processing",
+      "source_refs": [
+        "R-JS-018"
+      ],
+      "evidence_refs": [
+        "E2-075"
+      ],
+      "behavior": "An event processor distinguishes message updates from markers and terminal or metadata updates, and routes message updates through batching or replay."
+    },
+    {
+      "id": "client_graph_mutation",
+      "source_refs": [
+        "R-JS-018"
+      ],
+      "evidence_refs": [
+        "E2-073"
+      ],
+      "behavior": "The imported message writer inserts or updates mapping nodes, maintains parent/child links and conditionally rotates descendants; its caller selects the current node."
+    },
+    {
+      "id": "scoped_conversation_commit",
+      "source_refs": [
+        "R-JS-018"
+      ],
+      "evidence_refs": [
+        "E2-074"
+      ],
+      "behavior": "The scoped state writer commits the mapping/current selected node and updates separate selected-path page/automation references and user-message ancestry. These feature-reference lists are not the transcript."
+    },
+    {
+      "id": "page_turn_rederivation",
+      "source_refs": [
+        "R-JS-072"
+      ],
+      "evidence_refs": [
+        "E2-078",
+        "E2-083"
+      ],
+      "behavior": "The conversation page memoizes turn derivation with mapping/current-node and pending/streaming context as explicit dependencies."
+    },
+    {
+      "id": "turn_presentation_mapping",
+      "source_refs": [
+        "R-JS-069"
+      ],
+      "evidence_refs": [
+        "E2-078",
+        "E2-079"
+      ],
+      "behavior": "The turn preparer constructs typed turn props, conditional pending user input, status/error indicators, timestamp separators and presentation-only first-user hiding."
+    },
+    {
+      "id": "virtualized_turn_window",
+      "source_refs": [
+        "R-JS-066",
+        "R-JS-072"
+      ],
+      "evidence_refs": [
+        "E2-084",
+        "E2-085"
+      ],
+      "behavior": "The virtual list maps derived keyed turns to measured and estimated viewport rows, with overscan, scroll anchoring and targeted restoration."
+    },
+    {
+      "id": "typed_item_and_dom_render",
+      "source_refs": [
+        "R-JS-069",
+        "R-JS-072"
+      ],
+      "evidence_refs": [
+        "E2-078",
+        "E2-091"
+      ],
+      "behavior": "A page turn-entry component imports the typed renderer; item wrappers emit message roles and source attribution while dispatching user, assistant, tool and media items."
+    }
+  ],
+  "connections": [
+    {
+      "from": "composer_submission",
+      "to": "generation_dispatch",
+      "evidence_kind": "reviewed_client_callback_composition",
+      "limits": "The composer wrapper and dispatcher are source-visible; not every submit-path feature gate is exhaustively audited."
+    },
+    {
+      "from": "generation_dispatch",
+      "to": "completion_transport",
+      "evidence_kind": "reviewed_direct_service_call",
+      "limits": "Does not verify any response from a remote server."
+    },
+    {
+      "from": "completion_transport",
+      "to": "decoded_event_processing",
+      "evidence_kind": "reviewed_callback_wiring",
+      "limits": "Transport callbacks may depend on live feature gates and delivery."
+    },
+    {
+      "from": "decoded_event_processing",
+      "to": "client_graph_mutation",
+      "evidence_kind": "reviewed_imported_helper_call",
+      "limits": "Batching or replay can postpone mutations."
+    },
+    {
+      "from": "client_graph_mutation",
+      "to": "scoped_conversation_commit",
+      "evidence_kind": "reviewed_client_state_write",
+      "limits": "No observed browser state change."
+    },
+    {
+      "from": "scoped_conversation_commit",
+      "to": "page_turn_rederivation",
+      "evidence_kind": "reviewed_state_dependency_composition",
+      "limits": "The mapping/current-node state and page memo dependencies are source visible, not a measured React render."
+    },
+    {
+      "from": "page_turn_rederivation",
+      "to": "turn_presentation_mapping",
+      "evidence_kind": "reviewed_derived_value_path",
+      "limits": "Alternative presentation branches can change which items appear."
+    },
+    {
+      "from": "turn_presentation_mapping",
+      "to": "virtualized_turn_window",
+      "evidence_kind": "reviewed_page_component_import",
+      "limits": "Viewport rows are conditional on available geometry."
+    },
+    {
+      "from": "virtualized_turn_window",
+      "to": "typed_item_and_dom_render",
+      "evidence_kind": "reviewed_component_prop_forwarding",
+      "limits": "Offscreen turns may not be mounted."
+    }
+  ],
+  "alternative_paths": [
+    {
+      "name": "regeneration",
+      "evidence_refs": [
+        "E2-072",
+        "E2-080"
+      ],
+      "behavior": "A guarded turn control or other regeneration wrapper constructs regeneration input and reuses the generation dispatcher."
+    },
+    {
+      "name": "user_message_edit",
+      "evidence_refs": [
+        "E2-080",
+        "E2-089"
+      ],
+      "behavior": "A gated user-message edit action resolves the original parent, revalidates after stopping a conflicting response when necessary, and submits a replacement continuation. Server branching semantics are not observed."
+    },
+    {
+      "name": "response_variant_switch",
+      "evidence_refs": [
+        "E2-081",
+        "E2-082",
+        "E2-085"
+      ],
+      "behavior": "A previous/next variant action selects a filtered candidate descendant, optimistically changes current selection and submits a persistence request; failure can restore the prior selection before the page/viewport recomputes."
+    },
+    {
+      "name": "response_cancellation",
+      "evidence_refs": [
+        "E2-075"
+      ],
+      "behavior": "A cancellation action unregisters local stream cancellation and delegates a stop/cancel operation to the request layer; remote cancellation success is unknown."
+    },
+    {
+      "name": "browser_cache",
+      "evidence_refs": [
+        "E2-092"
+      ],
+      "behavior": "Versioned conversation-list metadata and query caches are auxiliary; they are not verified server storage or full message graph persistence."
+    }
+  ],
+  "open_static_questions": [
+    "Exhaustively resolve dynamic imports for every typed tool/media subrenderer.",
+    "Trace all streaming error/retry classifications through error UI and request cleanup.",
+    "Confirm whether complete message maps are serialized in any browser-persistent store beyond the versioned list metadata.",
+    "Resolve cross-tab synchronization of conversation graphs without attributing unrelated storage listeners.",
+    "Identify exact feature gates and hidden-content rendering rules across all item classes.",
+    "Map all selected-turn UI controls to request builders and response parsers with field-level invariants."
+  ],
+  "limits": [
+    "This is a source-composed lifecycle with reviewed client edges, not a replay or observed execution.",
+    "Successful server streaming, message persistence, browser clipboard, scroll motion and other outcomes remain unverified.",
+    "An edge marked state dependency composition does not assert an immediate synchronous callback.",
+    "The existing optional runtime research proposals do not block captured JavaScript investigation.",
+    "No source snippets, wire URLs, browser storage keys, account identifiers, user prompts or copied vendor code are published."
+  ]
+}
