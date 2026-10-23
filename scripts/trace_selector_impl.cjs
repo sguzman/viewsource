@@ -59,7 +59,7 @@ function ownScope(fn){
   }
   const categories=[];
   if(loopCount&&reads.has("mapping")&&reads.has("current_node")&&
-     reads.has("parent")&&calls.has("reverse")&&reads.has("message"))
+     reads.has("parent")&&calls.has("reverse")&&calls.has("map")&&reads.has("message"))
     categories.push("selected_ancestry_message_walk");
   if(loopCount&&reads.has("parent")&&reads.has("role")&&
      literalTags.has("user")&&calls.has("reverse")&&reads.has("mapping"))
@@ -141,7 +141,7 @@ function scan(directory){
 }
 function selfTest(){
   const js=[
-    'function lineage(x){let p=x.current_node,a=[];for(;p;){let z=x.mapping[p];a.push(z.message);p=z.parent}return a.reverse()}',
+    'function lineage(x){let p=x.current_node,a=[];for(;p;){let z=x.mapping[p];a.push(z.message);p=z.parent}return a.reverse().map(String)}',
     'function userLineage(x){let p=x.current_node,a=[];for(;p;){let z=x.mapping[p];if(z.message.author.role==="user")a.push(z.message.id);p=z.parent}return a.reverse()}',
     'function refs(x){return x.metadata.automation_id?[{automationId:x.id,messageId:x.id,source:"metadata"}]:[]}',
     'function Control({onBeforeAnswerNow,messages}){let a=messages.filter(x=>x.ok);return a.length?"answer_now":null}',
