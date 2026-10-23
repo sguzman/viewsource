@@ -266,6 +266,28 @@ def build(out: Path) -> dict:
                         "boundary": branch["render_recomputation_link"]["boundary"],
                     },
                 }
+            selection_path = ROOT / (base + "/chat_selection_copy_trace.json")
+            if selection_path.is_file():
+                select = read(base + "/chat_selection_copy_trace.json")
+                if (select["specimen_id"] != item["id"]
+                        or select["version"] != number
+                        or select["runtime_interaction_verified"] is not False
+                        or select["clipboard_write_verified"] is not False):
+                    raise ValueError("Selected text and clipboard evidence scope mismatch")
+                visuals["chat_selection_copy_trace"] = {
+                    "source_refs": select["source_refs"],
+                    "verified_runtime": select["runtime_interaction_verified"],
+                    "verified_clipboard": select["clipboard_write_verified"],
+                    "selected_text": [
+                        {"id": row["id"],"operation": row["operation"],"kind": row["kind"]}
+                        for row in select["selected_text"]["stages"]
+                    ],
+                    "last_code_block": [
+                        {"id": row["id"],"operation": row["operation"],"kind": row["kind"]}
+                        for row in select["last_code_block_copy"]["stages"]
+                    ],
+                    "limitations": select["unverified"],
+                }
             viewport_path = ROOT / (base + "/chat_viewport_virtualization_trace.json")
             if viewport_path.is_file():
                 viewport = read(base + "/chat_viewport_virtualization_trace.json")
