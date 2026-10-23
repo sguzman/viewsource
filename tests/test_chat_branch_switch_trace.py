@@ -18,6 +18,10 @@ class SavedBranchSwitchTests(unittest.TestCase):
                          {"R-JS-018","R-JS-069"})
         self.assertEqual(len(d["reviewed_stages"]),7)
         self.assertEqual(len(d["relationships"]),10)
+        link=d["render_recomputation_link"]
+        self.assertEqual(link["source_ref"],"R-JS-072")
+        self.assertEqual(link["evidence_class"],"observed_static")
+        self.assertTrue(link["boundary"])
         variant=d["variant_derivation"]
         self.assertEqual(variant["source_ref"],"R-JS-018")
         self.assertEqual(len(variant["steps"]),5)
