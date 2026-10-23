@@ -266,6 +266,23 @@ def build(out: Path) -> dict:
                         "boundary": branch["render_recomputation_link"]["boundary"],
                     },
                 }
+            accessibility_path = ROOT / (base + "/chat_accessibility_trace.json")
+            if accessibility_path.is_file():
+                study = read(base + "/chat_accessibility_trace.json")
+                if (study["specimen_id"] != item["id"] or study["version"] != number
+                        or study["screen_reader_tested"] is not False
+                        or study["accessibility_outcome_verified"] is not False):
+                    raise ValueError("Accessibility trace identity or evidence boundary mismatch")
+                visuals["chat_accessibility_trace"] = {
+                    "source_refs": study["source_refs"],
+                    "screen_reader_tested": study["screen_reader_tested"],
+                    "mechanisms": [
+                        {"id": m["id"],"source_ref": m["source_ref"],
+                         "kind": m["kind"],"description": m["description"]}
+                        for m in study["mechanisms"]
+                    ],
+                    "limits": study["limits"],
+                }
             edit_path = ROOT / (base + "/chat_edit_submission_trace.json")
             if edit_path.is_file():
                 edit = read(base + "/chat_edit_submission_trace.json")
