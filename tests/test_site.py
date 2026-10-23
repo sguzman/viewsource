@@ -65,6 +65,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(branch["variant_derivation"]),5)
             self.assertEqual(branch["render_recomputation_link"]["source_ref"],"R-JS-072")
             self.assertEqual(set(branch["source_resources"]),{"R-JS-018","R-JS-069"})
+            viewport = current["visuals"]["chat_virtual_viewport"]
+            self.assertFalse(viewport["runtime_verified"])
+            self.assertEqual(set(viewport["source_resources"]),{"R-JS-066","R-JS-069","R-JS-072"})
+            self.assertEqual(len(viewport["windowing_rules"]),11)
+            self.assertEqual(len(viewport["source_chain"]),7)
             transcript = current["visuals"]["chat_transcript_render_trace"]
             self.assertFalse(transcript["runtime_render_verified"])
             self.assertEqual(len(transcript["stages"]),7)
@@ -116,7 +121,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 82)
+            self.assertEqual(len(current["findings"]), 84)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
