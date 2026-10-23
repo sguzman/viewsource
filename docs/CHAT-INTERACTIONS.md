@@ -764,3 +764,20 @@ override all these values. The source does **not** establish successful
 recovery or current service-level guarantees. Canonical finding E2-095
 anchors these observations to the active streaming, error and network
 research without closing those tasks.
+
+## Preparation failure recovery is not stream-resume recovery
+
+The original saved completion preparer in R-JS-018 implements two
+source-visible abort/permission guards: one before starting preparation
+and one after an asynchronous device/account lookup. A short-circuit
+returns without issuing the preparation request. If preparation fails,
+a fallback is possible only for a partial query, with the caller's
+retry permission, an imported error-eligibility predicate, and a fresh
+post-delay permission check. The delay is randomized from 250 ms up to
+(but excluding) 500 ms. The fallback uses immediate preparation dispatch
+and disables further preparation fallback. The imported eligibility
+predicate remains unresolved, so **no specific HTTP status or error code
+is claimed retryable here**. This is a distinct one-shot branch from
+the configurable, multi-attempt completion-stream resume recovery and
+from request-level header refresh. Canonical evidence E2-096 anchors
+this source-level behavior; no network retry was observed.
