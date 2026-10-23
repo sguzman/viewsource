@@ -22,6 +22,11 @@ class ViewportTraceTests(unittest.TestCase):
         self.assertEqual(len(d["source_chain"]),7)
         self.assertEqual(len(d["windowing_rules"]),11)
         self.assertEqual(len(d["static_relationships"]),3)
+        self.assertEqual(
+            {(x["source_ref"],x["module_ordinal"]) for x in d["module_anchors"]},
+            {("R-JS-066",9),("R-JS-066",14),("R-JS-072",13),("R-JS-072",14)}
+        )
+        self.assertTrue(d["module_ordinal_contract"])
         self.assertTrue(d["still_unverified"])
         ids=[row["id"] for row in d["windowing_rules"]]
         self.assertEqual(len(ids),len(set(ids)))
