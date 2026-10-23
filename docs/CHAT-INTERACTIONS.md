@@ -644,3 +644,17 @@ can report success and telemetry. Neither the actual operating-system
 clipboard result nor a server content fetch has been observed. The
 sanitized [selection/copy study](../specimens/chatgpt-com/v0002/chat_selection_copy_trace.json)
 records 13 distinct client stages and explicit uncertainty boundaries.
+
+## Source-reviewed user-message edit lifecycle (E2-089)
+
+The typed turn renderer gates user-message editing by item type, message
+identity and special reply/attachment restrictions. The page-level edit
+submission routine enforces busy/origin checks, resolves the target's
+selected model and original parent, validates a trimmed replacement
+message including non-text attachments, optionally stops an incompatible
+active response, and revalidates the target after awaiting stop/closure.
+It then submits a new completion with the original parent message
+identity, selected model and replacement content. A finally block clears
+edit-busy state; an outer callback surfaces classified edit errors as a
+toast. This does **not** prove the server performed a destructive edit or
+accepted a new branch. See the [edit submission trace](../specimens/chatgpt-com/v0002/chat_edit_submission_trace.json).
