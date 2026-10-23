@@ -45,6 +45,8 @@ try {
   assert.equal(await page.locator(".chat-selector-item").count(),5);
   await page.locator(".chat-selector-consumers summary").click();
   assert.equal(await page.locator(".chat-selector-consumers li").count(),7);
+  await page.locator(".chat-selector-actions summary").click();
+  assert.equal(await page.locator(".chat-selector-actions li").count(),3);
   await page.locator(".chat-mutation-callpath summary").click();
   assert.equal(await page.locator(".chat-mutation-callpath li").count(),11);
   await page.locator(".chat-mutation-projection summary").click();
