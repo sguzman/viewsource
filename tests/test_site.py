@@ -67,7 +67,10 @@ class AtlasTests(unittest.TestCase):
             recovery = current["visuals"]["chat_transport_failure"]
             self.assertFalse(recovery["live_failure_observed"])
             self.assertEqual(recovery["source_ref"],"R-JS-018")
-            self.assertEqual(len(recovery["observations"]),7)
+            self.assertEqual(len(recovery["observations"]),9)
+            fallback = recovery["preparation_fallback"]
+            self.assertEqual((fallback["delay_min_ms"],fallback["delay_max_exclusive_ms"]),(250,500))
+            self.assertFalse(fallback["client_execution_observed"])
             self.assertEqual(len(recovery["default_fallbacks"]),7)
             lifecycle = current["visuals"]["chat_end_to_end_trace"]
             self.assertFalse(lifecycle["live_execution_verified"])
