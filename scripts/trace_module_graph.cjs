@@ -2033,34 +2033,34 @@ function selfTest(){
  assert.equal(switchOwnershipGraph.ambiguous_import_candidates,1);
  assert.equal(switchOwnershipGraph.export_shape_candidate_count,1);
  assert.equal(switchOwnershipGraph.export_shape_candidates[0].to_ref,"R-JS-119");
- const catchSource=analyzeJS("export const __webpack_modules__={"+
+ const flowCatchSource=analyzeJS("export const __webpack_modules__={"+
   "Reader:(function(e,t,n){try{if(t.flag)throw 1;n=()=>0}"+
   "catch(e){n('Goal')}n('NotSafe')}),Goal:(function(e,t){t.ok=1})};",121);
- const catchGraph=buildGraph(catchSource,1,0);
- assert.equal(catchGraph.import_candidates,1);
- assert.equal(catchGraph.unique_resolved_links,1);
- const catchReader=analyzeJS("export const __webpack_modules__={"+
+ const flowCatchGraph=buildGraph(flowCatchSource,1,0);
+ assert.equal(flowCatchGraph.import_candidates,1);
+ assert.equal(flowCatchGraph.unique_resolved_links,1);
+ const flowCatchReader=analyzeJS("export const __webpack_modules__={"+
   "Reader:(function(e,t,n){let x=n('Choice');try{if(t.flag)throw 1;x={}}"+
   "catch(e){x.ready()}x.unsure()})};",122);
- const catchOwner=analyzeJS("export const __webpack_modules__={"+
+ const flowCatchOwner=analyzeJS("export const __webpack_modules__={"+
   "Choice:(function(e,t,n){try{if(t.flag)throw 1;t={}}"+
   "catch(e){t.ready=()=>1}t.unsure=()=>1})};",123);
- const catchOther=analyzeJS("export const __webpack_modules__={"+
+ const flowCatchOther=analyzeJS("export const __webpack_modules__={"+
   "Choice:(function(e,t,n){t.other=()=>1})};",124);
- const catchJoin=buildGraph([...catchReader,...catchOwner,...catchOther],3,0);
- assert.equal(catchJoin.ambiguous_import_candidates,1);
- assert.equal(catchJoin.export_shape_candidate_count,1);
- assert.equal(catchJoin.export_shape_candidates[0].to_ref,"R-JS-123");
- const catchBoot=analyzeJS("export const __webpack_modules__={"+
+ const flowCatchJoin=buildGraph([...flowCatchReader,...flowCatchOwner,...flowCatchOther],3,0);
+ assert.equal(flowCatchJoin.ambiguous_import_candidates,1);
+ assert.equal(flowCatchJoin.export_shape_candidate_count,1);
+ assert.equal(flowCatchJoin.export_shape_candidates[0].to_ref,"R-JS-123");
+ const flowCatchBoot=analyzeJS("export const __webpack_modules__={"+
   "Boot:function(){}};try{if(flag)throw 1;__webpack_require__=()=>0}"+
   "catch(e){__webpack_require__('Boot')}"+
   "__webpack_require__('NotSafe');",125);
- assert.equal(catchBoot.bootstrapCandidates.length,1);
- const finallySource=analyzeJS("export const __webpack_modules__={"+
+ assert.equal(flowCatchBoot.bootstrapCandidates.length,1);
+ const flowFinallySource=analyzeJS("export const __webpack_modules__={"+
   "Reader:(function(e,t,n){try{if(t.flag)throw 1;n=()=>0}"+
   "catch(e){}finally{n('Maybe')}}),"+
   "Maybe:(function(e,t){t.ok=1})};",126);
- assert.equal(buildGraph(finallySource,1,0).import_candidates,1);
+ assert.equal(buildGraph(flowFinallySource,1,0).import_candidates,1);
 
 }
 if(require.main===module){
