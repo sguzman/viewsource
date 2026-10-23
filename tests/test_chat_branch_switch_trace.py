@@ -17,7 +17,11 @@ class SavedBranchSwitchTests(unittest.TestCase):
         self.assertEqual({x["ref"] for x in d["source_resources"]},
                          {"R-JS-018","R-JS-069"})
         self.assertEqual(len(d["reviewed_stages"]),7)
-        self.assertEqual(len(d["relationships"]),8)
+        self.assertEqual(len(d["relationships"]),10)
+        variant=d["variant_derivation"]
+        self.assertEqual(variant["source_ref"],"R-JS-018")
+        self.assertEqual(len(variant["steps"]),5)
+        self.assertIn("eligible_variant_identities",variant["source_output_roles"])
         self.assertEqual(set(d["visible_control_roles"]),
                          {"previous_response","response_position_count","next_response"})
         self.assertFalse(d["source_executed"])
