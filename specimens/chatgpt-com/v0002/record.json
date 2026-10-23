@@ -11013,11 +11013,21 @@
     },
     {
       "id": "F2-096",
-      "statement": "The captured completion preparation method checks abort and should-prepare guards before and after asynchronous identity/rate-limit preparation. On a failed partial-query preparation, it attempts at most one conditional fallback when caller retry permission and an imported error-eligibility predicate permit it; after a randomized 250–500 ms delay it rechecks permission, changes client preparation dispatch to immediate and disables further preparation fallback. This is separate from completion-stream resume backoff and does not verify an executed retry or server response.",
+      "statement": "The captured completion preparation method checks abort and should-prepare guards before and after asynchronous identity/rate-limit preparation. On a failed partial-query preparation, it attempts at most one conditional fallback when caller retry permission and the captured preparation-error eligibility predicate permit it; after a randomized 250–500 ms delay it rechecks permission, changes client preparation dispatch to immediate and disables further preparation fallback. This is separate from completion-stream resume backoff and does not verify an executed retry or server response.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
         "evidence_ref": "E2-096",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-097",
+      "statement": "The error-eligibility predicate imported by the captured partial-query completion preparer resolves to a unique module definition within the saved JavaScript. It excludes aborted/non-Error cases and certain terminal typed request error codes, honors an explicit structured can_retry=false veto, and otherwise permits typed request network errors or status 408, 409, 425, 502 or 504; other Error objects use timeout/offline/network-message heuristics. This predicate governs the one-shot preparation fallback, not the separately imported stream-resume eligibility gate. The source does not establish observed errors, server contracts or successful retries.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-097",
         "source_scope": "saved_archive"
       }
     }
