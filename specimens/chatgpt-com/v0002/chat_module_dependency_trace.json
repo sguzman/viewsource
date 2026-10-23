@@ -63,7 +63,26 @@
     "An unresolved candidate need not be broken: it may reference a separately loaded module or a dynamic mechanism outside the capture.",
     "A duplicated module key is deliberately ambiguous; its import edges were not assigned speculative targets.",
     "Counted import candidates are unique literal module references per factory, not the number of calls executed.",
-    "The source bundles are a single archived snapshot and do not establish current deployed client behavior."
+    "The source bundles are a single archived snapshot and do not establish current deployed client behavior.",
+    "Unique export-interface candidate matches are not promoted into the original unique-import census; the duplicate-key imports remain counted as ambiguous. Only independently reviewed source edges are promoted."
   ],
-  "privacy": "Only anonymous source ordinals, module ordinals, structural counts and authored roles are published; original identifiers, source file names, URLs, code, payloads and account data remain private."
+  "privacy": "Only anonymous source ordinals, module ordinals, structural counts and authored roles are published; original identifiers, source file names, URLs, code, payloads and account data remain private.",
+  "reviewed_export_shape_matches": [
+    {
+      "from_ref": "R-JS-018",
+      "to_ref": "R-JS-004",
+      "registry_candidate_count": 2,
+      "compatible_interface_count": 1,
+      "required_export_roles": [
+        "resume_state_coordinator",
+        "automatic_retry_eligibility",
+        "recoverable_error_classifier"
+      ],
+      "classification": "human_reviewed_export_shape_match",
+      "evidence_class": "observed_static_syntax",
+      "runtime_import_verified": false,
+      "description": "The completion stream client imports three functions from a short-keyed registry module. Across two captured definitions of that key, only the module in R-JS-004 exposes the required trio, matching its inspected recovery implementation.",
+      "limits": "Static export interface correspondence is reviewed, but it cannot establish actual chunk loading or runtime execution. Other ambiguous imports remain unassigned."
+    }
+  ]
 }
