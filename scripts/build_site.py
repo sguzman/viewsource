@@ -262,6 +262,11 @@ def build(out: Path) -> dict:
                         for rule in transcript["presentation_rules"]
                     ],
                     "rule_limitations": transcript["rule_limitations"],
+                    "action_bindings": [
+                        {"action": row["action"],"target": row["target"],
+                         "gates": row["gates"],"limits": row["limits"]}
+                        for row in transcript["action_bindings"]
+                    ],
                     "cross_module_call": {
                         "source_ref": transcript["verified_cross_module_call"]["source_ref"],
                         "target_ref": transcript["verified_cross_module_call"]["target_ref"],
