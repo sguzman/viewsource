@@ -161,5 +161,32 @@
     "Server-side history paging and scroll restore behavior across reloads.",
     "Actual user-visible motion and screen-reader navigation through a virtual window."
   ],
-  "privacy": "Public report contains only capture-local file ordinals, fixed technical labels and independently written summaries; no original asset names, source snippets, identities, tokens, messages, URLs or request bodies."
+  "privacy": "Public report contains only capture-local file ordinals, fixed technical labels and independently written summaries; no original asset names, source snippets, identities, tokens, messages, URLs or request bodies.",
+  "module_anchors": [
+    {
+      "source_ref": "R-JS-066",
+      "module_ordinal": 9,
+      "role": "virtual_turn_window",
+      "link_type": "source_reviewed_module"
+    },
+    {
+      "source_ref": "R-JS-066",
+      "module_ordinal": 14,
+      "role": "response_spacer_controller",
+      "link_type": "source_reviewed_module"
+    },
+    {
+      "source_ref": "R-JS-072",
+      "module_ordinal": 13,
+      "role": "conversation_page_turn_adapter",
+      "link_type": "source_reviewed_module"
+    },
+    {
+      "source_ref": "R-JS-072",
+      "module_ordinal": 14,
+      "role": "voice_scroll_placement_hook",
+      "link_type": "source_reviewed_module"
+    }
+  ],
+  "module_ordinal_contract": "Module ordinal is 1-based insertion order inside the saved chunk's module registry. It is capture-local and does not reveal original minified module names."
 }
