@@ -471,6 +471,34 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_replacing_module_exports_detaches_original_exports_alias(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-detached-exports.zip"
+            key = "PrivateDetachedModuleZ997"
+            obsolete = "PrivateObsoletePropertyZ997"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("one.js", "export const __webpack_modules__={"
+                    "Consumer:(function(e,t,n){const item=n('" + key + "');"
+                    "item." + obsolete + "()}),"
+                    + key + ":(function(e,t,n){t." + obsolete + "=()=>1;"
+                    "e.exports=function(){return 1};t.later=()=>2})};")
+                z.writestr("two.js", "export const __webpack_modules__={"
+                    + key + ":(function(e,t,n){t.other=()=>1})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            graph = json.loads(proc.stdout)
+            self.assertEqual(graph["ambiguous_import_candidates"], 1)
+            self.assertEqual(graph["export_shape_candidate_count"], 0)
+            self.assertEqual(graph["direct_function_export_site_count"], 2)
+            self.assertEqual(
+                graph["direct_function_export_sites"][0]["classification"],
+                "module_object_function_assignment_candidate")
+            for secret in (key, obsolete, "synthetic-detached-exports.zip"):
+                self.assertNotIn(secret, proc.stdout)
+
     def test_module_exports_function_candidate_is_not_shadowed_function(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-commonjs-exports.zip"
