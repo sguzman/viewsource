@@ -523,3 +523,9 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-lifecycle-stage small { color:var(--muted);font-size:11px; }
 .chat-lifecycle-edges summary,.chat-lifecycle-alternatives summary { cursor:pointer;font-weight:600; }
 .chat-lifecycle-edges ol,.chat-lifecycle-alternatives ul { padding-left:20px; }
+
+.chat-recovery-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px;margin:12px 0; }
+.chat-recovery-stage { border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:12px; }
+.chat-recovery-stage summary,.chat-recovery-defaults summary { cursor:pointer;font-size:12px;font-weight:600;line-height:1.6; }
+.chat-recovery-stage p,.chat-recovery-defaults { font-size:12px;line-height:1.65; }
+.chat-recovery-defaults ul { padding-left:20px; }
