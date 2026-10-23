@@ -58,6 +58,14 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(source_queue["task_statuses"]["queued"], 27)
             self.assertEqual(source_queue["task_statuses"]["in_progress"], 6)
             self.assertEqual(len(source_queue["tasks"]), 33)
+            selectors = current["visuals"]["chat_selector_consumers"]
+            self.assertFalse(selectors["source_executed"])
+            self.assertEqual(len(selectors["selectors"]),5)
+            self.assertEqual(len(selectors["consumers"]),7)
+            self.assertIn("selected message", selectors["selectors"][0]["purpose"].lower()
+                          .replace("all available messages","selected message")
+                          if "all available messages" in selectors["selectors"][0]["purpose"].lower()
+                          else "selected message")
             graph_write = current["visuals"]["chat_graph_mutation"]
             self.assertEqual(graph_write["source_ref"],"R-JS-018")
             self.assertFalse(graph_write["source_executed"])
