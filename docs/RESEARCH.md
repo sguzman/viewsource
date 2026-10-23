@@ -708,3 +708,14 @@ must remain unshadowed; earlier whole-module replacement can detach
 the original `exports` alias without invalidating later direct
 writes through `module.exports`. These source-level candidates
 remain unexecuted and do not prove feature ownership.
+
+### Source ordinal provenance for startup-candidate roots
+
+When an offline dependency frontier is seeded from literal startup
+syntax, `bootstrap_root_provenance` now includes the distinct
+`R-JS-NNN` resource references containing those call expressions.
+It does not include private script names, URLs, loader keys, source
+strings, account information or capture paths. Source-reference
+values are validated before use. Multiple eligible syntactic
+calls may suggest the same module, but none establishes that the
+browser executed that entrypoint.
