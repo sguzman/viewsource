@@ -235,6 +235,28 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            recovery_path = ROOT / (base + "/chat_transport_failure_trace.json")
+            if recovery_path.is_file():
+                recovery = read(base + "/chat_transport_failure_trace.json")
+                if (recovery["specimen_id"] != item["id"]
+                        or recovery["version"] != number
+                        or recovery["live_failure_observed"] is not False):
+                    raise ValueError("Transport failure trace source scope mismatch")
+                visuals["chat_transport_failure"] = {
+                    "live_failure_observed": recovery["live_failure_observed"],
+                    "source_ref": recovery["source_ref"],
+                    "observations": [
+                        {"id": x["id"],"behavior": x["behavior"],
+                         "limits": x["boundary"]}
+                        for x in recovery["observations"]
+                    ],
+                    "default_fallbacks": [
+                        {"label": name.replace("_"," "), "value": val}
+                        for name,val in recovery["captured_default_fallbacks"].items()
+                    ],
+                    "fallback_scope": recovery["fallback_scope"],
+                    "questions": recovery["open_questions"],
+                }
             lifecycle_path = ROOT / (base + "/chat_end_to_end_trace.json")
             if lifecycle_path.is_file():
                 lifecycle = read(base + "/chat_end_to_end_trace.json")
