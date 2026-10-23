@@ -20,7 +20,7 @@ class FinalResearchChecks(unittest.TestCase):
 
     def test_terminal_evidence_dispositions(self):
         self.assertEqual(self.record["status"], "researching")
-        self.assertEqual(Counter(t["status"] for t in self.tasks), {"done": 69, "not_observable": 22, "queued": 20, "in_progress": 13})
+        self.assertEqual(Counter(t["status"] for t in self.tasks), {"done": 69, "not_observable": 22, "queued": 19, "in_progress": 14})
         deep = [t for t in self.tasks if "-followup-deep-" in t["id"]]
         self.assertEqual(Counter(t["status"] for t in deep), {"done": 37, "not_observable": 20})
         refs = {f["evidence"]["evidence_ref"] for f in self.record["findings"]}
