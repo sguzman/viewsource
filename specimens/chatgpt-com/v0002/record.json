@@ -10950,6 +10950,16 @@
         "evidence_ref": "E2-089",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-090",
+      "statement": "The saved conversation UI includes a visually hidden focusable latest-response landmark with abortable navigation and fallback status, a viewport-intersection trigger for older-message pagination with loading or retry presentation, and a request-scoped polite live-region announcement for completed responses. These accessibility-related client mechanisms are wired into the conversation page and virtualized viewport, but no real screen-reader interaction, keyboard navigation outcome or successful history fetch was observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-090",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
