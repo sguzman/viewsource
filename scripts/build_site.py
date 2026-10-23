@@ -235,6 +235,27 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            switch_path = ROOT / (base + "/chat_branch_switch_trace.json")
+            if switch_path.is_file():
+                branch = read(base + "/chat_branch_switch_trace.json")
+                if (branch["specimen_id"] != item["id"]
+                        or branch["version"] != number
+                        or branch["live_selection_verified"] is not False):
+                    raise ValueError("Static branch selection scope mismatch")
+                visuals["chat_branch_switch"] = {
+                    "live_selection_verified": branch["live_selection_verified"],
+                    "source_resources": [r["ref"] for r in branch["source_resources"]],
+                    "stages": [
+                        {"id": step["id"],"source_ref": step["ref"],
+                         "description": step["detail"]}
+                        for step in branch["reviewed_stages"]
+                    ],
+                    "relationships": [
+                        {"from": edge["from"],"to": edge["to"],"kind": edge["kind"]}
+                        for edge in branch["relationships"]
+                    ],
+                    "caveats": branch["caveats"],
+                }
             transcript_path = ROOT / (base + "/chat_transcript_render_trace.json")
             if transcript_path.is_file():
                 transcript = read(base + "/chat_transcript_render_trace.json")
