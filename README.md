@@ -94,7 +94,7 @@ available for export-compatible tree records. It constructs temporary
 ordinal message graphs and refuses broken ancestry. Unlike the public
 specimen results, it never includes raw text, original IDs or export files.
 
-The [source-anchored client implementation trace](specimens/chatgpt-com/v0002/chat_static_impl_trace.json) records **15 narrow AST pattern matches**, **7 manually examined client operations**, **6 direct caller-to-dispatcher edges**, and module export relationships without publishing JavaScript source or private values. The current source research queue has **33 tasks: 7 in progress, 26 queued, none claimed complete**. The [Specimen Atlas](https://sguzman.github.io/viewsource/) presents these static findings and the automatic queue before optional runtime studies.
+The [source-anchored client implementation trace](specimens/chatgpt-com/v0002/chat_static_impl_trace.json) records **15 narrow AST pattern matches**, **7 manually examined client operations**, **6 direct caller-to-dispatcher edges**, and module export relationships without publishing JavaScript source or private values. The current source research queue has **33 tasks: 8 in progress, 25 queued, none claimed complete**. The [Specimen Atlas](https://sguzman.github.io/viewsource/) presents these static findings and the automatic queue before optional runtime studies.
 
 ## Automatic implementation tracing
 
