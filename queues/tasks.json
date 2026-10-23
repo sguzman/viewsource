@@ -1998,12 +1998,15 @@
       "profile": "followup",
       "queue": "styling",
       "title": "Trace stylesheet ownership and dynamic class usage",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-styles",
         "chatgpt-com-v0002-markup"
       ],
-      "notes": "Static implementation trace: Relate markup/class hooks and CSS definitions, check responsive and dynamically applied states; distinguish captured declarations from interaction outcomes."
+      "notes": "Static implementation trace: Relate markup/class hooks and CSS definitions, check responsive and dynamically applied states; distinguish captured declarations from interaction outcomes. Static stylesheet census and DOM attribution negative-selector boundary recorded. Exact class/style ownership and computed rendering remain open.",
+      "evidence_refs": [
+        "E2-093"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-feature-chat-operations",
