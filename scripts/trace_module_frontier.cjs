@@ -58,7 +58,8 @@ function indexGraph(graph) {
     ["direct_function_export_site_count","direct_function_export_sites"],
     ["archive_candidate_script_count",null],
     ["archive_oversize_script_count",null],
-    ["archive_ast_input_script_count",null]
+    ["archive_ast_input_script_count",null],
+    ["parsed_without_indexed_module_count","parsed_without_indexed_module_refs"]
   ]){
     if(graph[field]===undefined)continue;
     const value=safeCount(graph[field],field);
@@ -121,6 +122,18 @@ function indexGraph(graph) {
        item.count<0||item.count>NODE_LIMIT||census.has(item.source_ref))
       throw Error("Invalid module census");
     census.set(item.source_ref,item.count);
+  }
+  if(graph.parsed_without_indexed_module_refs!==undefined){
+    const noModules=graph.parsed_without_indexed_module_refs;
+    if(!Array.isArray(noModules)||new Set(noModules).size!==noModules.length||
+       noModules.some(ref=>typeof ref!=="string"||!REF.test(ref)||census.has(ref))||
+       !Number.isSafeInteger(graph.parsed_bundles)||
+       graph.parsed_bundles<0||
+       graph.parsed_bundles!==census.size+noModules.length)
+      throw Error("Unindexed parsed source census inconsistent");
+    if(Array.isArray(graph.failed_parser_source_refs)&&
+       noModules.some(ref=>graph.failed_parser_source_refs.includes(ref)))
+      throw Error("Unindexed source cannot be a parser failure");
   }
   const censusTotal=[...census.values()].reduce((sum,count)=>sum+count,0);
   if(censusTotal>NODE_LIMIT||(graph.modules_total!==undefined&&
@@ -494,6 +507,8 @@ function frontier(graph, roots, options={}) {
     archive_oversize_script_count:graph.archive_oversize_script_count??null,
     archive_all_scripts_parsed:graph.archive_all_scripts_parsed??null,
     failed_parser_source_refs:graph.failed_parser_source_refs||[],
+    parsed_without_indexed_module_count:graph.parsed_without_indexed_module_count??null,
+    parsed_without_indexed_module_refs:graph.parsed_without_indexed_module_refs||[],
     depth_limit:depthLimit,node_limit:nodeLimit,
     reached_module_count:nodes.length,traversed_static_edges:traversed,
     examined_static_edges:examined,
@@ -537,6 +552,7 @@ function frontier(graph, roots, options={}) {
       "Direct function-valued export assignments indicate only static candidates, not verified feature ownership or calls.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",
+      "Parsed script resources with no recognized module entries are separate ordinal-only coverage gaps.",
       "A successful parse is not evidence of feature ownership or complete recognition of bundled source patterns.",
       "Bootstrap root provenance distinguishes syntax categories; neither establishes runtime execution."
     ]

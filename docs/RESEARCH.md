@@ -730,3 +730,16 @@ reached source modules and never promotes an edge to verified execution.
 The full static graph still traverses those candidate edges: nested
 functions can be invoked immediately, later, or never. This distinction
 helps prioritize source review without guessing browser execution order.
+
+### Parsed JavaScript without indexed module entries
+
+A successfully parsed JavaScript resource can contain no entries recognized
+by the selective module-table scanner. The private trace and dependency
+frontier now distinguish such resources from parse failures and oversized
+skips, exposing `parsed_without_indexed_module_count` and capture-local
+`R-JS-NNN` resource references. This includes empty recognized tables,
+so the metric describes **zero indexed module entries**, not a claim that
+the source lacks executable modules or application logic. The frontier
+verifies that those references are distinct from the module census and
+that parsed resource counts reconcile. No source paths or script text
+enter the report.

@@ -182,6 +182,36 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                 for token in (private_name, "invented-chunk-runtime.zip", "chunk.js"):
                     self.assertNotIn(token, proc.stdout)
 
+    def test_parsed_scripts_without_module_entries_are_reported_by_ordinal(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-unindexed-resources.zip"
+            secret = "PrivatePlainScriptIdentifierZ909"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("first.js", "export const __webpack_modules__={"
+                    "Root:(function(e,t,n){t.ok=1})};")
+                z.writestr("second.js", "const " + secret + "=()=>42;")
+                z.writestr("third.js", "const __webpack_modules__={};")
+            for args in (["--module-trace"],
+                         ["--module-frontier", "--root", "R-JS-001:1"]):
+                result = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *args],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=40)
+                self.assertEqual(result.returncode, 0, result.stderr[:120])
+                report = json.loads(result.stdout)
+                self.assertEqual(report["parsed_without_indexed_module_count"], 2)
+                self.assertEqual(report["parsed_without_indexed_module_refs"],
+                                 ["R-JS-002", "R-JS-003"])
+                if args[0] == "--module-trace":
+                    self.assertEqual(report["parsed_bundles"], 3)
+                    self.assertEqual(report["modules_total"], 1)
+                else:
+                    self.assertEqual(report["reached_module_count"], 1)
+                for private in (secret, "synthetic-unindexed-resources.zip",
+                                "first.js", "second.js", "third.js"):
+                    self.assertNotIn(private, result.stdout)
+
     def test_module_coverage_records_parse_failure_and_skipped_large_js(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-coverage-census.zip"

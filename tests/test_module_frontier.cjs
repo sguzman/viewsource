@@ -451,3 +451,19 @@ test("nested-only dependency edges remain static and root-local",()=>{
  g.resolved_links[1].factory_body_syntax_present=true;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("parsed resource without recognized modules is an explicit coverage gap",()=>{
+ const g=graph();
+ g.parsed_bundles=3;
+ g.parsed_without_indexed_module_count=1;
+ g.parsed_without_indexed_module_refs=["R-JS-003"];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.parsed_without_indexed_module_count,1);
+ assert.deepEqual(out.parsed_without_indexed_module_refs,["R-JS-003"]);
+ g.parsed_without_indexed_module_refs.push("R-JS-001");
+ g.parsed_without_indexed_module_count=2;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+ g.parsed_without_indexed_module_refs=["PrivateFileName"];
+ g.parsed_without_indexed_module_count=1;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

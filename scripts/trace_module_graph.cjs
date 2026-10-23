@@ -1092,7 +1092,7 @@ function scan(directory){
  const entries=fs.readdirSync(directory).filter(x=>/^bundle-[0-9]{3,4}\.js$/.test(x)).sort();
  if(entries.length>MAX_FILES)throw Error("Too many bundles");
  let parsed=0,failed=0;
- const failedOrdinals=[],modules=[],bootstrap=[];
+ const failedOrdinals=[],noModuleOrdinals=[],modules=[],bootstrap=[];
  for(const entry of entries){
   const full=path.join(directory,entry),stat=fs.lstatSync(full);
   if(!stat.isFile()||stat.isSymbolicLink())throw Error("Unsupported file");
@@ -1100,6 +1100,7 @@ function scan(directory){
   if(stat.size>8*1024*1024){failed++;failedOrdinals.push(ordinal);continue;}
   try{
    const report=analyzeJS(fs.readFileSync(full,"utf8"),ordinal);
+   if(report.length===0)noModuleOrdinals.push(ordinal);
    modules.push(...report);
    bootstrap.push(...report.bootstrapCandidates);
    parsed++;
@@ -1108,6 +1109,9 @@ function scan(directory){
  }
  const report=buildGraph(modules,parsed,failed,bootstrap);
  report.failed_parser_source_refs=failedOrdinals.map(id=>
+   "R-JS-"+String(id).padStart(3,"0"));
+ report.parsed_without_indexed_module_count=noModuleOrdinals.length;
+ report.parsed_without_indexed_module_refs=noModuleOrdinals.map(id=>
    "R-JS-"+String(id).padStart(3,"0"));
  return report;
 }
