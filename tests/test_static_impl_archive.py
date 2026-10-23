@@ -494,6 +494,38 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_module_exports_property_function_has_distinct_source_classification(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-module-property-functions.zip"
+            key = "PrivateModuleExportsPropertyZ992"
+            secret = "PrivateShadowedModulePropertyZ992"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("one.js", "export const __webpack_modules__={"
+                    "Caller:(function(m,t,n){const q=n('" + key + "');q.handler()}),"
+                    + key + ":(function(m,t,n){m.exports.handler=()=>1;"
+                    "function unused(m){m.exports." + secret + "=()=>2}})};")
+                z.writestr("two.js", "export const __webpack_modules__={"
+                    + key + ":(function(m,t,n){t.alternate=()=>3})};")
+            for mode in (["--module-trace"],
+                         ["--module-frontier", "--root", "R-JS-001:1"]):
+                proc = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *mode],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=40)
+                self.assertEqual(proc.returncode, 0, proc.stderr[:100])
+                data = json.loads(proc.stdout)
+                if mode[0] == "--module-trace":
+                    self.assertEqual(data["export_shape_candidate_count"], 1)
+                    self.assertEqual(data["direct_function_export_site_count"], 2)
+                    kinds = [x["classification"] for x in data["direct_function_export_sites"]]
+                    self.assertIn("module_exports_property_function_candidate", kinds)
+                else:
+                    self.assertEqual(data["reached_module_count"], 1)
+                    self.assertEqual(data["reachable_direct_function_export_site_count"], 0)
+                for token in (key, secret, "synthetic-module-property-functions.zip"):
+                    self.assertNotIn(token, proc.stdout)
+
     def test_replacing_module_exports_detaches_original_exports_alias(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-detached-exports.zip"
