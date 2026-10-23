@@ -225,5 +225,40 @@
       "No actual branch switch, React reconciliation, or scroll motion was observed, so visual smoothness and scroll position are not verified."
     ],
     "interpretation": "This is a composed source-level path connecting the previously reviewed selection helper, memoized turn derivation, and virtual row-window reconciliation. It does not claim the captured page executed a particular branch transition."
+  },
+  "composer_spacer_wiring": {
+    "evidence_class": "observed_static",
+    "live_scroll_verified": false,
+    "source_refs": [
+      "R-JS-072",
+      "R-JS-066"
+    ],
+    "stages": [
+      {
+        "role": "composer_submit_accepted",
+        "source_ref": "R-JS-072",
+        "behavior": "The composer wrapper invokes the response-spacer placement method when it accepts a submission, before forwarding the accepted-submission callback."
+      },
+      {
+        "role": "layout_growth_measurement",
+        "source_ref": "R-JS-072",
+        "behavior": "The turn-window adapter forwards latest-turn height-change measurements to a callback that consumes the corresponding amount of spacer growth."
+      },
+      {
+        "role": "submission_error_cleanup",
+        "source_ref": "R-JS-072",
+        "behavior": "A submission-error callback references the response-spacer clear operation to release temporary placement state."
+      },
+      {
+        "role": "manual_scroll_decay",
+        "source_ref": "R-JS-066",
+        "behavior": "The spacer controller processes user scroll displacement, interrupts ongoing placement, and shrinks remaining spacer height when the user scrolls away."
+      }
+    ],
+    "boundaries": [
+      "The hooks and callbacks are source-visible, but no real submission, measurement or scroll event was observed.",
+      "Feature settings and presentation mode can suppress the spacer or select different scroll behavior.",
+      "A browser's actual layout and scroll timing cannot be inferred from static callback wiring."
+    ]
   }
 }
