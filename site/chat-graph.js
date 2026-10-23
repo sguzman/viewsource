@@ -111,6 +111,33 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const cssHooks=record.visuals?.chat_css_hooks;
+    if(cssHooks){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Captured styling and DOM hook evidence"));
+      block.append(element("p","graph-caption",
+        cssHooks.stylesheets+" saved stylesheets; lexical CSS syntax counts, not computed browser styles."));
+      const metrics=element("div","chat-css-metrics");
+      cssHooks.metrics.forEach(x=>{
+        const card=element("div","chat-css-stat");
+        card.append(element("strong","",String(x.count)),
+          element("small","",x.label));
+        metrics.append(card);
+      });
+      block.append(metrics);
+      const gaps=element("details","chat-css-limits");
+      gaps.append(element("summary","","DOM attribution selectors and unresolved ownership"));
+      const findings=element("ul","");
+      cssHooks.conclusions.forEach(x=>findings.append(element("li","",x)));
+      const absent=cssHooks.unmatched_attribution.filter(x=>x.count===0);
+      findings.append(element("li","",
+        absent.length+" exact message/turn attribution selector families absent as literal CSS selectors. This does not imply messages are unstyled."));
+      gaps.append(findings);
+      const remain=element("ul","");
+      cssHooks.unverified.forEach(x=>remain.append(element("li","",x)));
+      gaps.append(element("p","graph-caption","Unresolved style ownership:"),remain);
+      block.append(gaps);section.append(block);
+    }
     const clientCache=record.visuals?.chat_persistence_cache;
     if(clientCache){
       const block=element("div","chat-subsection");
