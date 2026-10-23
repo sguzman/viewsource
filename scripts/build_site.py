@@ -255,6 +255,13 @@ def build(out: Path) -> dict:
                         for e in transcript["reviewed_relationships"]
                     ],
                     "unverified": transcript["unverified"],
+                    "presentation_rules": [
+                        {"id": rule["id"],"source_ref": rule["source_ref"],
+                         "scope": rule["scope"],"classification": rule["classification"],
+                         "description": rule["description"]}
+                        for rule in transcript["presentation_rules"]
+                    ],
+                    "rule_limitations": transcript["rule_limitations"],
                     "cross_module_call": {
                         "source_ref": transcript["verified_cross_module_call"]["source_ref"],
                         "target_ref": transcript["verified_cross_module_call"]["target_ref"],
