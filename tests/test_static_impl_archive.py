@@ -23,6 +23,29 @@ def parser_installed() -> bool:
 
 @unittest.skipUnless(parser_installed(), "Node.js Acorn dependency unavailable")
 class StaticImplementationArchiveTests(unittest.TestCase):
+    def test_chunk_root_provenance_is_source_limited(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "source-limited-chunk.zip"
+            private_key = "webpackChunkSecretRootFixture"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("entry.js",
+                    "(self." + private_key + "=self." + private_key + "||[]).push("
+                    "[[1],{100:function(e,t,n){t.a=1}},function(n){n(100)}]);")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-frontier",
+                 "--bootstrap-candidates"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["bootstrap_root_provenance"][0]["candidate_kinds"],
+                             ["chunk_runtime_literal_call_candidate"])
+            self.assertEqual(data["bootstrap_root_provenance"][0]["matching_static_calls"], 1)
+            self.assertFalse(data["bootstrap_root_provenance"][0]["execution_verified"])
+            for private in (private_key, "source-limited-chunk.zip", "entry.js"):
+                self.assertNotIn(private, proc.stdout)
+
     def test_chunk_runtime_callback_seeds_candidate_module_frontier(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-chunk-runtime.zip"

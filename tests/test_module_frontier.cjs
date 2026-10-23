@@ -104,6 +104,30 @@ test("multiple roots deduplicate, order-independent under fixed limits",()=>{
  assert.equal(a.nodes.filter(x=>x.depth===0).length,2);
 });
 
+test("bootstrap root provenance distinguishes source contexts without claiming execution",()=>{
+ const g=graph();
+ g.bootstrap_runtime_verified=false;
+ g.bootstrap_candidates=[
+  {classification:"unique_registry_key_candidate",
+   bootstrap_kind:"chunk_runtime_literal_call_candidate",
+   target_ref:"R-JS-001",target_module:1,bootstrap_execution_verified:false},
+  {classification:"unique_registry_key_candidate",
+   bootstrap_kind:"top_level_literal_call_candidate",
+   target_ref:"R-JS-001",target_module:1,bootstrap_execution_verified:false},
+  {classification:"ambiguous_registry_key",bootstrap_execution_verified:false}
+ ];
+ const roots=candidateBootstrapRoots(g);
+ assert.deepEqual(roots,["R-JS-001:1"]);
+ const out=frontier(g,roots,{rootSource:"bootstrap_syntax_candidate"});
+ assert.equal(out.bootstrap_root_provenance.length,1);
+ assert.deepEqual(out.bootstrap_root_provenance[0].candidate_kinds,
+  ["chunk_runtime_literal_call_candidate","top_level_literal_call_candidate"]);
+ assert.equal(out.bootstrap_root_provenance[0].matching_static_calls,2);
+ assert.equal(out.bootstrap_root_provenance[0].execution_verified,false);
+ assert.throws(()=>frontier(g,["R-JS-001:2"],{rootSource:"bootstrap_syntax_candidate"}));
+ g.bootstrap_candidates[0].bootstrap_kind="private_script_name";
+ assert.throws(()=>candidateBootstrapRoots(g));
+});
 test("candidate bootstrap roots use only uniquely matched unexecuted syntax",()=>{
  const data=graph();
  data.bootstrap_runtime_verified=false;

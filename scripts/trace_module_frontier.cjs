@@ -167,12 +167,18 @@ function indexGraph(graph) {
   }
   return {census,adjacency,ambiguous,dynamic,bound,foreign};
 }
+const BOOTSTRAP_KINDS=new Set([
+ "top_level_literal_call_candidate",
+ "chunk_runtime_literal_call_candidate"
+]);
 function candidateBootstrapRoots(graph) {
  if(graph?.bootstrap_runtime_verified!==false||!Array.isArray(graph.bootstrap_candidates))
   throw Error("Missing candidate bootstrap classification");
  const roots=[];
  for(const item of graph.bootstrap_candidates) {
   if(item?.bootstrap_execution_verified!==false)throw Error("Invalid candidate execution");
+  if(item.bootstrap_kind!==undefined&&!BOOTSTRAP_KINDS.has(item.bootstrap_kind))
+   throw Error("Invalid bootstrap provenance");
   if(item.classification==="unique_registry_key_candidate") {
    roots.push(ordinal(item.target_ref,item.target_module));
   }else if(!["ambiguous_registry_key","missing_saved_module"].includes(item.classification)) {
@@ -193,6 +199,11 @@ function frontier(graph, roots, options={}) {
   const {census,adjacency,ambiguous,dynamic,bound,foreign}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))];
+  if(provenance==="bootstrap_syntax_candidate"){
+    const allowed=new Set(candidateBootstrapRoots(graph));
+    if(seeds.some(id=>!allowed.has(id)))
+      throw Error("Bootstrap root not supported by candidate evidence");
+  }
   if(seeds.length>nodeLimit)throw Error("Initial roots exceed node limit");
   for(const id of seeds) {
     const [ref,n]=id.split(":");
@@ -263,6 +274,19 @@ function frontier(graph, roots, options={}) {
       source:asNode(id),foreign_registry_definition_count:foreign.get(id),
       classification:"foreign_registry_key_collision",traversed:false
     }));
+  const bootstrapRoots=provenance==="bootstrap_syntax_candidate"?
+    seeds.map(id=>{
+      const calls=graph.bootstrap_candidates.filter(item=>
+        item.classification==="unique_registry_key_candidate"&&
+        ordinal(item.target_ref,item.target_module)===id);
+      return {
+        root:asNode(id),
+        candidate_kinds:[...new Set(calls.map(item=>
+         item.bootstrap_kind||"legacy_unspecified_candidate"))].sort(),
+        matching_static_calls:calls.length,
+        execution_verified:false
+      };
+    }):[];
   const nodes=[...visited].sort((a,b)=>a[1]-b[1]||a[0].localeCompare(b[0]))
     .map(([id,depth])=>({...asNode(id),depth,
       reached_via:predecessors.get(id)?asNode(predecessors.get(id)):null,
@@ -272,6 +296,7 @@ function frontier(graph, roots, options={}) {
     format_version:1,scope:"private_static_module_frontier",
     source_executed:false,runtime_module_load_verified:false,
     roots:seeds.map(asNode),root_source:provenance,
+    bootstrap_root_provenance:bootstrapRoots,
     archive_candidate_script_count:graph.archive_candidate_script_count??null,
     archive_oversize_script_count:graph.archive_oversize_script_count??null,
     archive_all_scripts_parsed:graph.archive_all_scripts_parsed??null,
@@ -302,7 +327,8 @@ function frontier(graph, roots, options={}) {
       "Unresolved import counts cover the entire capture, not only these roots.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",
-      "A successful parse is not evidence of feature ownership or complete recognition of bundled source patterns."
+      "A successful parse is not evidence of feature ownership or complete recognition of bundled source patterns.",
+      "Bootstrap root provenance distinguishes syntax categories; neither establishes runtime execution."
     ]
   };
 }

@@ -468,3 +468,13 @@ That candidate can seed `--module-frontier --bootstrap-candidates`. Deferred
 nested callbacks, conditional branches and computed targets do not qualify.
 Chunk registration and static callback source are not proof of runtime
 invocation, network requests or actual module activation.
+
+### Provenance of proposed bootstrap roots
+
+When a frontier is automatically seeded from candidate startup syntax, the
+result includes `bootstrap_root_provenance` with fixed category names,
+the number of matching static calls and an explicit `execution_verified:
+false` guard. Recognized categories distinguish direct top-level loader
+calls from third-position Webpack chunk runtime callbacks. A proposed
+bootstrap root must actually appear among the input candidate records;
+an arbitrary ordinal cannot be mislabeled as an observed entrypoint.
