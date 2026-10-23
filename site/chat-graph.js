@@ -192,7 +192,15 @@ window.ViewsourceChatGraph = (() => {
         element("p","",recovery.stream_resume_state.token_behavior),
         element("p","",recovery.stream_resume_state.offset_behavior),guardList,
         element("p","graph-caption",recovery.stream_resume_state.limits));
-      block.append(resumeState);section.append(block);
+      block.append(resumeState);
+      const permission=element("details","chat-recovery-permission");
+      permission.append(element("summary","","Initial versus explicit resume permission"),
+        element("p","",recovery.resume_permission_wiring.initial_method+": "+
+          recovery.resume_permission_wiring.initial_gate),
+        element("p","",recovery.resume_permission_wiring.explicit_method+": "+
+          recovery.resume_permission_wiring.explicit_gate),
+        element("p","graph-caption",recovery.resume_permission_wiring.limits));
+      block.append(permission);section.append(block);
     }
     const lifecycle=record.visuals?.chat_end_to_end_trace;
     if(lifecycle){
