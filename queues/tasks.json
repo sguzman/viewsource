@@ -1815,7 +1815,8 @@
       "notes": "Static implementation trace: Trace object creation, field reads/writes, parent-child relationships and serialization; report supported invariants and conflicting candidate schemas. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure.",
       "evidence_refs": [
         "E2-073",
-        "E2-074"
+        "E2-074",
+        "E2-082"
       ]
     },
     {
@@ -1851,7 +1852,8 @@
       ],
       "notes": "Static implementation trace: Map named candidate state owners, action producers, reducers or updates, selectors and consumers; identify uncertainty around runtime choices. Source-reviewed current-node optimistic selection, rollback, and scoped conversation state updates; other reducers remain open.",
       "evidence_refs": [
-        "E2-081"
+        "E2-081",
+        "E2-082"
       ]
     },
     {
@@ -1935,7 +1937,8 @@
         "E2-078",
         "E2-079",
         "E2-080",
-        "E2-081"
+        "E2-081",
+        "E2-082"
       ]
     },
     {
@@ -2002,7 +2005,8 @@
       "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Reconstruct source-backed property shapes, relationships and mutation/selection pathways. Report competing models explicitly. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure.",
       "evidence_refs": [
         "E2-073",
-        "E2-074"
+        "E2-074",
+        "E2-082"
       ]
     },
     {
