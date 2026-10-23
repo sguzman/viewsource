@@ -94,7 +94,7 @@ available for export-compatible tree records. It constructs temporary
 ordinal message graphs and refuses broken ancestry. Unlike the public
 specimen results, it never includes raw text, original IDs or export files.
 
-The [source-anchored client implementation trace](specimens/chatgpt-com/v0002/chat_static_impl_trace.json) records **15 narrow AST pattern matches**, **7 manually examined client operations**, **6 direct caller-to-dispatcher edges**, and module export relationships without publishing JavaScript source or private values. The current source research queue has **33 tasks: 10 in progress, 23 queued, none claimed complete**. The [Specimen Atlas](https://sguzman.github.io/viewsource/) presents these static findings and the automatic queue before optional runtime studies.
+The [source-anchored client implementation trace](specimens/chatgpt-com/v0002/chat_static_impl_trace.json) records **15 narrow AST pattern matches**, **7 manually examined client operations**, **6 direct caller-to-dispatcher edges**, and module export relationships without publishing JavaScript source or private values. The current source research queue has **33 tasks: 17 in progress, 16 queued, none accepted complete**. This is a task-status count, not an overall research-completion percentage. The [Specimen Atlas](https://sguzman.github.io/viewsource/) presents these static findings and the automatic queue before optional runtime studies.
 
 ## Automatic implementation tracing
 
@@ -104,11 +104,21 @@ Every processed capture containing JavaScript automatically schedules a source-l
 
 For source-backed implementation research, the `scripts/trace_static_archive.py` tool reads a private ZIP entirely offline, safely extracts only JavaScript into a temporary system directory, parses its AST with Acorn, and prints a **content-free structural report**. Install the small developer dependency using `npm install`, then run `python3 scripts/trace_static_archive.py --input /path/to/capture.zip`. This is a research aid, not a replacement for manual function/call-chain investigation. It does not run captured JavaScript or publish filenames, source, messages, property values or identifiers. CI verifies the parser with invented source only.
 
+## Offline module dependency frontier
+
+The private archive research pipeline now supports **one-step, bounded static module-frontier inspection**:
+
+~~~sh
+python3 scripts/trace_static_archive.py --input /path/to/saved-page.zip --module-frontier --bootstrap-candidates --max-depth 6
+~~~
+
+Alternatively select reviewed module ordinals explicitly with `--root R-JS-072:13`. The tool distinguishes unique literal imports, ambiguous export-shape candidates, dynamic import/chunk-loader boundaries and bound-loader callbacks. Only unique direct import candidates are traversed. Bootstrap matches, dynamic branches and callback bindings remain **unverified syntax leads**, not evidence of loaded modules or observed browser behavior. The report contains ordinal-only identifiers and remains private until independently reviewed and cleared. See [the research protocol](docs/RESEARCH.md) for exact limitations.
+
 ## Selected-message UI evidence and automated selector scans
 
 A new [selector-consumer study](specimens/chatgpt-com/v0002/chat_selector_consumers.json) distinguishes full selected-message ancestry, the current user-turn message window, user-message identity ancestry, automation references, and page references. The last two are feature-reference lists, **not the visible chat transcript**. Captured client code contains a React control that subscribes to the current-turn messages and binds inline and Escape-dialog buttons to guarded answer-now or skip-reasoning actions. These are static implementation findings, not observed button execution or server outcomes. The main transcript renderer has since been traced through turn preparation, typed item rendering and virtualized rows. Dynamic subcomponents and live browser outcomes remain unresolved.
 
-The privacy-safe `--selector-trace` mode of `scripts/trace_static_archive.py` can automatically classify candidate ancestry walks, identity projections, feature-reference extractors and recent-turn controls in a newly supplied offline ZIP. As with other AST scans, candidate matches are questions to investigate, **not** accepted evidence on their own. The live source research queue remains at **10 in progress, 23 queued, 0 complete**; task evidence and completion are tracked separately.
+The privacy-safe `--selector-trace` mode of `scripts/trace_static_archive.py` can automatically classify candidate ancestry walks, identity projections, feature-reference extractors and recent-turn controls in a newly supplied offline ZIP. As with other AST scans, candidate matches are questions to investigate, **not** accepted evidence on their own. Current source task status is maintained in [the canonical queue](queues/tasks.json) and [acceptance-gap ledger](specimens/chatgpt-com/v0002/static_acceptance_gaps.json); candidate matches do not complete tasks.
 
 The [response-version selection study](specimens/chatgpt-com/v0002/chat_branch_switch_trace.json) now includes the source algorithm for deriving eligible variants from a prompt's graph children, computing the selected variant index, and changing the selected node optimistically with failure rollback. Raw child count and selectable version count can differ. The **saved client implementation** is studied, not live browser execution or guaranteed backend persistence. Canonical findings E2-081 and E2-082 preserve those distinctions.
 
@@ -137,7 +147,7 @@ this new mode supplies a reusable source-first tool to investigate it.
 
 The [selection and code-copy study](specimens/chatgpt-com/v0002/chat_selection_copy_trace.json) adds source-level evidence E2-087 and E2-088 for scoped Markdown selection, excluded editable regions, and copy-last-code fallback/cancellation. These are guarded client implementation paths, not observed clipboard writes or live user interactions.
 
-[Edit submission source trace](specimens/chatgpt-com/v0002/chat_edit_submission_trace.json) E2-089 documents user-message edit gating, active-response stop, target revalidation, original-parent continuation and client error cleanup. The evidence is static; a real edited message or backend mutation is not claimed. The source queue has 11 active, 22 queued and 0 accepted complete tasks.
+[Edit submission source trace](specimens/chatgpt-com/v0002/chat_edit_submission_trace.json) E2-089 documents user-message edit gating, active-response stop, target revalidation, original-parent continuation and client error cleanup. The evidence is static; a real edited message or backend mutation is not claimed. The source queue remains in progress; its acceptance criteria and outstanding implementation checks are listed in the linked research queue.
 
 The [accessibility source study](specimens/chatgpt-com/v0002/chat_accessibility_trace.json) (E2-090) links the latest-response keyboard landmark, abortable focus navigation, history loading/retry status, and request-scoped polite completion announcement to saved client code. Runtime assistive-technology results and conformance remain unverified.
 
