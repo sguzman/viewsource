@@ -499,3 +499,15 @@ saved resources R-JS-018, R-JS-069 and R-JS-072 and canonical evidence
 E2-079. They are inspected code paths, not exhaustive runtime behavior;
 removing an item from the display list does not prove deletion from the
 message mapping. The Atlas now exposes each rule and its limitations.
+
+## Typed renderer edit/regenerate/fork callback guards
+
+Static inspection of the typed turn-renderer module confirms that the
+conversation page's edit, regeneration and fork callbacks are forwarded to
+message and turn-action components. User editing requires a suitable
+user-message item and selected identity; targeted replies and certain
+attachments suppress editing. Regeneration is also hidden for read-only
+or special-turn states. The fork callback is forwarded to the action row,
+subject to its own display guards. Canonical evidence E2-080 records these
+callback pathways without asserting any click, network request or server
+outcome. Three guarded bindings are visible in the transcript study.
