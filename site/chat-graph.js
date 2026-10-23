@@ -145,7 +145,20 @@ window.ViewsourceChatGraph = (() => {
       recovery.preparation_fallback.changes.forEach(item=>details.append(
         element("li","","Fallback: "+item.replaceAll("_"," "))));
       preparation.append(details,element("p","graph-caption",recovery.preparation_fallback.limits));
-      block.append(preparation);section.append(block);
+      block.append(preparation);
+      const eligibility=element("details","chat-recovery-predicate");
+      eligibility.append(element("summary","","Source-resolved preparation retry predicate"),
+        element("p","graph-caption",
+          "One matching saved module definition in "+recovery.preparation_error_eligibility.source_ref+
+          "; typed status allowlist: "+recovery.preparation_error_eligibility.statuses.join(", ")+"."));
+      const rules=element("ol","");
+      recovery.preparation_error_eligibility.rules.forEach(item=>rules.append(
+        element("li","",item.stage.replaceAll("_"," ")+
+          " ("+item.result+"): "+item.rule)));
+      eligibility.append(rules,element("p","graph-caption",
+        recovery.preparation_error_eligibility.scope+" "+
+        recovery.preparation_error_eligibility.limits));
+      block.append(eligibility);section.append(block);
     }
     const lifecycle=record.visuals?.chat_end_to_end_trace;
     if(lifecycle){
