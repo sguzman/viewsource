@@ -146,3 +146,11 @@ The [anonymous saved-module dependency census](specimens/chatgpt-com/v0002/chat_
 The [completion recovery source study](specimens/chatgpt-com/v0002/chat_transport_failure_trace.json) now traces a one-shot partial-query preparation fallback and its uniquely resolved captured error-eligibility predicate (E2-096 and E2-097). The preparation predicate permits typed network errors or statuses 408/409/425/502/504 after terminal-code and explicit retry-veto checks; generic Errors have separate timeout/offline/network heuristics. This is **not** the same as stream-resume retry logic and does not prove an actual retry occurred.
 
 The [completion recovery study](specimens/chatgpt-com/v0002/chat_transport_failure_trace.json) now resolves both the one-shot partial-query preparation predicate and the separate stream-resume error classifier. Stream resume allows typed HTTP 429 in addition to 408/409/425/502/504 and network-kind errors, while preparation's typed allowlist excludes 429. A unique export-interface match across a colliding short module key recovers the stream token, offset and retry-budget state machine (E2-096 through E2-099). These are source-backed client rules, not observed recovery outcomes.
+
+Viewsource's [offline module dependency analyzer](scripts/trace_module_graph.cjs)
+now identifies **candidate unique export-interface matches** for duplicate
+short module IDs without counting them as resolved imports. These candidates
+still require source review. The archived ChatGPT stream-recovery helper
+(R-JS-018 → R-JS-004) is one reviewed example, while the original
+ambiguous-import counts remain unchanged. No private module keys or source
+assets are published.
