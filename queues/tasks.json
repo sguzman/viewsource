@@ -1935,7 +1935,7 @@
         "chatgpt-com-v0002-followup-static-source-state-flows",
         "chatgpt-com-v0002-markup"
       ],
-      "notes": "Static implementation trace: Connect state selectors and component props to rendered regions; record boundaries where minification or lazy imports obscure paths. Source-level React control consumer identified; wider rendered message component coverage remains unresolved.",
+      "notes": "Static implementation trace: Connect state selectors and component props to rendered regions; record boundaries where minification or lazy imports obscure paths. Source-level React control consumer identified; wider rendered message component coverage remains unresolved. The standard intake profile now explicitly requires scrutiny of virtualization, measured viewports, retained rows and scroll placement when present; current source evidence E2-084 through E2-086 addresses part of this requirement.",
       "evidence_refs": [
         "E2-076",
         "E2-077",
