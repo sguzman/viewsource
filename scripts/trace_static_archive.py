@@ -26,17 +26,19 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 selector_trace: bool = False,
                 transcript_trace: bool = False,
                 viewport_trace: bool = False,
-                module_trace: bool = False) -> dict:
+                module_trace: bool = False,
+                styles_trace: bool = False) -> dict:
     if sum((chat_trace, transport_trace, selector_trace, transcript_trace,
-            viewport_trace, module_trace)) > 1:
+            viewport_trace, module_trace, styles_trace)) > 1:
         raise ValueError("Choose at most one specialized AST analysis")
     if not input_file.is_file() or input_file.resolve().is_relative_to(ROOT):
         raise ValueError("Input ZIP must exist outside the public repository")
     if input_file.stat().st_size > 1024 * 1024 * 1024:
         raise ValueError("ZIP exceeds size limit")
     with zipfile.ZipFile(input_file) as archive:
+        extensions = (".js", ".mjs", ".cjs", ".css") if styles_trace else (".js", ".mjs", ".cjs")
         infos = [i for i in archive.infolist() if not i.is_dir()
-                 and i.filename.lower().endswith((".js", ".mjs", ".cjs"))]
+                 and i.filename.lower().endswith(extensions)]
         if len(infos) > MAX_SCRIPTS:
             raise ValueError("Too many JavaScript files")
         total = 0
@@ -54,8 +56,11 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                     continue
                 if info.file_size / max(info.compress_size, 1) > 1000:
                     raise ValueError("Unsafe compression ratio")
-                (Path(folder) / f"bundle-{i:04d}.js").write_bytes(archive.read(info))
-            script = ("scripts/trace_module_graph.cjs" if module_trace else
+                ext = ".css" if styles_trace and info.filename.lower().endswith(".css") else ".js"
+                stem = "style" if ext == ".css" else "bundle"
+                (Path(folder) / f"{stem}-{i:04d}{ext}").write_bytes(archive.read(info))
+            script = ("scripts/trace_style_hooks.cjs" if styles_trace else
+                      "scripts/trace_module_graph.cjs" if module_trace else
                       "scripts/trace_viewport_impl.cjs" if viewport_trace else
                       "scripts/trace_transcript_impl.cjs" if transcript_trace else
                       "scripts/trace_selector_impl.cjs" if selector_trace else
@@ -87,6 +92,8 @@ def main() -> int:
                       help="Emit candidate virtual list, scroll anchor and viewport patterns")
     mode.add_argument("--module-trace", action="store_true",
                       help="Emit anonymous bundle module ordinals and static import candidates")
+    mode.add_argument("--styles-trace", action="store_true",
+                      help="Count CSS syntax and script/style vocabulary without source output")
     args = parser.parse_args()
     try:
         report = inspect_zip(args.input, chat_trace=args.chat_trace,
@@ -94,7 +101,8 @@ def main() -> int:
                              selector_trace=args.selector_trace,
                              transcript_trace=args.transcript_trace,
                              viewport_trace=args.viewport_trace,
-                             module_trace=args.module_trace)
+                             module_trace=args.module_trace,
+                             styles_trace=args.styles_trace)
     except (OSError, ValueError, json.JSONDecodeError, subprocess.TimeoutExpired,
             zipfile.BadZipFile, UnicodeError):
         parser.exit(2, "Static AST analysis rejected (input or parser unavailable)\n")
