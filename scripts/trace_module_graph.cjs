@@ -1209,6 +1209,19 @@ function selfTest(){
  assert.equal(nestedReport.nested_function_literal_module_loader_call_expression_count,3);
  assert.equal(nestedReport.import_candidates,1);
  assert(!JSON.stringify(nestedReport).includes("PrivateNested"));
+ const branchModes=analyzeJS("export const __webpack_modules__={"+
+  "Loop:(function(e,t,n){for(let i=0;i<1;i++){n=()=>1}n('Goal')}),"+
+  "Switch:(function(e,t,n){switch(t.flag){case 1:n=()=>1;break}n('Goal')}),"+
+  "Catch:(function(e,t,n){try{throw 1}catch(e){n=()=>1}n('Goal')}),"+
+  "Shadow:(function(e,t,n){for(let n of [()=>1]){n('PrivateShadowed')}"+
+  "try{throw 1}catch(n){n('PrivateCaught')}n('Goal')}),"+
+  "Goal:(function(e,t){t.a=1})};",48);
+ const branchResult=buildGraph(branchModes,1,0);
+ assert.equal(branchResult.import_candidates,1);
+ assert.equal(branchResult.unique_resolved_links,1);
+ assert.equal(branchResult.resolved_links[0].from_module,4);
+ assert.equal(branchResult.resolved_links[0].to_module,5);
+ assert(!JSON.stringify(branchResult).includes("PrivateCaught"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

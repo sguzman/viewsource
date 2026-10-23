@@ -923,6 +923,35 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for item in ("Caller", "ExptargetFixtureZ9", "synthetic-export-shadow.zip"):
                 self.assertNotIn(item, proc.stdout)
 
+    def test_loop_switch_and_catch_outer_rebinding_is_conservative(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-controlflow-rebindings.zip"
+            private = "PrivateControlFlowTargetZ961"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Loop:(function(e,t,n){for(let i=0;i<1;i++){n=()=>1}"
+                    "n('" + private + "')}),"
+                    "Switch:(function(e,t,n){switch(t.flag){case 1:n=()=>1;break}"
+                    "n('" + private + "')}),"
+                    "Catch:(function(e,t,n){try{throw 1}catch(e){n=()=>1}"
+                    "n('" + private + "')}),"
+                    "Shadow:(function(e,t,n){for(let n of [()=>1]){n('LocalOnly')}"
+                    "try{throw 1}catch(n){n('LocalOnly')}n('" + private + "')}),"
+                    + private + ":(function(e,t){t.a=1})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            report = json.loads(proc.stdout)
+            self.assertEqual(report["import_candidates"], 1)
+            self.assertEqual(report["unique_resolved_links"], 1)
+            self.assertEqual(report["resolved_links"][0]["from_module"], 4)
+            self.assertEqual(report["resolved_links"][0]["to_module"], 5)
+            for term in (private, "LocalOnly", "invented-controlflow-rebindings.zip"):
+                self.assertNotIn(term, proc.stdout)
+
     def test_conditional_outer_reassignment_invalidates_static_candidates(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-branch-invalidation.zip"
