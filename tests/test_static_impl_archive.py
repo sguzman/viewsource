@@ -120,6 +120,39 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertNotIn(sentinel,test.stdout)
             self.assertNotIn(str(source),test.stdout)
 
+    def test_transcript_candidate_probe_uses_private_zip_ordinals(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-message-presentation.zip"
+            sentinel = "SYNTHETIC_TRANSCRIPT_SECRET_DO_NOT_INCLUDE"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("fictional/app.js",
+                    "function derive(){return {messages:[],turns:[],renderedTurns:[]}}"
+                    "function prepare(){return {renderedConversation:{},renderedTurns:[],"
+                    "showPendingLoadingMessage:false}}"
+                    "function filter(e){let hidden=e.hideInitialUserMessage;"
+                    "return e.turn.items.filter(x=>x.type==='user-message')}"
+                    "function wrapper(e){return {'data-message-id':e.id,"
+                    "'data-message-author-role':'user',"
+                    "'data-source-message-ids':e.sources}}"
+                    "const secret='" + sentinel + "';")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--transcript-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Transcript ZIP probe failed")
+            report=json.loads(result.stdout)
+            self.assertEqual(report["parsed_bundles"], 1)
+            self.assertEqual(report["failed_bundles"], 0)
+            for pattern in ("render_turn_derivation", "pending_turn_preparation",
+                            "first_user_item_filter", "message_dom_identity_wrapper"):
+                self.assertEqual(report["pattern_counts"][pattern], 1)
+            self.assertTrue(all(x["source_ref"]=="R-JS-001"
+                                and x["classification"]=="candidate_static_syntax"
+                                and not x["render_behavior_verified"]
+                                for x in report["matches"]))
+            self.assertNotIn(sentinel, result.stdout)
+            self.assertNotIn(str(archive), result.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
