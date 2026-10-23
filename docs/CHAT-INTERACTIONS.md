@@ -527,3 +527,17 @@ R-JS-018. Canonical evidence E2-081 does **not** claim that the server
 accepted a switch or that a selection survived reload. Two more static
 research tasks (client state flows and network request construction) are
 now in progress, bringing the source queue to 10 in progress and 23 queued.
+
+## Response variant eligibility from selected graph ancestry
+
+The saved response-version selector obtains a candidate response node and
+walks its parents to a qualifying earlier prompt. It enumerates that
+prompt's mapping children as raw response candidates, then filters
+candidate descendants to produce the displayed selectable variant list.
+The active variant index reflects the current selected path; it can be
+unavailable when no eligible candidate matches. Therefore, **raw child
+count is not necessarily the displayed response-version count**. This
+client-side branch-index derivation is documented with five explicit
+steps and canonical evidence E2-082, separately from the optimistic
+selection/persistence pathway in E2-081. No actual server response was
+observed.
