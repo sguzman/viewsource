@@ -1825,12 +1825,15 @@
       "profile": "followup",
       "queue": "behavior",
       "title": "Connect interface controls to specific handlers",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-calls",
         "chatgpt-com-v0002-interaction"
       ],
-      "notes": "Static implementation trace: Trace actual handler registration, event dispatch and state effects from captured DOM toward implementation functions; distinguish unreachable handlers."
+      "notes": "Static implementation trace: Trace actual handler registration, event dispatch and state effects from captured DOM toward implementation functions; distinguish unreachable handlers. Captured answer-now and skip-reasoning click bindings traced to client actions; broader controls remain open.",
+      "evidence_refs": [
+        "E2-077"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-state-flows",
@@ -1919,7 +1922,8 @@
       ],
       "notes": "Static implementation trace: Connect state selectors and component props to rendered regions; record boundaries where minification or lazy imports obscure paths. Source-level React control consumer identified; wider rendered message component coverage remains unresolved.",
       "evidence_refs": [
-        "E2-076"
+        "E2-076",
+        "E2-077"
       ]
     },
     {
