@@ -223,7 +223,7 @@ function analyzeJS(source,sourceOrdinal){
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
   const exportName=fn.params?.[1]?.type==="Identifier"?fn.params[1].name:null;
   const signatures=scanModuleSignatures(fn,requireName,exportName);
-  const imports=new Set(),stack=[fn.body];
+  const imports=new Set(),boundImports=new Set(),stack=[fn.body];
   while(stack.length){
    const n=stack.pop();
    if(!n||typeof n!=="object")continue;
@@ -233,6 +233,13 @@ function analyzeJS(source,sourceOrdinal){
     if(first.type==="Literal"&&typeof first.value==="string")
       imports.add(first.value);
    }
+   if(requireName&&n.type==="CallExpression"&&
+      memberOf(n.callee,requireName)==="bind"&&
+      n.arguments[0]?.type==="Identifier"&&
+      n.arguments[0].name===requireName&&
+      n.arguments[1]?.type==="Literal"&&
+      typeof n.arguments[1].value==="string")
+    boundImports.add(n.arguments[1].value);
    for(const [k,v] of Object.entries(n)){
     if(["start","end","loc","raw"].includes(k))continue;
     if(Array.isArray(v)){
@@ -241,6 +248,7 @@ function analyzeJS(source,sourceOrdinal){
    }
   }
   result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
+    boundImports:[...boundImports],
     eligible:!!requireName,exportedSlots:signatures.exportedSlots,
     requiredByImport:signatures.requiredByImport,
     dynamic_syntax:dynamicSyntax(fn,requireName)});
@@ -255,7 +263,24 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   if(!index.has(x.identifier))index.set(x.identifier,[]);
   index.get(x.identifier).push(x);
  }
- const links=[],shapeCandidates=[];
+ const links=[],shapeCandidates=[],boundCandidates=[];
+ for(const item of all){
+  for(const key of item.boundImports||[]){
+   const matches=index.get(key)||[];
+   boundCandidates.push({
+    source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+    module_ordinal:item.moduleOrdinal,
+    classification:matches.length===1?"bound_import_target_candidate":
+      matches.length>1?"ambiguous_bound_import":"missing_bound_import_target",
+    ...(matches.length===1?{
+     candidate_target_ref:"R-JS-"+String(matches[0].sourceOrdinal).padStart(3,"0"),
+     candidate_target_module:matches[0].moduleOrdinal
+    }:{}),
+    definition_candidates:matches.length,
+    binding_executed_verified:false,target_module_loaded_verified:false
+   });
+  }
+ }
  const dynamicBoundaries=all.flatMap(item=>
   (item.dynamic_syntax||[]).map(pattern=>({
    source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
@@ -333,6 +358,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   dynamic_boundary_candidates:dynamicBoundaries,
   dynamic_boundary_count:dynamicBoundaries.length,
   dynamic_boundary_vocabulary:DYNAMIC_LABELS,
+  bound_import_candidates:boundCandidates,
+  bound_import_candidate_count:boundCandidates.length,
   modules_total:all.length,
   modules_with_import_parameter:all.filter(x=>x.eligible).length,
   import_candidates:candidateCalls,unique_resolved_links:links.length,
@@ -357,6 +384,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Export-shape matches are candidate disambiguations only; minified alias shadowing or dead code can create misleading required slots.",
    "Export-shape candidates do not change unique/ambiguous import counts and require independent source inspection before promotion.",
    "Dynamic import expressions and bundler chunk-loader calls are recorded as unresolved boundary syntax, never followed as import edges.",
+   "Function-bound module-loader callbacks are future-import candidates, not direct calls or verified loads.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
@@ -427,6 +455,14 @@ function selfTest(){
  assert.equal(resolved.export_shape_candidates[0].required_export_count,2);
  assert(!JSON.stringify(resolved).includes("'K'"));
  assert(!JSON.stringify(resolved).includes("recovery.h"));
+ const boundSource=analyzeJS("export const __webpack_modules__={A:(function(e,t,n){"+
+   "const later=n.bind(n,'B')}),B:(function(e,t,n){t.a=1})};",7);
+ const boundReport=buildGraph(boundSource,1,0);
+ assert.equal(boundReport.bound_import_candidate_count,1);
+ assert.equal(boundReport.unique_resolved_links,0);
+ assert.equal(boundReport.bound_import_candidates[0].classification,"bound_import_target_candidate");
+ assert.equal(boundReport.bound_import_candidates[0].candidate_target_module,2);
+ assert.equal(boundReport.bound_import_candidates[0].target_module_loaded_verified,false);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
