@@ -438,43 +438,96 @@ function scanModuleSignatures(fn,requireName,exportName,moduleName){
  * and immediately invoked function bodies. Never infer activation from a
  * function merely declared, stored as a callback or present in a module. */
 function bootstrapCalls(ast,sourceOrdinal) {
- const found=new Set();
+ const found=new Set(),loader="__webpack_require__",valid=Symbol("bootstrap_loader");
  function startKey(arg){
   if(moduleKey(arg)!==null)return moduleKey(arg);
   if(arg?.type==="AssignmentExpression"&&arg.operator==="="&&
      arg.left?.type==="MemberExpression"&&
-     arg.left.object?.type==="Identifier"&&arg.left.object.name==="__webpack_require__"&&
-     literalMember(arg.left)==="s"&&
-     moduleKey(arg.right)!==null)
+     arg.left.object?.type==="Identifier"&&arg.left.object.name===loader&&
+     literalMember(arg.left)==="s"&&moduleKey(arg.right)!==null)
    return moduleKey(arg.right);
   return null;
  }
- function visit(node){
+ function walk(node,env){
   if(!node||typeof node!=="object")return;
-  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type))
-   return;
-  if(node.type==="CallExpression"){
-   if(node.callee?.type==="Identifier"&&node.callee.name==="__webpack_require__"){
-    const key=startKey(node.arguments[0]);
-    if(key)found.add(key);
+  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression",
+      "ClassDeclaration","ClassExpression"].includes(node.type))return;
+  if(node.type==="CatchClause"||node.type==="BlockStatement"||
+     node.type==="ForStatement"||node.type==="ForInStatement"||
+     node.type==="ForOfStatement"||node.type==="SwitchStatement"){
+   const scope=new Map(env),locals=localNamesForScope(node);
+   if(locals.has(loader))scope.set(loader,null);
+   if(node.type==="BlockStatement"){
+    for(const stmt of node.body)walk(stmt,scope);
+   }else if(node.type==="CatchClause"){
+    walk(node.body,scope);
+   }else if(node.type==="SwitchStatement"){
+    walk(node.discriminant,env);
+    for(const branch of node.cases)for(const stmt of branch.consequent)walk(stmt,scope);
+   }else if(node.type==="ForStatement"){
+    walk(node.init,scope);walk(node.test,scope);walk(node.update,scope);
+    walk(node.body,scope);
+   }else{
+    walk(node.right,scope);
+    if(node.left?.type==="VariableDeclaration"){
+     if(node.left.kind==="var"){
+      const names=new Set();
+      for(const decl of node.left.declarations)bindingNames(decl.id,names);
+      if(names.has(loader))scope.set(loader,null);
+     }
+    }else{
+     const names=new Set();bindingNames(node.left,names);
+     if(names.has(loader))scope.set(loader,null);
+    }
+    walk(node.body,scope);
    }
-   if(["FunctionExpression","ArrowFunctionExpression"].includes(node.callee?.type))
-    visit(node.callee.body);
+   invalidateOuterBindings(env,scope,locals);
+   return;
+  }
+  if(node.type==="VariableDeclaration"){
+   for(const decl of node.declarations){
+    walk(decl.init,env);
+    const names=new Set();bindingNames(decl.id,names);
+    if(names.has(loader)&&decl.init)env.set(loader,null);
+   }
+   return;
+  }
+  if(node.type==="AssignmentExpression"){
+   walk(node.right,env);
+   const names=new Set();bindingNames(node.left,names);
+   if(names.has(loader))env.set(loader,null);
+   return;
+  }
+  if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"&&
+     node.argument.name===loader){env.set(loader,null);return;}
+  if(node.type==="CallExpression"){
+   if(env.get(loader)===valid&&node.callee?.type==="Identifier"&&
+      node.callee.name===loader){
+    const key=startKey(node.arguments[0]);
+    if(key!==null)found.add(key);
+   }
+   if(["FunctionExpression","ArrowFunctionExpression"].includes(node.callee?.type)){
+    const fn=node.callee,inside=new Map(env),locals=new Set();
+    for(const param of fn.params||[])bindingNames(param,locals);
+    hoistedFunctionVars(fn.body,locals);
+    if(locals.has(loader))inside.set(loader,null);
+    walk(fn.body,inside);
+    invalidateOuterBindings(env,inside,locals);
+   }
+   for(const arg of node.arguments)walk(arg,env);
+   return;
   }
   for(const [name,value] of Object.entries(node)){
    if(["start","end","loc","raw","callee"].includes(name))continue;
    if(Array.isArray(value)){
-    for(const child of value)visit(child);
-   }else if(value&&typeof value==="object")visit(value);
+    for(const child of value)walk(child,env);
+   }else if(value&&typeof value==="object")walk(value,env);
   }
  }
- for(const stmt of ast.body){
-  if(stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")continue;
-  visit(stmt);
- }
+ const env=new Map([[loader,valid]]);
+ for(const stmt of ast.body)walk(stmt,env);
  return [...found].map(key=>({key,sourceOrdinal}));
 }
-
 
 const DYNAMIC_LABELS=[
  "dynamic_import_literal_candidate",
@@ -1408,6 +1461,28 @@ function selfTest(){
  const beforeOnly=analyzeJS("export const __webpack_modules__={"+
   "A:(function(e,t,n){t.before=()=>1;e.exports={replaced:1};t.after=()=>2})};",69);
  assert.equal(buildGraph(beforeOnly,1,0).direct_function_export_site_count,0);
+ const shadowedBoot=analyzeJS("export const __webpack_modules__={"+
+  "A:function(){}};{const __webpack_require__=()=>0;"+
+  "__webpack_require__('A')};",70);
+ assert.equal(shadowedBoot.bootstrapCandidates.length,0);
+ const reassignedBoot=analyzeJS("export const __webpack_modules__={"+
+  "A:function(){}};if(flag){__webpack_require__=()=>0}"+
+  "__webpack_require__('A');",71);
+ assert.equal(reassignedBoot.bootstrapCandidates.length,0);
+ const iifeShadowedBoot=analyzeJS("export const __webpack_modules__={"+
+  "A:function(){}};((__webpack_require__)=>"+
+  "__webpack_require__('A'))(()=>0);",72);
+ assert.equal(iifeShadowedBoot.bootstrapCandidates.length,0);
+ const validIifeBoot=analyzeJS("export const __webpack_modules__={"+
+  "A:function(){}};(()=>__webpack_require__('A'))();",73);
+ assert.equal(validIifeBoot.bootstrapCandidates.length,1);
+ const mutatedIifeBoot=analyzeJS("export const __webpack_modules__={"+
+  "A:function(){}};(()=>{__webpack_require__=()=>0})();"+
+  "__webpack_require__('A');",74);
+ assert.equal(mutatedIifeBoot.bootstrapCandidates.length,0);
+ const deferredBoot=analyzeJS("export const __webpack_modules__={"+
+  "A:function(){}};const later=()=>__webpack_require__('A');",75);
+ assert.equal(deferredBoot.bootstrapCandidates.length,0);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
