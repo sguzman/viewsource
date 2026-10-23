@@ -46,6 +46,24 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (private_key, "source-limited-chunk.zip", "entry.js"):
                 self.assertNotIn(private, proc.stdout)
 
+    def test_direct_iife_loader_reassignment_excludes_startup_seed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-iife-mutation.zip"
+            private = "webpackChunkPrivateImmediatelyInvokedZ991"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("chunk.js", "(self." + private + "=self." + private
+                    + "||[]).push([[1],{100:function(e,t,n){t.a=1}},"
+                    "function(n){(()=>{n=()=>1})();n(100)}]);")
+            run = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(run.returncode, 0)
+            data = json.loads(run.stdout)
+            self.assertEqual(data["bootstrap_call_candidates"], 0)
+            for private_value in (private, "fictional-iife-mutation.zip"):
+                self.assertNotIn(private_value, run.stdout)
+
     def test_chunk_loader_reassigned_by_iteration_or_destructuring(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-chunk-assignments.zip"
