@@ -126,6 +126,14 @@ window.ViewsourceChatGraph = (() => {
         steps.append(row);
       });
       block.append(steps);
+      const derivation=element("details","chat-branch-derivation");
+      derivation.append(element("summary","","How selectable response versions are derived"));
+      const derivationList=element("ol","");
+      branchStudy.variant_derivation.forEach(item=>derivationList.append(
+        element("li","",item.id.replaceAll("_"," ")+": "+item.behavior)));
+      derivation.append(derivationList,element("p","graph-caption",
+        branchStudy.variant_derivation_limits));
+      block.append(derivation);
       const caveats=element("details","chat-branch-caveats");
       caveats.append(element("summary","","Selection and persistence limits"));
       const list=element("ul","");
