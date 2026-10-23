@@ -826,6 +826,29 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in ("Reader", "Ghost", "Collision", "invented-catch-scope.zip"):
                 self.assertNotIn(private, proc.stdout)
 
+    def test_imported_object_writes_are_not_export_interface_requirements(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-import-object-write.zip"
+            identifier = "ImportedWriteCandidateZ984"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("one.js", "export const __webpack_modules__={"
+                    "Reader:(function(e,t,n){const x=n('" + identifier + "');"
+                    "x.key=1;x.key++;delete x.key}),"
+                    + identifier + ":(function(e,t,n){t.key=()=>1})};")
+                z.writestr("two.js", "export const __webpack_modules__={"
+                    + identifier + ":(function(e,t,n){t.other=1})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["ambiguous_import_candidates"], 1)
+            self.assertEqual(data["export_shape_candidate_count"], 0)
+            for forbidden in (identifier, "Reader",
+                              "synthetic-import-object-write.zip"):
+                self.assertNotIn(forbidden, proc.stdout)
+
     def test_shadowed_export_target_does_not_break_registry_key_ambiguity(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-export-shadow.zip"

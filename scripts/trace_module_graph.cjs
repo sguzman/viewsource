@@ -193,8 +193,25 @@ function scanScopedRequiredSlots(fn,requireName,required){
    }
    return;
   }
-  if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier")
-   env.set(node.left.name,null);
+  if(node.type==="AssignmentExpression"){
+   if(node.left?.type==="Identifier")env.set(node.left.name,null);
+   if(node.left?.type==="MemberExpression"){
+    // Assignment to imported.foo is a mutation, not proof that foo
+    // exists on the imported module's original export interface.
+    walk(node.left.object,env);
+    if(node.left.computed)walk(node.left.property,env);
+    walk(node.right,env);
+    return;
+   }
+  }
+  if(node.type==="UpdateExpression"||node.type==="UnaryExpression"&&
+     node.operator==="delete"){
+   if(node.argument?.type==="MemberExpression"){
+    walk(node.argument.object,env);
+    if(node.argument.computed)walk(node.argument.property,env);
+    return;
+   }
+  }
   if(node.type==="MemberExpression"&&node.object?.type==="Identifier"){
    const id=env.get(node.object.name),slot=literalMember(node);
    if(id&&slot){
@@ -1130,6 +1147,19 @@ function selfTest(){
  assert.equal(nonfactoryGraph.unique_resolved_links,1);
  assert.equal(nonfactoryGraph.unresolved_import_candidates,1);
  assert.equal(nonfactoryGraph.resolved_links[0].to_module,3);
+ const writesOnly=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){const x=n('Q');x.foo=1;x.foo++;delete x.foo}),"+
+  "Q:(function(e,t,n){t.foo=1})};",43);
+ const otherQ=analyzeJS("export const __webpack_modules__={"+
+  "Q:(function(e,t,n){t.bar=1})};",44);
+ const writeOnlyGraph=buildGraph([...writesOnly,...otherQ],2,0);
+ assert.equal(writeOnlyGraph.ambiguous_import_candidates,1);
+ assert.equal(writeOnlyGraph.export_shape_candidate_count,0);
+ const readOnly=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){const x=n('Q');x.foo()}),"+
+  "Q:(function(e,t,n){t.foo=()=>1})};",45);
+ const readGraph=buildGraph([...readOnly,...otherQ],2,0);
+ assert.equal(readGraph.export_shape_candidate_count,1);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

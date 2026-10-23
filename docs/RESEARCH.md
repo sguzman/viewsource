@@ -574,3 +574,13 @@ three parameters remains a valid potential target even though it
 cannot itself be scanned for factory-loader calls. The
 registry_nonfactory_entry_count field describes static source
 coverage, not proof of any runtime module load.
+
+### Imported-object property writes are not required exported slots
+
+The export-interface disambiguation pass now excludes imported-object
+assignment targets, increment/decrement targets and delete operands from
+the set of required exported properties. Writing to an object obtained from
+a module loader is not evidence that the original module exported that
+property. Actual member reads and calls remain syntax candidates. These
+restrictions reduce false unique matches when multiple saved registries
+reuse a module key; they do not establish runtime module identity.
