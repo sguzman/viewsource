@@ -199,3 +199,17 @@ user loaded a feature or that its server contract is valid. A two-bundle
 synthetic ZIP test checks cross-bundle resolution and the absence of private
 module identifiers in the result. Existing source investigations remain
 queued automatically and can use this graph as a dependency-discovery input.
+
+## Repeatable CSS and JS hook candidates for new captures
+
+`python3 scripts/trace_static_archive.py --input /path/to/capture.zip --styles-trace`
+scans private, temporary copies of captured stylesheets and JavaScript
+without executing either. The tool emits only aggregate counts for
+`@media`, `@container`, reduced-motion/focus rules, allowlisted state/role
+attribute selectors, exact message-attribution attribute-selector gaps and
+limited shared thread-content wording between scripts and stylesheets.
+These are **lexical counts**, not a computed CSS cascade, matched DOM style,
+or assertion that any named component is unstyled. The source-specific
+study and acceptance evidence must still link actual component class/state
+tokens to reviewed style rules. CI uses an invented ZIP and a synthetic
+JavaScript self-test; the real specimen CSS is never committed.
