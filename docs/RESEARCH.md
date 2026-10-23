@@ -787,3 +787,13 @@ A nested assignment may execute immediately, later, or never, and
 does not establish verified public export ownership. The candidate
 remains visible for investigation instead of being incorrectly
 collapsed into a verified direct factory export.
+
+### Parser-failure census integrity
+
+The private frontier validator requires parser-failure `R-JS` references
+to be distinct and to reconcile with the recorded failed-bundle count.
+A failed resource cannot simultaneously appear in the parsed module
+census or in the parsed-but-unindexed source inventory. These checks
+prevent contradictory coverage metadata from being presented as
+reliable research evidence, without exposing failure source text,
+filenames or parser diagnostics.

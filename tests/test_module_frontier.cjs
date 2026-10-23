@@ -486,3 +486,17 @@ test("nested callable export sites are tagged and checked separately",()=>{
  g.nested_function_export_site_count=0;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("failed parser resource ordinals reconcile and never overlap parsed sources",()=>{
+ const g=graph();
+ g.failed_bundles=1;
+ g.failed_parser_source_refs=["R-JS-004"];
+ assert.deepEqual(frontier(g,["R-JS-001:1"]).failed_parser_source_refs,["R-JS-004"]);
+ g.failed_parser_source_refs=["R-JS-001"];
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+ g.failed_parser_source_refs=["R-JS-004","R-JS-004"];
+ g.failed_bundles=2;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+ g.failed_parser_source_refs=["R-JS-004"];
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

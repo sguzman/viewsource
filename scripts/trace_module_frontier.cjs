@@ -70,7 +70,11 @@ function indexGraph(graph) {
   if(graph.failed_parser_source_refs!==undefined){
     if(!Array.isArray(graph.failed_parser_source_refs)||
        graph.failed_parser_source_refs.length>NODE_LIMIT||
-       graph.failed_parser_source_refs.some(ref=>typeof ref!=="string"||!REF.test(ref)))
+       new Set(graph.failed_parser_source_refs).size!==graph.failed_parser_source_refs.length||
+       graph.failed_parser_source_refs.some(ref=>typeof ref!=="string"||!REF.test(ref))||
+       !Number.isSafeInteger(graph.failed_bundles)||
+       graph.failed_bundles<0||
+       graph.failed_parser_source_refs.length!==graph.failed_bundles)
       throw Error("Invalid failed parser resource ordinals");
   }
   if(graph.archive_candidate_script_count!==undefined){
@@ -124,6 +128,9 @@ function indexGraph(graph) {
       throw Error("Invalid module census");
     census.set(item.source_ref,item.count);
   }
+  if(Array.isArray(graph.failed_parser_source_refs)&&
+     graph.failed_parser_source_refs.some(ref=>census.has(ref)))
+    throw Error("Failed source cannot appear in indexed module census");
   if(graph.parsed_without_indexed_module_refs!==undefined){
     const noModules=graph.parsed_without_indexed_module_refs;
     if(!Array.isArray(noModules)||new Set(noModules).size!==noModules.length||
