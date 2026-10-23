@@ -234,3 +234,7 @@ That case is documented in `chat_module_dependency_trace.json` and
 `chat_transport_failure_trace.json`. The general-purpose parser's
 synthetic tests intentionally include a colliding-key fixture and verify
 that no private module name or source is published.
+
+## Feature-specific AST leads (offline)
+
+Use `python3 scripts/trace_static_archive.py --input /private/capture.zip --feature-trace` to classify candidate search, authentication, media-playback and document-editing functions. The Acorn parser reads ordinal-only temporary copies of captured JavaScript and emits fixed pattern names, source/function/parent ordinals and aggregate counts. It never executes captured assets. Pattern matches require limited member/property co-occurrence inside one function body, which is stronger than archive-wide lexical counting but **does not establish control ownership, true dataflow, an executed feature or a backend contract**. The 16 queued feature tasks remain queued until researchers trace actual modules, calls, state and UI. Synthetic ZIP regression tests require private strings and file names to remain absent from reports.

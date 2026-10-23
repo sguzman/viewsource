@@ -24,6 +24,7 @@ jobs:
           node scripts/trace_viewport_impl.cjs --self-test
           node scripts/trace_module_graph.cjs --self-test
           node scripts/trace_style_hooks.cjs --self-test
+          node scripts/trace_feature_impl.cjs --self-test
           python3 -m unittest discover -s tests -p test_static_impl_archive.py -v
       - name: Audit source-research acceptance gaps
         run: |

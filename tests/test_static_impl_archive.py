@@ -301,6 +301,41 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertNotIn(sentinel,result.stdout)
             self.assertNotIn(str(archive),result.stdout)
 
+    def test_feature_trace_is_ordinals_only_and_not_runtime_evidence(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-features.zip"
+            sentinel = "PRIVATE_FEATURE_TEST_SENTINEL"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("invented/features.js",
+                    "function find(x){return x.searchRequest({"
+                    "searchQuery:x.queryText,searchResults:x.searchHits})}"
+                    "function login(x){return x.loginForm&&x.authenticate(x.authSession)}"
+                    "function refresh(x){return x.refreshToken+x.accessToken}"
+                    "function playback(x){return x.currentTime+x.playbackState}"
+                    "function editor(x){return x.editorState+x.applyTransaction}"
+                    "const privateData='" + sentinel + "';")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--feature-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Fictional feature probe failed")
+            report = json.loads(result.stdout)
+            self.assertEqual(report["parsed_bundles"], 1)
+            self.assertEqual(report["failed_bundles"], 0)
+            for pattern in ("search_query_result_candidate",
+                            "search_request_dispatch_candidate",
+                            "auth_signin_candidate", "auth_refresh_candidate",
+                            "media_progress_candidate",
+                            "editor_transaction_candidate"):
+                self.assertEqual(report["pattern_counts"][pattern], 1)
+            self.assertTrue(all(x["source_ref"] == "R-JS-001"
+                                and x["classification"] == "syntactic_candidate"
+                                and not x["feature_ownership_verified"]
+                                and not x["runtime_behavior_verified"]
+                                for x in report["matches"]))
+            for private in (sentinel, "invented-features.zip", "features.js", "queryText"):
+                self.assertNotIn(private, result.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
