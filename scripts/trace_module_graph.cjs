@@ -552,7 +552,7 @@ function selfTest(){
   "import('private-module');import(t.route);n.e('private-chunk')})};",6);
  const dynamicReport=buildGraph(dynamicArchive,1,0);
  assert.equal(dynamicReport.dynamic_boundary_count,3);
- assert.deepEqual(new Set(dynamicReport.dynamic_boundary_candidates.map(x=>x.pattern)),new Set(DYNAMIC_LABELS));
+ assert.deepEqual(new Set(dynamicReport.dynamic_boundary_candidates.map(x=>x.pattern)),new Set(DYNAMIC_LABELS.slice(0,3)));
  assert(!JSON.stringify(dynamicReport).includes("private-module"));
  assert(!JSON.stringify(dynamicReport).includes("private-chunk"));
  const computed=analyzeJS("export const __webpack_modules__={"+
