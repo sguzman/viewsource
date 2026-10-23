@@ -19,7 +19,14 @@ class TranscriptRenderTraceTests(unittest.TestCase):
         self.assertEqual({x["ref"] for x in doc["source_resources"]},
                          {"R-JS-018","R-JS-069","R-JS-072"})
         self.assertEqual(len(doc["stages"]), 7)
-        self.assertEqual(len(doc["reviewed_relationships"]), 13)
+        self.assertEqual(len(doc["reviewed_relationships"]), 16)
+        page=doc["page_recomputation"]
+        self.assertEqual(page["source_ref"],"R-JS-072")
+        self.assertIn("selected_current_node",page["dependency_roles"])
+        self.assertIn("conversation_mapping",page["dependency_roles"])
+        self.assertIn("rendered_turns",page["derived_outputs"])
+        self.assertFalse(page["source_executed"])
+        self.assertTrue(page["boundary"])
         self.assertEqual({a["action"] for a in doc["action_bindings"]},
                          {"edit_user_message","regenerate_response","fork_conversation"})
         self.assertTrue(all(a["status"]=="observed_static" and a["limits"]
