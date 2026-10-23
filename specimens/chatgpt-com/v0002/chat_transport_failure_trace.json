@@ -79,6 +79,12 @@
       "kind": "source_resolved_resume_state_machine",
       "behavior": "The recovered helper consumes a resume-token control event into conversation/token state, advances offset and clears attempt count on acknowledged data, checks cancellation, identity, token and count guards, and computes bounded exponential backoff with a 0.5–1.0 random multiplier. Manual retry uses zero delay but retains core state guards.",
       "boundary": "All state transitions and timings are captured code paths; stream events and timers have not been observed executing."
+    },
+    {
+      "id": "initial_vs_explicit_resume_permission",
+      "kind": "call_site_resume_gate",
+      "behavior": "The initial completion-stream caller enables automatic resume only when its history-and-training-disabled request field is not explicitly true. A separately invoked explicit-resume path supplies a true permission value. The shared coordinator still applies identity, abort, token/offset and retry-budget guards.",
+      "boundary": "The flag and distinct entrypoints are source-visible, but their live eligibility, invocation order and account-specific policies are unobserved."
     }
   ],
   "captured_default_fallbacks": {
@@ -161,14 +167,23 @@
       "from": "captured_resume_helper",
       "to": "token_offset_and_retry_state",
       "kind": "guarded_state_machine"
+    },
+    {
+      "from": "initial_completion_request_flags",
+      "to": "automatic_resume_permission",
+      "kind": "conditional_boolean_input"
+    },
+    {
+      "from": "explicit_resume_entrypoint",
+      "to": "resume_permission_true",
+      "kind": "static_handler_configuration"
     }
   ],
   "open_questions": [
-    "Determine whether config gates allow resumptions for every message modality and every account context.",
     "Check cancellation priority and delivery outcomes only with permitted synthetic runtime observations, if later desired.",
     "Distinguish retry hints used only for display from those that actually schedule a client request.",
-    "Classify the runtime feature gates controlling whether the statically recovered resume path is enabled for different message modalities or account states.",
-    "Map callback delivery order and actual request cancellation outcomes only with authorized synthetic runtime evidence if later needed."
+    "Map callback delivery order and actual request cancellation outcomes only with authorized synthetic runtime evidence if later needed.",
+    "Other modality- or account-scoped resume gates beyond the reviewed history-and-training-disabled request flag require separate source tracing."
   ],
   "privacy": "No original source code, endpoint strings, request headers, auth/account values, message content, URL, or extracted bundle filename is published.",
   "preparation_fallback": {
@@ -346,5 +361,22 @@
       "scope": "Values are captured defaults; the calling client may provide dynamic configuration overrides."
     },
     "boundary": "This is a captured state machine and a literal backoff formula, not observed timer execution, transport offsets, durable server recovery or a guarantee of successful resume."
+  },
+  "resume_permission_wiring": {
+    "source_ref": "R-JS-018",
+    "evidence_class": "observed_static",
+    "initial_completion": {
+      "method": "startCompletionStream",
+      "gate": "shouldAttemptResume is supplied as true unless the request's history_and_training_disabled field is explicitly true.",
+      "false_when": "history_and_training_disabled_is_exactly_true",
+      "relation": "initial_completion_handler_configuration"
+    },
+    "explicit_resume": {
+      "method": "resumeCompletionStream",
+      "gate": "The separate explicit-resume handler construction supplies shouldAttemptResume=true.",
+      "relation": "explicit_resume_handler_configuration"
+    },
+    "downstream_guard": "The imported resume coordinator checks the supplied resume-permission value before permitting an automatic retry, in addition to abort, token, identity and retry-budget conditions.",
+    "limits": "This is a captured call-site boolean. It does not establish runtime account policy, that explicit resume is offered for the flagged request, or that a retry ever occurred."
   }
 }
