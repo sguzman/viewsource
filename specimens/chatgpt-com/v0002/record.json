@@ -11030,6 +11030,26 @@
         "evidence_ref": "E2-097",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-098",
+      "statement": "The captured completion-stream recovery caller imports a resume helper whose short registry key has two saved definitions, but only one captured definition provides the three required recovery exports. That resolved helper distinguishes automatic stream-resume retry eligibility (network error or HTTP 408, 409, 425, 429, 502, 504) from broader recoverable-error callback classification (network error or HTTP 4xx except 403 and two terminal conversation codes). These client predicates are separate from the preparation fallback and do not demonstrate actual retry outcomes.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-098",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-099",
+      "statement": "The source-resolved completion-resume helper stores a conversation identity and resume token from token control events, advances stream offset and clears retry attempts when data events are acknowledged, requires cancellation/identity/token-offset guards, and computes bounded exponential backoff with a 0.5–1.0 random factor. Automatic retry respects eligibility and configured attempt count, while manual retry skips delay/eligibility count but retains core state guards. These are saved client algorithms, not observed transport activity or successful recovery.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-099",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
