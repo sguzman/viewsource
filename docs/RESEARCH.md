@@ -365,3 +365,13 @@ direct imports, bootstrap candidates, export-shape matching and bound
 loader callbacks. Numeric keys never enter public reports: only
 capture-local resource/module ordinals and aggregate classifications
 are emitted. Computed expressions remain unresolved boundaries.
+
+### Bounded dependency review paths
+
+Each reached module in a private frontier report carries its first
+breadth-first predecessor and the `static_import_candidate` edge
+classification. Roots have no predecessor. The `boundary_details` list
+now distinguishes depth-limit and node-limit truncation, and omits a
+depth-limit boundary when every outgoing edge already returns to a
+reached module. Paths are static candidates only, **not** executed call
+stacks, request paths or proven runtime import chains.

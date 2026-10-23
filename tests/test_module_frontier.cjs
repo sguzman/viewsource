@@ -39,6 +39,24 @@ test("frontier edge counts exclude cycles, already reached modules and limited n
  assert.equal(limited.truncated_by_node_limit,true);
  assert.throws(()=>frontier(graph(),["R-JS-001:1","R-JS-001:2"],{nodeLimit:1}));
 });
+test("predecessor paths are source-local and depth boundaries exclude closed cycles",()=>{
+ const report=frontier(graph(),["R-JS-001:1"]);
+ const leaf=report.nodes.find(x=>x.source_ref==="R-JS-002"&&x.module_ordinal===1);
+ assert.deepEqual(leaf.reached_via,{source_ref:"R-JS-001",module_ordinal:2});
+ assert.equal(leaf.incoming_edge_classification,"static_import_candidate");
+ assert.deepEqual(report.nodes.find(x=>x.depth===0).reached_via,null);
+ assert.deepEqual(report.boundary_details,[]);
+ const closed=frontier(graph(),["R-JS-002:1"],{depthLimit:0});
+ assert.deepEqual(closed.boundary_details[0].reasons,["depth_limit"]);
+ const g=graph();
+ g.resolved_links=[{
+  from_ref:"R-JS-001",from_module:1,to_ref:"R-JS-001",to_module:1,
+  classification:"static_import_candidate",runtime_import_verified:false
+ }];
+ assert.deepEqual(frontier(g,["R-JS-001:1"],{depthLimit:0}).boundary_details,[]);
+ const limited=frontier(graph(),["R-JS-001:1"],{nodeLimit:2});
+ assert.deepEqual(limited.boundary_details[0].reasons,["node_limit"]);
+});
 test("depth and node limits retain an explicit frontier",()=>{
  const one=frontier(graph(),["R-JS-001:1"],{depthLimit:1});
  assert.equal(one.reached_module_count,2);

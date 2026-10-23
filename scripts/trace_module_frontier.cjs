@@ -131,8 +131,13 @@ function frontier(graph, roots, options={}) {
   }
   const queue=seeds.map(id=>({id,depth:0}));
   const visited=new Map(queue.map(({id})=>[id,0]));
+  const predecessors=new Map(seeds.map(id=>[id,null]));
   const counts=new Map([[0,queue.length]]);
-  const boundary=new Set();
+  const boundary=new Map();
+  function markBoundary(id,reason){
+    if(!boundary.has(id))boundary.set(id,new Set());
+    boundary.get(id).add(reason);
+  }
   const ambiguousCandidates=new Map();
   let traversed=0,examined=0,limited=false;
   for(let i=0;i<queue.length;i++){
@@ -144,17 +149,19 @@ function frontier(graph, roots, options={}) {
     }
     const links=adjacency.get(id)||new Set();
     if(depth===depthLimit){
-      if(links.size)boundary.add(id);
+      if([...links].some(next=>!visited.has(next)))
+        markBoundary(id,"depth_limit");
       continue;
     }
     for(const next of links) {
       examined++;
       if(visited.has(next))continue;
       if(visited.size===nodeLimit) {
-        limited=true;boundary.add(id);continue;
+        limited=true;markBoundary(id,"node_limit");continue;
       }
       traversed++;
       visited.set(next,depth+1);
+      predecessors.set(next,id);
       counts.set(depth+1,(counts.get(depth+1)||0)+1);
       queue.push({id:next,depth:depth+1});
     }
@@ -184,6 +191,8 @@ function frontier(graph, roots, options={}) {
     })));
   const nodes=[...visited].sort((a,b)=>a[1]-b[1]||a[0].localeCompare(b[0]))
     .map(([id,depth])=>({...asNode(id),depth,
+      reached_via:predecessors.get(id)?asNode(predecessors.get(id)):null,
+      incoming_edge_classification:predecessors.get(id)?"static_import_candidate":null,
       outgoing_unique_static_imports:(adjacency.get(id)||new Set()).size}));
   return {
     format_version:1,scope:"private_static_module_frontier",
@@ -193,7 +202,9 @@ function frontier(graph, roots, options={}) {
     reached_module_count:nodes.length,traversed_static_edges:traversed,
     examined_static_edges:examined,
     depth_counts:layerCounts,nodes,
-    boundary_modules:[...boundary].sort().map(asNode),
+    boundary_modules:[...boundary.keys()].sort().map(asNode),
+    boundary_details:[...boundary].sort(([a],[b])=>a.localeCompare(b))
+      .map(([id,reasons])=>({...asNode(id),reasons:[...reasons].sort()})),
     export_shape_ambiguities:ambiguities,
     reachable_dynamic_boundary_count:unresolvedDynamic.length,
     reachable_dynamic_boundaries:unresolvedDynamic,
@@ -236,6 +247,9 @@ function selfTest() {
   assert.equal(result.export_shape_ambiguities.length,1);
   assert(!result.nodes.some(x=>x.source_ref==="R-JS-002"&&x.module_ordinal===2));
   assert.equal(frontier(graph,["R-JS-001:1"],{depthLimit:1}).boundary_modules.length,1);
+  assert.equal(result.nodes[0].reached_via,null);
+  assert.deepEqual(result.nodes[2].reached_via,
+    {source_ref:"R-JS-001",module_ordinal:2});
   assert.equal(frontier(graph,["R-JS-001:1"],{nodeLimit:2}).truncated_by_node_limit,true);
   assert.throws(()=>frontier(graph,["R-JS-001:100"]));
   assert.throws(()=>frontier(graph,["R-JS-001:1"],{depthLimit:-1}));
