@@ -69,6 +69,9 @@ try {
   assert.ok((await page.locator(".chat-ast-details").innerText()).includes("Unresolved:"));
   assert.equal(await page.locator(".chat-research-task").count(),18);
   assert.equal(await page.locator(".chat-static-task").count(),33);
+  assert.equal(await page.locator(".chat-static-progress").getAttribute("max"),"33");
+  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"8");
+  assert.ok((await page.locator(".chat-static-progress").evaluate(e=>e.nextElementSibling.textContent)).includes("0% accepted complete"));
   await page.locator(".chat-static-task").first().locator("summary").click();
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
   await runtimeStudy.locator("summary").click();
