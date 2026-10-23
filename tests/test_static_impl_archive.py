@@ -162,6 +162,35 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertNotIn(sentinel, result.stdout)
             self.assertNotIn(str(archive), result.stdout)
 
+    def test_viewport_candidate_probe_has_no_source_leak(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-viewport.zip"
+            sentinel = "SYNTHETIC_ONLY_VIEWPORT_SENTINEL"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("fictional/window.js",
+                    "function layout(){const estimatedHeightPx=250,"
+                    "measuredHeightsByKey={},turnKey='local';"
+                    "const overscanCount=2,viewportHeightPx=900,"
+                    "bottomOffsetsPx=[],retainedTurnKeys=[],turnIndexByKey=new Map();"
+                    "return [estimatedHeightPx,overscanCount,retainedTurnKeys]}"
+                    "const onlyPrivate='" + sentinel + "';")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--viewport-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Synthetic viewport probe failed")
+            report = json.loads(result.stdout)
+            self.assertEqual(report["parsed_bundles"], 1)
+            self.assertEqual(report["failed_bundles"], 0)
+            self.assertEqual(report["counts"]["measured_estimated_layout"], 1)
+            self.assertEqual(report["counts"]["viewport_overscan_range"], 1)
+            self.assertEqual(report["counts"]["retained_outside_window"], 1)
+            self.assertTrue(all(item["classification"] == "syntactic_candidate"
+                                and not item["domain_ownership_verified"]
+                                for item in report["matches"]))
+            self.assertNotIn(sentinel, result.stdout)
+            self.assertNotIn(str(archive), result.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
