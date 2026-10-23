@@ -486,3 +486,16 @@ now contains ten reviewed relationships, including this imported-component
 edge. This confirms the main page-to-typed-renderer *source wiring*;
 dynamically imported subrenderers and actual runtime visibility remain
 unverified.
+
+## Source-reviewed transcript display conditions
+
+Nine additional rules in the transcript research artifact separate
+conditional **presentation** from underlying conversation data: pending
+prompt admission and loading, optional first-user-item suppression,
+last-turn-only status/attachments, alternate selected-message rendering,
+special sidebar or moderation item classification, reasoning/tool status,
+message DOM identifiers, and telemetry wrapping. These are grounded in
+saved resources R-JS-018, R-JS-069 and R-JS-072 and canonical evidence
+E2-079. They are inspected code paths, not exhaustive runtime behavior;
+removing an item from the display list does not prove deletion from the
+message mapping. The Atlas now exposes each rule and its limitations.
