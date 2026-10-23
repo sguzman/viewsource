@@ -144,6 +144,16 @@
       "from": "automation_references",
       "to": "automation_feature_scopes",
       "kind": "derived_selector_use"
+    },
+    {
+      "from": "conversation_answer_now_control",
+      "to": "answer_now_steering",
+      "kind": "conditional_click_dispatch"
+    },
+    {
+      "from": "conversation_answer_now_control",
+      "to": "stop_then_regeneration",
+      "kind": "conditional_click_dispatch"
     }
   ],
   "limitations": [
@@ -152,5 +162,39 @@
     "The previously mislabeled automation-reference collector is distinct from both ancestry-message selectors.",
     "An exported state selector's existence does not establish that all captured consumers are loaded or executed in the same session.",
     "Only capture-local resource ordinals and authored descriptions are published; no raw JavaScript, original module identifier, message data or network endpoint is included."
-  ]
+  ],
+  "reviewed_ui_action": {
+    "source_ref": "R-JS-018",
+    "component_role": "conversation_answer_now_control",
+    "evidence_class": "observed_static",
+    "bound_selector": "current_turn_path",
+    "live_click_observed": false,
+    "rendered_surfaces": [
+      "inline_button",
+      "escape_dialog_button"
+    ],
+    "visible_controls": "The captured React component returns a button with an onClick handler in either an inline surface or an Escape-dialog surface.",
+    "guard_roles": [
+      "current_turn_message_state",
+      "active_request_and_model",
+      "duplicate_action_guard",
+      "escape_preflight",
+      "elapsed_reasoning_window"
+    ],
+    "paths": [
+      {
+        "name": "answer_now",
+        "behavior": "On qualifying action and available asynchronous task identity, invokes the client answer-now steering routine with conversation, model and task context."
+      },
+      {
+        "name": "skip_reasoning",
+        "behavior": "Requests a stop for the active response; only after stop acknowledgement and a current-state guard does it submit regeneration with reasoning skipped and the thinking-effort setting cleared."
+      },
+      {
+        "name": "error_recovery",
+        "behavior": "On failure, clears pending steering-action state and displays a user-facing error notification."
+      }
+    ],
+    "verification_boundary": "The JSX button bindings, gating conditions and client calls are present in captured source; whether a user actually saw, clicked or completed these flows is not established."
+  }
 }
