@@ -413,6 +413,14 @@ def build(out: Path) -> dict:
                         for row in module_graph["curated_verified_syntax_edges"]
                     ],
                     "limitations": module_graph["limits"],
+                    "export_shape_matches": [
+                        {"from_ref": item["from_ref"],"to_ref": item["to_ref"],
+                         "registry_candidates": item["registry_candidate_count"],
+                         "compatible_interfaces": item["compatible_interface_count"],
+                         "roles": item["required_export_roles"],
+                         "description": item["description"],"limits": item["limits"]}
+                        for item in module_graph["reviewed_export_shape_matches"]
+                    ],
                     "runtime_verified": module_graph["live_module_load_verified"],
                 }
             accessibility_path = ROOT / (base + "/chat_accessibility_trace.json")
