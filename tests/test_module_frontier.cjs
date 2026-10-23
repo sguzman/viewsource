@@ -367,3 +367,45 @@ test("nested loader callsite count is a validated subset of root-local syntax",(
  g.nested_function_literal_module_loader_call_expression_count=5;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("bootstrap definition counts must agree with their evidence classification",()=>{
+ const g=graph();
+ g.bootstrap_runtime_verified=false;
+ g.bootstrap_candidates=[
+  {classification:"unique_registry_key_candidate",
+   target_ref:"R-JS-001",target_module:1,
+   registry_definition_candidates:1,bootstrap_execution_verified:false}
+ ];
+ assert.deepEqual(candidateBootstrapRoots(g),["R-JS-001:1"]);
+ g.bootstrap_candidates[0].registry_definition_candidates=2;
+ assert.throws(()=>candidateBootstrapRoots(g));
+});
+
+test("function-export ordinals cannot contain duplicates or gaps",()=>{
+ const g=graph();
+ g.direct_function_export_site_count=2;
+ g.direct_function_export_sites=[
+  {source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:1,
+   classification:"direct_function_export_assignment_candidate",
+   runtime_invocation_verified:false},
+  {source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:2,
+   classification:"module_object_function_assignment_candidate",
+   runtime_invocation_verified:false}
+ ];
+ assert.equal(frontier(g,["R-JS-001:1"]).reachable_direct_function_export_site_count,2);
+ g.direct_function_export_sites[1].export_function_ordinal=1;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});
+
+test("bound-loader definition counts are consistent with candidate type",()=>{
+ const g=graph();
+ g.bound_import_candidate_count=1;
+ g.bound_import_candidates=[{
+  source_ref:"R-JS-001",module_ordinal:2,
+  classification:"ambiguous_bound_import",definition_candidates:2,
+  binding_executed_verified:false,target_module_loaded_verified:false
+ }];
+ assert.equal(frontier(g,["R-JS-001:1"]).reachable_bound_import_count,1);
+ g.bound_import_candidates[0].definition_candidates=1;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});
