@@ -49,6 +49,18 @@
       "kind": "separate_request_refresh",
       "behavior": "The initial completion request has a separate request-level retry/refresh callback that rebuilds request integrity and identity headers when permitted. This is distinct from the resumption retry coordinator.",
       "boundary": "The actual retry count and successful refreshed request cannot be inferred from the saved page."
+    },
+    {
+      "id": "preparation_short_circuit_and_abort",
+      "kind": "preparation_lifecycle_guard",
+      "behavior": "Before issuing the preparation request, the captured completion preparer checks cancellation and a supplied should-prepare guard. After an asynchronous device/identity lookup it repeats the cancellation and preparation guard. A rejected preparation guard exits without sending the request.",
+      "boundary": "These guards are source conditions. They do not show a cancelled or omitted live request."
+    },
+    {
+      "id": "partial_query_prepare_fallback",
+      "kind": "guarded_single_prepare_retry",
+      "behavior": "A preparation failure enters a distinct fallback only if the input contains a partial query, the caller permits retry, and an imported error eligibility predicate accepts the failure. After a randomized 250–500 ms delay, retry permission is checked again. One recursive preparation attempt changes dispatch to immediate, suppresses further retry, and revalidates should-prepare before sending.",
+      "boundary": "This is a maximum one-fallback client source branch, not a promise that every eligible failure retries or succeeds. The imported predicate and actual outcomes are unresolved."
     }
   ],
   "captured_default_fallbacks": {
@@ -60,7 +72,7 @@
     "websocket_idle_timeout_ms": 30000,
     "resume_initial_open_timeout_fallback_ms": 60000
   },
-  "fallback_scope": "These values are fallback literals in the captured client and may be overridden by dynamic configuration, active request options, and different transport state. They are not contractual service guarantees.",
+  "fallback_scope": "These values are fallback literals in the captured client and may be overridden by dynamic configuration, active request options, and different transport state. They are not contractual service guarantees. The preparation fallback's randomized 250–500 ms interval is a distinct source literal, not part of the configurable stream resume backoff budget.",
   "reviewed_relationships": [
     {
       "from": "transport_error",
@@ -101,6 +113,16 @@
       "from": "initial_request_failure",
       "to": "request_level_refresh",
       "kind": "separate_retry_mechanism"
+    },
+    {
+      "from": "prepare_preflight",
+      "to": "guarded_preparation_request",
+      "kind": "cancellation_and_permission_checks"
+    },
+    {
+      "from": "prepare_request_failure",
+      "to": "single_immediate_dispatch_fallback",
+      "kind": "conditional_partial_query_retry"
     }
   ],
   "open_questions": [
@@ -108,7 +130,33 @@
     "Trace the imported stream-event assembler's exact offset and resume-token invariants.",
     "Determine whether config gates allow resumptions for every message modality and every account context.",
     "Check cancellation priority and delivery outcomes only with permitted synthetic runtime observations, if later desired.",
-    "Distinguish retry hints used only for display from those that actually schedule a client request."
+    "Distinguish retry hints used only for display from those that actually schedule a client request.",
+    "Resolve the imported preparation-failure eligibility predicate separately from the completion-stream resume predicate; do not infer HTTP status coverage from the call alone."
   ],
-  "privacy": "No original source code, endpoint strings, request headers, auth/account values, message content, URL, or extracted bundle filename is published."
+  "privacy": "No original source code, endpoint strings, request headers, auth/account values, message content, URL, or extracted bundle filename is published.",
+  "preparation_fallback": {
+    "source_ref": "R-JS-018",
+    "method": "prepareCompletionStream",
+    "evidence_class": "observed_static",
+    "client_execution_observed": false,
+    "minimum_delay_ms": 250,
+    "maximum_delay_exclusive_ms": 500,
+    "required_conditions": [
+      "partial_query_present",
+      "caller_retry_allowed_before_delay",
+      "imported_error_eligibility_predicate",
+      "caller_retry_allowed_after_delay",
+      "preparation_remains_permitted"
+    ],
+    "fallback_changes": [
+      "dispatch_mode_immediate",
+      "additional_retry_disabled",
+      "preparation_guard_revalidated"
+    ],
+    "distinguished_from": [
+      "completion_stream_resume_recovery",
+      "request_integrity_header_refresh"
+    ],
+    "limit": "The original method's failure catch contains the conditional fallback. Its imported error predicate is not resolved to a unique source implementation; this report does not assert eligible HTTP statuses or an observed network result."
+  }
 }
