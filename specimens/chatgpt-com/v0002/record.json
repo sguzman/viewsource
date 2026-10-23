@@ -11050,6 +11050,16 @@
         "evidence_ref": "E2-099",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-100",
+      "statement": "The captured completion-stream client configures automatic resume permission differently at two call sites: the initial completion stream passes false when the request's history_and_training_disabled field is explicitly true, while the separate explicit resume entrypoint passes true. The imported resume helper still requires token/offset, conversation identity, cancellation and automatic-retry budget guards. This is source-level client configuration, not verification that explicit resume is offered under the disabled-history setting or that any retry executed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-100",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
