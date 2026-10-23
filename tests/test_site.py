@@ -72,6 +72,8 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(viewport["source_chain"]),7)
             self.assertEqual(len(viewport["module_anchors"]),4)
             self.assertEqual(len(viewport["branch_window"]["stages"]),4)
+            self.assertEqual(len(viewport["composer_spacer"]["stages"]),4)
+            self.assertFalse(viewport["composer_spacer"]["verified_runtime"])
             self.assertFalse(viewport["branch_window"]["verified_runtime"])
             transcript = current["visuals"]["chat_transcript_render_trace"]
             self.assertFalse(transcript["runtime_render_verified"])
@@ -124,7 +126,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 85)
+            self.assertEqual(len(current["findings"]), 86)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
