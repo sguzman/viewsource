@@ -37,6 +37,7 @@ function memberOf(node,base){
  * spelling across the entire bundle factory. Unknown/reassigned bindings are
  * excluded; the resulting export-interface match remains a static candidate. */
 function scanScopedRequiredSlots(fn,requireName,required){
+ const loaderIdentity=Symbol("factory_require");
  function bind(pattern,env,value=null){
   if(!pattern)return;
   if(pattern.type==="Identifier"){env.set(pattern.name,value);return;}
@@ -50,8 +51,9 @@ function scanScopedRequiredSlots(fn,requireName,required){
    }
   }
  }
- function importKey(init){
-  if(!requireName||init?.type!=="CallExpression"||
+ function importKey(init,env){
+  if(!requireName||env.get(requireName)!==loaderIdentity||
+     init?.type!=="CallExpression"||
      init.callee?.type!=="Identifier"||
      init.callee.name!==requireName||
      init.arguments[0]?.type!=="Literal"||
@@ -82,7 +84,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
    for(const decl of node.declarations){
     walk(decl.init,env);
     if(decl.id?.type==="Identifier")
-     env.set(decl.id.name,importKey(decl.init));
+     env.set(decl.id.name,importKey(decl.init,env));
     else bind(decl.id,env,null);
    }
    return;
@@ -105,6 +107,8 @@ function scanScopedRequiredSlots(fn,requireName,required){
  }
  const env=new Map();
  for(const param of fn.params||[])bind(param,env,null);
+ if(requireName&&fn.params?.[2]?.type==="Identifier"&&
+    fn.params[2].name===requireName)env.set(requireName,loaderIdentity);
  walk(fn.body,env);
 }
 
@@ -209,6 +213,81 @@ function dynamicSyntax(fn,requireName){
  return [...patterns];
 }
 
+
+/* Name-only matching can invent imports when a nested callback shadows the
+ * module factory's require parameter. Scope is tracked conservatively and
+ * candidate edges are emitted only for references to the original parameter. */
+function scanScopedModuleCalls(fn,requireName){
+ const imports=new Set(),boundImports=new Set(),loaderIdentity=Symbol("factory_require");
+ if(!requireName||fn.params?.[2]?.type!=="Identifier"||
+    fn.params[2].name!==requireName)return {imports,boundImports};
+ function shadows(pattern,env){
+  if(!pattern)return;
+  if(pattern.type==="Identifier"){
+   if(pattern.name===requireName)env.set(requireName,null);
+   return;
+  }
+  if(pattern.type==="RestElement"||pattern.type==="AssignmentPattern")
+   return shadows(pattern.argument||pattern.left,env);
+  if(pattern.type==="ArrayPattern"){
+   for(const part of pattern.elements)shadows(part,env);
+  }else if(pattern.type==="ObjectPattern"){
+   for(const prop of pattern.properties)
+    shadows(prop.type==="RestElement"?prop.argument:prop.value,env);
+  }
+ }
+ function walk(node,env){
+  if(!node||typeof node!=="object")return;
+  if(node.type==="BlockStatement"){
+   const scoped=new Map(env);
+   for(const stmt of node.body){
+    if(stmt.type==="VariableDeclaration")
+     for(const decl of stmt.declarations)shadows(decl.id,scoped);
+    if((stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")&&stmt.id)
+     shadows(stmt.id,scoped);
+   }
+   for(const stmt of node.body)walk(stmt,scoped);
+   return;
+  }
+  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type)){
+   const nested=new Map(env);
+   if(node.id)shadows(node.id,nested);
+   for(const param of node.params||[])shadows(param,nested);
+   walk(node.body,nested);
+   return;
+  }
+  if(node.type==="VariableDeclaration"){
+   for(const decl of node.declarations){
+    walk(decl.init,env);
+    shadows(decl.id,env);
+   }
+   return;
+  }
+  if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier"&&
+     node.left.name===requireName)env.set(requireName,null);
+  if(node.type==="CallExpression"&&env.get(requireName)===loaderIdentity){
+   if(node.callee?.type==="Identifier"&&node.callee.name===requireName&&
+      node.arguments[0]?.type==="Literal"&&
+      typeof node.arguments[0].value==="string")
+    imports.add(node.arguments[0].value);
+   if(memberOf(node.callee,requireName)==="bind"&&
+      node.arguments[0]?.type==="Identifier"&&
+      node.arguments[0].name===requireName&&
+      node.arguments[1]?.type==="Literal"&&
+      typeof node.arguments[1].value==="string")
+    boundImports.add(node.arguments[1].value);
+  }
+  for(const [k,v] of Object.entries(node)){
+   if(["start","end","loc","raw"].includes(k))continue;
+   if(Array.isArray(v)){
+    for(const child of v)if(child&&typeof child==="object")walk(child,env);
+   }else if(v&&typeof v==="object")walk(v,env);
+  }
+ }
+ walk(fn.body,new Map([[requireName,loaderIdentity]]));
+ return {imports,boundImports};
+}
+
 function analyzeJS(source,sourceOrdinal){
  const ast=acorn.parse(source,{ecmaVersion:"latest",sourceType:"module",
    allowReturnOutsideFunction:true,allowImportExportEverywhere:true});
@@ -224,30 +303,7 @@ function analyzeJS(source,sourceOrdinal){
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
   const exportName=fn.params?.[1]?.type==="Identifier"?fn.params[1].name:null;
   const signatures=scanModuleSignatures(fn,requireName,exportName);
-  const imports=new Set(),boundImports=new Set(),stack=[fn.body];
-  while(stack.length){
-   const n=stack.pop();
-   if(!n||typeof n!=="object")continue;
-   if(requireName&&n.type==="CallExpression"&&n.callee?.type==="Identifier"&&
-      n.callee.name===requireName&&n.arguments.length>=1){
-    const first=n.arguments[0];
-    if(first.type==="Literal"&&typeof first.value==="string")
-      imports.add(first.value);
-   }
-   if(requireName&&n.type==="CallExpression"&&
-      memberOf(n.callee,requireName)==="bind"&&
-      n.arguments[0]?.type==="Identifier"&&
-      n.arguments[0].name===requireName&&
-      n.arguments[1]?.type==="Literal"&&
-      typeof n.arguments[1].value==="string")
-    boundImports.add(n.arguments[1].value);
-   for(const [k,v] of Object.entries(n)){
-    if(["start","end","loc","raw"].includes(k))continue;
-    if(Array.isArray(v)){
-     for(const c of v)if(c&&typeof c==="object")stack.push(c);
-    }else if(v&&typeof v==="object")stack.push(v);
-   }
-  }
+  const {imports,boundImports}=scanScopedModuleCalls(fn,requireName);
   result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
     boundImports:[...boundImports],
     eligible:!!requireName,exportedSlots:signatures.exportedSlots,
@@ -470,6 +526,17 @@ function selfTest(){
  assert.equal(boundReport.bound_import_candidates[0].classification,"bound_import_target_candidate");
  assert.equal(boundReport.bound_import_candidates[0].candidate_target_module,2);
  assert.equal(boundReport.bound_import_candidates[0].target_module_loaded_verified,false);
+ const shadowOnly=analyzeJS("export const __webpack_modules__={"+
+  "Shadow:(function(e,t,n){function local(n){const a=n('Private');a.x()}"+
+  "function bound(n){return n.bind(n,'Private')} }),"+
+  "Private:(function(e,t,n){t.x=1})};",8);
+ const shadowReport=buildGraph(shadowOnly,1,0);
+ assert.equal(shadowReport.import_candidates,0);
+ assert.equal(shadowReport.bound_import_candidate_count,0);
+ const captureNested=analyzeJS("export const __webpack_modules__={"+
+  "Factory:(function(e,t,n){const lazy=()=>n('Link')}),"+
+  "Link:(function(e,t,n){t.x=1})};",8);
+ assert.equal(buildGraph(captureNested,1,0).unique_resolved_links,1);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

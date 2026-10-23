@@ -396,6 +396,28 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "one.js","two.js"):
                 self.assertNotIn(private,result.stdout)
 
+    def test_nested_parameter_shadowing_cannot_create_module_edge(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-shadowed-loader.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("synthetic.js", "export const __webpack_modules__={"
+                    "Root:(function(e,t,n){"
+                    "function unrelated(n){const x=n('HiddenModule');return x.h()}"
+                    "function bound(n){return n.bind(n,'HiddenModule')}}),"
+                    "HiddenModule:(function(e,t,n){t.h=1})};")
+            report_run = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(report_run.returncode, 0)
+            report = json.loads(report_run.stdout)
+            self.assertEqual(report["modules_total"], 2)
+            self.assertEqual(report["import_candidates"], 0)
+            self.assertEqual(report["bound_import_candidate_count"], 0)
+            self.assertEqual(report["export_shape_candidate_count"], 0)
+            for private in ("HiddenModule", "Root", "invented-shadowed-loader.zip"):
+                self.assertNotIn(private, report_run.stdout)
+
     def test_bound_imports_are_future_use_candidates_not_direct_edges(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-bound-fixture.zip"

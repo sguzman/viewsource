@@ -330,3 +330,11 @@ signature and emits only anonymous source/module ordinals with a
 unique/ambiguous/missing target classification. Such callbacks never count as
 direct imports or verified module loads. Invocation and ownership must be
 established independently before promoting the candidate to a source finding.
+
+### Module-loader shadowing
+
+The direct-import, bound-loader and export-interface candidate passes now
+distinguish the actual bundled module-factory loader parameter from a nested
+function argument that merely reuses the same name. A shadowed parameter must
+not create a candidate dependency on the factory loader. This rejects false
+static edges in minified code but cannot prove that any accepted edge executed.
