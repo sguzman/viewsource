@@ -106,7 +106,7 @@ For source-backed implementation research, the `scripts/trace_static_archive.py`
 
 ## Selected-message UI evidence and automated selector scans
 
-A new [selector-consumer study](specimens/chatgpt-com/v0002/chat_selector_consumers.json) distinguishes full selected-message ancestry, the current user-turn message window, user-message identity ancestry, automation references, and page references. The last two are feature-reference lists, **not the visible chat transcript**. Captured client code contains a React control that subscribes to the current-turn messages and binds inline and Escape-dialog buttons to guarded answer-now or skip-reasoning actions. These are static implementation findings, not observed button execution or server outcomes. The main transcript rendering component is still under investigation.
+A new [selector-consumer study](specimens/chatgpt-com/v0002/chat_selector_consumers.json) distinguishes full selected-message ancestry, the current user-turn message window, user-message identity ancestry, automation references, and page references. The last two are feature-reference lists, **not the visible chat transcript**. Captured client code contains a React control that subscribes to the current-turn messages and binds inline and Escape-dialog buttons to guarded answer-now or skip-reasoning actions. These are static implementation findings, not observed button execution or server outcomes. The main transcript renderer has since been traced through turn preparation, typed item rendering and virtualized rows. Dynamic subcomponents and live browser outcomes remain unresolved.
 
 The privacy-safe `--selector-trace` mode of `scripts/trace_static_archive.py` can automatically classify candidate ancestry walks, identity projections, feature-reference extractors and recent-turn controls in a newly supplied offline ZIP. As with other AST scans, candidate matches are questions to investigate, **not** accepted evidence on their own. The live source research queue remains at **10 in progress, 23 queued, 0 complete**; task evidence and completion are tracked separately.
 
@@ -125,6 +125,8 @@ user turn during eligible voice scenarios. These are actual saved-client
 algorithms, not observed browser motion or server behavior. The
 [viewport study](specimens/chatgpt-com/v0002/chat_viewport_virtualization_trace.json)
 links eleven reviewed rules to module ordinals in R-JS-066 and R-JS-072.
+
+The selected-branch-to-virtual-window connection is recorded as E2-085, and the composer/response-spacer lifecycle as E2-086. Both are source-backed client relationships; neither asserts an observed browser scroll or server result.
 
 The offline archive research CLI also supports `--viewport-trace`. It
 extracts **candidate** virtual-list, overscan, resize, scroll-anchor,
