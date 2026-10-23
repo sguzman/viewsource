@@ -753,6 +753,30 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                 for private in (secret, "invented-literal-calls.zip", "Caller"):
                     self.assertNotIn(private, proc.stdout)
 
+    def test_nested_callable_export_context_is_reported_without_ownership_claim(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-nested-export-context.zip"
+            hidden = "PrivateNestedExportLabelZ920"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Module:(function(e,t,n){t.direct=()=>1;"
+                    "function dormant(){t." + hidden + "=()=>2}})};")
+            for args in (["--module-trace"],
+                         ["--module-frontier", "--root", "R-JS-001:1"]):
+                result = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *args],
+                    cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+                self.assertEqual(result.returncode, 0, result.stderr[:120])
+                data = json.loads(result.stdout)
+                if args[0] == "--module-trace":
+                    self.assertEqual(data["nested_function_export_site_count"], 1)
+                    self.assertEqual(data["direct_function_export_site_count"], 2)
+                else:
+                    self.assertEqual(data["reachable_nested_function_export_site_count"], 1)
+                for private in (hidden, "synthetic-nested-export-context.zip"):
+                    self.assertNotIn(private, result.stdout)
+
     def test_direct_function_exports_exclude_shadowed_and_getter_functions(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-export-ownership.zip"

@@ -405,7 +405,8 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
      addSlot(slot);
      if(node.operator==="="&&
         ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
-      directFunctions.push({position:node.start,classification});
+      directFunctions.push({position:node.start,classification,
+       nested_function_syntax_present:nestedDepth>0});
     }
    }
    if(moduleName&&env.get(moduleName)===moduleToken&&
@@ -420,7 +421,8 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
        ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
      directFunctions.push({
       position:node.start,
-      classification:"module_object_function_assignment_candidate"
+      classification:"module_object_function_assignment_candidate",
+      nested_function_syntax_present:nestedDepth>0
      });
     if(exportName)env.set(exportName,null);
    }
@@ -467,6 +469,7 @@ function scanModuleSignatures(fn,requireName,exportName,moduleName){
  return {exportedSlots:[...exported],
   factoryBodyExportedSlots:[...factoryBodySlots],
   directFunctionExports:directFunctions.map(x=>x.classification),
+  directFunctionExportNested:directFunctions.map(x=>x.nested_function_syntax_present),
   requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
 }
 
@@ -887,6 +890,7 @@ function analyzeJS(source,sourceOrdinal){
     exportedSlots:signatures.exportedSlots,
     factoryBodyExportedSlots:signatures.factoryBodyExportedSlots,
     directFunctionExports:signatures.directFunctionExports,
+    directFunctionExportNested:signatures.directFunctionExportNested,
     requiredByImport:signatures.requiredByImport,
     dynamic_syntax:dynamicSyntax(fn,requireName,scopeCalls)});
  }
@@ -929,6 +933,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
     module_ordinal:item.moduleOrdinal,
     export_function_ordinal:i+1,
     classification,
+    nested_function_syntax_present:(item.directFunctionExportNested||[])[i]||false,
     runtime_invocation_verified:false
    });
   }
@@ -1067,6 +1072,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   unresolved_import_sites:unresolvedSites,
   unresolved_import_site_count:unresolvedSites.length,
   direct_function_export_site_count:directFunctionSites.length,
+  nested_function_export_site_count:directFunctionSites.filter(x=>
+    x.nested_function_syntax_present).length,
   direct_function_export_sites:directFunctionSites,
   bootstrap_call_candidates:bootstrapCandidates.length,
   bootstrap_candidates:bootstrapCandidates,
@@ -1125,6 +1132,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Registry entries with computed nonliteral keys remain anonymous factories and are not resolved by identifier spelling.",
    "Registry object entries without callable function factories are counted but excluded as resolvable targets.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
+   "Nested-function callable export assignments are distinguished from factory-body assignments; no runtime invocation is established.",
    "Direct functions on export objects or module.exports assignments are source syntax candidates; getter and alias ownership remain unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
@@ -1615,6 +1623,13 @@ function selfTest(){
   "Candidate:(function(e,t,n){t.want=()=>1})};",84);
  const bodyResult=buildGraph([dormantExport[0],...bodyExport,...otherCandidate],3,0);
  assert.equal(bodyResult.export_shape_candidate_count,1);
+ const nestedExportOwners=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(e,t,n){t.direct=()=>1;function notCalled(){t.nested=()=>2}})};",85);
+ const nestedOwnersGraph=buildGraph(nestedExportOwners,1,0);
+ assert.equal(nestedOwnersGraph.direct_function_export_site_count,2);
+ assert.equal(nestedOwnersGraph.nested_function_export_site_count,1);
+ assert.deepEqual(nestedOwnersGraph.direct_function_export_sites
+  .map(x=>x.nested_function_syntax_present),[false,true]);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

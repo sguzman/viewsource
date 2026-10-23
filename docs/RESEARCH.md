@@ -776,3 +776,14 @@ syntax remains an unexecuted source lead, while factory-body
 assignments and eligible loader export registrations may support
 an explicitly unverified interface candidate. This rule does not
 claim a function was never invoked.
+
+### Nested callable-export assignment contexts
+
+The callable-export candidate inventory now distinguishes assignments in
+nested function bodies from assignments in the module factory body.
+Each output uses an explicit boolean syntax-context flag and an
+aggregate count; the frontier restricts that count to reached modules.
+A nested assignment may execute immediately, later, or never, and
+does not establish verified public export ownership. The candidate
+remains visible for investigation instead of being incorrectly
+collapsed into a verified direct factory export.

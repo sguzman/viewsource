@@ -56,6 +56,7 @@ function indexGraph(graph) {
     ["foreign_registry_key_collision_count","foreign_registry_key_collisions"],
     ["unresolved_import_site_count","unresolved_import_sites"],
     ["direct_function_export_site_count","direct_function_export_sites"],
+    ["nested_function_export_site_count",null],
     ["archive_candidate_script_count",null],
     ["archive_oversize_script_count",null],
     ["archive_ast_input_script_count",null],
@@ -251,6 +252,7 @@ function indexGraph(graph) {
       throw Error("Distinct import count inconsistent");
   }
   const directFns=new Map();
+  let nestedExportCount=0;
   if(graph.direct_function_export_sites!==undefined){
     if(!Array.isArray(graph.direct_function_export_sites))
       throw Error("Invalid function export sites");
@@ -263,16 +265,24 @@ function indexGraph(graph) {
          !Number.isSafeInteger(item.export_function_ordinal)||
          item.export_function_ordinal<1||item.export_function_ordinal>NODE_LIMIT)
         throw Error("Invalid function export candidate");
+      if(item.nested_function_syntax_present!==undefined&&
+         typeof item.nested_function_syntax_present!=="boolean")
+        throw Error("Invalid nested function export context");
+      if(item.nested_function_syntax_present===true)nestedExportCount++;
       const id=ordinal(item.source_ref,item.module_ordinal);
       if(!directFns.has(id))directFns.set(id,[]);
       if(item.export_function_ordinal!==directFns.get(id).length+1)
         throw Error("Noncontiguous function export ordinal");
       directFns.get(id).push({
        export_function_ordinal:item.export_function_ordinal,
-       classification:item.classification
+       classification:item.classification,
+       nested_function_syntax_present:item.nested_function_syntax_present===true
       });
     }
   }
+  if(graph.nested_function_export_site_count!==undefined&&
+     graph.nested_function_export_site_count!==nestedExportCount)
+    throw Error("Nested function export count inconsistent");
   const unresolvedByModule=new Map();
   if(graph.unresolved_import_sites!==undefined){
     if(!Array.isArray(graph.unresolved_import_sites)||
@@ -454,6 +464,7 @@ function frontier(graph, roots, options={}) {
     (directFns.get(id)||[]).map(item=>({
       source:asNode(id),export_function_ordinal:item.export_function_ordinal,
       classification:item.classification,
+      nested_function_syntax_present:item.nested_function_syntax_present,
       runtime_invocation_verified:false
     })));
   const localUnresolved=[...visited.keys()].sort().flatMap(id=>
@@ -528,6 +539,8 @@ function frontier(graph, roots, options={}) {
     reachable_unresolved_import_count:localUnresolved.length,
     reachable_unresolved_import_sites:localUnresolved,
     reachable_direct_function_export_site_count:localDirectFunctions.length,
+    reachable_nested_function_export_site_count:
+      localDirectFunctions.filter(x=>x.nested_function_syntax_present).length,
     reachable_direct_function_export_sites:localDirectFunctions,
     reachable_literal_module_loader_call_expression_count:
       localLiteralCalls.reduce((n,item)=>n+item.literal_call_expressions,0),
@@ -549,6 +562,7 @@ function frontier(graph, roots, options={}) {
       "Repeated literal loader-call syntax is counted separately from distinct target keys per module; neither count proves invocation.",
       "Nested-only import edges originate in callback syntax; they remain static candidates and do not establish delayed execution.",
       "Nested-function callsite counts identify syntax location, not guaranteed delayed execution.",
+      "Nested callable-export syntax may be in a dormant function and is not enough to prove final export ownership.",
       "Direct function-valued export assignments indicate only static candidates, not verified feature ownership or calls.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",

@@ -467,3 +467,22 @@ test("parsed resource without recognized modules is an explicit coverage gap",()
  g.parsed_without_indexed_module_count=1;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("nested callable export sites are tagged and checked separately",()=>{
+ const g=graph();
+ g.direct_function_export_site_count=2;
+ g.nested_function_export_site_count=1;
+ g.direct_function_export_sites=[
+  {source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:1,
+   classification:"direct_function_export_assignment_candidate",
+   nested_function_syntax_present:false,runtime_invocation_verified:false},
+  {source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:2,
+   classification:"direct_function_export_assignment_candidate",
+   nested_function_syntax_present:true,runtime_invocation_verified:false}
+ ];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.reachable_nested_function_export_site_count,1);
+ assert.equal(out.reachable_direct_function_export_sites.length,2);
+ g.nested_function_export_site_count=0;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});
