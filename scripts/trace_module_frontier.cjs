@@ -232,7 +232,8 @@ function indexGraph(graph) {
       throw Error("Invalid function export sites");
     for(const item of graph.direct_function_export_sites){
       if(!["direct_function_export_assignment_candidate",
-           "module_object_function_assignment_candidate"].includes(item.classification)||
+           "module_object_function_assignment_candidate",
+           "module_exports_property_function_candidate"].includes(item.classification)||
          item.runtime_invocation_verified!==false||
          !known(item.source_ref,item.module_ordinal)||
          !Number.isSafeInteger(item.export_function_ordinal)||
