@@ -311,7 +311,7 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
                 z.writestr("unknown.js",
                     "export const __webpack_modules__={"
-                    "Candidate:(function(e,t,n){"
+                    "PrivateModuleSyntheticZ:(function(e,t,n){"
                     "const a=import('private-module');"
                     "const b=import(t.dynamicName);"
                     "const c=n.e('" + sentinel + "');"
@@ -327,7 +327,7 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                                 and not x["target_module_verified"]
                                 and x["source_ref"] == "R-JS-001"
                                 for x in report["dynamic_boundary_candidates"]))
-            for private in ("private-module", sentinel, "dynamicName", "Candidate",
+            for private in ("private-module", sentinel, "dynamicName", "PrivateModuleSyntheticZ",
                             "unknown.js", "private-dynamic-fixture.zip"):
                 self.assertNotIn(private, result.stdout)
 
