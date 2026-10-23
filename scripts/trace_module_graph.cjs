@@ -164,6 +164,19 @@ function scanScopedRequiredSlots(fn,requireName,required){
    mergeConditionalBindings(env,consequent,alternate);
    return;
   }
+  if(node.type==="TryStatement"){
+   // The catch path can begin before a reassignment in the try block.
+   // Execute the finalizer as syntax on each candidate state separately.
+   const primary=new Map(env),fallback=new Map(env);
+   walk(node.block,primary);
+   if(node.handler)walk(node.handler,fallback);
+   if(node.finalizer){
+    walk(node.finalizer,primary);
+    walk(node.finalizer,fallback);
+   }
+   mergeConditionalBindings(env,primary,fallback);
+   return;
+  }
   if(node.type==="CatchClause"){
    const caught=new Map(env);
    bind(node.param,caught,null);
@@ -373,6 +386,29 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
     if(!seen.has(key)){directFunctions.push(candidate);seen.add(key);}
    }
    mergeConditionalBindings(env,consequent,alternate);
+   return;
+  }
+  if(node.type==="TryStatement"){
+   const originalSlots=new Set(slots),originalBody=new Set(factoryBodySlots),
+    originalFunctions=directFunctions.slice();
+   const primary=new Map(env),fallback=new Map(env);
+   scan(node.block,primary);
+   if(node.finalizer)scan(node.finalizer,primary);
+   const firstSlots=new Set(slots),firstBody=new Set(factoryBodySlots),
+    firstFunctions=directFunctions.slice();
+   slots.clear();for(const slot of originalSlots)slots.add(slot);
+   factoryBodySlots.clear();for(const slot of originalBody)factoryBodySlots.add(slot);
+   directFunctions.length=0;directFunctions.push(...originalFunctions);
+   if(node.handler)scan(node.handler,fallback);
+   if(node.finalizer)scan(node.finalizer,fallback);
+   for(const slot of firstSlots)slots.add(slot);
+   for(const slot of firstBody)factoryBodySlots.add(slot);
+   const seen=new Set(directFunctions.map(x=>x.position+":"+x.classification));
+   for(const candidate of firstFunctions){
+    const key=candidate.position+":"+candidate.classification;
+    if(!seen.has(key)){directFunctions.push(candidate);seen.add(key);}
+   }
+   mergeConditionalBindings(env,primary,fallback);
    return;
   }
   if(node.type==="CatchClause"){
@@ -638,6 +674,19 @@ function bootstrapCalls(ast,sourceOrdinal) {
    invalidateOuterBindings(env,joined,locals);
    return;
   }
+  if(node.type==="TryStatement"){
+   // The catch path can begin before a reassignment in the try block.
+   // Execute the finalizer as syntax on each candidate state separately.
+   const primary=new Map(env),fallback=new Map(env);
+   walk(node.block,primary);
+   if(node.handler)walk(node.handler,fallback);
+   if(node.finalizer){
+    walk(node.finalizer,primary);
+    walk(node.finalizer,fallback);
+   }
+   mergeConditionalBindings(env,primary,fallback);
+   return;
+  }
   if(node.type==="CatchClause"||node.type==="BlockStatement"||
      node.type==="ForStatement"||node.type==="ForInStatement"||
      node.type==="ForOfStatement"){
@@ -776,6 +825,19 @@ function scanScopedModuleCalls(fn,requireName){
    walk(node.consequent,consequent);
    if(node.alternate)walk(node.alternate,alternate);
    mergeConditionalBindings(env,consequent,alternate);
+   return;
+  }
+  if(node.type==="TryStatement"){
+   // The catch path can begin before a reassignment in the try block.
+   // Execute the finalizer as syntax on each candidate state separately.
+   const primary=new Map(env),fallback=new Map(env);
+   walk(node.block,primary);
+   if(node.handler)walk(node.handler,fallback);
+   if(node.finalizer){
+    walk(node.finalizer,primary);
+    walk(node.finalizer,fallback);
+   }
+   mergeConditionalBindings(env,primary,fallback);
    return;
   }
   if(node.type==="CatchClause"){
@@ -1971,6 +2033,34 @@ function selfTest(){
  assert.equal(switchOwnershipGraph.ambiguous_import_candidates,1);
  assert.equal(switchOwnershipGraph.export_shape_candidate_count,1);
  assert.equal(switchOwnershipGraph.export_shape_candidates[0].to_ref,"R-JS-119");
+ const catchSource=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){try{if(t.flag)throw 1;n=()=>0}"+
+  "catch(e){n('Goal')}n('NotSafe')}),Goal:(function(e,t){t.ok=1})};",121);
+ const catchGraph=buildGraph(catchSource,1,0);
+ assert.equal(catchGraph.import_candidates,1);
+ assert.equal(catchGraph.unique_resolved_links,1);
+ const catchReader=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){let x=n('Choice');try{if(t.flag)throw 1;x={}}"+
+  "catch(e){x.ready()}x.unsure()})};",122);
+ const catchOwner=analyzeJS("export const __webpack_modules__={"+
+  "Choice:(function(e,t,n){try{if(t.flag)throw 1;t={}}"+
+  "catch(e){t.ready=()=>1}t.unsure=()=>1})};",123);
+ const catchOther=analyzeJS("export const __webpack_modules__={"+
+  "Choice:(function(e,t,n){t.other=()=>1})};",124);
+ const catchJoin=buildGraph([...catchReader,...catchOwner,...catchOther],3,0);
+ assert.equal(catchJoin.ambiguous_import_candidates,1);
+ assert.equal(catchJoin.export_shape_candidate_count,1);
+ assert.equal(catchJoin.export_shape_candidates[0].to_ref,"R-JS-123");
+ const catchBoot=analyzeJS("export const __webpack_modules__={"+
+  "Boot:function(){}};try{if(flag)throw 1;__webpack_require__=()=>0}"+
+  "catch(e){__webpack_require__('Boot')}"+
+  "__webpack_require__('NotSafe');",125);
+ assert.equal(catchBoot.bootstrapCandidates.length,1);
+ const finallySource=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){try{if(t.flag)throw 1;n=()=>0}"+
+  "catch(e){}finally{n('Maybe')}}),"+
+  "Maybe:(function(e,t){t.ok=1})};",126);
+ assert.equal(buildGraph(finallySource,1,0).import_candidates,1);
 
 }
 if(require.main===module){
