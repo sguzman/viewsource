@@ -365,16 +365,22 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    return;
   }
   if(node.type==="AssignmentExpression"){
-   if(node.left?.type==="MemberExpression"&&env.get(exportName)===exportToken){
-    const slot=memberOf(node.left,exportName);
+   if(node.left?.type==="MemberExpression"){
+    let slot=null,classification=null;
+    if(exportName&&env.get(exportName)===exportToken){
+     slot=memberOf(node.left,exportName);
+     if(slot)classification="direct_function_export_assignment_candidate";
+    }
+    if(!slot&&moduleName&&env.get(moduleName)===moduleToken&&
+       memberOf(node.left.object,moduleName)==="exports"){
+     slot=literalMember(node.left);
+     if(slot)classification="module_exports_property_function_candidate";
+    }
     if(slot){
      slots.add(slot);
      if(node.operator==="="&&
         ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
-      directFunctions.push({
-       position:node.start,
-       classification:"direct_function_export_assignment_candidate"
-      });
+      directFunctions.push({position:node.start,classification});
     }
    }
    if(moduleName&&env.get(moduleName)===moduleToken&&
@@ -1483,6 +1489,25 @@ function selfTest(){
  const deferredBoot=analyzeJS("export const __webpack_modules__={"+
   "A:function(){}};const later=()=>__webpack_require__('A');",75);
  assert.equal(deferredBoot.bootstrapCandidates.length,0);
+ const moduleProperties=analyzeJS("export const __webpack_modules__={"+
+  "Caller:(function(m,t,n){const q=n('Q');q.fn()}),"+
+  "Q:(function(m,t,n){m.exports.fn=function(){return 1};"+
+  "function shadow(m){m.exports.private=()=>1}})};",76);
+ const alternativeModule=analyzeJS("export const __webpack_modules__={"+
+  "Q:(function(m,t,n){t.other=()=>2})};",77);
+ const modulePropertyGraph=buildGraph([...moduleProperties,...alternativeModule],2,0);
+ assert.equal(modulePropertyGraph.ambiguous_import_candidates,1);
+ assert.equal(modulePropertyGraph.export_shape_candidate_count,1);
+ assert.equal(modulePropertyGraph.direct_function_export_site_count,2);
+ assert.equal(modulePropertyGraph.direct_function_export_sites[0].classification,
+  "module_exports_property_function_candidate");
+ assert(!JSON.stringify(modulePropertyGraph).includes("private"));
+ const replacedProperty=analyzeJS("export const __webpack_modules__={"+
+  "Q:(function(m,t,n){t.old=()=>1;m.exports={};m.exports.newer=()=>2})};",78);
+ const replacedPropertyGraph=buildGraph(replacedProperty,1,0);
+ assert.equal(replacedPropertyGraph.direct_function_export_site_count,1);
+ assert.equal(replacedPropertyGraph.direct_function_export_sites[0].classification,
+  "module_exports_property_function_candidate");
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
