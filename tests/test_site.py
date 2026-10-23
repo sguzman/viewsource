@@ -58,6 +58,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(source_queue["task_statuses"]["queued"], 25)
             self.assertEqual(source_queue["task_statuses"]["in_progress"], 8)
             self.assertEqual(len(source_queue["tasks"]), 33)
+            transcript = current["visuals"]["chat_transcript_render_trace"]
+            self.assertFalse(transcript["runtime_render_verified"])
+            self.assertEqual(len(transcript["stages"]),7)
+            self.assertEqual(len(transcript["relationships"]),9)
+            self.assertEqual(set(transcript["source_resources"]),{"R-JS-018","R-JS-069","R-JS-072"})
             selectors = current["visuals"]["chat_selector_consumers"]
             self.assertFalse(selectors["source_executed"])
             self.assertEqual(len(selectors["selectors"]),5)
@@ -99,7 +104,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 77)
+            self.assertEqual(len(current["findings"]), 78)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
