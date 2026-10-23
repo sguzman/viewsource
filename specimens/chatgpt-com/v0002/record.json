@@ -10910,6 +10910,16 @@
         "evidence_ref": "E2-085",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-086",
+      "statement": "The captured conversation composer calls response-spacer placement on accepted submission and clears spacer state on a submission error. The virtual turn adapter forwards measured latest-turn growth to spacer consumption, while the spacer controller interrupts placement and trims height after eligible user scroll input. These are static client callbacks; no actual submission, scroll or animation was observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-086",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
