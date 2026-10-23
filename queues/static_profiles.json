@@ -139,7 +139,7 @@
         "static:source-state-flows",
         "base:markup"
       ],
-      "acceptance": "Connect state selectors and component props to rendered regions; record boundaries where minification or lazy imports obscure paths."
+      "acceptance": "Connect source state selectors and UI component props to rendered regions; inspect typed item dispatch, virtualized lists, measured/estimated row geometry, retained rows, scroll anchoring and restoration when present (or explicitly state that the capture provides no evidence). Identify unresolved lazy-import and minified call boundaries. Do not treat lexical scanner signals as verified functionality."
     },
     {
       "id": "source-flow-review",
