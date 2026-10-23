@@ -133,3 +133,10 @@ construction for a selected current node. These separate lexical candidate
 categories do not establish successful server acknowledgement or a current
 public protocol. Captured client branch-switch semantics are reviewed in
 `chat_branch_switch_trace.json`, not inferred solely from this scanner.
+
+One further candidate pattern, `eligible_variant_derivation`, looks for
+source functions that distinguish raw response-child count, filtered
+variant identities and the selected variant index. It is **not** equivalent
+to finding a user-visible version switcher. Verified client behavior belongs
+in the branch-switch study, while this detection only adds an inspectable
+static lead for new site captures.
