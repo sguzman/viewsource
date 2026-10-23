@@ -181,3 +181,21 @@ verified user actions. The saved ChatGPT capture's reviewed interpretation
 is separately documented in the selection/copy study (E2-087 and E2-088).
 A synthetic ZIP test exercises these two candidate classes without exposing
 source literals, user text, file names or account data.
+
+## Anonymous bundled-JavaScript import graph
+
+Use `python3 scripts/trace_static_archive.py --input /private/capture.zip
+--module-trace` to inventory bundled module tables and literal static
+import candidates by capture-local resource and 1-based module ordinal. The
+module registry's original keys are joined **only in temporary memory** and
+are never included in the returned JSON. Unique references are represented
+as ordinal-to-ordinal links; missing and ambiguous keys are counted without
+guessing a destination. This creates a reusable investigation graph for
+future site dumps without executing JavaScript or publishing source.
+
+The graph is an **AST candidate index**. An import can be conditional, unused,
+or hidden behind an inactive feature. Module links do not establish that a
+user loaded a feature or that its server contract is valid. A two-bundle
+synthetic ZIP test checks cross-bundle resolution and the absence of private
+module identifiers in the result. Existing source investigations remain
+queued automatically and can use this graph as a dependency-discovery input.
