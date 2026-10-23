@@ -83,6 +83,13 @@ function indexGraph(graph) {
     if(graph.parsed_bundles+graph.failed_bundles!==inputs)
       throw Error("Incomplete parser coverage census");
   }
+  if(graph.nested_function_literal_module_loader_call_expression_count!==undefined){
+    const count=safeCount(
+      graph.nested_function_literal_module_loader_call_expression_count,
+      "nested literal call expression count");
+    if(count>graph.literal_module_loader_call_expression_count)
+      throw Error("Impossible nested callsite count");
+  }
   if(graph.literal_module_loader_call_expression_count!==undefined){
     safeCount(graph.literal_module_loader_call_expression_count,
       "literal call expression count");
@@ -91,6 +98,13 @@ function indexGraph(graph) {
     const summed=graph.literal_module_loader_call_site_counts.reduce((n,item)=>
       n+(Number.isSafeInteger(item.literal_call_expressions)?
         item.literal_call_expressions:0),0);
+    if(graph.nested_function_literal_module_loader_call_expression_count!==undefined){
+      const nestedSum=graph.literal_module_loader_call_site_counts.reduce((n,item)=>
+        n+(Number.isSafeInteger(item.nested_function_literal_call_expressions)?
+          item.nested_function_literal_call_expressions:0),0);
+      if(nestedSum!==graph.nested_function_literal_module_loader_call_expression_count)
+        throw Error("Nested callsite count inconsistent");
+    }
     if(summed!==graph.literal_module_loader_call_expression_count)
       throw Error("Callsite count inconsistent");
   }
@@ -179,6 +193,11 @@ function indexGraph(graph) {
       throw Error("Invalid callsite records");
     let distinct=0;
     for(const item of graph.literal_module_loader_call_site_counts){
+      if(item.nested_function_literal_call_expressions!==undefined&&
+         (!Number.isSafeInteger(item.nested_function_literal_call_expressions)||
+          item.nested_function_literal_call_expressions<0||
+          item.nested_function_literal_call_expressions>item.literal_call_expressions))
+        throw Error("Invalid nested callsite count");
       if(item.classification!=="static_literal_loader_calls"||
          item.runtime_invocation_verified!==false||
          !known(item.source_ref,item.module_ordinal)||
@@ -190,7 +209,10 @@ function indexGraph(graph) {
        throw Error("Invalid literal callsite");
       const id=ordinal(item.source_ref,item.module_ordinal);
       if(literalCallSites.has(id))throw Error("Duplicate callsite record");
-      literalCallSites.set(id,item.literal_call_expressions);
+      literalCallSites.set(id,{
+       count:item.literal_call_expressions,
+       nested:item.nested_function_literal_call_expressions||0
+      });
       distinct+=item.distinct_literal_targets;
     }
     if(graph.import_candidates!==undefined&&distinct!==graph.import_candidates)
@@ -375,7 +397,8 @@ function frontier(graph, roots, options={}) {
   const localLiteralCalls=[...visited.keys()].sort()
     .filter(id=>literalCallSites.has(id))
     .map(id=>({source:asNode(id),
-      literal_call_expressions:literalCallSites.get(id),
+      literal_call_expressions:literalCallSites.get(id).count,
+      nested_function_literal_call_expressions:literalCallSites.get(id).nested,
       classification:"static_literal_loader_calls",
       runtime_invocation_verified:false
     }));
@@ -445,6 +468,9 @@ function frontier(graph, roots, options={}) {
     reachable_direct_function_export_sites:localDirectFunctions,
     reachable_literal_module_loader_call_expression_count:
       localLiteralCalls.reduce((n,item)=>n+item.literal_call_expressions,0),
+    reachable_nested_function_literal_loader_call_expression_count:
+      localLiteralCalls.reduce((n,item)=>
+        n+item.nested_function_literal_call_expressions,0),
     reachable_literal_module_loader_call_sites:localLiteralCalls,
     truncated_by_node_limit:limited,
     total_unresolved_import_candidates:graph.unresolved_import_candidates,
@@ -458,6 +484,7 @@ function frontier(graph, roots, options={}) {
       "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
       "Unresolved import counts cover the entire capture; reachable unresolved import sites are filtered to reached modules.",
       "Repeated literal loader-call syntax is counted separately from distinct target keys per module; neither count proves invocation.",
+      "Nested-function callsite counts identify syntax location, not guaranteed delayed execution.",
       "Direct function-valued export assignments indicate only static candidates, not verified feature ownership or calls.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",

@@ -348,3 +348,22 @@ test("computed registry key coverage count is bounded and anonymous",()=>{
  graphData.registry_unresolved_computed_key_count="computedPrivateKey";
  assert.throws(()=>frontier(graphData,["R-JS-001:1"]));
 });
+
+test("nested loader callsite count is a validated subset of root-local syntax",()=>{
+ const g=graph();
+ g.import_candidates=6;
+ g.literal_module_loader_call_expression_count=8;
+ g.nested_function_literal_module_loader_call_expression_count=3;
+ g.literal_module_loader_call_site_counts=[
+  {source_ref:"R-JS-001",module_ordinal:1,literal_call_expressions:5,
+   nested_function_literal_call_expressions:3,distinct_literal_targets:3,
+   classification:"static_literal_loader_calls",runtime_invocation_verified:false},
+  {source_ref:"R-JS-002",module_ordinal:2,literal_call_expressions:3,
+   nested_function_literal_call_expressions:0,distinct_literal_targets:3,
+   classification:"static_literal_loader_calls",runtime_invocation_verified:false}
+ ];
+ const report=frontier(g,["R-JS-001:1"]);
+ assert.equal(report.reachable_nested_function_literal_loader_call_expression_count,3);
+ g.nested_function_literal_module_loader_call_expression_count=5;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

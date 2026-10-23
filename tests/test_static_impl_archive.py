@@ -497,6 +497,30 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                 for private in (token, "ValidFactory", "Caller", "invented-nonfactory.zip"):
                     self.assertNotIn(private, proc.stdout)
 
+    def test_nested_loader_callsite_syntax_is_reported_separately(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-nested-require.zip"
+            sentinel = "NestedDeferredTargetFixtureZ954"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Caller:(function(e,t,n){n('" + sentinel + "');"
+                    "function deferred(){n('" + sentinel + "');n('" + sentinel + "')}"
+                    "function shadow(n){n('PrivateShadowedRequire')} }),"
+                    + sentinel + ":(function(e,t){t.a=1})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            report = json.loads(proc.stdout)
+            self.assertEqual(report["literal_module_loader_call_expression_count"], 3)
+            self.assertEqual(
+                report["nested_function_literal_module_loader_call_expression_count"], 2)
+            self.assertEqual(report["import_candidates"], 1)
+            for private in (sentinel, "PrivateShadowedRequire",
+                            "synthetic-nested-require.zip"):
+                self.assertNotIn(private, proc.stdout)
+
     def test_literal_module_calls_count_repeated_syntax_separately(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-literal-calls.zip"

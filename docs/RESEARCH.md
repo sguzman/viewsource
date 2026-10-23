@@ -604,3 +604,14 @@ keys, and still scans their internal candidate imports. It will not
 use the computed key's source spelling to resolve an import.
 String and integer literal computed keys remain valid registry IDs.
 An unresolved property-key expression provides no observed runtime ID.
+
+### Loader call syntax inside nested functions
+
+The scanner now reports the subset of literal loader-call expressions
+written inside nested functions or arrow callbacks of a module
+factory, separately from the total literal-call expression count
+and distinct imported-module keys. Root-local frontiers include the
+nested count only for reached module ordinals. This identifies a
+review priority for conditional or callback import paths without
+assuming they execute later: immediately invoked nested functions
+can still run synchronously. The scanner does not execute the code.

@@ -466,9 +466,11 @@ function dynamicSyntax(fn,requireName,scopeCalls){
 function scanScopedModuleCalls(fn,requireName){
  const imports=new Set(),boundImports=new Set(),loaderIdentity=Symbol("factory_require");
  let computedRequire=false,chunkLoader=false,literalCallCount=0;
+ let nestedLiteralCallCount=0,nestedFunctionDepth=0;
  if(!requireName||fn.params?.[2]?.type!=="Identifier"||
     fn.params[2].name!==requireName)
-     return {imports,boundImports,computedRequire,chunkLoader,literalCallCount};
+     return {imports,boundImports,computedRequire,chunkLoader,literalCallCount,
+       nestedLiteralCallCount};
  function shadows(pattern,env){
   if(!pattern)return;
   if(pattern.type==="Identifier"){
@@ -538,7 +540,9 @@ function scanScopedModuleCalls(fn,requireName){
    const nested=new Map(env);
    if(node.id)shadows(node.id,nested);
    for(const param of node.params||[])shadows(param,nested);
+   nestedFunctionDepth++;
    walk(node.body,nested);
+   nestedFunctionDepth--;
    return;
   }
   if(node.type==="VariableDeclaration"){
@@ -556,6 +560,7 @@ function scanScopedModuleCalls(fn,requireName){
     const key=moduleKey(node.arguments[0]);
     if(key!==null){
      literalCallCount++;
+     if(nestedFunctionDepth>0)nestedLiteralCallCount++;
      imports.add(key);
     }else computedRequire=true;
    }
@@ -574,7 +579,8 @@ function scanScopedModuleCalls(fn,requireName){
   }
  }
  walk(fn.body,new Map([[requireName,loaderIdentity]]));
- return {imports,boundImports,computedRequire,chunkLoader,literalCallCount};
+ return {imports,boundImports,computedRequire,chunkLoader,literalCallCount,
+   nestedLiteralCallCount};
 }
 
 /* A Webpack chunk may include a third-position runtime callback. Only
@@ -662,7 +668,9 @@ function analyzeJS(source,sourceOrdinal){
   const scopeCalls=scanScopedModuleCalls(fn,requireName);
   const {imports,boundImports}=scopeCalls;
   result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,
-    literalCallExpressions:scopeCalls.literalCallCount,imports:[...imports],
+    literalCallExpressions:scopeCalls.literalCallCount,
+    nestedLiteralCallExpressions:scopeCalls.nestedLiteralCallCount,
+    imports:[...imports],
     boundImports:[...boundImports],
     eligible:!!requireName,registry_factory_candidate:true,
     unresolved_computed_registry_key:!!unresolvedComputedKey,
@@ -695,6 +703,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
     module_ordinal:item.moduleOrdinal,
     literal_call_expressions:item.literalCallExpressions,
+    nested_function_literal_call_expressions:item.nestedLiteralCallExpressions||0,
     distinct_literal_targets:item.imports.length,
     classification:"static_literal_loader_calls",
     runtime_invocation_verified:false
@@ -851,6 +860,9 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   literal_module_loader_call_expression_count:
     literalCallSiteCounts.reduce((n,item)=>n+item.literal_call_expressions,0),
   literal_module_loader_call_site_counts:literalCallSiteCounts,
+  nested_function_literal_module_loader_call_expression_count:
+    literalCallSiteCounts.reduce((n,item)=>
+      n+item.nested_function_literal_call_expressions,0),
   unresolved_import_candidates:unresolved,ambiguous_import_candidates:ambiguous,
   cross_bundle_links:links.filter(x=>x.from_ref!==x.to_ref).length,
   same_bundle_links:links.filter(x=>x.from_ref===x.to_ref).length,
@@ -868,6 +880,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Candidate bootstrap calls do not show that a browser invoked or loaded a module.",
    "A chunk runtime callback containing a direct literal require call may be discovered, but chunk registration never proves callback execution.",
    "Literal loader-call expression counts include repeated syntax, while import_candidates counts distinct keys per module.",
+   "Nested-function literal loader-call syntax is counted separately; the same source may still execute immediately through an invocation.",
    "Static require calls may be conditional, dead, or nested in inactive closures.",
    "A resolved bundled module reference is not proof that a module loaded or ran.",
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
@@ -1187,6 +1200,15 @@ function selfTest(){
  assert.equal(computedResult.unique_resolved_links,2);
  assert.equal(computedResult.unresolved_import_candidates,1);
  assert(!JSON.stringify(computedResult).includes("HiddenDynamicKey"));
+ const nestedCount=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(e,t,n){n('B');function later(){n('B');n('B')}"+
+  "function hidden(n){n('PrivateNested')}const arrow=()=>n('B')}),"+
+  "B:(function(e,t,n){t.a=1})};",47);
+ const nestedReport=buildGraph(nestedCount,1,0);
+ assert.equal(nestedReport.literal_module_loader_call_expression_count,4);
+ assert.equal(nestedReport.nested_function_literal_module_loader_call_expression_count,3);
+ assert.equal(nestedReport.import_candidates,1);
+ assert(!JSON.stringify(nestedReport).includes("PrivateNested"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
