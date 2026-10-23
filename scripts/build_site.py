@@ -294,6 +294,17 @@ def build(out: Path) -> dict:
                         for rule in viewport["windowing_rules"]
                     ],
                     "still_unverified": viewport["still_unverified"],
+                    "composer_spacer": {
+                        "stages": [
+                            {"role": row["role"].replace("_"," "),
+                             "source_ref": row["source_ref"],
+                             "behavior": row["behavior"]}
+                            for row in viewport["composer_spacer_wiring"]["stages"]
+                        ],
+                        "verified_runtime":
+                            viewport["composer_spacer_wiring"]["live_scroll_verified"],
+                        "boundaries": viewport["composer_spacer_wiring"]["boundaries"],
+                    },
                     "branch_window": {
                         "stages": [
                             {"role": stage["role"].replace("_"," "),
