@@ -444,3 +444,16 @@ references for feature-specific views. These connections are documented in
 and canonical finding E2-076. The main rendered transcript and full
 component rendering policy remain open research questions. The source
 research queue is now 7 in progress, 26 queued, none completed.
+
+## React control click dispatch recovered from source
+
+The current-turn-subscribed React control binds the same guarded click
+handler to inline and Escape-dialog button surfaces. The handler distinguishes
+answer-now steering (requires the relevant asynchronous task identity) from
+skip-reasoning (requests response stop and, after the stop callback and state
+checks, submits a reasoning-skipped regeneration). Its failure path clears
+pending-action state and shows an error notification. This evidence is
+recorded in canonical finding E2-077 and the selector-consumer study. The
+captured JSX and client calls establish implementation wiring, **not**
+that a real user saw or exercised either action or that the server accepted
+it. Wider component-rendering and event paths remain active work.
