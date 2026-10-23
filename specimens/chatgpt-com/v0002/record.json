@@ -10793,7 +10793,7 @@
     },
     {
       "id": "F2-074",
-      "statement": "The scoped conversation state writer publishes the revised mapping and selected node and maintains a selected-path visible-message projection plus an independent user-message ancestry projection. Reacting UI components and actual browser rendering have not been traced.",
+      "statement": "The captured conversation state writer commits the revised mapping and selected node, derives separate automation and page-reference collections from messages on the selected ancestry path, and maintains a user-message ancestry list. The automation/page collections are not the visible chat transcript; actual message-rendering subscribers remain untraced.",
       "evidence": {
         "evidence_class": "observed_static",
         "confidence": "high",
