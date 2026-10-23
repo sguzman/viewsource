@@ -663,10 +663,21 @@ function runtimeLoaderReassigned(node,name,shadowed=false){
  };
  const childShadow=innerShadow();
  if(!shadowed){
-  if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier"&&
-     node.left.name===name)return true;
+  if(node.type==="AssignmentExpression"){
+   const assigned=new Set();
+   bindingNames(node.left,assigned);
+   if(assigned.has(name))return true;
+  }
   if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"&&
      node.argument.name===name)return true;
+  if(node.type==="ForInStatement"||node.type==="ForOfStatement"){
+   const assigned=new Set();
+   if(node.left?.type==="VariableDeclaration"){
+    if(node.left.kind==="var")
+     for(const decl of node.left.declarations)bindingNames(decl.id,assigned);
+   }else bindingNames(node.left,assigned);
+   if(assigned.has(name))return true;
+  }
   if(node.type==="VariableDeclaration"&&node.kind==="var"&&
      node.declarations.some(decl=>decl.id?.type==="Identifier"&&
        decl.id.name===name&&decl.init))return true;
@@ -1319,6 +1330,21 @@ function selfTest(){
   "A:(function(e,t,n){function other(){n('B');if(false){var n}}}),"+
   "B:(function(e,t){t.a=1})};",60);
  assert.equal(buildGraph(nestedHoist,1,0).import_candidates,0);
+ const iteratedRuntime=analyzeJS(""+
+  "(self.webpackChunkVarIteration=self.webpackChunkVarIteration||[]).push("+
+  "[[91],{901:function(e,t,n){t.a=1}},function(n){"+
+  "for(var n of [()=>1]){}n(901)}]);",61);
+ assert.equal(iteratedRuntime.bootstrapCandidates.length,0);
+ const destructuredRuntime=analyzeJS(""+
+  "(self.webpackChunkDestructure=self.webpackChunkDestructure||[]).push("+
+  "[[92],{901:function(e,t,n){t.a=1}},function(n){"+
+  "({loader:n}={loader:()=>1});n(901)}]);",62);
+ assert.equal(destructuredRuntime.bootstrapCandidates.length,0);
+ const lexicalRuntime=analyzeJS(""+
+  "(self.webpackChunkLexicalIteration=self.webpackChunkLexicalIteration||[]).push("+
+  "[[93],{901:function(e,t,n){t.a=1}},function(n){"+
+  "for(let n of [()=>1]){}n(901)}]);",63);
+ assert.equal(lexicalRuntime.bootstrapCandidates.length,1);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
