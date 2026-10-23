@@ -36,6 +36,13 @@ class ModuleDependencyTraceTests(unittest.TestCase):
         self.assertTrue(all(x["evidence_class"]=="observed_static_syntax"
                             for x in edges))
         self.assertTrue(d["limits"])
+        shape=d["reviewed_export_shape_matches"]
+        self.assertEqual(len(shape),1)
+        item=shape[0]
+        self.assertEqual((item["from_ref"],item["to_ref"]),("R-JS-018","R-JS-004"))
+        self.assertEqual((item["registry_candidate_count"],item["compatible_interface_count"]),(2,1))
+        self.assertEqual(len(item["required_export_roles"]),3)
+        self.assertFalse(item["runtime_import_verified"])
 
     def test_private_identifiers_are_not_published(self):
         text=FILE.read_text("utf8").lower()
