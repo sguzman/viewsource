@@ -1798,7 +1798,8 @@
       "evidence_refs": [
         "E2-072",
         "E2-073",
-        "E2-074"
+        "E2-074",
+        "E2-083"
       ]
     },
     {
@@ -1853,7 +1854,8 @@
       "notes": "Static implementation trace: Map named candidate state owners, action producers, reducers or updates, selectors and consumers; identify uncertainty around runtime choices. Source-reviewed current-node optimistic selection, rollback, and scoped conversation state updates; other reducers remain open.",
       "evidence_refs": [
         "E2-081",
-        "E2-082"
+        "E2-082",
+        "E2-083"
       ]
     },
     {
@@ -1938,7 +1940,8 @@
         "E2-079",
         "E2-080",
         "E2-081",
-        "E2-082"
+        "E2-082",
+        "E2-083"
       ]
     },
     {
