@@ -121,12 +121,15 @@ function invalidateOuterBindings(outer,inner,localNames){
   if(!localNames.has(name)&&inner.get(name)!==value)outer.set(name,null);
  }
 }
-function mergeConditionalBindings(outer,consequent,alternate){
- const names=new Set([...outer.keys(),...consequent.keys(),...alternate.keys()]);
+function mergePossibleBindings(outer,branches){
+ const names=new Set([...outer.keys(),...branches.flatMap(branch=>[...branch.keys()])]);
  for(const name of names){
-  const first=consequent.get(name),second=alternate.get(name);
-  outer.set(name,first===second?first:null);
+  const first=branches[0].get(name);
+  outer.set(name,branches.every(branch=>branch.get(name)===first)?first:null);
  }
+}
+function mergeConditionalBindings(outer,consequent,alternate){
+ mergePossibleBindings(outer,[consequent,alternate]);
 }
 function scanScopedRequiredSlots(fn,requireName,required){
  const loaderIdentity=Symbol("factory_require");
@@ -199,17 +202,19 @@ function scanScopedRequiredSlots(fn,requireName,required){
   }
   if(node.type==="SwitchStatement"){
    walk(node.discriminant,env);
-   const cases=new Map(env);
+   const base=new Map(env),variants=[];
+   for(const branch of node.cases)for(const stmt of branch.consequent)
+    if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var")
+     for(const decl of stmt.declarations)bind(decl.id,base,null);
    for(const branch of node.cases){
-    for(const stmt of branch.consequent){
-     if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var"){
-      for(const declaration of stmt.declarations)
-       bind(declaration.id,cases,null);
-     }
-    }
+    const active=new Map(base);
+    for(const stmt of branch.consequent)walk(stmt,active);
+    variants.push(active);
    }
-   for(const branch of node.cases)walk(branch,cases);
-   invalidateOuterBindings(env,cases,localNamesForScope(node));
+   if(!node.cases.some(branch=>branch.test===null))variants.push(new Map(base));
+   const joined=new Map(base);
+   mergePossibleBindings(joined,variants);
+   invalidateOuterBindings(env,joined,localNamesForScope(node));
    return;
   }
   if(node.type==="BlockStatement"){
@@ -593,18 +598,30 @@ function bootstrapCalls(ast,sourceOrdinal) {
    mergeConditionalBindings(env,consequent,alternate);
    return;
   }
+  if(node.type==="SwitchStatement"){
+   walk(node.discriminant,env);
+   const locals=localNamesForScope(node),base=new Map(env),variants=[];
+   if(locals.has(loader))base.set(loader,null);
+   for(const branch of node.cases){
+    const active=new Map(base);
+    for(const stmt of branch.consequent)walk(stmt,active);
+    variants.push(active);
+   }
+   if(!node.cases.some(branch=>branch.test===null))variants.push(new Map(base));
+   const joined=new Map(base);
+   mergePossibleBindings(joined,variants);
+   invalidateOuterBindings(env,joined,locals);
+   return;
+  }
   if(node.type==="CatchClause"||node.type==="BlockStatement"||
      node.type==="ForStatement"||node.type==="ForInStatement"||
-     node.type==="ForOfStatement"||node.type==="SwitchStatement"){
+     node.type==="ForOfStatement"){
    const scope=new Map(env),locals=localNamesForScope(node);
    if(locals.has(loader))scope.set(loader,null);
    if(node.type==="BlockStatement"){
     for(const stmt of node.body)walk(stmt,scope);
    }else if(node.type==="CatchClause"){
     walk(node.body,scope);
-   }else if(node.type==="SwitchStatement"){
-    walk(node.discriminant,env);
-    for(const branch of node.cases)for(const stmt of branch.consequent)walk(stmt,scope);
    }else if(node.type==="ForStatement"){
     walk(node.init,scope);walk(node.test,scope);walk(node.body,scope);
     walk(node.update,scope);
@@ -771,17 +788,19 @@ function scanScopedModuleCalls(fn,requireName){
   }
   if(node.type==="SwitchStatement"){
    walk(node.discriminant,env);
-   const cases=new Map(env);
+   const base=new Map(env),variants=[];
+   for(const branch of node.cases)for(const stmt of branch.consequent)
+    if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var")
+     for(const decl of stmt.declarations)shadows(decl.id,base);
    for(const branch of node.cases){
-    for(const stmt of branch.consequent){
-     if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var"){
-      for(const declaration of stmt.declarations)
-       shadows(declaration.id,cases,null);
-     }
-    }
+    const active=new Map(base);
+    for(const stmt of branch.consequent)walk(stmt,active);
+    variants.push(active);
    }
-   for(const branch of node.cases)walk(branch,cases);
-   invalidateOuterBindings(env,cases,localNamesForScope(node));
+   if(!node.cases.some(branch=>branch.test===null))variants.push(new Map(base));
+   const joined=new Map(base);
+   mergePossibleBindings(joined,variants);
+   invalidateOuterBindings(env,joined,localNamesForScope(node));
    return;
   }
   if(node.type==="BlockStatement"){
@@ -1895,6 +1914,21 @@ function selfTest(){
   ...ternaryOther],3,0);
  assert.equal(ternaryResult.export_shape_candidate_count,1);
  assert.equal(ternaryResult.export_shape_candidates[0].to_ref,"R-JS-111");
+ const switchImports=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){switch(t.flag){case 1:n=()=>0;break;"+
+  "case 2:n('Goal');break}n('NotSafe')}),Goal:(function(e,t){t.ok=1})};",113);
+ const switchGraph=buildGraph(switchImports,1,0);
+ assert.equal(switchGraph.import_candidates,1);
+ assert.equal(switchGraph.unique_resolved_links,1);
+ const switchBoot=analyzeJS("export const __webpack_modules__={"+
+  "Boot:function(){}};switch(flag){case 1:__webpack_require__=()=>0;break;"+
+  "case 2:__webpack_require__('Boot');break}"+
+  "__webpack_require__('NotSafe');",115);
+ assert.equal(switchBoot.bootstrapCandidates.length,1);
+ const switchScoped=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){switch(t.flag){case 1:let n=()=>0;break;"+
+  "case 2:n('Shadowed');break}n('Goal')}),Goal:(function(e,t){t.ok=1})};",116);
+ assert.equal(buildGraph(switchScoped,1,0).import_candidates,1);
 
 }
 if(require.main===module){
