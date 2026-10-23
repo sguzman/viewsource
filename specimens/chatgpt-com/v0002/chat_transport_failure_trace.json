@@ -67,6 +67,18 @@
       "kind": "typed_client_error_predicate",
       "behavior": "A uniquely resolved captured module implements the preparation fallback eligibility predicate. It excludes abort/non-Error cases and selected terminal typed request error codes, honors a parsed structured can_retry=false veto, allows network errorKind or typed statuses 408/409/425/502/504, and applies timeout/offline/network-message heuristics to other Error objects.",
       "boundary": "This predicate belongs to preparation fallback, not the separate stream-resumption retry coordinator. No live error or request retry is observed."
+    },
+    {
+      "id": "source_resolved_stream_resume_predicates",
+      "kind": "retry_and_recoverability_split",
+      "behavior": "The stream coordinator's uniquely shape-matched module exposes an automatic retry predicate (network kind or typed HTTP 408/409/425/429/502/504) and a different recoverable-error callback predicate (network kind or HTTP 4xx except 403 and selected terminal error codes). The two classifications have different purposes.",
+      "boundary": "Classification predicates remain gated by resume state and do not prove any actual request, retry or recovery callback occurred."
+    },
+    {
+      "id": "resume_token_offset_and_backoff",
+      "kind": "source_resolved_resume_state_machine",
+      "behavior": "The recovered helper consumes a resume-token control event into conversation/token state, advances offset and clears attempt count on acknowledged data, checks cancellation, identity, token and count guards, and computes bounded exponential backoff with a 0.5–1.0 random multiplier. Manual retry uses zero delay but retains core state guards.",
+      "boundary": "All state transitions and timings are captured code paths; stream events and timers have not been observed executing."
     }
   ],
   "captured_default_fallbacks": {
@@ -134,15 +146,29 @@
       "from": "prepare_request_failure",
       "to": "preparation_error_retryability_predicate",
       "kind": "same_capture_module_import"
+    },
+    {
+      "from": "completion_stream_handler",
+      "to": "captured_resume_helper",
+      "kind": "source_verified_import_interface"
+    },
+    {
+      "from": "typed_error_classification",
+      "to": "stream_retry_status_predicate",
+      "kind": "captured_helper_predicate"
+    },
+    {
+      "from": "captured_resume_helper",
+      "to": "token_offset_and_retry_state",
+      "kind": "guarded_state_machine"
     }
   ],
   "open_questions": [
-    "Trace the imported retryable-error predicate to distinguish HTTP status/code behavior completely.",
-    "Trace the imported stream-event assembler's exact offset and resume-token invariants.",
     "Determine whether config gates allow resumptions for every message modality and every account context.",
     "Check cancellation priority and delivery outcomes only with permitted synthetic runtime observations, if later desired.",
     "Distinguish retry hints used only for display from those that actually schedule a client request.",
-    "The completion-stream resume coordinator has a different imported eligibility predicate; do not reuse the preparation allowlist for it without independent source review."
+    "Classify the runtime feature gates controlling whether the statically recovered resume path is enabled for different message modalities or account states.",
+    "Map callback delivery order and actual request cancellation outcomes only with authorized synthetic runtime evidence if later needed."
   ],
   "privacy": "No original source code, endpoint strings, request headers, auth/account values, message content, URL, or extracted bundle filename is published.",
   "preparation_fallback": {
@@ -239,5 +265,86 @@
     ],
     "scope": "This is the error predicate used by completion preparation's partial-query fallback. The stream-resume recovery's separately imported retryability predicate is not attributed to this module.",
     "limit": "The code's status field, errorKind and error class refer to captured client error objects. These source checks do not prove a server contract, what error was raised, or whether any retry was executed."
+  },
+  "stream_resume_module_resolution": {
+    "caller_resource": "R-JS-018",
+    "matched_resource": "R-JS-004",
+    "evidence_class": "observed_static",
+    "duplicate_short_registry_ids_in_saved_assets": 2,
+    "compatible_export_interfaces": 1,
+    "matched_export_roles": [
+      "resume_state_coordinator",
+      "automatic_retry_eligibility_predicate",
+      "recoverable_error_classification_predicate"
+    ],
+    "resolution_method": "Cross-check all captured definitions sharing the short registry key against the three export slots and their call-site behavior; only one defines the required interface.",
+    "caveat": "This establishes a captured static import relationship, not that the module was loaded or any retry ran in a browser."
+  },
+  "stream_resume_error_predicates": {
+    "source_ref": "R-JS-004",
+    "evidence_class": "observed_static",
+    "automatic_retry": {
+      "network_kind_eligible": true,
+      "http_status_allowlist": [
+        408,
+        409,
+        425,
+        429,
+        502,
+        504
+      ],
+      "other_http_statuses_eligible": false,
+      "scope": "The imported predicate supplies the automatic-retry eligibility flag to the resume coordinator; additional token/state/attempt guards still apply."
+    },
+    "recoverable_callback": {
+      "network_kind_eligible": true,
+      "http_status_range_min_inclusive": 400,
+      "http_status_range_max_exclusive": 500,
+      "excluded_http_statuses": [
+        403
+      ],
+      "excluded_error_codes": [
+        "history_disabled_conversation_expired",
+        "conversation_deleted"
+      ],
+      "scope": "This separate predicate decides whether an ineligible-for-retry failure can be routed to the recoverable-error callback instead of the ordinary error path."
+    },
+    "contrast_to_preparation": "The preparation predicate has a different typed HTTP allowlist without 429 and also inspects AbortError, terminal client errors and structured can_retry vetoes. Never apply one predicate's rules to the other."
+  },
+  "stream_resume_state_invariants": {
+    "source_ref": "R-JS-004",
+    "evidence_class": "observed_static",
+    "resume_token_event": {
+      "kind": "token_control_event",
+      "behavior": "A recognized stream-token control event updates the stored conversation identity and resume token, notifies the token callback, and is not forwarded as an ordinary message update."
+    },
+    "event_acknowledgement": {
+      "kind": "offset_progress",
+      "behavior": "A non-response-marker event acknowledgement increases the stored event offset by one; if retry attempts were pending, the success callback fires and the retry attempt counter resets to zero."
+    },
+    "retry_gates": [
+      "A resume-permission callback must be supplied.",
+      "An abort signal must not already be aborted.",
+      "A conversation identity must have been obtained.",
+      "A resume token is needed unless tokenless-resume is explicitly allowed.",
+      "Even when tokenless resume is allowed, a missing token is rejected after offset becomes positive.",
+      "Automatic retry additionally requires eligible error classification and an attempt count below the configured cap.",
+      "Manual retry bypasses automatic eligibility/cap but retains identity, token/offset and cancellation guards."
+    ],
+    "default_parameters": {
+      "max_delay_ms": 5000,
+      "max_retry_count": 12,
+      "min_delay_ms": 300,
+      "retry_factor": 1.5
+    },
+    "retry_backoff": {
+      "attempt_counter": "incremented_before_computing_delay",
+      "nominal": "min(min_delay_ms * retry_factor^attempt_count, max_delay_ms)",
+      "random_multiplier_lower_inclusive": 0.5,
+      "random_multiplier_upper_exclusive": 1,
+      "manual_retry_delay_ms": 0,
+      "scope": "Values are captured defaults; the calling client may provide dynamic configuration overrides."
+    },
+    "boundary": "This is a captured state machine and a literal backoff formula, not observed timer execution, transport offsets, durable server recovery or a guarantee of successful resume."
   }
 }
