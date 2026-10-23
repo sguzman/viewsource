@@ -1492,7 +1492,7 @@ function selfTest(){
  const moduleProperties=analyzeJS("export const __webpack_modules__={"+
   "Caller:(function(m,t,n){const q=n('Q');q.fn()}),"+
   "Q:(function(m,t,n){m.exports.fn=function(){return 1};"+
-  "function shadow(m){m.exports.private=()=>1}})};",76);
+  "function shadow(m){m.exports.PrivateShadowOwnerZ990=()=>1}})};",76);
  const alternativeModule=analyzeJS("export const __webpack_modules__={"+
   "Q:(function(m,t,n){t.other=()=>2})};",77);
  const modulePropertyGraph=buildGraph([...moduleProperties,...alternativeModule],2,0);
@@ -1501,7 +1501,7 @@ function selfTest(){
  assert.equal(modulePropertyGraph.direct_function_export_site_count,2);
  assert.equal(modulePropertyGraph.direct_function_export_sites[0].classification,
   "module_exports_property_function_candidate");
- assert(!JSON.stringify(modulePropertyGraph).includes("private"));
+ assert(!JSON.stringify(modulePropertyGraph).includes("PrivateShadowOwnerZ990"));
  const replacedProperty=analyzeJS("export const __webpack_modules__={"+
   "Q:(function(m,t,n){t.old=()=>1;m.exports={};m.exports.newer=()=>2})};",78);
  const replacedPropertyGraph=buildGraph(replacedProperty,1,0);
