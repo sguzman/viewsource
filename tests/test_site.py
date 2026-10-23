@@ -61,7 +61,8 @@ class AtlasTests(unittest.TestCase):
             transcript = current["visuals"]["chat_transcript_render_trace"]
             self.assertFalse(transcript["runtime_render_verified"])
             self.assertEqual(len(transcript["stages"]),7)
-            self.assertEqual(len(transcript["relationships"]),9)
+            self.assertEqual(len(transcript["relationships"]),10)
+            self.assertEqual(transcript["cross_module_call"]["target_ref"],"R-JS-069")
             self.assertEqual(set(transcript["source_resources"]),{"R-JS-018","R-JS-069","R-JS-072"})
             selectors = current["visuals"]["chat_selector_consumers"]
             self.assertFalse(selectors["source_executed"])
