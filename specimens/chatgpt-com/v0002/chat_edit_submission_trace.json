@@ -121,5 +121,20 @@
     "Network delivery, server acknowledgment, stream completion and outcomes of the edit-failure notification.",
     "The entire submitted payload and API contract beyond the reviewed client-side argument roles."
   ],
-  "privacy": "No original request endpoint, original file name, source function symbol, copied prompt, source code, personal data or account identifier is published."
+  "privacy": "No original request endpoint, original file name, source function symbol, copied prompt, source code, personal data or account identifier is published.",
+  "module_anchors": [
+    {
+      "source_ref": "R-JS-069",
+      "module_ordinal": 12,
+      "role": "typed_turn_message_editor",
+      "verification": "static_source_module_table"
+    },
+    {
+      "source_ref": "R-JS-072",
+      "module_ordinal": 13,
+      "role": "conversation_page_edit_submission",
+      "verification": "static_source_module_table"
+    }
+  ],
+  "module_ordinal_contract": "1-based property order of the original saved bundle's module registry. Values refer only to this capture and do not disclose original minified module names."
 }
