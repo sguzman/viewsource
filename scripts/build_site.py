@@ -255,6 +255,12 @@ def build(out: Path) -> dict:
                         for e in transcript["reviewed_relationships"]
                     ],
                     "unverified": transcript["unverified"],
+                    "cross_module_call": {
+                        "source_ref": transcript["verified_cross_module_call"]["source_ref"],
+                        "target_ref": transcript["verified_cross_module_call"]["target_ref"],
+                        "behavior": transcript["verified_cross_module_call"]["behavior"],
+                        "boundary": transcript["verified_cross_module_call"]["boundary"],
+                    },
                 }
             selectors_path = ROOT / (base + "/chat_selector_consumers.json")
             if selectors_path.is_file():
