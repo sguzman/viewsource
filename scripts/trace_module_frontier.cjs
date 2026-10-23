@@ -33,6 +33,12 @@ function indexGraph(graph) {
   };
   safeCount(graph.unresolved_import_candidates,"unresolved count");
   safeCount(graph.ambiguous_import_candidates,"ambiguous count");
+  if(graph.registry_nonfactory_entry_count!==undefined){
+    const count=safeCount(graph.registry_nonfactory_entry_count,
+      "nonfactory entry count");
+    if(graph.modules_total!==undefined&&count>graph.modules_total)
+      throw Error("Invalid nonfactory entry count");
+  }
   for(const [field,array] of [
     ["modules_total",null],
     ["unique_resolved_links","resolved_links"],
@@ -406,6 +412,7 @@ function frontier(graph, roots, options={}) {
     source_executed:false,runtime_module_load_verified:false,
     roots:seeds.map(asNode),root_source:provenance,
     bootstrap_root_provenance:bootstrapRoots,
+    registry_nonfactory_entry_count:graph.registry_nonfactory_entry_count??null,
     archive_candidate_script_count:graph.archive_candidate_script_count??null,
     archive_oversize_script_count:graph.archive_oversize_script_count??null,
     archive_all_scripts_parsed:graph.archive_all_scripts_parsed??null,

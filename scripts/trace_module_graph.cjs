@@ -623,7 +623,8 @@ function analyzeJS(source,sourceOrdinal){
    fn=property.value;
   if(!identifier||!["FunctionExpression","ArrowFunctionExpression"].includes(fn?.type)){
    result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,
-    imports:[],literalCallExpressions:0,eligible:false});continue;
+    imports:[],literalCallExpressions:0,eligible:false,
+    registry_factory_candidate:false});continue;
   }
   const requireParam=fn.params?.[2];
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
@@ -635,7 +636,8 @@ function analyzeJS(source,sourceOrdinal){
   result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,
     literalCallExpressions:scopeCalls.literalCallCount,imports:[...imports],
     boundImports:[...boundImports],
-    eligible:!!requireName,exportedSlots:signatures.exportedSlots,
+    eligible:!!requireName,registry_factory_candidate:true,
+    exportedSlots:signatures.exportedSlots,
     directFunctionExports:signatures.directFunctionExports,
     requiredByImport:signatures.requiredByImport,
     dynamic_syntax:dynamicSyntax(fn,requireName,scopeCalls)});
@@ -646,7 +648,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
  if(all.length>MAX_MODULES)throw Error("Too many modules");
  const index=new Map(),globalKeyCounts=new Map();
  for(const x of all){
-  if(!x.identifier)continue;
+  if(!x.identifier||x.registry_factory_candidate===false)continue;
   globalKeyCounts.set(x.identifier,(globalKeyCounts.get(x.identifier)||0)+1);
   const domain=x.domain||"unscoped";
   if(!index.has(domain))index.set(domain,new Map());
@@ -811,6 +813,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   bound_import_candidates:boundCandidates,
   bound_import_candidate_count:boundCandidates.length,
   modules_total:all.length,
+  registry_nonfactory_entry_count:
+   all.filter(item=>item.registry_factory_candidate===false).length,
   modules_with_import_parameter:all.filter(x=>x.eligible).length,
   import_candidates:candidateCalls,unique_resolved_links:links.length,
   literal_module_loader_call_expression_count:
@@ -844,6 +848,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Standalone __webpack_modules__ declarations have unknown runtime identity and share an unscoped provisional group.",
    "Foreign registry key collisions are unresolved diagnostics only and do not establish any imported target.",
    "Unresolved import site ordinals are source-review leads; neither missing nor ambiguous candidate calls are verified at runtime.",
+   "Registry object entries without callable function factories are counted but excluded as resolvable targets.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "Direct functions on export objects or module.exports assignments are source syntax candidates; getter and alias ownership remain unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
@@ -1115,6 +1120,16 @@ function selfTest(){
  assert.equal(localShadowGraph.unique_resolved_links,1);
  assert.equal(localShadowGraph.direct_function_export_site_count,1);
  assert(!JSON.stringify(localShadowGraph).includes("'X'"));
+ const nonfactory=analyzeJS("export const __webpack_modules__={"+
+  "Caller:(function(e,t,n){const a=n('Bare');const b=n('TwoParam')}),"+
+  "Bare:42,TwoParam:(function(e,t){t.a=1})};",42);
+ const nonfactoryGraph=buildGraph(nonfactory,1,0);
+ assert.equal(nonfactoryGraph.registry_nonfactory_entry_count,1);
+ assert.equal(nonfactoryGraph.modules_total,3);
+ assert.equal(nonfactoryGraph.import_candidates,2);
+ assert.equal(nonfactoryGraph.unique_resolved_links,1);
+ assert.equal(nonfactoryGraph.unresolved_import_candidates,1);
+ assert.equal(nonfactoryGraph.resolved_links[0].to_module,3);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

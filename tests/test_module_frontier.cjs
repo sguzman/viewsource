@@ -326,3 +326,14 @@ test("literal loader calls distinguish repeated syntax from distinct module keys
  g.literal_module_loader_call_site_counts[0].literal_call_expressions="PrivateCallText";
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("nonfactory source entry census rejects impossible values",()=>{
+ const g=graph();
+ g.modules_total=5;
+ g.registry_nonfactory_entry_count=1;
+ assert.equal(frontier(g,["R-JS-001:1"]).registry_nonfactory_entry_count,1);
+ g.registry_nonfactory_entry_count=6;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+ g.registry_nonfactory_entry_count="PrivateNonFactory";
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

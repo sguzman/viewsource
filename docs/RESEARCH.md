@@ -563,3 +563,14 @@ outer binding. Nested function declarations are kept separate because
 their invocation is not established by the saved source. This improves
 the conservative classification of post-branch imports and exports
 without claiming runtime execution.
+
+### Non-callable entries in captured module tables
+
+A literal module-table property is not necessarily a callable factory.
+The analyzer retains its ordinal in the capture-local census but does
+not resolve a literal require to that property unless its value is
+a function or arrow-function factory. A callable with fewer than
+three parameters remains a valid potential target even though it
+cannot itself be scanned for factory-loader calls. The
+registry_nonfactory_entry_count field describes static source
+coverage, not proof of any runtime module load.
