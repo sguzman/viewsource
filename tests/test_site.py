@@ -104,6 +104,8 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(modules["census"]["module_registry_entries"],10399)
             self.assertEqual(modules["census"]["uniquely_resolved_import_candidates"],50714)
             self.assertEqual(len(modules["edges"]),4)
+            self.assertEqual(len(modules["export_shape_matches"]),1)
+            self.assertEqual(modules["export_shape_matches"][0]["to_ref"],"R-JS-004")
             a11y = current["visuals"]["chat_accessibility_trace"]
             self.assertFalse(a11y["screen_reader_tested"])
             self.assertEqual(len(a11y["mechanisms"]),8)
