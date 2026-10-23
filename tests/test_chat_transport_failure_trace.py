@@ -30,7 +30,7 @@ class TransportFailureTraceTests(unittest.TestCase):
   self.assertEqual(len(fallback["required_conditions"]),5)
   self.assertIn("additional_retry_disabled",fallback["fallback_changes"])
   self.assertIn("completion_stream_resume_recovery",fallback["distinguished_from"])
-  self.assertIn("source",fallback["limit"])
+  self.assertIn("same-capture",fallback["limit"])
   predicate=d["preparation_error_eligibility"]
   self.assertEqual(predicate["source_ref"],"R-JS-018")
   self.assertEqual(predicate["resolved_import"]["definition_matches_in_saved_assets"],1)
