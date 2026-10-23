@@ -175,6 +175,14 @@ function indexGraph(graph) {
          item.target_module_loaded_verified!==false||
          !known(item.source_ref,item.module_ordinal))
         throw Error("Invalid bound loader candidate");
+      if(item.definition_candidates!==undefined){
+        if(!Number.isSafeInteger(item.definition_candidates)||
+           item.definition_candidates<0||item.definition_candidates>NODE_LIMIT||
+           (item.classification==="bound_import_target_candidate"&&item.definition_candidates!==1)||
+           (item.classification==="ambiguous_bound_import"&&item.definition_candidates<2)||
+           (item.classification==="missing_bound_import_target"&&item.definition_candidates!==0))
+          throw Error("Bound candidate count inconsistent");
+      }
       if(item.classification==="bound_import_target_candidate"&&
          !known(item.candidate_target_ref,item.candidate_target_module))
         throw Error("Invalid bound target");
@@ -232,6 +240,8 @@ function indexGraph(graph) {
         throw Error("Invalid function export candidate");
       const id=ordinal(item.source_ref,item.module_ordinal);
       if(!directFns.has(id))directFns.set(id,[]);
+      if(item.export_function_ordinal!==directFns.get(id).length+1)
+        throw Error("Noncontiguous function export ordinal");
       directFns.get(id).push({
        export_function_ordinal:item.export_function_ordinal,
        classification:item.classification
@@ -303,8 +313,18 @@ function candidateBootstrapRoots(graph) {
   if(item?.bootstrap_execution_verified!==false)throw Error("Invalid candidate execution");
   if(item.bootstrap_kind!==undefined&&!BOOTSTRAP_KINDS.has(item.bootstrap_kind))
    throw Error("Invalid bootstrap provenance");
+  if(item.registry_definition_candidates!==undefined){
+   const n=item.registry_definition_candidates;
+   if(!Number.isSafeInteger(n)||n<0||n>NODE_LIMIT||
+      (item.classification==="unique_registry_key_candidate"&&n!==1)||
+      (item.classification==="ambiguous_registry_key"&&n<2)||
+      (item.classification==="missing_saved_module"&&n!==0))
+    throw Error("Bootstrap definition count inconsistent");
+  }
   if(item.classification==="unique_registry_key_candidate") {
-   roots.push(ordinal(item.target_ref,item.target_module));
+   const id=ordinal(item.target_ref,item.target_module);
+   if(!id)throw Error("Invalid bootstrap target");
+   roots.push(id);
   }else if(!["ambiguous_registry_key","missing_saved_module"].includes(item.classification)) {
    throw Error("Invalid candidate class");
   }
