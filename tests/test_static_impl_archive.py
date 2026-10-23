@@ -544,6 +544,30 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "one.js","two.js"):
                 self.assertNotIn(private,result.stdout)
 
+    def test_catch_shadowing_does_not_create_fake_import_or_export_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-catch-scope.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js", "export const __webpack_modules__={"
+                    "Reader:(function(e,t,n){try{throw 1}catch(n){n('Ghost')}"
+                    "const imported=n('Collision');"
+                    "try{throw 1}catch(imported){imported.h()}}),"
+                    "Collision:(function(e,t,n){try{throw 1}catch(t){t.h=1}})};")
+                z.writestr("b.js", "export const __webpack_modules__={"
+                    "Collision:(function(e,t,n){t.x=1})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            report = json.loads(proc.stdout)
+            self.assertEqual(report["import_candidates"], 1)
+            self.assertEqual(report["ambiguous_import_candidates"], 1)
+            self.assertEqual(report["export_shape_candidate_count"], 0)
+            for private in ("Reader", "Ghost", "Collision", "invented-catch-scope.zip"):
+                self.assertNotIn(private, proc.stdout)
+
     def test_shadowed_export_target_does_not_break_registry_key_ambiguity(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-export-shadow.zip"

@@ -433,3 +433,13 @@ definitions. The cross-runtime definition is **not** emitted as a target,
 and frontiers do not traverse these cases. The unresolved-import total
 continues to include them; the diagnostic count is a subset, not a
 new category of resolved imports.
+
+### Catch-parameter lexical shadowing
+
+AST import and export scans now treat a `catch (binding)` parameter as
+a local lexical binding instead of an inherited factory loader, export
+parameter or imported-module alias. A catch block cannot create an import
+edge, bound-loader callback or export-interface signature through a
+shadowed name. The test suite includes duplicate-key ambiguity and
+source-nonpublication regressions. These are conservative static candidates
+and do not imply execution.

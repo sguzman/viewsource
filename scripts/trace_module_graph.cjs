@@ -89,6 +89,12 @@ function scanScopedRequiredSlots(fn,requireName,required){
  }
  function walk(node,env){
   if(!node||typeof node!=="object")return;
+  if(node.type==="CatchClause"){
+   const caught=new Map(env);
+   bind(node.param,caught,null);
+   walk(node.body,caught);
+   return;
+  }
   if(node.type==="BlockStatement"){
    const block=new Map(env);
    for(const stmt of node.body){
@@ -162,6 +168,12 @@ function scanScopedExports(fn,requireName,exportName){
  }
  function scan(node,env){
   if(!node||typeof node!=="object")return;
+  if(node.type==="CatchClause"){
+   const caught=new Map(env);
+   neutralize(node.param,caught);
+   scan(node.body,caught);
+   return;
+  }
   if(node.type==="BlockStatement"){
    const local=new Map(env);
    for(const stmt of node.body){
@@ -327,6 +339,12 @@ function scanScopedModuleCalls(fn,requireName){
  }
  function walk(node,env){
   if(!node||typeof node!=="object")return;
+  if(node.type==="CatchClause"){
+   const caught=new Map(env);
+   shadows(node.param,caught);
+   walk(node.body,caught);
+   return;
+  }
   if(node.type==="BlockStatement"){
    const scoped=new Map(env);
    for(const stmt of node.body){
@@ -729,6 +747,18 @@ function selfTest(){
  assert.equal(isolated.foreign_registry_key_collisions[0].import_resolved,false);
  assert(!JSON.stringify(isolated).includes("webpackChunkPrivateAlpha"));
  assert(!JSON.stringify(isolated).includes("webpackChunkPrivateBeta"));
+ const catchSource=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){try{throw 1}catch(n){n('Ghost')}"+
+  "const imported=n('Collision');"+
+  "try{throw 1}catch(imported){imported.h()} }),"+
+  "Collision:(function(e,t,n){try{throw 1}catch(t){t.h=1}})};",21);
+ const catchDuplicate=analyzeJS("export const __webpack_modules__={"+
+  "Collision:(function(e,t,n){t.x=1})};",22);
+ const catchGraph=buildGraph([...catchSource,...catchDuplicate],2,0);
+ assert.equal(catchGraph.import_candidates,1);
+ assert.equal(catchGraph.ambiguous_import_candidates,1);
+ assert.equal(catchGraph.export_shape_candidate_count,0);
+ assert(!JSON.stringify(catchGraph).includes("Ghost"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
