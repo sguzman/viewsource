@@ -238,3 +238,17 @@ that no private module name or source is published.
 ## Feature-specific AST leads (offline)
 
 Use `python3 scripts/trace_static_archive.py --input /private/capture.zip --feature-trace` to classify candidate search, authentication, media-playback and document-editing functions. The Acorn parser reads ordinal-only temporary copies of captured JavaScript and emits fixed pattern names, source/function/parent ordinals and aggregate counts. It never executes captured assets. Pattern matches require limited member/property co-occurrence inside one function body, which is stronger than archive-wide lexical counting but **does not establish control ownership, true dataflow, an executed feature or a backend contract**. The 16 queued feature tasks remain queued until researchers trace actual modules, calls, state and UI. Synthetic ZIP regression tests require private strings and file names to remain absent from reports.
+
+## Seeded module import frontier
+
+After producing a private ordinal-only module report with `--module-trace`, use
+`node scripts/trace_module_frontier.cjs --input /private/module-report.json --root R-JS-072:13 --max-depth 6`
+to inspect imports reachable from a **manually reviewed** capture-local module. Several
+`--root` values can be supplied. The tool uses saved import edges exclusively and
+does not read or execute captured JavaScript. Its bounded traversal is useful for
+prioritizing unresolved imports and review of module dependencies. It deliberately
+does not traverse ambiguous export-shape candidates; they are reported separately.
+The resulting hierarchy is a **candidate static dependency frontier**, not evidence
+that a bundle was bootstrapped, loaded by the browser or executed in a chat session.
+Keep private analysis reports outside Git; only publish original conclusions after
+manual examination and release review.

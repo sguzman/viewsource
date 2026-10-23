@@ -1,0 +1,54 @@
+"use strict";
+const test=require("node:test"),assert=require("node:assert/strict");
+const {frontier,parseRoot}=require("../scripts/trace_module_frontier.cjs");
+const graph=()=>({
+ format_version:1,scope:"private_saved_javascript_modules",
+ source_executed:false,module_runtime_loaded_verified:false,
+ module_census:[{source_ref:"R-JS-001",count:3},{source_ref:"R-JS-002",count:2}],
+ unresolved_import_candidates:2,ambiguous_import_candidates:1,
+ resolved_links:[
+  {from_ref:"R-JS-001",from_module:1,to_ref:"R-JS-001",to_module:2,
+   classification:"static_import_candidate",runtime_import_verified:false},
+  {from_ref:"R-JS-001",from_module:2,to_ref:"R-JS-002",to_module:1,
+   classification:"static_import_candidate",runtime_import_verified:false},
+  {from_ref:"R-JS-002",from_module:1,to_ref:"R-JS-001",to_module:1,
+   classification:"static_import_candidate",runtime_import_verified:false}
+ ],
+ export_shape_candidates:[{
+  from_ref:"R-JS-002",from_module:1,to_ref:"R-JS-002",to_module:2,
+  classification:"candidate_unique_export_interface",runtime_import_verified:false
+ }]
+});
+test("BFS resolves cycles without promoting ambiguous candidates",()=>{
+ const report=frontier(graph(),["R-JS-001:1"]);
+ assert.deepEqual(report.depth_counts.map(x=>x.module_count),[1,1,1]);
+ assert.equal(report.reached_module_count,3);
+ assert.equal(report.export_shape_ambiguities.length,1);
+ assert.ok(report.export_shape_ambiguities.every(x=>!x.traversed));
+ assert.ok(!report.nodes.some(x=>x.source_ref==="R-JS-002"&&x.module_ordinal===2));
+ assert.equal(report.total_unresolved_import_candidates,2);
+ assert.equal(report.runtime_module_load_verified,false);
+});
+test("depth and node limits retain an explicit frontier",()=>{
+ const one=frontier(graph(),["R-JS-001:1"],{depthLimit:1});
+ assert.equal(one.reached_module_count,2);
+ assert.deepEqual(one.boundary_modules,[{source_ref:"R-JS-001",module_ordinal:2}]);
+ const two=frontier(graph(),["R-JS-001:1"],{nodeLimit:2});
+ assert.equal(two.truncated_by_node_limit,true);
+ assert.ok(two.boundary_modules.length>0);
+});
+test("malformed roots, out-of-scope data, and fake runtime imports are rejected",()=>{
+ assert.throws(()=>parseRoot("R-JS-001:0"));
+ assert.throws(()=>parseRoot("PRIVATE"));
+ assert.throws(()=>frontier(graph(),["R-JS-001:4"]));
+ const g=graph();g.resolved_links[0].runtime_import_verified=true;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+ const h=graph();h.module_census.push({source_ref:"R-JS-001",count:3});
+ assert.throws(()=>frontier(h,["R-JS-001:1"]));
+});
+test("multiple roots deduplicate, order-independent under fixed limits",()=>{
+ const a=frontier(graph(),["R-JS-002:1","R-JS-001:1","R-JS-001:1"]);
+ assert.equal(a.roots.length,2);
+ assert.equal(a.reached_module_count,3);
+ assert.equal(a.nodes.filter(x=>x.depth===0).length,2);
+});

@@ -30,6 +30,10 @@ jobs:
         run: |
           node scripts/static_acceptance_audit.mjs --check
           node --test tests/test_static_acceptance_audit.mjs
+      - name: Inspect synthetic module reachability frontiers
+        run: |
+          node scripts/trace_module_frontier.cjs --self-test
+          node --test tests/test_module_frontier.cjs
       - name: Check atlas JavaScript syntax
         run: |
           node --check site/explorer.js
