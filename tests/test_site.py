@@ -183,7 +183,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
             self.assertGreaterEqual(len(current["findings"]), 96)
-            self.assertTrue(any(f["id"]=="F2-096" and f["evidence"]["evidence_ref"]=="E2-096"
+            self.assertTrue(any(f["id"]=="F2-096" and f["ref"]=="E2-096"
                                 for f in current["findings"]))
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
