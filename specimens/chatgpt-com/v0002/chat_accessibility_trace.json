@@ -105,5 +105,50 @@
     "History fetching and pagination are conditional on cursor, errors, viewport state and network; no real request was observed.",
     "The study does not assess WCAG conformance, focus restoration quality, screen-reader traversal of unmounted turns, or live behavior in a deployed browser."
   ],
-  "privacy": "No user text, account identifiers, original archive resource names, JavaScript snippets, network endpoints or runtime session state published."
+  "privacy": "No user text, account identifiers, original archive resource names, JavaScript snippets, network endpoints or runtime session state published.",
+  "module_anchors": [
+    {
+      "source_ref": "R-JS-066",
+      "module_ordinal": 7,
+      "role": "latest_response_focus_landmark",
+      "verification": "static_source_module_table"
+    },
+    {
+      "source_ref": "R-JS-066",
+      "module_ordinal": 13,
+      "role": "older_message_loading_and_retry",
+      "verification": "static_source_module_table"
+    },
+    {
+      "source_ref": "R-JS-072",
+      "module_ordinal": 13,
+      "role": "conversation_page_response_completion_and_landmark_import",
+      "verification": "static_source_module_table"
+    },
+    {
+      "source_ref": "R-JS-072",
+      "module_ordinal": 30,
+      "role": "older_history_intersection_and_retry_adapter",
+      "verification": "static_source_module_table"
+    }
+  ],
+  "verified_import_bindings": [
+    {
+      "source_ref": "R-JS-072",
+      "module_ordinal": 13,
+      "target_ref": "R-JS-066",
+      "target_module_ordinal": 7,
+      "kind": "static_module_import",
+      "role": "latest_response_focus_landmark"
+    },
+    {
+      "source_ref": "R-JS-072",
+      "module_ordinal": 30,
+      "target_ref": "R-JS-066",
+      "target_module_ordinal": 13,
+      "kind": "static_module_import",
+      "role": "older_message_loading_and_retry"
+    }
+  ],
+  "module_ordinal_contract": "Capture-local, 1-based module registry insertion order. Import references were resolved from saved module tables, not observed execution."
 }
