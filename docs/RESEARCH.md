@@ -683,3 +683,15 @@ shadowed bindings, including immediate-function parameters and block
 declarations. A directly invoked wrapper without such a shadow may
 still supply a static lead. Deferred function bodies do not qualify.
 These are syntax classifications, not observed browser startup events.
+
+### Candidate-evidence consistency checks
+
+Before producing an ordinal-only frontier, the private graph reader
+validates the available bootstrap and bound-import definition counts
+against their classifications: unique targets must have one definition,
+ambiguous targets at least two, and missing targets zero. Direct
+function-export candidates for the same module must use consecutive
+one-based ordinals. Contradictory evidence is rejected rather than
+converted into an apparently valid frontier. The reader accepts older
+candidate records without optional definition-count fields for
+compatibility; no validation implies observed runtime execution.
