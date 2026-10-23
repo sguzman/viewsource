@@ -1722,6 +1722,12 @@ function selfTest(){
  assert.equal(objectGraph.direct_function_export_sites.filter(x=>
    x.classification==="module_object_property_function_candidate").length,2);
  assert.equal(objectGraph.direct_function_export_site_count,3);
+ const {frontier:reviewFrontier}=require("./trace_module_frontier.cjs");
+ const objectFrontier=reviewFrontier(objectGraph,["R-JS-088:2"]);
+ assert.equal(objectFrontier.reachable_direct_function_export_site_count,2);
+ assert(objectFrontier.reachable_direct_function_export_sites.every(x=>
+  x.classification==="module_object_property_function_candidate"&&
+  x.runtime_invocation_verified===false));
  const uncertainObject=analyzeJS("export const __webpack_modules__={"+
   "Owner:(function(m,t,n){m.exports={known:()=>1,...{other:2}}})};",90);
  const uncertainGraph=buildGraph(uncertainObject,1,0);
