@@ -623,3 +623,24 @@ review is the basis for the public algorithm descriptions. The scanner
 reports category counts and module ordinals, not the original asset files,
 minified module names or code. Candidate counts should never be used as a
 surrogate for completed source research or runtime verification.
+
+## Markdown selection and last-code-block command (E2-087, E2-088)
+
+In captured resource R-JS-072, the selected-text popover validates a
+noncollapsed DOM range entirely inside one connected assistant Markdown
+container, checks conversation/message attribution, and excludes overlapping
+writing blocks, learning views, editable controls, and explicit copy-excluded
+nodes. It can forward the selected text with a message identity and source
+occurrence or load optional side-panel actions. Expanded-detail eligibility
+has its own assistant-author gate; it is **not** a blanket gate on all
+selection callbacks. This source path was not exercised in a browser.
+
+A separate copy-last-code command walks rendered turns/items backward to
+find an eligible assistant code block or structured reference. Resolved
+content can be copied directly; for eligible incomplete content, a private
+history/content fetch may run under AbortController guards for changes in
+conversation, selected node and command state. A separate copy helper
+can report success and telemetry. Neither the actual operating-system
+clipboard result nor a server content fetch has been observed. The
+sanitized [selection/copy study](../specimens/chatgpt-com/v0002/chat_selection_copy_trace.json)
+records 13 distinct client stages and explicit uncertainty boundaries.
