@@ -404,3 +404,21 @@ It reads only object-literal module-factory entries and does not publish
 private chunk names, IDs or implementations. This detects possible
 source modules in saved lazy-loading bundles, not an observed network
 download, active chunk or executed module.
+
+### Isolated Webpack runtime namespaces
+
+Two unrelated Webpack runtimes can reuse the same numeric or string module
+registry key. The offline module dependency scanner now keeps recognized
+`webpackChunk*` registrations in their **own capture-local namespace**.
+Registrations sharing the same chunk global are eligible for cross-bundle
+static import matching, even if the global is referenced through different
+window-global aliases. Distinct chunk globals cannot supply one another's
+module target or disambiguate an export interface. Private names remain only
+in transient memory and **never** enter ordinal reports or the public atlas.
+
+An ordinary `__webpack_modules__` table has no provable named runtime in
+this scanner, so those entries form an explicitly provisional unscoped group,
+separate from named chunk registrations. Neither a shared chunk name nor a
+unique module key proves that the browser executed a module. The emitted
+`registry_runtime_scope_count` counts in-memory resolution partitions,
+not confirmed independent running runtimes.

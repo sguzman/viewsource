@@ -10,11 +10,11 @@ const MAX_FILES=2000,MAX_MODULES=50000,MAX_CANDIDATES=250000;
 function webpackChunkReceiver(node){
  if(node?.type==="AssignmentExpression"&&node.operator==="=")
   return webpackChunkReceiver(node.left);
- if(node?.type!=="MemberExpression")return false;
+ if(node?.type!=="MemberExpression")return null;
  const slot=literalMember(node);
  return typeof slot==="string"&&slot.startsWith("webpackChunk")&&
    node.object?.type==="Identifier"&&
-   ["self","window","globalThis"].includes(node.object.name);
+   ["self","window","globalThis"].includes(node.object.name)?slot:null;
 }
 function registry(ast){
  const found=[];
@@ -23,16 +23,20 @@ function registry(ast){
   const vars=declaration?.declarations||[];
   for(const decl of vars){
    if(decl.id?.type==="Identifier"&&decl.id.name==="__webpack_modules__"&&
-      decl.init?.type==="ObjectExpression")found.push(...decl.init.properties);
+      decl.init?.type==="ObjectExpression")
+     found.push(...decl.init.properties.map(property=>({property,domain:"unscoped"})));
   }
   // Recognize the registration syntax only. A queued chunk is not a
   // browser-confirmed module load or runtime execution.
   const expr=top.type==="ExpressionStatement"?top.expression:null;
-  if(expr?.type!=="CallExpression"||literalMember(expr.callee)!=="push"||
-     !webpackChunkReceiver(expr.callee.object))continue;
+  if(expr?.type!=="CallExpression"||literalMember(expr.callee)!=="push")
+   continue;
+  const chunkName=webpackChunkReceiver(expr.callee.object);
+  if(!chunkName)continue;
   const batch=expr.arguments[0];
   const table=batch?.type==="ArrayExpression"?batch.elements[1]:null;
-  if(table?.type==="ObjectExpression")found.push(...table.properties);
+  if(table?.type==="ObjectExpression")
+   found.push(...table.properties.map(property=>({property,domain:"chunk:"+chunkName})));
  }
  return found;
 }
@@ -382,9 +386,11 @@ function analyzeJS(source,sourceOrdinal){
  Object.defineProperty(result,"bootstrapCandidates",
    {value:bootstrapCalls(ast,sourceOrdinal),enumerable:false});
  for(let i=0;i<entries.length;i++){
-  const module=entries[i],identifier=keyName(module.key),fn=module.value;
+  const {property,domain}=entries[i],identifier=keyName(property.key),
+   fn=property.value;
   if(!identifier||!["FunctionExpression","ArrowFunctionExpression"].includes(fn?.type)){
-   result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[],eligible:false});continue;
+   result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,
+    imports:[],eligible:false});continue;
   }
   const requireParam=fn.params?.[2];
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
@@ -392,7 +398,7 @@ function analyzeJS(source,sourceOrdinal){
   const signatures=scanModuleSignatures(fn,requireName,exportName);
   const scopeCalls=scanScopedModuleCalls(fn,requireName);
   const {imports,boundImports}=scopeCalls;
-  result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
+  result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
     boundImports:[...boundImports],
     eligible:!!requireName,exportedSlots:signatures.exportedSlots,
     requiredByImport:signatures.requiredByImport,
@@ -405,13 +411,16 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
  const index=new Map();
  for(const x of all){
   if(!x.identifier)continue;
-  if(!index.has(x.identifier))index.set(x.identifier,[]);
-  index.get(x.identifier).push(x);
+  const domain=x.domain||"unscoped";
+  if(!index.has(domain))index.set(domain,new Map());
+  if(!index.get(domain).has(x.identifier))index.get(domain).set(x.identifier,[]);
+  index.get(domain).get(x.identifier).push(x);
  }
+ const resolve=(domain,key)=>index.get(domain||"unscoped")?.get(key)||[];
  const links=[],shapeCandidates=[],boundCandidates=[];
  for(const item of all){
   for(const key of item.boundImports||[]){
-   const matches=index.get(key)||[];
+   const matches=resolve(item.domain,key);
    boundCandidates.push({
     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
     module_ordinal:item.moduleOrdinal,
@@ -437,7 +446,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   a.module_ordinal-b.module_ordinal||a.pattern.localeCompare(b.pattern));
  const bootstrapCandidates=[];
  for(const candidate of bootstrap){
-  const matches=index.get(candidate.key)||[];
+  const matches=resolve("unscoped",candidate.key);
   bootstrapCandidates.push({
    callsite_ref:"R-JS-"+String(candidate.sourceOrdinal).padStart(3,"0"),
    classification:matches.length===1?"unique_registry_key_candidate":
@@ -455,8 +464,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   for(const id of item.imports){
    candidateCalls++;
    if(candidateCalls>MAX_CANDIDATES)throw Error("Too many import candidates");
-   const matches=index.get(id);
-   if(!matches){unresolved++;continue;}
+   const matches=resolve(item.domain,id);
+   if(!matches.length){unresolved++;continue;}
    if(matches.length!==1){
     ambiguous++;
     const needed=item.requiredByImport?.[id]||[];
@@ -497,6 +506,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   format_version:1,scope:"private_saved_javascript_modules",
   source_executed:false,module_runtime_loaded_verified:false,
   parsed_bundles:scanned,failed_bundles:parseFailures,
+  registry_runtime_scope_count:index.size,
+  chunk_runtime_isolation_applied:true,
   bootstrap_call_candidates:bootstrapCandidates.length,
   bootstrap_candidates:bootstrapCandidates,
   bootstrap_runtime_verified:false,
@@ -530,6 +541,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Export-shape candidates do not change unique/ambiguous import counts and require independent source inspection before promotion.",
    "Dynamic imports, computed require arguments and bundler chunk-loader calls are unresolved syntax boundaries, never resolved import edges.",
    "Function-bound module-loader callbacks are future-import candidates, not direct calls or verified loads.",
+   "Named webpackChunk registrations are linked only within the same in-memory chunk namespace; namespaces are never published.",
+   "Standalone __webpack_modules__ declarations have unknown runtime identity and share an unscoped provisional group.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
@@ -678,6 +691,23 @@ function selfTest(){
  const unrecognized=analyzeJS("self.notWebpackChunk.push([[73],"+
   "{9001:function(e,t,n){t.a=1}}]);",14);
  assert.equal(unrecognized.length,0);
+ const isolatedA="(self.webpackChunkPrivateAlpha=self.webpackChunkPrivateAlpha||[]).push("+
+   "[[1],{100:function(e,t,n){const x=n(200)},200:function(e,t,n){t.a=1}}]);";
+ const isolatedB="(window.webpackChunkPrivateBeta=window.webpackChunkPrivateBeta||[]).push("+
+   "[[2],{200:function(e,t,n){t.b=1},300:function(e,t,n){const x=n(100)}}]);";
+ const isolatedC="(globalThis.webpackChunkPrivateAlpha=globalThis.webpackChunkPrivateAlpha||[]).push("+
+   "[[3],{400:function(e,t,n){const x=n(200)}}]);";
+ const isolated=buildGraph([...analyzeJS(isolatedA,14),
+  ...analyzeJS(isolatedB,15),...analyzeJS(isolatedC,16)],3,0);
+ assert.equal(isolated.modules_total,5);
+ assert.equal(isolated.registry_runtime_scope_count,2);
+ assert.equal(isolated.import_candidates,3);
+ assert.equal(isolated.unique_resolved_links,2);
+ assert.equal(isolated.unresolved_import_candidates,1);
+ assert.equal(isolated.ambiguous_import_candidates,0);
+ assert.equal(isolated.cross_bundle_links,1);
+ assert(!JSON.stringify(isolated).includes("webpackChunkPrivateAlpha"));
+ assert(!JSON.stringify(isolated).includes("webpackChunkPrivateBeta"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

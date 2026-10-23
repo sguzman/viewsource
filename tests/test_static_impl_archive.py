@@ -304,6 +304,42 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_chunk_runtime_namespace_separates_reused_module_ids(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-cross-runtime.zip"
+            chunk_a = "webpackChunkFixtureAlphaPrivate"
+            chunk_b = "webpackChunkFixtureBetaPrivate"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js",
+                    "(self." + chunk_a + "=self." + chunk_a + "||[]).push([[1],{"
+                    "100:function(e,t,n){const x=n(200)},"
+                    "200:function(e,t,n){t.a=1}}]);")
+                z.writestr("b.js",
+                    "(window." + chunk_b + "=window." + chunk_b + "||[]).push([[2],{"
+                    "200:function(e,t,n){t.b=1},"
+                    "300:function(e,t,n){const x=n(100)}}]);")
+                z.writestr("c.js",
+                    "(globalThis." + chunk_a + "=globalThis." + chunk_a
+                    + "||[]).push([[3],{"
+                    "400:function(e,t,n){const x=n(200)}}]);")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            report = json.loads(proc.stdout)
+            self.assertEqual(report["modules_total"], 5)
+            self.assertEqual(report["registry_runtime_scope_count"], 2)
+            self.assertTrue(report["chunk_runtime_isolation_applied"])
+            self.assertEqual(report["import_candidates"], 3)
+            self.assertEqual(report["unique_resolved_links"], 2)
+            self.assertEqual(report["unresolved_import_candidates"], 1)
+            self.assertEqual(report["ambiguous_import_candidates"], 0)
+            self.assertEqual(report["cross_bundle_links"], 1)
+            for secret in (chunk_a, chunk_b, "invented-cross-runtime.zip",
+                           "a.js", "b.js", "c.js"):
+                self.assertNotIn(secret, proc.stdout)
+
     def test_web_pack_chunk_registration_yields_only_anonymous_modules(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-chunk-fixture.zip"
