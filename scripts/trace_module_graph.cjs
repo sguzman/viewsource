@@ -23,6 +23,72 @@ function keyName(node){
  if(node?.type==="Literal"&&typeof node.value==="string")return node.value;
  return null;
 }
+function literalMember(node){
+ if(node?.type!=="MemberExpression")return null;
+ if(node.computed)return node.property?.type==="Literal"?keyName(node.property):null;
+ return keyName(node.property);
+}
+function memberOf(node,base){
+ return node?.type==="MemberExpression"&&node.object?.type==="Identifier"
+   &&node.object.name===base?literalMember(node):null;
+}
+function scanModuleSignatures(fn,requireName,exportName){
+ const exported=new Set(),aliases=new Map(),required=new Map();
+ const stack=[fn.body];
+ while(stack.length){
+  const n=stack.pop();
+  if(!n||typeof n!=="object")continue;
+  if(exportName&&n.type==="AssignmentExpression"){
+   const slot=memberOf(n.left,exportName);
+   if(slot)exported.add(slot);
+  }
+  if(requireName&&n.type==="CallExpression"
+      &&n.callee?.type==="MemberExpression"
+      &&memberOf(n.callee,requireName)==="d"
+      &&n.arguments[0]?.type==="Identifier"
+      &&n.arguments[0].name===exportName
+      &&n.arguments[1]?.type==="ObjectExpression"){
+   for(const prop of n.arguments[1].properties){
+    const slot=keyName(prop.key);if(slot)exported.add(slot);
+   }
+  }
+  if(n.type==="VariableDeclarator"&&n.id?.type==="Identifier"
+      &&n.init?.type==="CallExpression"&&n.init.callee?.type==="Identifier"
+      &&n.init.callee.name===requireName
+      &&n.init.arguments[0]?.type==="Literal"
+      &&typeof n.init.arguments[0].value==="string"){
+   aliases.set(n.id.name,n.init.arguments[0].value);
+  }
+  for(const [k,v] of Object.entries(n)){
+   if(["start","end","loc","raw"].includes(k))continue;
+   if(Array.isArray(v)){
+    for(const c of v)if(c&&typeof c==="object")stack.push(c);
+   }else if(v&&typeof v==="object")stack.push(v);
+  }
+ }
+ // Conservative candidate collection. Nested shadowing can cause false
+ // positives, so these never become verified imports automatically.
+ const usage=[fn.body];
+ while(usage.length){
+  const n=usage.pop();
+  if(!n||typeof n!=="object")continue;
+  if(n.type==="MemberExpression"&&n.object?.type==="Identifier"){
+   const id=aliases.get(n.object.name),slot=literalMember(n);
+   if(id&&slot){
+    if(!required.has(id))required.set(id,new Set());
+    required.get(id).add(slot);
+   }
+  }
+  for(const [k,v] of Object.entries(n)){
+   if(["start","end","loc","raw"].includes(k))continue;
+   if(Array.isArray(v)){
+    for(const c of v)if(c&&typeof c==="object")usage.push(c);
+   }else if(v&&typeof v==="object")usage.push(v);
+  }
+ }
+ return {exportedSlots:[...exported],
+   requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
+}
 function analyzeJS(source,sourceOrdinal){
  const ast=acorn.parse(source,{ecmaVersion:"latest",sourceType:"module",
    allowReturnOutsideFunction:true,allowImportExportEverywhere:true});
@@ -34,6 +100,8 @@ function analyzeJS(source,sourceOrdinal){
   }
   const requireParam=fn.params?.[2];
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
+  const exportName=fn.params?.[1]?.type==="Identifier"?fn.params[1].name:null;
+  const signatures=scanModuleSignatures(fn,requireName,exportName);
   const imports=new Set(),stack=[fn.body];
   while(stack.length){
    const n=stack.pop();
@@ -51,7 +119,9 @@ function analyzeJS(source,sourceOrdinal){
     }else if(v&&typeof v==="object")stack.push(v);
    }
   }
-  result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],eligible:!!requireName});
+  result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
+    eligible:!!requireName,exportedSlots:signatures.exportedSlots,
+    requiredByImport:signatures.requiredByImport});
  }
  return result;
 }
@@ -63,7 +133,7 @@ function buildGraph(all,scanned,parseFailures){
   if(!index.has(x.identifier))index.set(x.identifier,[]);
   index.get(x.identifier).push(x);
  }
- const links=[];
+ const links=[],shapeCandidates=[];
  let candidateCalls=0,unresolved=0,ambiguous=0;
  for(const item of all){
   for(const id of item.imports){
@@ -71,7 +141,29 @@ function buildGraph(all,scanned,parseFailures){
    if(candidateCalls>MAX_CANDIDATES)throw Error("Too many import candidates");
    const matches=index.get(id);
    if(!matches){unresolved++;continue;}
-   if(matches.length!==1){ambiguous++;continue;}
+   if(matches.length!==1){
+    ambiguous++;
+    const needed=item.requiredByImport?.[id]||[];
+    if(needed.length>0){
+     const candidates=matches.filter(target=>
+       needed.every(slot=>(target.exportedSlots||[]).includes(slot)));
+     if(candidates.length===1){
+      const target=candidates[0];
+      shapeCandidates.push({
+       from_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+       from_module:item.moduleOrdinal,
+       to_ref:"R-JS-"+String(target.sourceOrdinal).padStart(3,"0"),
+       to_module:target.moduleOrdinal,
+       required_export_count:needed.length,
+       registry_definition_candidates:matches.length,
+       matching_export_interfaces:1,
+       classification:"candidate_unique_export_interface",
+       runtime_import_verified:false
+      });
+     }
+    }
+    continue;
+   }
    const target=matches[0];
    links.push({
     from_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
@@ -102,10 +194,14 @@ function buildGraph(all,scanned,parseFailures){
    .map(([id,count])=>({source_ref:"R-JS-"+String(id).padStart(3,"0"),count}))
    .sort((a,b)=>a.source_ref.localeCompare(b.source_ref)),
   resolved_links:links,
+  export_shape_candidates:shapeCandidates,
+  export_shape_candidate_count:shapeCandidates.length,
   limitations:[
    "Static require calls may be conditional, dead, or nested in inactive closures.",
    "A resolved bundled module reference is not proof that a module loaded or ran.",
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
+   "Export-shape matches are candidate disambiguations only; minified alias shadowing or dead code can create misleading required slots.",
+   "Export-shape candidates do not change unique/ambiguous import counts and require independent source inspection before promotion.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
@@ -143,6 +239,15 @@ function selfTest(){
  assert(!JSON.stringify(o).includes("const b"));
  const ambiguous=buildGraph([...a,...analyzeJS(s1,3)],3,0);
  assert(ambiguous.ambiguous_import_candidates>=1);
+ const shapeSource1="export const __webpack_modules__={X:(function(e,t,n){const recovery=n('K');recovery.h();recovery.p()}),K:(function(e,t,n){n.d(t,{h:()=>1,p:()=>2})})};";
+ const shapeSource2="export const __webpack_modules__={K:(function(e,t){t.a=1})};";
+ const resolved=buildGraph([...analyzeJS(shapeSource1,1),...analyzeJS(shapeSource2,2)],2,0);
+ assert.equal(resolved.ambiguous_import_candidates,1);
+ assert.equal(resolved.export_shape_candidate_count,1);
+ assert.equal(resolved.export_shape_candidates[0].to_ref,"R-JS-001");
+ assert.equal(resolved.export_shape_candidates[0].required_export_count,2);
+ assert(!JSON.stringify(resolved).includes("'K'"));
+ assert(!JSON.stringify(resolved).includes("recovery.h"));
 }
 if(require.main===module){
  if(process.argv.length===3&&process.argv[2]==="--self-test"){
