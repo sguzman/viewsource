@@ -1056,17 +1056,19 @@ function chunkRuntimeEntrypoints(ast,sourceOrdinal){
   }];
   let factoryLoaderValid=true;
   for(const statement of body){
-   if(runtimeLoaderReassigned(statement,first.name))factoryLoaderValid=false;
-   if(!factoryLoaderValid)continue;
    const call=statement?.type==="ExpressionStatement"?statement.expression:
     statement?.type==="ReturnStatement"?statement.argument:null;
-   if(call?.type!=="CallExpression"||call.callee?.type!=="Identifier"||
-      call.callee.name!==first.name)continue;
-   const key=moduleKey(call.arguments[0]);
-   if(key!==null)candidates.push({
-    key,sourceOrdinal,domain:"chunk:"+namespace,
-    bootstrap_kind:"chunk_runtime_literal_call_candidate"
-   });
+   // The direct callee is evaluated before its arguments. A subsequent
+   // argument mutation may invalidate later statements, not this call.
+   if(factoryLoaderValid&&call?.type==="CallExpression"&&
+      call.callee?.type==="Identifier"&&call.callee.name===first.name){
+    const key=moduleKey(call.arguments[0]);
+    if(key!==null)candidates.push({
+     key,sourceOrdinal,domain:"chunk:"+namespace,
+     bootstrap_kind:"chunk_runtime_literal_call_candidate"
+    });
+   }
+   if(runtimeLoaderReassigned(statement,first.name))factoryLoaderValid=false;
   }
  }
  return candidates;
@@ -1564,6 +1566,16 @@ function selfTest(){
  const deferredRuntime=analyzeJS("(self.webpackChunkDeferred=self.webpackChunkDeferred||[]).push("+
   "[[51],{901:function(e,t,n){t.a=1}},function(n){const unused=()=>n(901)}]);",24);
  assert.equal(deferredRuntime.bootstrapCandidates.length,0);
+ const argumentMutationRuntime=analyzeJS(""+
+  "(self.webpackChunkArgumentOrder=self.webpackChunkArgumentOrder||[]).push("+
+  "[[52],{901:function(e,t,n){t.a=1}},function(n){"+
+  "n(901,n=()=>0);n(902)}]);",127);
+ assert.equal(argumentMutationRuntime.bootstrapCandidates.length,1);
+ const argumentMutationGraph=buildGraph(argumentMutationRuntime,1,0,
+   argumentMutationRuntime.bootstrapCandidates);
+ assert.equal(argumentMutationGraph.bootstrap_call_candidates,1);
+ assert.equal(argumentMutationGraph.bootstrap_candidates[0].target_module,1);
+ assert.equal(argumentMutationGraph.bootstrap_candidates[0].bootstrap_execution_verified,false);
  const loopScopes=analyzeJS("export const __webpack_modules__={"+
   "Consumer:(function(e,t,n){const a=n('Q');"+
   "for(let a of [{z:()=>1}]){a.z()}a.x();"+
