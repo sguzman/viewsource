@@ -255,6 +255,17 @@ def build(out: Path) -> dict:
                         for name,val in recovery["captured_default_fallbacks"].items()
                     ],
                     "fallback_scope": recovery["fallback_scope"],
+                    "preparation_error_eligibility": {
+                        "source_ref": recovery["preparation_error_eligibility"]["source_ref"],
+                        "definition_matches": recovery["preparation_error_eligibility"]["resolved_import"]["definition_matches_in_saved_assets"],
+                        "statuses": recovery["preparation_error_eligibility"]["typed_status_allowlist"],
+                        "rules": [
+                            {"stage": row["stage"],"result": row["result"],"rule": row["rule"]}
+                            for row in recovery["preparation_error_eligibility"]["decision_order"]
+                        ],
+                        "scope": recovery["preparation_error_eligibility"]["scope"],
+                        "limits": recovery["preparation_error_eligibility"]["limit"],
+                    },
                     "preparation_fallback": {
                         "method": recovery["preparation_fallback"]["method"],
                         "delay_min_ms": recovery["preparation_fallback"]["minimum_delay_ms"],
