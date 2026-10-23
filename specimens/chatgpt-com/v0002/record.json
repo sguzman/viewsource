@@ -10890,6 +10890,16 @@
         "evidence_ref": "E2-083",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-084",
+      "statement": "The captured conversation page feeds derived turns into a virtualized turn-window component. The client calculates measured/estimated row geometry and a small overscan interval, renders keyed rows plus explicitly retained offscreen turns, uses resize and scroll observations to compensate viewport anchoring, and wires a separate response spacer for voice or turn placement. These are static client paths, not observed scrolling or server-side history paging.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-084",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
