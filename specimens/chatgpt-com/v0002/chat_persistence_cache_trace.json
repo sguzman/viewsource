@@ -14,6 +14,11 @@
       "ref": "R-JS-018",
       "module_ordinal": 81,
       "role": "conversation_query_snapshot_and_revalidation"
+    },
+    {
+      "ref": "R-JS-018",
+      "module_ordinal": null,
+      "role": "conditional_local_conversation_snapshot_worker"
     }
   ],
   "executed_in_browser": false,
@@ -56,6 +61,16 @@
       "id": "query_client_revalidation",
       "kind": "query_invalidation",
       "description": "That loader supplies a revalidation callback that invalidates the corresponding conversation query after suitable streaming/request-state changes, with a private abort signal guarding stale work."
+    },
+    {
+      "id": "account_scoped_snapshot_worker",
+      "kind": "conditional_async_snapshot_client",
+      "description": "A conditional, lazily imported conversation snapshot client is associated with account context and artifact scope. Its asynchronous setup callback checks whether the client is still open and compares the active account context before forwarding the snapshot result. This is browser-side snapshot coordination, not a demonstrated server write."
+    },
+    {
+      "id": "snapshot_worker_invalidation_cleanup",
+      "kind": "conditional_cleanup",
+      "description": "The snapshot coordinator tracks invalidation handles and closes its worker on cleanup. If the worker was not already materialized and the configured local persistence setting is enabled, a separate lazy import invokes a persisted-snapshot clearing helper."
     }
   ],
   "source_relationships": [
@@ -88,19 +103,41 @@
       "from": "conversation_query_loader",
       "to": "conversation_query_revalidation",
       "kind": "query_client_invalidate"
+    },
+    {
+      "from": "account_and_artifact_context",
+      "to": "conversation_snapshot_worker",
+      "kind": "guarded_async_initialization"
+    },
+    {
+      "from": "snapshot_worker",
+      "to": "snapshot_invalidation",
+      "kind": "client_callback"
+    },
+    {
+      "from": "snapshot_worker_cleanup",
+      "to": "optional_persisted_snapshot_clear",
+      "kind": "conditional_dynamic_import"
     }
   ],
   "conclusions": [
     "The archived client includes browser-local conversation collection caching, including schema validation and self-healing after malformed stored snapshots.",
     "The cached local collection pages and pinned list are not interchangeable with authoritative message ancestry or completed server-side persistence.",
-    "A separate query cache supports in-memory conversation snapshots and explicit invalidation; whether and when any browser-local values survive reload depends on additional client conditions."
+    "A separate query cache supports in-memory conversation snapshots and explicit invalidation; whether and when any browser-local values survive reload depends on additional client conditions.",
+    "Snapshot-worker lifecycle uses account-context checks and a conditional cleanup path; the exact browser storage technology and post-reload durability of those snapshots remain unverified."
   ],
   "still_unverified": [
     "The exact long-term persistence behavior of the complete conversation mapping or full transcript in any other browser store.",
     "Whether pinned-list entries are written, updated or removed by additional modules not yet traced.",
     "Whether another tab observes changes through storage events, broadcast channels or other cross-tab synchronization.",
     "Successful storage writes, quota behavior, private-mode behavior, actual cache data and backend durability.",
-    "The complete query loader callback ownership and all timing/feature gates for streaming-state revalidation."
+    "The complete query loader callback ownership and all timing/feature gates for streaming-state revalidation.",
+    "The implementation details of the lazily imported persisted snapshot client, its backing browser storage and its cross-tab semantics."
   ],
-  "privacy": "The report contains only authored cache roles, module ordinals and structural descriptions. No original browser storage key, source snippet, stored conversation entry, user identity, endpoint or account value is published."
+  "privacy": "The report contains only authored cache roles, module ordinals and structural descriptions. No original browser storage key, source snippet, stored conversation entry, user identity, endpoint or account value is published.",
+  "cross_tab_boundary": {
+    "evidence_class": "source_reviewed_limit",
+    "observation": "A general browser storage-event listener exists in the captured JavaScript, but in a separate client subsystem. Its presence does not establish that conversation-collection snapshots or full message graphs synchronize across tabs.",
+    "supported_conclusion": "Cross-tab conversation coherence remains unverified; do not attribute unrelated storage events or BroadcastChannel vocabulary to conversation cache synchronization."
+  }
 }
