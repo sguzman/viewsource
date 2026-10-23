@@ -214,6 +214,35 @@ window.ViewsourceChatGraph = (() => {
       block.append(limits);
       section.append(block);
     }
+    const viewport=record.visuals?.chat_virtual_viewport;
+    if(viewport){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Virtualized transcript viewport and scroll anchoring"));
+      block.append(element("p","graph-caption",
+        "Recovered virtual turn range, measured layout, retained off-screen rows, and bottom-response spacer from captured client source. Browser scrolling not observed."));
+      const sources=element("p","graph-caption",
+        "Source resources: "+viewport.source_resources.join(", "));
+      block.append(sources);
+      const rules=element("div","chat-viewport-rule-grid");
+      viewport.windowing_rules.forEach(rule=>{
+        const card=element("details","chat-viewport-rule");
+        card.append(element("summary","",rule.id),
+          element("p","",rule.behavior),
+          element("p","graph-caption",rule.source_ref+" · "+rule.limits));
+        rules.append(card);
+      });
+      block.append(rules);
+      const edges=element("details","chat-viewport-links");
+      edges.append(element("summary","","Verified viewport source relationships"));
+      const paths=element("ol","");
+      viewport.source_chain.forEach(edge=>{
+        paths.append(element("li","",edge.from+" → "+edge.to+" ("+edge.kind+")"));
+      });
+      edges.append(paths,element("p","graph-caption",
+        "Source imports and DOM preparation paths do not establish runtime scroll outcomes."));
+      block.append(edges);
+      section.append(block);
+    }
     const selectorStudy=record.visuals?.chat_selector_consumers;
     if(selectorStudy){
       const block=element("div","chat-subsection");
