@@ -10940,6 +10940,16 @@
         "evidence_ref": "E2-088",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-089",
+      "statement": "The saved user-message edit control delegates to a page-level edit submission routine that checks busy/unsupported states, resolves the original target and parent, validates edited text and attachments, conditionally stops an incompatible active response, revalidates the target after the stop, and submits the replacement as a new completion using the original parent-message identity. It clears edit-busy state in a finally block and surfaces failures via a page-level error notification. These are client-side paths; no server mutation or actual edit was observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-089",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
