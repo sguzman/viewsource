@@ -1,0 +1,106 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_class": "observed_static",
+  "source_scope": "original_saved_client_javascript",
+  "source_resources": [
+    {
+      "ref": "R-JS-018",
+      "module_ordinal": 473,
+      "role": "versioned_conversation_collection_browser_cache"
+    },
+    {
+      "ref": "R-JS-018",
+      "module_ordinal": 81,
+      "role": "conversation_query_snapshot_and_revalidation"
+    }
+  ],
+  "executed_in_browser": false,
+  "local_storage_write_verified": false,
+  "server_durability_verified": false,
+  "cross_tab_behavior_verified": false,
+  "evidence_method": "Private source review of versioned client collection cache schema, validation and fallback, and conversation query cache setter/invalidation. Original storage keys and code are not republished.",
+  "stages": [
+    {
+      "id": "versioned_collection_schema",
+      "kind": "client_storage_schema",
+      "description": "A conversation-list snapshot uses a version-one structure containing pagination parameters and pages of conversation-list metadata. A separate pinned-list structure contains version-one pinned item entries."
+    },
+    {
+      "id": "collection_cache_read_and_validation",
+      "kind": "browser_storage_read",
+      "description": "The collection reader parses JSON from localStorage, validates the expected versioned pagination structure, returns pages and page parameters when valid, and deletes its local entry after a parse/validation failure."
+    },
+    {
+      "id": "pinned_fallback_read",
+      "kind": "browser_storage_read",
+      "description": "When the scoped pinned query cache has no value, a fallback reader tries a separate pinned-conversation localStorage entry. Invalid JSON or schema content is removed from that browser cache."
+    },
+    {
+      "id": "multi_cache_conversation_lookup",
+      "kind": "query_cache_resolution",
+      "description": "A conversation lookup first searches scoped pinned entries, then collection and project-related query pages, custom-section query results, and finally the saved local conversation-list pages for matching conversation metadata."
+    },
+    {
+      "id": "versioned_collection_write",
+      "kind": "browser_storage_write",
+      "description": "A collection snapshot writer serializes page parameters, pages and a version-one tag into the local conversation-list storage entry. This is collection metadata caching, not a demonstrated message-graph serialization."
+    },
+    {
+      "id": "query_client_snapshot_update",
+      "kind": "in_memory_query_cache_write",
+      "description": "A separate conversation-query loader passes a callback that writes the loaded conversation snapshot into a scoped query-client cache."
+    },
+    {
+      "id": "query_client_revalidation",
+      "kind": "query_invalidation",
+      "description": "That loader supplies a revalidation callback that invalidates the corresponding conversation query after suitable streaming/request-state changes, with a private abort signal guarding stale work."
+    }
+  ],
+  "source_relationships": [
+    {
+      "from": "local_conversation_snapshot",
+      "to": "conversation_metadata_lookup",
+      "kind": "fallback_client_read"
+    },
+    {
+      "from": "local_pinned_snapshot",
+      "to": "conversation_metadata_lookup",
+      "kind": "fallback_client_read"
+    },
+    {
+      "from": "query_collection_pages",
+      "to": "conversation_metadata_lookup",
+      "kind": "query_cache_read"
+    },
+    {
+      "from": "conversation_list_result",
+      "to": "local_conversation_snapshot",
+      "kind": "versioned_local_write"
+    },
+    {
+      "from": "conversation_query_loader",
+      "to": "in_memory_conversation_query",
+      "kind": "query_client_set_data"
+    },
+    {
+      "from": "conversation_query_loader",
+      "to": "conversation_query_revalidation",
+      "kind": "query_client_invalidate"
+    }
+  ],
+  "conclusions": [
+    "The archived client includes browser-local conversation collection caching, including schema validation and self-healing after malformed stored snapshots.",
+    "The cached local collection pages and pinned list are not interchangeable with authoritative message ancestry or completed server-side persistence.",
+    "A separate query cache supports in-memory conversation snapshots and explicit invalidation; whether and when any browser-local values survive reload depends on additional client conditions."
+  ],
+  "still_unverified": [
+    "The exact long-term persistence behavior of the complete conversation mapping or full transcript in any other browser store.",
+    "Whether pinned-list entries are written, updated or removed by additional modules not yet traced.",
+    "Whether another tab observes changes through storage events, broadcast channels or other cross-tab synchronization.",
+    "Successful storage writes, quota behavior, private-mode behavior, actual cache data and backend durability.",
+    "The complete query loader callback ownership and all timing/feature gates for streaming-state revalidation."
+  ],
+  "privacy": "The report contains only authored cache roles, module ordinals and structural descriptions. No original browser storage key, source snippet, stored conversation entry, user identity, endpoint or account value is published."
+}
