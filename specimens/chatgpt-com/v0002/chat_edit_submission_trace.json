@@ -1,0 +1,125 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_class": "observed_static",
+  "source_scope": "saved_client_javascript",
+  "source_refs": [
+    "R-JS-069",
+    "R-JS-072"
+  ],
+  "source_executed": false,
+  "edit_request_completed": false,
+  "server_mutation_verified": false,
+  "methodology": "Privately reviewed the saved user-message render callback gate and page-level edit submission routine. Published data contains source ordinals and authored operation summaries, not captured source.",
+  "stages": [
+    {
+      "id": "user_item_edit_eligibility",
+      "source_ref": "R-JS-069",
+      "kind": "conditional_render_callback",
+      "behavior": "The typed user-message renderer supplies an edit callback only when its user item matches an eligible identity, edit actions are available, and targeted reply or certain attachment conditions do not suppress editing."
+    },
+    {
+      "id": "page_edit_dispatch",
+      "source_ref": "R-JS-072",
+      "kind": "client_callback",
+      "behavior": "The conversation page accepts an edit request containing the targeted message identity, replacement prompt, render format and inline hints, and delegates to its local submission routine."
+    },
+    {
+      "id": "busy_and_origin_guards",
+      "source_ref": "R-JS-072",
+      "kind": "state_guard",
+      "behavior": "The submission routine refuses a competing edit, an unsupported conversation origin, or an ineligible active conversation state before changing request state."
+    },
+    {
+      "id": "target_message_lookup",
+      "source_ref": "R-JS-072",
+      "kind": "message_context_lookup",
+      "behavior": "It resolves the editable message context, including selected model and original parent message; a missing target produces a defined client failure."
+    },
+    {
+      "id": "edited_prompt_validation",
+      "source_ref": "R-JS-072",
+      "kind": "content_validation",
+      "behavior": "The routine trims replacement text, builds a message representation with editing format and hints, obtains attachments, and rejects a completely empty replacement unless permitted by structured non-text content."
+    },
+    {
+      "id": "active_response_stop",
+      "source_ref": "R-JS-072",
+      "kind": "conditional_stream_interruption",
+      "behavior": "Where an incompatible active response exists, it requests stop and awaits closure before submitting the edit; certain conversation origins or session states bypass this stop step."
+    },
+    {
+      "id": "context_revalidation",
+      "source_ref": "R-JS-072",
+      "kind": "concurrency_guard",
+      "behavior": "After any asynchronous stop, it checks that the request identity and target-message data still match and that conversation streaming state is suitable."
+    },
+    {
+      "id": "replacement_completion_submission",
+      "source_ref": "R-JS-072",
+      "kind": "generation_client_call",
+      "behavior": "It delegates to the shared completion-submission helper with the edited message, selected model, attachments, replacement prompt and the original editable message's parent identity. The client call is visible, not the resulting server graph."
+    },
+    {
+      "id": "busy_cleanup_and_error_feedback",
+      "source_ref": "R-JS-072",
+      "kind": "client_failure_and_cleanup",
+      "behavior": "A finally block clears the edit-busy flag; the page callback converts exceptions into a user-facing edit-failure notification with error classification."
+    }
+  ],
+  "relationships": [
+    {
+      "from": "user_message_edit_callback",
+      "to": "page_edit_dispatch",
+      "kind": "prop_forwarding"
+    },
+    {
+      "from": "page_edit_dispatch",
+      "to": "edit_submission_routine",
+      "kind": "direct_client_call"
+    },
+    {
+      "from": "edit_submission_routine",
+      "to": "original_parent_message",
+      "kind": "state_context_lookup"
+    },
+    {
+      "from": "edit_submission_routine",
+      "to": "active_response_stop",
+      "kind": "conditional_async_call"
+    },
+    {
+      "from": "active_response_stop",
+      "to": "edit_target_revalidation",
+      "kind": "async_guard"
+    },
+    {
+      "from": "edit_target_revalidation",
+      "to": "completion_submission",
+      "kind": "guarded_generation_call"
+    },
+    {
+      "from": "edit_submission_routine",
+      "to": "edit_busy_cleanup",
+      "kind": "finally_cleanup"
+    },
+    {
+      "from": "page_edit_dispatch",
+      "to": "edit_error_notification",
+      "kind": "client_error_handling"
+    }
+  ],
+  "interpretations": [
+    "The submitted edit includes an original parent-message identity, consistent with creating a replacement continuation rather than deleting a message node in place; this is a client request property, not verified server branching.",
+    "An editing form's availability depends on user-message and conversation state guards, so not every displayed user message necessarily exposes the control.",
+    "Completion submission after an edit is a separate operation from whether an edited response successfully streams or becomes selected."
+  ],
+  "unverified": [
+    "The exact DOM form lifecycle of every editing variant and its keyboard shortcuts.",
+    "Whether a particular edited message produced a new branch, overwrote existing server state, or became the selected client node.",
+    "Network delivery, server acknowledgment, stream completion and outcomes of the edit-failure notification.",
+    "The entire submitted payload and API contract beyond the reviewed client-side argument roles."
+  ],
+  "privacy": "No original request endpoint, original file name, source function symbol, copied prompt, source code, personal data or account identifier is published."
+}
