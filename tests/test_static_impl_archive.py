@@ -267,6 +267,43 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for term in ("Entry", "Dormant", sentinel, "bootstrap-fiction.zip"):
                 self.assertNotIn(term, result.stdout)
 
+    def test_bootstrap_seed_to_bounded_frontier_end_to_end(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            zip_path = root / "invented-bootstrap.zip"
+            sentinel = "SYNTHETIC_PRIVATE_BOOTSTRAP_SENTINEL"
+            with zipfile.ZipFile(zip_path, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("client/a.js",
+                    "export const __webpack_modules__={"
+                    "Root:(function(e,t,n){const child=n('Child');t.a=child.a}),"
+                    "Child:(function(e,t,n){t.a='" + sentinel + "'}),"
+                    "Unused:(function(e,t,n){t.a=0})};"
+                    "__webpack_require__('Root')")
+            probe = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(zip_path), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(probe.returncode, 0, "Module archive probe rejected synthetic ZIP")
+            report = json.loads(probe.stdout)
+            self.assertEqual(report["bootstrap_call_candidates"], 1)
+            private_report = root / "private-ordinal-graph.json"
+            private_report.write_text(probe.stdout, encoding="utf-8")
+            analyzed = subprocess.run(
+                ["node", str(ROOT / "scripts/trace_module_frontier.cjs"),
+                 "--input", str(private_report),
+                 "--bootstrap-candidates", "--max-depth", "3"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=30)
+            self.assertEqual(analyzed.returncode, 0, "Bootstrap frontier rejected synthetic graph")
+            summary = json.loads(analyzed.stdout)
+            self.assertEqual(summary["root_source"], "bootstrap_syntax_candidate")
+            self.assertEqual(summary["reached_module_count"], 2)
+            self.assertEqual(summary["depth_counts"][0]["module_count"], 1)
+            self.assertFalse(summary["source_executed"])
+            self.assertFalse(summary["runtime_module_load_verified"])
+            for private in ("Root", "Child", "Unused", sentinel, "invented-bootstrap.zip",
+                            "private-ordinal-graph.json"):
+                self.assertNotIn(private, analyzed.stdout)
+
     def test_colliding_module_keys_yield_candidate_export_shape_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-collision.zip"
