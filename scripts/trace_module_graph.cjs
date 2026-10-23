@@ -153,7 +153,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
  }
  function walk(node,env){
   if(!node||typeof node!=="object")return;
-  if(node.type==="IfStatement"){
+  if(node.type==="IfStatement"||node.type==="ConditionalExpression"){
    walk(node.test,env);
    const consequent=new Map(env),alternate=new Map(env);
    walk(node.consequent,consequent);
@@ -348,7 +348,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
  }
  function scan(node,env){
   if(!node||typeof node!=="object")return;
-  if(node.type==="IfStatement"){
+  if(node.type==="IfStatement"||node.type==="ConditionalExpression"){
    scan(node.test,env);
    const originalSlots=new Set(slots),originalBody=new Set(factoryBodySlots),
     originalFunctions=directFunctions.slice();
@@ -585,7 +585,7 @@ function bootstrapCalls(ast,sourceOrdinal) {
   if(!node||typeof node!=="object")return;
   if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression",
       "ClassDeclaration","ClassExpression"].includes(node.type))return;
-  if(node.type==="IfStatement"){
+  if(node.type==="IfStatement"||node.type==="ConditionalExpression"){
    walk(node.test,env);
    const consequent=new Map(env),alternate=new Map(env);
    walk(node.consequent,consequent);
@@ -728,7 +728,7 @@ function scanScopedModuleCalls(fn,requireName){
  }
  function walk(node,env){
   if(!node||typeof node!=="object")return;
-  if(node.type==="IfStatement"){
+  if(node.type==="IfStatement"||node.type==="ConditionalExpression"){
    walk(node.test,env);
    const consequent=new Map(env),alternate=new Map(env);
    walk(node.consequent,consequent);
@@ -1869,6 +1869,32 @@ function selfTest(){
   "if(t.flag){m.exports={replacement:()=>2}}else{t.alternate=()=>3}})};",106);
  const earlyGraph=buildGraph(earlyExport,1,0);
  assert.equal(earlyGraph.direct_function_export_site_count,3);
+ const ternaryImports=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){t.flag?(n=()=>0):n('Goal');n('NotSafe')}),"+
+  "Goal:(function(e,t){t.ready=1})};",107);
+ const ternaryGraph=buildGraph(ternaryImports,1,0);
+ assert.equal(ternaryGraph.import_candidates,1);
+ assert.equal(ternaryGraph.unique_resolved_links,1);
+ const ternaryExport=analyzeJS("export const __webpack_modules__={"+
+  "Owner:(function(e,t,n){t.flag?(t=()=>0):(t.yes=()=>1);"+
+  "t.notGuaranteed=()=>1})};",108);
+ const ternaryExportGraph=buildGraph(ternaryExport,1,0);
+ assert.equal(ternaryExportGraph.direct_function_export_site_count,1);
+ const ternaryBootstrap=analyzeJS("export const __webpack_modules__={"+
+  "Boot:function(){}};flag?(__webpack_require__=()=>0):"+
+  "__webpack_require__('Boot');__webpack_require__('Invalid');",109);
+ assert.equal(ternaryBootstrap.bootstrapCandidates.length,1);
+ const ternaryReader=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){let x=n('Option');"+
+  "t.flag?(x={}):x.yes();x.no()})};",110);
+ const ternaryOwner=analyzeJS("export const __webpack_modules__={"+
+  "Option:(function(e,t,n){t.yes=()=>1})};",111);
+ const ternaryOther=analyzeJS("export const __webpack_modules__={"+
+  "Option:(function(e,t,n){t.no=()=>1})};",112);
+ const ternaryResult=buildGraph([...ternaryReader,...ternaryOwner,
+  ...ternaryOther],3,0);
+ assert.equal(ternaryResult.export_shape_candidate_count,1);
+ assert.equal(ternaryResult.export_shape_candidates[0].to_ref,"R-JS-111");
 
 }
 if(require.main===module){
