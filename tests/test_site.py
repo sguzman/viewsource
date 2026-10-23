@@ -55,8 +55,8 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
             source_queue = current["visuals"]["static_source_queue"]
             self.assertEqual(source_queue["task_count"], 33)
-            self.assertEqual(source_queue["task_statuses"]["queued"], 22)
-            self.assertEqual(source_queue["task_statuses"]["in_progress"], 11)
+            self.assertEqual(source_queue["task_statuses"]["queued"], 21)
+            self.assertEqual(source_queue["task_statuses"]["in_progress"], 12)
             self.assertEqual(len(source_queue["tasks"]), 33)
             branch = current["visuals"]["chat_branch_switch"]
             self.assertFalse(branch["live_selection_verified"])
@@ -65,6 +65,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(branch["variant_derivation"]),5)
             self.assertEqual(branch["render_recomputation_link"]["source_ref"],"R-JS-072")
             self.assertEqual(set(branch["source_resources"]),{"R-JS-018","R-JS-069"})
+            modules = current["visuals"]["chat_module_dependency"]
+            self.assertFalse(modules["runtime_verified"])
+            self.assertEqual(modules["census"]["module_registry_entries"],10399)
+            self.assertEqual(modules["census"]["uniquely_resolved_import_candidates"],50714)
+            self.assertEqual(len(modules["edges"]),4)
             a11y = current["visuals"]["chat_accessibility_trace"]
             self.assertFalse(a11y["screen_reader_tested"])
             self.assertEqual(len(a11y["mechanisms"]),8)
@@ -148,7 +153,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 90)
+            self.assertEqual(len(current["findings"]), 91)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
