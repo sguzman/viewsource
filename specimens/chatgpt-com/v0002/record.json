@@ -10810,6 +10810,16 @@
         "evidence_ref": "E2-075",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-076",
+      "statement": "The captured client defines separate full selected-message ancestry and recent-turn ancestry selectors from mapping/current_node. A React conversation control subscribes to the recent-turn selector to derive answer-now eligibility; other selectors consume user-message ancestry and feature-specific automation references. The automation/page-reference collections are not the visible chat transcript, and no live rendering was observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-076",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
