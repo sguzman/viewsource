@@ -952,7 +952,7 @@ function selfTest(){
  assert.equal(loopGraph.unique_resolved_links,1);
  assert(!JSON.stringify(loopGraph).includes("Unrelated"));
  const owners=analyzeJS("export const __webpack_modules__={"+
-  "A:(function(e,t,n){t.start=function(){return 1};t.stop=()=>2;"+
+  "A:(function(e,t,n){t.PrivateExportFunctionZ941=function(){return 1};t.stop=()=>2;"+
   "function local(t){t.fake=()=>3}n.d(t,{getter:()=>local})}),"+
   "B:(function(e,t,n){t.data=17})};",37);
  const ownerGraph=buildGraph(owners,1,0);
@@ -961,7 +961,7 @@ function selfTest(){
  assert.equal(ownerGraph.direct_function_export_sites[1].export_function_ordinal,2);
  assert(ownerGraph.direct_function_export_sites.every(site=>!site.runtime_invocation_verified));
  assert(!JSON.stringify(ownerGraph).includes("fake"));
- assert(!JSON.stringify(ownerGraph).includes("start"));
+ assert(!JSON.stringify(ownerGraph).includes("PrivateExportFunctionZ941"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
