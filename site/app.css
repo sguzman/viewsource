@@ -470,3 +470,9 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-branch-stage summary,.chat-branch-caveats summary { cursor:pointer;font-size:12px;font-weight:600;line-height:1.6; }
 .chat-branch-stage p,.chat-branch-caveats { font-size:12px;line-height:1.6; }
 .chat-branch-caveats ul { padding-left:20px; }
+
+.chat-viewport-rule-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(245px,1fr)); gap:9px; margin:13px 0; }
+.chat-viewport-rule { border:1px solid var(--line); background:var(--panel-2); border-radius:8px; padding:12px; min-width:0; }
+.chat-viewport-rule summary,.chat-viewport-links summary { cursor:pointer; font-size:12px; font-weight:600; line-height:1.65; text-transform:capitalize; }
+.chat-viewport-rule p,.chat-viewport-links { font-size:12px; line-height:1.65; }
+.chat-viewport-links ol { padding-left:20px; }
