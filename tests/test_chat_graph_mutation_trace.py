@@ -20,11 +20,13 @@ class StaticGraphMutationStudy(unittest.TestCase):
         self.assertFalse(d["backend_schema_verified"])
         self.assertFalse(d["live_graph_behavior_verified"])
         self.assertEqual(len(d["source_modules"]),4)
-        self.assertEqual(len(d["verified_source_call_sequence"]),9)
-        self.assertEqual(len(d["graph_operations"]),11)
+        self.assertEqual(len(d["verified_source_call_sequence"]),11)
+        self.assertEqual(len(d["graph_operations"]),12)
         self.assertTrue(d["not_verified"])
         projections=d["state_commit_observation"]["projected_state_roles"]
-        self.assertIn("visible_selected_path_messages",projections)
+        self.assertIn("selected_path_automation_references",projections)
+        self.assertIn("selected_path_page_references",projections)
+        self.assertNotIn("visible_selected_path_messages",projections)
         self.assertIn("selected_user_message_ancestry",projections)
         self.assertEqual(d["state_commit_observation"]["evidence_class"],"observed_static")
         self.assertEqual(set(d["mapping_transformer_results"]),{
