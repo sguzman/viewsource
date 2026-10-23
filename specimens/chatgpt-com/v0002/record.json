@@ -11000,6 +11000,16 @@
         "evidence_ref": "E2-094",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-095",
+      "statement": "The captured completion-stream client classifies HTTP/network/other errors, evaluates resume eligibility through an imported retryability predicate, schedules cancellable delayed resume attempts, reports attempt/offset/recovery states, and supports conditional request-to-WebSocket topic handoff. Captured fallback configuration includes 12 maximum resume retries, 300–5000 ms retry delays with 1.5 backoff, and 5/30-second WebSocket idle timeout defaults; dynamic settings can override these values. No live retry, successful transport, or server guarantees were observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-095",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
