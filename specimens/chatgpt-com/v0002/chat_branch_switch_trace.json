@@ -57,6 +57,16 @@
   ],
   "relationships": [
     {
+      "from": "eligible_response_variants",
+      "to": "response_variant_navigation",
+      "kind": "derived_variant_index"
+    },
+    {
+      "from": "selected_conversation_mapping",
+      "to": "eligible_response_variants",
+      "kind": "prompt_ancestry_and_child_filter"
+    },
+    {
       "from": "response_variant_navigation",
       "to": "selected_variant_identity",
       "kind": "bounded_variant_index_lookup"
@@ -108,7 +118,41 @@
     "The mapping lookup may choose a descendant of a response variant; variant identity and final selected current node need not always coincide.",
     "An optimistic client update can temporarily affect rendering before a server confirms the request.",
     "Displayed response-version controls are subject to client gates and might not appear for all accounts or conversations.",
-    "This source-level trace does not establish actual button clicks, server acknowledgement, durable persistence or a complete deployed API protocol."
+    "This source-level trace does not establish actual button clicks, server acknowledgement, durable persistence or a complete deployed API protocol.",
+    "The raw number of prompt children and the filtered selectable response variants are different quantities; the UI uses the filtered list."
   ],
-  "privacy": "Only authored summaries, technical operation labels and capture-local resource ordinals are published; no original request path, full source snippet, user message, account token or identity is included."
+  "privacy": "Only authored summaries, technical operation labels and capture-local resource ordinals are published; no original request path, full source snippet, user message, account token or identity is included.",
+  "variant_derivation": {
+    "source_ref": "R-JS-018",
+    "evidence_class": "observed_static",
+    "steps": [
+      {
+        "id": "resolve_selected_response",
+        "behavior": "The branch selector starts from a candidate response identity and looks up its message in the current conversation mapping; missing or ineligible messages can suppress variant controls."
+      },
+      {
+        "id": "walk_to_user_prompt",
+        "behavior": "It follows mapping parent links with a visited-set guard to locate a qualifying earlier prompt message."
+      },
+      {
+        "id": "enumerate_prompt_children",
+        "behavior": "It obtains the prompt mapping node's child identities as raw candidates for alternate response branches."
+      },
+      {
+        "id": "screen_candidate_children",
+        "behavior": "It evaluates candidate descendants and presentation/eligibility guards to produce a filtered list of selectable variant identities. This can differ from the prompt's raw child count."
+      },
+      {
+        "id": "derive_active_variant_index",
+        "behavior": "It computes the active index as the first selectable variant that lies on the selected response's ancestry path; the index may be unavailable when no candidate matches."
+      }
+    ],
+    "source_output_roles": [
+      "prompt_identity",
+      "raw_child_variant_count",
+      "eligible_variant_identities",
+      "active_variant_index"
+    ],
+    "limits": "The captured selector computes eligible response versions from a graph, not a guaranteed list of every persisted child. Exact acceptance of each model/tool subtype remains governed by additional predicates."
+  }
 }
