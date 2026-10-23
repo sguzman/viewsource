@@ -112,36 +112,95 @@ function scanScopedRequiredSlots(fn,requireName,required){
  walk(fn.body,env);
 }
 
-function scanModuleSignatures(fn,requireName,exportName){
- const exported=new Set(),required=new Map();
- const stack=[fn.body];
- while(stack.length){
-  const n=stack.pop();
-  if(!n||typeof n!=="object")continue;
-  if(exportName&&n.type==="AssignmentExpression"){
-   const slot=memberOf(n.left,exportName);
-   if(slot)exported.add(slot);
-  }
-  if(requireName&&n.type==="CallExpression"
-      &&n.callee?.type==="MemberExpression"
-      &&memberOf(n.callee,requireName)==="d"
-      &&n.arguments[0]?.type==="Identifier"
-      &&n.arguments[0].name===exportName
-      &&n.arguments[1]?.type==="ObjectExpression"){
-   for(const prop of n.arguments[1].properties){
-    const slot=keyName(prop.key);if(slot)exported.add(slot);
-   }
-  }
-  for(const [k,v] of Object.entries(n)){
-   if(["start","end","loc","raw"].includes(k))continue;
-   if(Array.isArray(v)){
-    for(const c of v)if(c&&typeof c==="object")stack.push(c);
-   }else if(v&&typeof v==="object")stack.push(v);
+/* Export signatures are inferred only where the bundle factory export
+ * parameter and loader have not been shadowed or reassigned. Computed export
+ * keys are excluded unless their property keys are literal constants. */
+function scanScopedExports(fn,requireName,exportName){
+ const slots=new Set(),exportToken=Symbol("factory_exports"),
+  loaderToken=Symbol("factory_require");
+ if(!exportName)return slots;
+ function neutralize(pattern,env){
+  if(!pattern)return;
+  if(pattern.type==="Identifier"){
+   if(pattern.name===exportName||pattern.name===requireName)
+    env.set(pattern.name,null);
+  }else if(pattern.type==="RestElement"||pattern.type==="AssignmentPattern"){
+   neutralize(pattern.argument||pattern.left,env);
+  }else if(pattern.type==="ArrayPattern"){
+   for(const part of pattern.elements)neutralize(part,env);
+  }else if(pattern.type==="ObjectPattern"){
+   for(const prop of pattern.properties)
+    neutralize(prop.type==="RestElement"?prop.argument:prop.value,env);
   }
  }
+ function scan(node,env){
+  if(!node||typeof node!=="object")return;
+  if(node.type==="BlockStatement"){
+   const local=new Map(env);
+   for(const stmt of node.body){
+    if(stmt.type==="VariableDeclaration")
+     for(const decl of stmt.declarations)neutralize(decl.id,local);
+    if((stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")&&stmt.id)
+     neutralize(stmt.id,local);
+   }
+   for(const stmt of node.body)scan(stmt,local);
+   return;
+  }
+  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type)){
+   const nested=new Map(env);
+   neutralize(node.id,nested);
+   for(const param of node.params||[])neutralize(param,nested);
+   scan(node.body,nested);
+   return;
+  }
+  if(node.type==="VariableDeclaration"){
+   for(const decl of node.declarations){
+    scan(decl.init,env);
+    neutralize(decl.id,env);
+   }
+   return;
+  }
+  if(node.type==="AssignmentExpression"){
+   if(node.left?.type==="MemberExpression"&&env.get(exportName)===exportToken){
+    const slot=memberOf(node.left,exportName);
+    if(slot)slots.add(slot);
+   }
+   if(node.left?.type==="Identifier")neutralize(node.left,env);
+  }
+  if(node.type==="CallExpression"&&requireName&&
+     env.get(requireName)===loaderToken&&env.get(exportName)===exportToken&&
+     memberOf(node.callee,requireName)==="d"&&
+     node.arguments[0]?.type==="Identifier"&&
+     node.arguments[0].name===exportName&&
+     node.arguments[1]?.type==="ObjectExpression"){
+   for(const prop of node.arguments[1].properties){
+    if(prop.type!=="Property"||(prop.computed&&prop.key?.type!=="Literal"))
+     continue;
+    const slot=keyName(prop.key);
+    if(slot)slots.add(slot);
+   }
+  }
+  for(const [k,v] of Object.entries(node)){
+   if(["start","end","loc","raw"].includes(k))continue;
+   if(Array.isArray(v)){
+    for(const child of v)if(child&&typeof child==="object")scan(child,env);
+   }else if(v&&typeof v==="object")scan(v,env);
+  }
+ }
+ const initial=new Map();
+ for(const param of fn.params||[])neutralize(param,initial);
+ if(fn.params?.[1]?.type==="Identifier"&&fn.params[1].name===exportName)
+  initial.set(exportName,exportToken);
+ if(requireName&&fn.params?.[2]?.type==="Identifier"&&fn.params[2].name===requireName)
+  initial.set(requireName,loaderToken);
+ scan(fn.body,initial);
+ return slots;
+}
+function scanModuleSignatures(fn,requireName,exportName){
+ const exported=scanScopedExports(fn,requireName,exportName),required=new Map();
  scanScopedRequiredSlots(fn,requireName,required);
  return {exportedSlots:[...exported],
-   requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
+  requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
 }
 
 /* Very conservative startup syntax: only direct, top-level webpack calls
@@ -537,6 +596,25 @@ function selfTest(){
   "Factory:(function(e,t,n){const lazy=()=>n('Link')}),"+
   "Link:(function(e,t,n){t.x=1})};",8);
  assert.equal(buildGraph(captureNested,1,0).unique_resolved_links,1);
+ const scopedExport="export const __webpack_modules__={"+
+  "Caller:(function(e,t,n){const x=n('Q');x.h()}),"+
+  "Q:(function(e,t,n){function fake(t){t.h=1;}t.x=1})};";
+ const otherExport="export const __webpack_modules__={Q:(function(e,t,n){t.y=1})};";
+ const scopedOutput=buildGraph([...analyzeJS(scopedExport,1),
+   ...analyzeJS(otherExport,2)],2,0);
+ assert.equal(scopedOutput.ambiguous_import_candidates,1);
+ assert.equal(scopedOutput.export_shape_candidate_count,0);
+ const trueExport="export const __webpack_modules__={"+
+  "Caller:(function(e,t,n){const x=n('Q');x.h()}),"+
+  "Q:(function(e,t,n){t.h=()=>1})};";
+ const trueOutput=buildGraph([...analyzeJS(trueExport,1),
+   ...analyzeJS(otherExport,2)],2,0);
+ assert.equal(trueOutput.export_shape_candidate_count,1);
+ const computedExport="export const __webpack_modules__={"+
+  "Caller:(function(e,t,n){const x=n('Q');x.h()}),"+
+  "Q:(function(e,t,n){n.d(t,{[someRuntimeValue]:()=>1})})};";
+ assert.equal(buildGraph([...analyzeJS(computedExport,1),
+   ...analyzeJS(otherExport,2)],2,0).export_shape_candidate_count,0);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

@@ -396,6 +396,27 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "one.js","two.js"):
                 self.assertNotIn(private,result.stdout)
 
+    def test_shadowed_export_target_does_not_break_registry_key_ambiguity(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-export-shadow.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js", "export const __webpack_modules__={"
+                    "Caller:(function(e,t,n){const x=n('Duplicate');x.h()}),"
+                    "Duplicate:(function(e,t,n){function fake(t){t.h=1}t.x=1})};")
+                z.writestr("b.js", "export const __webpack_modules__={"
+                    "Duplicate:(function(e,t,n){t.y=1})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["ambiguous_import_candidates"], 1)
+            self.assertEqual(data["export_shape_candidate_count"], 0)
+            for item in ("Caller", "Duplicate", "synthetic-export-shadow.zip"):
+                self.assertNotIn(item, proc.stdout)
+
     def test_nested_parameter_shadowing_cannot_create_module_edge(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-shadowed-loader.zip"

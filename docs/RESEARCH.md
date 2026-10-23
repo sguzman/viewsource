@@ -338,3 +338,11 @@ distinguish the actual bundled module-factory loader parameter from a nested
 function argument that merely reuses the same name. A shadowed parameter must
 not create a candidate dependency on the factory loader. This rejects false
 static edges in minified code but cannot prove that any accepted edge executed.
+
+### Scoped export inference and ambiguous short module IDs
+
+A duplicate module registry key can be disambiguated by its required export
+slots only as an unverified lead. Export inference now excludes assignments
+and helper registrations that refer to a shadowed or reassigned factory export
+parameter, and ignores nonliteral computed export keys. A unique candidate
+does not change ambiguity counters or become evidence of module execution.
