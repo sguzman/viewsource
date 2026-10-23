@@ -27,6 +27,11 @@ class ViewportTraceTests(unittest.TestCase):
             {("R-JS-066",9),("R-JS-066",14),("R-JS-072",13),("R-JS-072",14)}
         )
         self.assertTrue(d["module_ordinal_contract"])
+        reconciliation=d["selected_branch_window_reconciliation"]
+        self.assertEqual([x["source_ref"] for x in reconciliation["stages"]],
+                         ["R-JS-018","R-JS-072","R-JS-066","R-JS-066"])
+        self.assertFalse(reconciliation["runtime_effect_verified"])
+        self.assertEqual(len(reconciliation["limits"]),3)
         self.assertTrue(d["still_unverified"])
         ids=[row["id"] for row in d["windowing_rules"]]
         self.assertEqual(len(ids),len(set(ids)))
