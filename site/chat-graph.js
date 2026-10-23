@@ -158,7 +158,41 @@ window.ViewsourceChatGraph = (() => {
       eligibility.append(rules,element("p","graph-caption",
         recovery.preparation_error_eligibility.scope+" "+
         recovery.preparation_error_eligibility.limits));
-      block.append(eligibility);section.append(block);
+      block.append(eligibility);
+      const resume=element("details","chat-recovery-resume-source");
+      resume.append(element("summary","","Resolved stream-resume retry and recoverability rules"),
+        element("p","graph-caption",
+          recovery.stream_resume_module.caller+" → "+
+          recovery.stream_resume_module.target+
+          ": "+recovery.stream_resume_module.compatible_exports+
+          " compatible export interface among "+
+          recovery.stream_resume_module.definitions+
+          " colliding registry definitions."));
+      const statusRules=element("ul","");
+      statusRules.append(element("li","",
+        "Automatic resume HTTP candidates: "+
+        recovery.stream_resume_predicates.retry_statuses.join(", ")+
+        " (network errors are separately eligible)."));
+      statusRules.append(element("li","",
+        "Recoverable callback: excludes HTTP statuses "+
+        recovery.stream_resume_predicates.recoverable_excluded_statuses.join(", ")+
+        " and selected terminal conversation codes."));
+      statusRules.append(element("li","",
+        "Preparation is a different predicate: "+
+        recovery.stream_resume_predicates.contrast));
+      resume.append(statusRules,element("p","graph-caption",
+        recovery.stream_resume_module.caveat));
+      block.append(resume);
+      const resumeState=element("details","chat-recovery-resume-state");
+      resumeState.append(element("summary","","Resume tokens, offsets and backoff guards"));
+      const guardList=element("ul","");
+      recovery.stream_resume_state.guards.forEach(item=>guardList.append(
+        element("li","",item)));
+      resumeState.append(
+        element("p","",recovery.stream_resume_state.token_behavior),
+        element("p","",recovery.stream_resume_state.offset_behavior),guardList,
+        element("p","graph-caption",recovery.stream_resume_state.limits));
+      block.append(resumeState);section.append(block);
     }
     const lifecycle=record.visuals?.chat_end_to_end_trace;
     if(lifecycle){
