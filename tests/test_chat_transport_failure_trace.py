@@ -13,8 +13,8 @@ class TransportFailureTraceTests(unittest.TestCase):
   self.assertEqual((d["specimen_id"],d["version"]),("chatgpt-com",2))
   self.assertFalse(d["live_failure_observed"])
   self.assertFalse(d["server_retry_semantics_verified"])
-  self.assertEqual(len(d["observations"]),10)
-  self.assertEqual(len(d["reviewed_relationships"]),11)
+  self.assertEqual(len(d["observations"]),12)
+  self.assertEqual(len(d["reviewed_relationships"]),14)
   self.assertEqual(d["captured_default_fallbacks"]["max_resume_retry_count"],12)
   self.assertEqual(d["captured_default_fallbacks"]["min_resume_retry_delay_ms"],300)
   self.assertEqual(d["captured_default_fallbacks"]["max_resume_retry_delay_ms"],5000)
@@ -39,6 +39,21 @@ class TransportFailureTraceTests(unittest.TestCase):
   self.assertEqual(len(predicate["decision_order"]),6)
   self.assertFalse(d["live_failure_observed"])
   self.assertIn("separately",predicate["scope"])
+  resolved=d["stream_resume_module_resolution"]
+  self.assertEqual((resolved["caller_resource"],resolved["matched_resource"]),("R-JS-018","R-JS-004"))
+  self.assertEqual(resolved["duplicate_short_registry_ids_in_saved_assets"],2)
+  self.assertEqual(resolved["compatible_export_interfaces"],1)
+  self.assertFalse(d["live_failure_observed"])
+  resume=d["stream_resume_error_predicates"]
+  self.assertEqual(resume["automatic_retry"]["http_status_allowlist"],[408,409,425,429,502,504])
+  self.assertNotIn(429,predicate["typed_status_allowlist"])
+  self.assertEqual(resume["recoverable_callback"]["excluded_http_statuses"],[403])
+  state=d["stream_resume_state_invariants"]
+  self.assertEqual(state["retry_backoff"]["random_multiplier_lower_inclusive"],0.5)
+  self.assertEqual(state["retry_backoff"]["random_multiplier_upper_exclusive"],1)
+  self.assertEqual(state["retry_backoff"]["manual_retry_delay_ms"],0)
+  self.assertEqual(state["default_parameters"]["max_retry_count"],12)
+  self.assertEqual(len(state["retry_gates"]),7)
  def test_nonpublication(self):
   s=PATH.read_text("utf8").lower()
   for forbidden in ("http://","https://",".js","session_token","bearer ",
