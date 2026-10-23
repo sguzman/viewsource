@@ -158,7 +158,6 @@ function scanScopedRequiredSlots(fn,requireName,required){
    if(node.type==="ForStatement"){
     walk(node.init,loop);
     walk(node.test,loop);
-    walk(node.update,loop);
    }else{
     // for...of/in assigns to its left-hand target. A mutation of
     // imported.foo cannot establish foo as an original export.
@@ -178,6 +177,8 @@ function scanScopedRequiredSlots(fn,requireName,required){
     for(const id of assigned)if(loop.has(id))loop.set(id,null);
    }
    walk(node.body,loop);
+   // A for-loop body executes before its update expression.
+   if(node.type==="ForStatement")walk(node.update,loop);
    invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
   }
@@ -344,7 +345,6 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    if(node.type==="ForStatement"){
     scan(node.init,loop);
     scan(node.test,loop);
-    scan(node.update,loop);
    }else{
     scan(node.left,loop);
     scan(node.right,loop);
@@ -361,6 +361,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
     for(const id of assigned)if(loop.has(id))loop.set(id,null);
    }
    scan(node.body,loop);
+   if(node.type==="ForStatement")scan(node.update,loop);
    invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
   }
@@ -560,8 +561,8 @@ function bootstrapCalls(ast,sourceOrdinal) {
     walk(node.discriminant,env);
     for(const branch of node.cases)for(const stmt of branch.consequent)walk(stmt,scope);
    }else if(node.type==="ForStatement"){
-    walk(node.init,scope);walk(node.test,scope);walk(node.update,scope);
-    walk(node.body,scope);
+    walk(node.init,scope);walk(node.test,scope);walk(node.body,scope);
+    walk(node.update,scope);
    }else{
     walk(node.right,scope);
     if(node.left?.type==="VariableDeclaration"){
@@ -694,7 +695,6 @@ function scanScopedModuleCalls(fn,requireName){
    if(node.type==="ForStatement"){
     walk(node.init,loop);
     walk(node.test,loop);
-    walk(node.update,loop);
    }else{
     walk(node.left,loop);
     walk(node.right,loop);
@@ -711,6 +711,8 @@ function scanScopedModuleCalls(fn,requireName){
     for(const id of assigned)if(loop.has(id))loop.set(id,null);
    }
    walk(node.body,loop);
+   // A for-loop body executes before its update expression.
+   if(node.type==="ForStatement")walk(node.update,loop);
    invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
   }
@@ -1763,6 +1765,29 @@ function selfTest(){
    ...optionalOwners],3,0);
  assert.equal(requiredGraph.export_shape_candidate_count,1);
  assert.equal(requiredGraph.export_shape_candidates[0].to_ref,"R-JS-097");
+ const loopOrder=analyzeJS("export const __webpack_modules__={"+
+  "Imports:(function(e,t,n){for(let i=0;i<1;n=()=>1){n('Goal')}n('Later')}),"+
+  "Exports:(function(e,t,n){for(let i=0;i<1;t={}){t.handler=()=>1}"+
+  "t.later=()=>1}),Goal:(function(e,t){t.ok=1})};",98);
+ const loopOrderGraph=buildGraph(loopOrder,1,0);
+ assert.equal(loopOrderGraph.import_candidates,1);
+ assert.equal(loopOrderGraph.unique_resolved_links,1);
+ assert.equal(loopOrderGraph.resolved_links[0].from_module,1);
+ assert.equal(loopOrderGraph.direct_function_export_site_count,1);
+ const loopRequiredA=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){for(let i=0;i<1;n=()=>1){"+
+  "const x=n('Choice');x.ready()}}),"+
+  "Choice:(function(e,t,n){t.ready=()=>1})};",99);
+ const loopRequiredB=analyzeJS("export const __webpack_modules__={"+
+  "Choice:(function(e,t,n){t.other=()=>1})};",100);
+ const loopRequiredGraph=buildGraph([...loopRequiredA,...loopRequiredB],2,0);
+ assert.equal(loopRequiredGraph.ambiguous_import_candidates,1);
+ assert.equal(loopRequiredGraph.export_shape_candidate_count,1);
+ assert.equal(loopRequiredGraph.export_shape_candidates[0].to_ref,"R-JS-099");
+ const loopBootstrap=analyzeJS("export const __webpack_modules__={"+
+  "Boot:function(){}};for(let i=0;i<1;__webpack_require__=()=>1){"+
+  "__webpack_require__('Boot')}__webpack_require__('After');",101);
+ assert.equal(loopBootstrap.bootstrapCandidates.length,1);
 
 }
 if(require.main===module){
