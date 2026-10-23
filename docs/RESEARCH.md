@@ -672,3 +672,14 @@ function-valued property assignments, while retaining a direct
 whole-module callable assignment if its right-hand side is a function.
 This prevents an obsolete alias from falsely disambiguating duplicate
 module keys; execution and final runtime ownership remain unverified.
+
+### Scope-aware top-level startup leads
+
+A literal `__webpack_require__(key)` call is only a candidate bootstrap
+when the referenced identifier still denotes the presumed top-level
+loader. The scanner now conservatively invalidates that identity after
+possible reassignment and does not count calls made through locally
+shadowed bindings, including immediate-function parameters and block
+declarations. A directly invoked wrapper without such a shadow may
+still supply a static lead. Deferred function bodies do not qualify.
+These are syntax classifications, not observed browser startup events.
