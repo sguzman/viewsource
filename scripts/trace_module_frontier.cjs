@@ -215,20 +215,23 @@ function selfTest() {
 }
 function main(argv) {
   if(argv.length===1&&argv[0]==="--self-test"){selfTest();console.log("Synthetic module frontier passed");return;}
-  let input=null,roots=[],depthLimit=6,nodeLimit=2000,seedBootstrap=false;
+  let input=null,roots=[],depthLimit=6,nodeLimit=2000,seedBootstrap=false,fromStdin=false;
   for(let i=0;i<argv.length;i++){
     const arg=argv[i];
     if(arg==="--input")input=argv[++i];
+    else if(arg==="--stdin")fromStdin=true;
     else if(arg==="--root")roots.push(argv[++i]);
     else if(arg==="--bootstrap-candidates")seedBootstrap=true;
     else if(arg==="--max-depth")depthLimit=Number(argv[++i]);
     else if(arg==="--max-nodes")nodeLimit=Number(argv[++i]);
     else throw Error("Invalid argument");
   }
-  if(typeof input!=="string"||!input||(!seedBootstrap&&!roots.length)||
-     (seedBootstrap&&roots.length))throw Error("Missing or conflicting roots");
-  if(fs.statSync(input).size>MAX_BYTES)throw Error("Graph too large");
-  const graph=JSON.parse(fs.readFileSync(input,"utf8"));
+  if((!!input===fromStdin)||(!seedBootstrap&&!roots.length)||
+     (seedBootstrap&&roots.length))throw Error("Missing or conflicting input/roots");
+  if(input&&fs.statSync(input).size>MAX_BYTES)throw Error("Graph too large");
+  const json=fs.readFileSync(fromStdin?0:input,"utf8");
+  if(Buffer.byteLength(json,"utf8")>MAX_BYTES)throw Error("Graph too large");
+  const graph=JSON.parse(json);
   const seeds=seedBootstrap?candidateBootstrapRoots(graph):roots;
   const output=frontier(graph,seeds,{depthLimit,nodeLimit,
     rootSource:seedBootstrap?"bootstrap_syntax_candidate":"explicit_ordinal_selection"});
