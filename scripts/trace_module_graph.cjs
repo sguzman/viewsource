@@ -644,12 +644,15 @@ function analyzeJS(source,sourceOrdinal){
       ...x,domain:"unscoped",bootstrap_kind:"top_level_literal_call_candidate"
     })),...chunkRuntimeEntrypoints(ast,sourceOrdinal)],enumerable:false});
  for(let i=0;i<entries.length;i++){
-  const {property,domain}=entries[i],identifier=keyName(property.key),
+  const {property,domain}=entries[i],
+   unresolvedComputedKey=property.computed&&moduleKey(property.key)===null,
+   identifier=unresolvedComputedKey?null:keyName(property.key),
    fn=property.value;
-  if(!identifier||!["FunctionExpression","ArrowFunctionExpression"].includes(fn?.type)){
+  if(!["FunctionExpression","ArrowFunctionExpression"].includes(fn?.type)){
    result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,
     imports:[],literalCallExpressions:0,eligible:false,
-    registry_factory_candidate:false});continue;
+    registry_factory_candidate:false,
+    unresolved_computed_registry_key:!!unresolvedComputedKey});continue;
   }
   const requireParam=fn.params?.[2];
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
@@ -662,6 +665,7 @@ function analyzeJS(source,sourceOrdinal){
     literalCallExpressions:scopeCalls.literalCallCount,imports:[...imports],
     boundImports:[...boundImports],
     eligible:!!requireName,registry_factory_candidate:true,
+    unresolved_computed_registry_key:!!unresolvedComputedKey,
     exportedSlots:signatures.exportedSlots,
     directFunctionExports:signatures.directFunctionExports,
     requiredByImport:signatures.requiredByImport,
@@ -840,6 +844,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   modules_total:all.length,
   registry_nonfactory_entry_count:
    all.filter(item=>item.registry_factory_candidate===false).length,
+  registry_unresolved_computed_key_count:
+   all.filter(item=>item.unresolved_computed_registry_key).length,
   modules_with_import_parameter:all.filter(x=>x.eligible).length,
   import_candidates:candidateCalls,unique_resolved_links:links.length,
   literal_module_loader_call_expression_count:
@@ -873,6 +879,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Standalone __webpack_modules__ declarations have unknown runtime identity and share an unscoped provisional group.",
    "Foreign registry key collisions are unresolved diagnostics only and do not establish any imported target.",
    "Unresolved import site ordinals are source-review leads; neither missing nor ambiguous candidate calls are verified at runtime.",
+   "Registry entries with computed nonliteral keys remain anonymous factories and are not resolved by identifier spelling.",
    "Registry object entries without callable function factories are counted but excluded as resolvable targets.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "Direct functions on export objects or module.exports assignments are source syntax candidates; getter and alias ownership remain unresolved.",
@@ -1169,6 +1176,17 @@ function selfTest(){
   "Q:(function(e,t,n){t.foo=()=>1})};",45);
  const readGraph=buildGraph([...readOnly,...otherQ],2,0);
  assert.equal(readGraph.export_shape_candidate_count,1);
+ const computedTable=analyzeJS("export const __webpack_modules__={"+
+  "Consumer:(function(e,t,n){n('HiddenDynamicKey');n(987654321)}),"+
+  "[HiddenDynamicKey]:(function(e,t,n){n(987654321)}),"+
+  "[987654321]:(function(e,t){t.a=1})};",46);
+ const computedResult=buildGraph(computedTable,1,0);
+ assert.equal(computedResult.registry_unresolved_computed_key_count,1);
+ assert.equal(computedResult.registry_nonfactory_entry_count,0);
+ assert.equal(computedResult.modules_total,3);
+ assert.equal(computedResult.unique_resolved_links,2);
+ assert.equal(computedResult.unresolved_import_candidates,1);
+ assert(!JSON.stringify(computedResult).includes("HiddenDynamicKey"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

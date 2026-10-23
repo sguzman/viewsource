@@ -593,3 +593,14 @@ destructuring assignments. These are write targets, not evidence
 that the imported module originally defined those properties.
 The AST analyzer deliberately prefers an unresolved candidate
 over an incorrect unique registry-key match.
+
+### Computed nonliteral registry keys
+
+A registry object property keyed by a runtime expression, such as
+a computed identifier, must not be mistaken for a literal module ID.
+The analyzer preserves such callable factories under their anonymous
+source/module ordinals, counts them as unresolved computed registry
+keys, and still scans their internal candidate imports. It will not
+use the computed key's source spelling to resolve an import.
+String and integer literal computed keys remain valid registry IDs.
+An unresolved property-key expression provides no observed runtime ID.

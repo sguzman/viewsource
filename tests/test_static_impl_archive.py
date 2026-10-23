@@ -441,6 +441,34 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for item in ("One", "Two", sentinel, "invented-commonjs-exports.zip"):
                 self.assertNotIn(item, proc.stdout)
 
+    def test_computed_registry_identifier_is_not_literal_module_target(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-computed-registry.zip"
+            key = "PrivateComputedModuleKeyZ951"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Caller:(function(e,t,n){n('" + key + "');n(987654321)}),"
+                    "[" + key + "]:(function(e,t,n){n(987654321)}),"
+                    "[987654321]:(function(e,t){t.a=1})};")
+            for mode in (["--module-trace"],
+                         ["--module-frontier", "--root", "R-JS-001:1"]):
+                proc = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *mode],
+                    cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+                self.assertEqual(proc.returncode, 0)
+                report = json.loads(proc.stdout)
+                self.assertEqual(report["registry_unresolved_computed_key_count"], 1)
+                self.assertEqual(report["registry_nonfactory_entry_count"], 0)
+                if mode[0] == "--module-trace":
+                    self.assertEqual(report["unique_resolved_links"], 2)
+                    self.assertEqual(report["unresolved_import_candidates"], 1)
+                else:
+                    self.assertEqual(report["reached_module_count"], 2)
+                    self.assertEqual(report["reachable_unresolved_import_count"], 1)
+                for private in (key, "Caller", "invented-computed-registry.zip"):
+                    self.assertNotIn(private, proc.stdout)
+
     def test_nonfunction_registry_entry_is_not_an_import_target(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-nonfactory.zip"

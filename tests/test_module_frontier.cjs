@@ -337,3 +337,14 @@ test("nonfactory source entry census rejects impossible values",()=>{
  g.registry_nonfactory_entry_count="PrivateNonFactory";
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("computed registry key coverage count is bounded and anonymous",()=>{
+ const graphData=graph();
+ graphData.modules_total=5;
+ graphData.registry_unresolved_computed_key_count=2;
+ assert.equal(frontier(graphData,["R-JS-001:1"]).registry_unresolved_computed_key_count,2);
+ graphData.registry_unresolved_computed_key_count=9;
+ assert.throws(()=>frontier(graphData,["R-JS-001:1"]));
+ graphData.registry_unresolved_computed_key_count="computedPrivateKey";
+ assert.throws(()=>frontier(graphData,["R-JS-001:1"]));
+});
