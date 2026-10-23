@@ -19,6 +19,7 @@ jobs:
           node scripts/static_ast_probe.cjs --self-test
           node scripts/trace_chat_impl.cjs --self-test
           node scripts/trace_stream_impl.cjs --self-test
+          node scripts/trace_selector_impl.cjs --self-test
           python3 -m unittest discover -s tests -p test_static_impl_archive.py -v
       - name: Check atlas JavaScript syntax
         run: |
