@@ -55,8 +55,8 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
             source_queue = current["visuals"]["static_source_queue"]
             self.assertEqual(source_queue["task_count"], 33)
-            self.assertEqual(source_queue["task_statuses"]["queued"], 23)
-            self.assertEqual(source_queue["task_statuses"]["in_progress"], 10)
+            self.assertEqual(source_queue["task_statuses"]["queued"], 22)
+            self.assertEqual(source_queue["task_statuses"]["in_progress"], 11)
             self.assertEqual(len(source_queue["tasks"]), 33)
             branch = current["visuals"]["chat_branch_switch"]
             self.assertFalse(branch["live_selection_verified"])
@@ -65,6 +65,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(branch["variant_derivation"]),5)
             self.assertEqual(branch["render_recomputation_link"]["source_ref"],"R-JS-072")
             self.assertEqual(set(branch["source_resources"]),{"R-JS-018","R-JS-069"})
+            edit = current["visuals"]["chat_edit_submission_trace"]
+            self.assertFalse(edit["source_executed"])
+            self.assertEqual(set(edit["source_refs"]),{"R-JS-069","R-JS-072"})
+            self.assertEqual(len(edit["stages"]),9)
+            self.assertTrue(edit["unverified"])
             selection = current["visuals"]["chat_selection_copy_trace"]
             self.assertFalse(selection["verified_runtime"])
             self.assertFalse(selection["verified_clipboard"])
@@ -135,7 +140,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 88)
+            self.assertEqual(len(current["findings"]), 89)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
