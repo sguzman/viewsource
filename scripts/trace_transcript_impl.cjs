@@ -12,7 +12,8 @@ const CLASSES=[
  "render_turn_derivation","pending_turn_preparation","first_user_item_filter",
  "typed_turn_renderer","message_dom_identity_wrapper","alternate_selected_render",
  "response_variant_navigation","response_selection_request",
- "eligible_variant_derivation"
+ "eligible_variant_derivation","selected_markdown_range_validation",
+ "code_block_copy_recovery"
 ];
 function name(node){
  if(!node)return null;
@@ -26,7 +27,8 @@ function member(node){
  return name(node.property);
 }
 function profile(fn){
- const keys=new Set(),reads=new Set(),literals=new Set(),calls=new Set();
+ const keys=new Set(),reads=new Set(),literals=new Set(),calls=new Set(),
+       literalMarkers=new Set(),constructors=new Set();
  const stack=[fn.body];
  while(stack.length){
   const n=stack.pop();
@@ -40,7 +42,11 @@ function profile(fn){
   if(n.type==="Literal"&&typeof n.value==="string"){
    if(["user-message","assistant-message","Previous response","Next response"].includes(n.value))
     literals.add(n.value);
+   for(const marker of ["data-markdown-text-style","data-chatgpt-selection-message-id","data-markdown-copy"])
+    if(n.value.includes(marker))literalMarkers.add(marker);
   }
+  if(n.type==="NewExpression"&&n.callee?.type==="Identifier")
+   constructors.add(n.callee.name);
   if(n.type==="CallExpression"){
    const key=member(n.callee);if(key)calls.add(key);
   }
@@ -74,6 +80,12 @@ function profile(fn){
  if(has(keys,"rawVariantCount","variantIds","activeVariantIndex")&&
     has(reads,"parent","children")&&calls.has("findIndex"))
    matches.push("eligible_variant_derivation");
+ if(has(literalMarkers,"data-markdown-text-style","data-chatgpt-selection-message-id","data-markdown-copy")&&
+    has(calls,"closest","intersectsNode"))
+   matches.push("selected_markdown_range_validation");
+ if(has(reads,"copyLastCodeBlock","codeBlockIndex")&&
+    constructors.has("AbortController")&&calls.has("abort"))
+   matches.push("code_block_copy_recovery");
  return matches;
 }
 function inspect(text,ordinal){
@@ -144,10 +156,12 @@ function selfTest(){
  "function variants(e){return e.variantIds[e.activeVariantIndex]+'Previous response'+'Next response'}",
  "function persist(e){return API.safePatch('fictional',{requestBody:{current_node_id:e.id}})}",
  "function eligible(x){let p=x.parent,c=x.children;return {rawVariantCount:c.length,variantIds:c,activeVariantIndex:c.findIndex(Boolean)}}",
+ "function selection(x){const markdown='[data-markdown-text-style=assistant-message]';const key='data-chatgpt-selection-message-id';const skip='[data-markdown-copy=exclude]';return x.closest(markdown)&&x.intersectsNode(skip)&&key}",
+ "function copy(x){const a=new AbortController();if(x.copyLastCodeBlock&&x.codeBlockIndex)return a.abort()}",
  "const privateText='SYNTHETIC_PRIVATE_MESSAGE_DO_NOT_PUBLISH'"
  ].join(";");
  const d=inspect(synthetic,1);
- assert.equal(d.function_nodes,12); // includes the inline callback arrows
+ assert.equal(d.function_nodes,14); // includes the inline callback arrows
  for(const term of CLASSES)
   assert(d.matches.some(x=>x.pattern===term),term);
  assert(!JSON.stringify(d).includes("SYNTHETIC_PRIVATE_MESSAGE"));
