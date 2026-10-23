@@ -138,6 +138,9 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                     "+'Previous response'+'Next response'}"
                     "function persist(x){return API.safePatch('fictional',"
                     "{requestBody:{current_node_id:x.id}})}"
+                    "function eligible(x){let p=x.parent,c=x.children;"
+                    "return {rawVariantCount:c.length,variantIds:c,"
+                    "activeVariantIndex:c.findIndex(Boolean)}}"
                     "const secret='" + sentinel + "';")
             result = subprocess.run(
                 ["python3", str(ROOT / "scripts/trace_static_archive.py"),
@@ -149,7 +152,8 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertEqual(report["failed_bundles"], 0)
             for pattern in ("render_turn_derivation", "pending_turn_preparation",
                             "first_user_item_filter", "message_dom_identity_wrapper",
-                            "response_variant_navigation","response_selection_request"):
+                            "response_variant_navigation","response_selection_request",
+                            "eligible_variant_derivation"):
                 self.assertEqual(report["pattern_counts"][pattern], 1)
             self.assertTrue(all(x["source_ref"]=="R-JS-001"
                                 and x["classification"]=="candidate_static_syntax"
