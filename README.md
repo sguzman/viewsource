@@ -134,3 +134,5 @@ response-spacer and input-cancellation code shapes from a private ZIP
 without executing source or publishing filenames. Intake already queues
 render-binding research automatically for every qualifying saved site;
 this new mode supplies a reusable source-first tool to investigate it.
+
+The [selection and code-copy study](specimens/chatgpt-com/v0002/chat_selection_copy_trace.json) adds source-level evidence E2-087 and E2-088 for scoped Markdown selection, excluded editable regions, and copy-last-code fallback/cancellation. These are guarded client implementation paths, not observed clipboard writes or live user interactions.
