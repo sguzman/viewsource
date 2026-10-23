@@ -444,3 +444,9 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-mutation-operation p,.chat-mutation-callpath { font-size:12px; line-height:1.65; }
 .chat-mutation-callpath summary { cursor:pointer; }
 .chat-mutation-callpath ol { padding-left:20px; }
+
+.chat-selector-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:9px; margin:13px 0; }
+.chat-selector-item { border:1px solid var(--line); background:var(--panel-2); border-radius:8px; padding:12px; min-width:0; }
+.chat-selector-item summary,.chat-selector-consumers summary { cursor:pointer; font-size:12px; font-weight:600; line-height:1.6; text-transform:capitalize; }
+.chat-selector-item p,.chat-selector-consumers { font-size:12px; line-height:1.65; }
+.chat-selector-consumers ul { padding-left:20px; }
