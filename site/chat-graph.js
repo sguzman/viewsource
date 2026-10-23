@@ -141,6 +141,18 @@ window.ViewsourceChatGraph = (() => {
           transcript.cross_module_call.source_ref+" → "+transcript.cross_module_call.target_ref+
           ". "+transcript.cross_module_call.boundary));
       block.append(moduleCall);
+      const rules=element("details","chat-transcript-rules");
+      rules.append(element("summary","","Reviewed presentation and filtering rules"));
+      const ruleList=element("div","chat-transcript-rule-list");
+      transcript.presentation_rules.forEach(rule=>{
+        const item=element("div","chat-transcript-rule");
+        item.append(element("strong","",rule.id.replaceAll("_"," ")),
+          element("p","",rule.description),
+          element("small","",rule.source_ref+" · "+rule.classification.replaceAll("_"," ")));
+        ruleList.append(item);
+      });
+      rules.append(ruleList,element("p","graph-caption",transcript.rule_limitations.join(" ")));
+      block.append(rules);
       const limits=element("details","chat-transcript-limits");
       limits.append(element("summary","","Still unresolved"));
       const questions=element("ul","");
