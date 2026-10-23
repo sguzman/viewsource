@@ -260,6 +260,15 @@ window.ViewsourceChatGraph = (() => {
       branchLink.append(stages,element("p","graph-caption",
         "Source-level composition only: an actual branch switch or scroll movement has not been observed."));
       block.append(branchLink);
+      const spacerLink=element("details","chat-viewport-spacer-link");
+      spacerLink.append(element("summary","","Composer → response spacer lifecycle"));
+      const spacerStages=element("ol","");
+      viewport.composer_spacer.stages.forEach(item=>{
+        spacerStages.append(element("li","",item.role+": "+item.behavior+" ("+item.source_ref+")"));
+      });
+      spacerLink.append(spacerStages,element("p","graph-caption",
+        viewport.composer_spacer.boundaries.join(" ")));
+      block.append(spacerLink);
       section.append(block);
     }
     const selectorStudy=record.visuals?.chat_selector_consumers;
