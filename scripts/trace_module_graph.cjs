@@ -488,6 +488,25 @@ function scanScopedModuleCalls(fn,requireName){
  * literal, direct call or return statements to the callback parameter
  * are startup syntax candidates. Nested/conditional callbacks are skipped.
  * This callback was not executed by the analyzer or observed in a browser. */
+function runtimeLoaderReassigned(node,name){
+ if(!node||typeof node!=="object")return false;
+ if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type))
+  return false;
+ if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier"&&
+    node.left.name===name)return true;
+ if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"&&
+    node.argument.name===name)return true;
+ if(node.type==="VariableDeclarator"&&node.id?.type==="Identifier"&&
+    node.id.name===name&&node.init)return true;
+ for(const [key,child] of Object.entries(node)){
+  if(["start","end","loc","raw"].includes(key))continue;
+  if(Array.isArray(child)){
+   if(child.some(item=>runtimeLoaderReassigned(item,name)))return true;
+  }else if(child&&typeof child==="object"&&runtimeLoaderReassigned(child,name))
+   return true;
+ }
+ return false;
+}
 function chunkRuntimeEntrypoints(ast,sourceOrdinal){
  const candidates=[];
  for(const top of ast.body){
@@ -505,7 +524,10 @@ function chunkRuntimeEntrypoints(ast,sourceOrdinal){
   const body=runtime.body?.type==="BlockStatement"?runtime.body.body:[{
    type:"ReturnStatement",argument:runtime.body
   }];
+  let factoryLoaderValid=true;
   for(const statement of body){
+   if(runtimeLoaderReassigned(statement,first.name))factoryLoaderValid=false;
+   if(!factoryLoaderValid)continue;
    const call=statement?.type==="ExpressionStatement"?statement.expression:
     statement?.type==="ReturnStatement"?statement.argument:null;
    if(call?.type!=="CallExpression"||call.callee?.type!=="Identifier"||
@@ -962,6 +984,14 @@ function selfTest(){
  assert(ownerGraph.direct_function_export_sites.every(site=>!site.runtime_invocation_verified));
  assert(!JSON.stringify(ownerGraph).includes("fake"));
  assert(!JSON.stringify(ownerGraph).includes("PrivateExportFunctionZ941"));
+ const reboundRuntime=analyzeJS("(self.webpackChunkRebound=self.webpackChunkRebound||[]).push("+
+  "[[61],{901:function(e,t,n){t.a=1}},function(n){"+
+  "if(Math.random())n=()=>1;n(901)}]);",25);
+ assert.equal(reboundRuntime.bootstrapCandidates.length,0);
+ const directBeforeRebind=analyzeJS("(self.webpackChunkDirectFirst=self.webpackChunkDirectFirst||[]).push("+
+  "[[62],{901:function(e,t,n){t.a=1}},function(n){"+
+  "n(901);n=()=>1;n(901)}]);",26);
+ assert.equal(directBeforeRebind.bootstrapCandidates.length,1);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

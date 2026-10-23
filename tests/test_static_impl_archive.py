@@ -46,6 +46,26 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (private_key, "source-limited-chunk.zip", "entry.js"):
                 self.assertNotIn(private, proc.stdout)
 
+    def test_reassigned_chunk_runtime_loader_is_not_a_startup_seed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "reassigned-loader-fiction.zip"
+            key = "webpackChunkReassignedPrivate"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("chunk.js", "(self." + key + "=self." + key
+                    + "||[]).push([[1],{100:function(e,t,n){t.a=1}},"
+                    "function(n){if(Math.random())n=()=>1;return n(100)}]);")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(result.returncode, 0)
+            output = json.loads(result.stdout)
+            self.assertEqual(output["bootstrap_call_candidates"], 0)
+            self.assertEqual(output["modules_total"], 1)
+            for private in (key, "reassigned-loader-fiction.zip", "chunk.js"):
+                self.assertNotIn(private, result.stdout)
+
     def test_chunk_runtime_callback_seeds_candidate_module_frontier(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-chunk-runtime.zip"

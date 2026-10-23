@@ -511,3 +511,13 @@ that wrap other values, aliases and shadowed export parameters are not
 promoted to verified function ownership. The dependency frontier exposes
 only candidates associated with reached modules; neither an exported
 function's invocation nor ownership of a user-visible feature is established.
+
+### Mutable runtime callback loader parameters
+
+A direct literal call in a Webpack chunk runtime callback is no longer
+considered an entrypoint lead after an earlier statement could reassign or
+update the callback's loader parameter. Conditional rebinding is treated
+conservatively: the analyzer does not prove the branch was taken, so the
+subsequent call is excluded rather than mistaken for a loader invocation.
+An earlier direct call can still be reported. Nested function assignments
+are not treated as preceding execution, and no captured code is run.
