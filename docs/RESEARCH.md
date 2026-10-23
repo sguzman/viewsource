@@ -126,3 +126,10 @@ queued source-rendering tasks for each new dump; manual cross-module call
 review and explicit evidence limitations are still required before an
 observed-static finding is created. The test suite uses synthetic inputs
 only and never commits captured JavaScript.
+
+The transcript candidate probe also distinguishes response-version navigation
+controls (previous/next variant indexing) from the persistence request
+construction for a selected current node. These separate lexical candidate
+categories do not establish successful server acknowledgement or a current
+public protocol. Captured client branch-switch semantics are reviewed in
+`chat_branch_switch_trace.json`, not inferred solely from this scanner.
