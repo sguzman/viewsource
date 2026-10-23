@@ -144,7 +144,7 @@ function selfTest(){
     'function lineage(x){let p=x.current_node,a=[];for(;p;){let z=x.mapping[p];a.push(z.message);p=z.parent}return a.reverse().map(String)}',
     'function userLineage(x){let p=x.current_node,a=[];for(;p;){let z=x.mapping[p];if(z.message.author.role==="user")a.push(z.message.id);p=z.parent}return a.reverse()}',
     'function refs(x){return x.metadata.automation_id?[{automationId:x.id,messageId:x.id,source:"metadata"}]:[]}',
-    'function Control(x){let{onBeforeAnswerNow,messages}=x;let a=messages.filter(x=>x.ok);return a.length?"answer_now":null}',
+    'function Control(x){let{onBeforeAnswerNow,messages}=x;let a=messages.filter(Boolean);return a.length?"answer_now":null}',
     'const privateOnly="SYNTHETIC_PRIVATE_SENTINEL_NOT_FOR_PUBLICATION"'
   ].join(";");
   const output=inspect(js,1);
