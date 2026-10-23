@@ -111,6 +111,32 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const selectorStudy=record.visuals?.chat_selector_consumers;
+    if(selectorStudy){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Selected-message selectors and client consumers"));
+      block.append(element("p","graph-caption",
+        "Two message ancestry selectors, one user-identity ancestry selector, and two feature-reference collections. Source-level subscribers, not verified live rendering."));
+      const selectors=element("div","chat-selector-grid");
+      selectorStudy.selectors.forEach(item=>{
+        const panel=element("details","chat-selector-item");
+        panel.append(element("summary","",item.id.replaceAll("_"," ")),
+          element("p","",item.behavior),
+          element("p","graph-caption",item.purpose));
+        selectors.append(panel);
+      });
+      block.append(selectors);
+      const links=element("details","chat-selector-consumers");
+      links.append(element("summary","","Reviewed selector consumers"));
+      const list=element("ul","");
+      selectorStudy.consumers.forEach(item=>list.append(
+        element("li","",item.selector_id.replaceAll("_"," ")+
+          " → "+item.role+" ("+item.source_ref+"): "+item.behavior)));
+      links.append(list,element("p","graph-caption",
+        "UI subscriptions are source-confirmed; their runtime conditions and rendered results were not observed."));
+      block.append(links);
+      section.append(block);
+    }
     const graphWrite=record.visuals?.chat_graph_mutation;
     if(graphWrite){
       const block=element("div","chat-subsection");
