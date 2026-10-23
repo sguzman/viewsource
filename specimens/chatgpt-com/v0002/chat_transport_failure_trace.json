@@ -1,0 +1,114 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_javascript_transport_implementation",
+  "source_ref": "R-JS-018",
+  "evidence_class": "observed_static",
+  "live_failure_observed": false,
+  "server_retry_semantics_verified": false,
+  "observations": [
+    {
+      "id": "error_classification",
+      "kind": "client_error_taxonomy",
+      "behavior": "A completion recovery handler categorizes transport errors into HTTP responses with status/error-code fields, network errors, and other failures before reporting a recovery/error event.",
+      "boundary": "An error object format in source is not an observed service failure."
+    },
+    {
+      "id": "resume_retry_eligibility",
+      "kind": "conditional_retry_decision",
+      "behavior": "Retry consideration combines network-kind failures, an initial resumed-stream state, or the active resume-request identity with an imported retryable-error predicate. Non-eligible failures are routed to ordinary or recoverable-error callbacks.",
+      "boundary": "The imported retryability predicate is not fully reconstructed; these branches do not imply all network/HTTP failures retry."
+    },
+    {
+      "id": "bounded_resume_timer",
+      "kind": "client_timer_and_cancellation",
+      "behavior": "On a permitted retry, the handler schedules a delayed resume attempt, reports recovery state, stores a cancellation callback that clears the timer and cancels a superseded request, and can pass resume token and offset into the new request.",
+      "boundary": "Actual timer firing, negotiated offsets and token validity were not observed."
+    },
+    {
+      "id": "resume_lifecycle_state",
+      "kind": "client_recovery_observation",
+      "behavior": "The recovery coordinator tracks attempted and successful resumes and emits attempted, succeeded, error, started and response event categories alongside current stream offset and attempt count.",
+      "boundary": "The presence of callbacks does not prove a successful resume occurred."
+    },
+    {
+      "id": "request_or_topic_fallback",
+      "kind": "conditional_transport_path",
+      "behavior": "The completion client can start from an existing stream topic or send a stream request; the handler also supports handoff from an initial request into a WebSocket topic and avoids duplicate completion delivery via close/failure guards.",
+      "boundary": "Neither actual WebSocket connection nor request-topic handoff was observed."
+    },
+    {
+      "id": "websocket_recovery",
+      "kind": "conditional_socket_recovery",
+      "behavior": "A WebSocket topic path configures initial and idle timeout values, forwards decoded events through the recovery handler, and conditionally cancels the original request on socket completion or error.",
+      "boundary": "Source timeouts and fallback branches are not measurements of connectivity."
+    },
+    {
+      "id": "request_level_retry",
+      "kind": "separate_request_refresh",
+      "behavior": "The initial completion request has a separate request-level retry/refresh callback that rebuilds request integrity and identity headers when permitted. This is distinct from the resumption retry coordinator.",
+      "boundary": "The actual retry count and successful refreshed request cannot be inferred from the saved page."
+    }
+  ],
+  "captured_default_fallbacks": {
+    "max_resume_retry_count": 12,
+    "min_resume_retry_delay_ms": 300,
+    "max_resume_retry_delay_ms": 5000,
+    "resume_retry_backoff_factor": 1.5,
+    "websocket_initial_idle_timeout_ms": 5000,
+    "websocket_idle_timeout_ms": 30000,
+    "resume_initial_open_timeout_fallback_ms": 60000
+  },
+  "fallback_scope": "These values are fallback literals in the captured client and may be overridden by dynamic configuration, active request options, and different transport state. They are not contractual service guarantees.",
+  "reviewed_relationships": [
+    {
+      "from": "transport_error",
+      "to": "typed_error_classification",
+      "kind": "direct_client_branch"
+    },
+    {
+      "from": "typed_error_classification",
+      "to": "resume_eligibility_and_retryability",
+      "kind": "guarded_predicate"
+    },
+    {
+      "from": "resume_eligibility_and_retryability",
+      "to": "delayed_resume",
+      "kind": "conditional_timer"
+    },
+    {
+      "from": "delayed_resume",
+      "to": "resume_state_callbacks",
+      "kind": "client_callback"
+    },
+    {
+      "from": "delayed_resume",
+      "to": "prior_resume_cancel",
+      "kind": "cleanup_callback"
+    },
+    {
+      "from": "topic_handoff",
+      "to": "websocket_stream",
+      "kind": "conditional_transport_path"
+    },
+    {
+      "from": "websocket_stream",
+      "to": "completion_or_recoverable_error",
+      "kind": "guarded_callback"
+    },
+    {
+      "from": "initial_request_failure",
+      "to": "request_level_refresh",
+      "kind": "separate_retry_mechanism"
+    }
+  ],
+  "open_questions": [
+    "Trace the imported retryable-error predicate to distinguish HTTP status/code behavior completely.",
+    "Trace the imported stream-event assembler's exact offset and resume-token invariants.",
+    "Determine whether config gates allow resumptions for every message modality and every account context.",
+    "Check cancellation priority and delivery outcomes only with permitted synthetic runtime observations, if later desired.",
+    "Distinguish retry hints used only for display from those that actually schedule a client request."
+  ],
+  "privacy": "No original source code, endpoint strings, request headers, auth/account values, message content, URL, or extracted bundle filename is published."
+}
