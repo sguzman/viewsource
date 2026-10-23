@@ -141,6 +141,12 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                     "function eligible(x){let p=x.parent,c=x.children;"
                     "return {rawVariantCount:c.length,variantIds:c,"
                     "activeVariantIndex:c.findIndex(Boolean)}}"
+                    "function selection(e){const x='[data-markdown-text-style=assistant]';"
+                    "const y='data-chatgpt-selection-message-id';"
+                    "const z='[data-markdown-copy=exclude]';"
+                    "return e.closest(x)&&e.intersectsNode(z)&&y}"
+                    "function copy(e){const c=new AbortController();"
+                    "if(e.copyLastCodeBlock&&e.codeBlockIndex)return c.abort()}"
                     "const secret='" + sentinel + "';")
             result = subprocess.run(
                 ["python3", str(ROOT / "scripts/trace_static_archive.py"),
@@ -153,7 +159,9 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for pattern in ("render_turn_derivation", "pending_turn_preparation",
                             "first_user_item_filter", "message_dom_identity_wrapper",
                             "response_variant_navigation","response_selection_request",
-                            "eligible_variant_derivation"):
+                            "eligible_variant_derivation",
+                            "selected_markdown_range_validation",
+                            "code_block_copy_recovery"):
                 self.assertEqual(report["pattern_counts"][pattern], 1)
             self.assertTrue(all(x["source_ref"]=="R-JS-001"
                                 and x["classification"]=="candidate_static_syntax"
