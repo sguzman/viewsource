@@ -7,6 +7,10 @@
 const fs=require("node:fs"),path=require("node:path"),assert=require("node:assert/strict");
 const acorn=require("acorn");
 const MAX_FILES=2000,MAX_MODULES=50000,MAX_CANDIDATES=250000;
+function assertCandidateCapacity(count){
+ if(!Number.isSafeInteger(count)||count<0||count>MAX_CANDIDATES)
+  throw Error("Too many static candidate records");
+}
 function webpackChunkReceiver(node){
  if(node?.type==="AssignmentExpression"&&node.operator==="=")
   return webpackChunkReceiver(node.left);
@@ -805,6 +809,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
  }
  for(const item of all){
   for(const [i,classification] of (item.directFunctionExports||[]).entries())
+   assertCandidateCapacity(directFunctionSites.length+1);
    directFunctionSites.push({
     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
     module_ordinal:item.moduleOrdinal,
@@ -816,6 +821,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
  for(const item of all){
   for(const key of item.boundImports||[]){
    const matches=resolve(item.domain,key);
+   assertCandidateCapacity(boundCandidates.length+1);
    boundCandidates.push({
     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
     module_ordinal:item.moduleOrdinal,
@@ -830,17 +836,23 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    });
   }
  }
- const dynamicBoundaries=all.flatMap(item=>
-  (item.dynamic_syntax||[]).map(pattern=>({
-   source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
-   module_ordinal:item.moduleOrdinal,pattern,
-   classification:"unresolved_dynamic_boundary",
-   target_module_verified:false
-  })));
+ const dynamicBoundaries=[];
+ for(const item of all){
+  for(const pattern of item.dynamic_syntax||[]){
+   assertCandidateCapacity(dynamicBoundaries.length+1);
+   dynamicBoundaries.push({
+    source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+    module_ordinal:item.moduleOrdinal,pattern,
+    classification:"unresolved_dynamic_boundary",
+    target_module_verified:false
+   });
+  }
+ }
  dynamicBoundaries.sort((a,b)=>a.source_ref.localeCompare(b.source_ref)||
   a.module_ordinal-b.module_ordinal||a.pattern.localeCompare(b.pattern));
  const bootstrapCandidates=[];
  for(const candidate of bootstrap){
+  assertCandidateCapacity(bootstrapCandidates.length+1);
   const matches=resolve(candidate.domain||"unscoped",candidate.key);
   bootstrapCandidates.push({
    callsite_ref:"R-JS-"+String(candidate.sourceOrdinal).padStart(3,"0"),
@@ -1017,6 +1029,9 @@ function scan(directory){
  return report;
 }
 function selfTest(){
+ assert.doesNotThrow(()=>assertCandidateCapacity(MAX_CANDIDATES));
+ assert.throws(()=>assertCandidateCapacity(MAX_CANDIDATES+1));
+ assert.throws(()=>assertCandidateCapacity(-1));
  const s1="export const __webpack_modules__={A:(function(e,t,n){const b=n('B');t.a=()=>b.a}),B:(function(e,t,n){t.a=()=>1})};";
  const s2="export const __webpack_modules__={C:(function(e,t,n){const a=n('A');const missing=n('External');t.a=a})};";
  const a=[...analyzeJS(s1,1),...analyzeJS(s2,2)];
