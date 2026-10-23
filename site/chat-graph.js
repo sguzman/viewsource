@@ -400,6 +400,17 @@ window.ViewsourceChatGraph = (() => {
         " · "+edge.role)));
       links.append(list);
       block.append(links);
+      const shapeMatches=element("details","chat-module-shape-matches");
+      shapeMatches.append(element("summary","","Reviewed ambiguous-key export-interface match"));
+      const shapeList=element("ul","");
+      moduleGraph.export_shape_matches.forEach(item=>shapeList.append(
+        element("li","",item.from_ref+" → "+item.to_ref+
+          "; "+item.compatible_interfaces+" matching interface among "+
+          item.registry_candidates+" duplicate-key definitions: "+item.roles.join(", ")+
+          ". "+item.description)));
+      shapeMatches.append(shapeList,element("p","graph-caption",
+        "Reviewed static source interface only. No chunk-loading or runtime-execution claim."));
+      block.append(shapeMatches);
       const limits=element("details","chat-module-limits");
       limits.append(element("summary","","Import graph limitations"));
       const details=element("ul","");
