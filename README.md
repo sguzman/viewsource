@@ -113,3 +113,22 @@ The privacy-safe `--selector-trace` mode of `scripts/trace_static_archive.py` ca
 The [response-version selection study](specimens/chatgpt-com/v0002/chat_branch_switch_trace.json) now includes the source algorithm for deriving eligible variants from a prompt's graph children, computing the selected variant index, and changing the selected node optimistically with failure rollback. Raw child count and selectable version count can differ. The **saved client implementation** is studied, not live browser execution or guaranteed backend persistence. Canonical findings E2-081 and E2-082 preserve those distinctions.
 
 Canonical evidence E2-083 adds a source-level link between selected-node/mapping changes and the conversation page's memoized transcript derivation. The page explicitly passes those two state fields as render inputs and checks them as memoization dependencies; actual React behavior and server persistence are not inferred from source alone.
+
+## Source-verified virtual turns and scroll placement
+
+The captured ChatGPT client **virtualizes conversation turns**. It builds a
+measured/estimated row layout, calculates a visible window using binary
+search with surrounding overscan, retains selected offscreen rows, and
+uses geometry changes and scroll-anchor compensation to protect viewport
+position. A separate response-spacer controller can place the most recent
+user turn during eligible voice scenarios. These are actual saved-client
+algorithms, not observed browser motion or server behavior. The
+[viewport study](specimens/chatgpt-com/v0002/chat_viewport_virtualization_trace.json)
+links eleven reviewed rules to module ordinals in R-JS-066 and R-JS-072.
+
+The offline archive research CLI also supports `--viewport-trace`. It
+extracts **candidate** virtual-list, overscan, resize, scroll-anchor,
+response-spacer and input-cancellation code shapes from a private ZIP
+without executing source or publishing filenames. Intake already queues
+render-binding research automatically for every qualifying saved site;
+this new mode supplies a reusable source-first tool to investigate it.
