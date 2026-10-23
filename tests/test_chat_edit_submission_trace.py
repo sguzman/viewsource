@@ -19,6 +19,10 @@ class ChatEditSubmissionTraceTests(unittest.TestCase):
         for k in ("source_executed","edit_request_completed","server_mutation_verified"):
             self.assertFalse(d[k])
         self.assertEqual(len(d["stages"]),9)
+        self.assertEqual([(x["source_ref"], x["module_ordinal"])
+                          for x in d["module_anchors"]],
+                         [("R-JS-069",12),("R-JS-072",13)])
+        self.assertTrue(d["module_ordinal_contract"])
         self.assertEqual(len(d["relationships"]),8)
         stages={item["id"] for item in d["stages"]}
         for k in ("target_message_lookup","edited_prompt_validation",
