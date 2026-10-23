@@ -144,5 +144,75 @@
     "behavior": "A conversation page turn-entry component imports the exported typed turn renderer and passes the configured turn, conversation identity, current-turn flag, presentation flags and action callbacks.",
     "evidence_class": "observed_static",
     "boundary": "The imported module and JSX invocation are visible. Page mount conditions, actual loaded chunks, scrolling, and runtime visibility have not been observed."
-  }
+  },
+  "presentation_rules": [
+    {
+      "id": "pending_prompt_guard",
+      "source_ref": "R-JS-069",
+      "scope": "turn_preparation",
+      "classification": "conditional_inclusion",
+      "description": "A temporary user turn is omitted when there is no pending prompt, when active streaming makes a text-empty prompt unsuitable, or when a matching attachment-bearing pending turn is already represented."
+    },
+    {
+      "id": "pending_loading_indicator",
+      "source_ref": "R-JS-069",
+      "scope": "turn_preparation",
+      "classification": "derived_status",
+      "description": "Pending-loading presentation is requested when a synthetic pending turn exists, or while streaming when no existing derived turn already contains an in-progress item."
+    },
+    {
+      "id": "first_user_presentation_filter",
+      "source_ref": "R-JS-069",
+      "scope": "turn_props",
+      "classification": "presentation_only_filter",
+      "description": "A hide-first-user option removes user-message items from the first displayed turn's items without modifying the original conversation mapping."
+    },
+    {
+      "id": "latest_turn_status_scoping",
+      "source_ref": "R-JS-069",
+      "scope": "turn_props",
+      "classification": "display_prop_routing",
+      "description": "The final displayed turn receives pending attachments, last-turn errors and request-input indicators; earlier turns receive separate display flags and timestamp delimiters."
+    },
+    {
+      "id": "alternate_selected_node_render",
+      "source_ref": "R-JS-072",
+      "scope": "conversation_page",
+      "classification": "conditional_derivation",
+      "description": "Under a conditional alternate-prompt presentation, the page derives rendered turns using a specified prompt message as the selected node instead of the ordinary prepared current-node path."
+    },
+    {
+      "id": "special_presentation_mode",
+      "source_ref": "R-JS-018",
+      "scope": "render_derivation",
+      "classification": "conditional_item_classification",
+      "description": "A special sidebar mode or a locally blocked moderation condition enters a simplified item-classification path rather than the regular item decomposition."
+    },
+    {
+      "id": "reasoning_tool_status",
+      "source_ref": "R-JS-018",
+      "scope": "render_derivation",
+      "classification": "status_sensitive_grouping",
+      "description": "Reasoning recaps, tool results, generated images, moderation notices, message fragments and streaming-related statuses have conditional grouping or presentation treatment; no universal visibility claim is inferred."
+    },
+    {
+      "id": "message_dom_identity",
+      "source_ref": "R-JS-069",
+      "scope": "dom_wrapper",
+      "classification": "element_metadata",
+      "description": "User, assistant and generated-image items are assigned role/source-message identification attributes and test selectors where available; tool and other items can use different lightweight wrappers."
+    },
+    {
+      "id": "telemetry_wrapper",
+      "source_ref": "R-JS-069",
+      "scope": "dom_wrapper",
+      "classification": "element_metadata",
+      "description": "A separate rendering telemetry wrapper receives item-scoped telemetry messages around the display children; the telemetry wrapper is not evidence of an additional conversation message."
+    }
+  ],
+  "rule_limitations": [
+    "The filter options describe a client rendering choice and do not establish deletion from stored message mapping.",
+    "Status-dependent or moderation-dependent code paths may be gated by runtime settings and have not been exercised.",
+    "These nine rules are individually inspected examples, not an exhaustive truth table of all possible item types and rendering modes."
+  ]
 }
