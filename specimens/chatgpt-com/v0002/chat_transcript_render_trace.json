@@ -19,6 +19,10 @@
     {
       "ref": "R-JS-072",
       "role": "conversation_page_and_branch_preview"
+    },
+    {
+      "ref": "R-JS-066",
+      "role": "turn_virtualization_and_response_spacer"
     }
   ],
   "stages": [
@@ -163,7 +167,7 @@
   "unverified": [
     "The visible main-page to typed-turn-renderer import is verified; other dynamic subcomponent imports and hidden rendering branches are not exhaustively mapped.",
     "Visibility rules for every item kind, safety presentation, streaming placeholders, and hidden content remain to be enumerated.",
-    "The exact use of React keys, virtualization, scroll anchoring, and hydration has not been reconstructed.",
+    "Turn-level virtualization, keyed row placement, measured scroll anchoring, and the voice spacer are source-reviewed separately. React reconciliation, hydration, and actual browser scroll outcomes are still unverified.",
     "These source render paths were not executed against a live site or real user data.",
     "The complete click-to-network action path for each edit/fork/regenerate control remains distinct from these verified renderer callback bindings."
   ],
@@ -312,5 +316,15 @@
     ],
     "relationship_classification": "direct_page_input_and_recomputation_wiring",
     "boundary": "Captured React compiler memo-cache comparisons and source assignments are visible; the render timing, component mount, React reconciliation and a user's observed branch-switch effect are not verified."
+  },
+  "viewport_windowing_followup": {
+    "source_refs": [
+      "R-JS-066",
+      "R-JS-072"
+    ],
+    "evidence_ref": "E2-084",
+    "study_filename": "chat_viewport_virtualization_trace.json",
+    "runtime_verified": false,
+    "relationship": "The conversation page renders derived turns through an imported virtualized turn window. A separate response spacer controls placement and scroll compensation."
   }
 }
