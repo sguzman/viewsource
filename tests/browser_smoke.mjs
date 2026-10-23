@@ -47,6 +47,10 @@ try {
   assert.equal(await page.locator(".chat-viewport-rule").count(),11);
   assert.equal(await page.locator(".chat-edit-stage").count(),9);
   assert.equal(await page.locator(".chat-a11y-mechanism").count(),8);
+  assert.deepEqual(await page.locator(".chat-module-stat strong").allInnerTexts(),
+                   ["144","10399","50714","517"]);
+  await page.locator(".chat-module-links summary").click();
+  assert.equal(await page.locator(".chat-module-links li").count(),4);
   await page.locator(".chat-a11y-limits summary").click();
   assert.equal(await page.locator(".chat-a11y-limits li").count(),4);
   await page.locator(".chat-edit-boundaries summary").click();
@@ -105,7 +109,7 @@ try {
   assert.equal(await page.locator(".chat-research-task").count(),18);
   assert.equal(await page.locator(".chat-static-task").count(),33);
   assert.equal(await page.locator(".chat-static-progress").getAttribute("max"),"33");
-  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"11");
+  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"12");
   assert.ok((await page.locator(".chat-static-progress").evaluate(e=>e.nextElementSibling.textContent)).includes("0% accepted complete"));
   await page.locator(".chat-static-task").first().locator("summary").click();
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
