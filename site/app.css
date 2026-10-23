@@ -476,3 +476,8 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-viewport-rule summary,.chat-viewport-links summary { cursor:pointer; font-size:12px; font-weight:600; line-height:1.65; text-transform:capitalize; }
 .chat-viewport-rule p,.chat-viewport-links { font-size:12px; line-height:1.65; }
 .chat-viewport-links ol { padding-left:20px; }
+
+.chat-selection-stages,.chat-code-copy-stages,.chat-selection-boundaries { margin:12px 0; font-size:12px;line-height:1.65; }
+.chat-selection-stages summary,.chat-code-copy-stages summary,.chat-selection-boundaries summary { cursor:pointer;font-weight:600; }
+.chat-selection-stages ol,.chat-code-copy-stages ol,.chat-selection-boundaries ul { padding-left:20px; }
+.chat-selection-stages li,.chat-code-copy-stages li { margin:5px 0; }
