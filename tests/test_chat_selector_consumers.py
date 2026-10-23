@@ -20,7 +20,7 @@ class ChatSelectorConsumerTests(unittest.TestCase):
         selectors={s["id"]:s for s in d["selectors"]}
         self.assertEqual(len(selectors),5)
         self.assertEqual(len(d["verified_consumers"]),7)
-        self.assertEqual(len(d["relationships"]),9)
+        self.assertEqual(len(d["relationships"]),11)
         self.assertEqual(selectors["current_turn_path"]["kind"],"message_ancestry")
         self.assertEqual(selectors["full_selected_path"]["kind"],"message_ancestry")
         for name in ("automation_references","page_references"):
@@ -36,6 +36,19 @@ class ChatSelectorConsumerTests(unittest.TestCase):
             self.assertIn(consumer["selector_id"],selectors)
             self.assertRegex(consumer["source_ref"],r"^R-JS-[0-9]{3}$")
         self.assertTrue(d["limitations"])
+
+    def test_ui_click_actions_are_source_only_and_guarded(self):
+        d=self.data
+        item=d["reviewed_ui_action"]
+        self.assertEqual(item["bound_selector"],"current_turn_path")
+        self.assertEqual(item["source_ref"],"R-JS-018")
+        self.assertFalse(item["live_click_observed"])
+        self.assertEqual(set(item["rendered_surfaces"]),{
+            "inline_button","escape_dialog_button"})
+        self.assertEqual({x["name"] for x in item["paths"]},{
+            "answer_now","skip_reasoning","error_recovery"})
+        self.assertTrue(item["verification_boundary"])
+        self.assertEqual(len(d["relationships"]),11)
 
     def test_no_capture_data_published(self):
         text=DATA.read_text("utf-8").lower()
