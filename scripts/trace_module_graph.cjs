@@ -130,6 +130,33 @@ function bootstrapCalls(ast,sourceOrdinal) {
  return [...found].map(key=>({key,sourceOrdinal}));
 }
 
+
+const DYNAMIC_LABELS=[
+ "dynamic_import_literal_candidate",
+ "dynamic_import_computed_candidate",
+ "bundler_chunk_loader_candidate"
+];
+function dynamicSyntax(fn,requireName){
+ const patterns=new Set(),stack=[fn.body];
+ while(stack.length){
+  const n=stack.pop();
+  if(!n||typeof n!=="object")continue;
+  if(n.type==="ImportExpression"){
+   const arg=n.source;
+   patterns.add(arg?.type==="Literal"&&typeof arg.value==="string"?
+      DYNAMIC_LABELS[0]:DYNAMIC_LABELS[1]);
+  }
+  if(requireName&&n.type==="CallExpression"&&
+     memberOf(n.callee,requireName)==="e")patterns.add(DYNAMIC_LABELS[2]);
+  for(const [k,v] of Object.entries(n)){
+   if(["start","end","loc","raw"].includes(k))continue;
+   if(Array.isArray(v))for(const item of v)if(item&&typeof item==="object")stack.push(item);
+   else if(v&&typeof v==="object")stack.push(v);
+  }
+ }
+ return [...patterns];
+}
+
 function analyzeJS(source,sourceOrdinal){
  const ast=acorn.parse(source,{ecmaVersion:"latest",sourceType:"module",
    allowReturnOutsideFunction:true,allowImportExportEverywhere:true});
@@ -164,7 +191,8 @@ function analyzeJS(source,sourceOrdinal){
   }
   result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
     eligible:!!requireName,exportedSlots:signatures.exportedSlots,
-    requiredByImport:signatures.requiredByImport});
+    requiredByImport:signatures.requiredByImport,
+    dynamic_syntax:dynamicSyntax(fn,requireName)});
  }
  return result;
 }
@@ -177,6 +205,15 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   index.get(x.identifier).push(x);
  }
  const links=[],shapeCandidates=[];
+ const dynamicBoundaries=all.flatMap(item=>
+  (item.dynamic_syntax||[]).map(pattern=>({
+   source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+   module_ordinal:item.moduleOrdinal,pattern,
+   classification:"unresolved_dynamic_boundary",
+   target_module_verified:false
+  })));
+ dynamicBoundaries.sort((a,b)=>a.source_ref.localeCompare(b.source_ref)||
+  a.module_ordinal-b.module_ordinal||a.pattern.localeCompare(b.pattern));
  const bootstrapCandidates=[];
  for(const candidate of bootstrap){
   const matches=index.get(candidate.key)||[];
@@ -242,6 +279,9 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   bootstrap_call_candidates:bootstrapCandidates.length,
   bootstrap_candidates:bootstrapCandidates,
   bootstrap_runtime_verified:false,
+  dynamic_boundary_candidates:dynamicBoundaries,
+  dynamic_boundary_count:dynamicBoundaries.length,
+  dynamic_boundary_vocabulary:DYNAMIC_LABELS,
   modules_total:all.length,
   modules_with_import_parameter:all.filter(x=>x.eligible).length,
   import_candidates:candidateCalls,unique_resolved_links:links.length,
@@ -265,6 +305,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
    "Export-shape matches are candidate disambiguations only; minified alias shadowing or dead code can create misleading required slots.",
    "Export-shape candidates do not change unique/ambiguous import counts and require independent source inspection before promotion.",
+   "Dynamic import expressions and bundler chunk-loader calls are recorded as unresolved boundary syntax, never followed as import edges.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
@@ -305,6 +346,13 @@ function selfTest(){
  assert.equal(o.resolved_links[0].to_module,2);
  assert(!JSON.stringify(o).includes("External"));
  assert(!JSON.stringify(o).includes("const b"));
+ const dynamicArchive=analyzeJS("export const __webpack_modules__={D:(function(e,t,n){"+
+  "import('private-module');import(t.route);n.e('private-chunk')})};",6);
+ const dynamicReport=buildGraph(dynamicArchive,1,0);
+ assert.equal(dynamicReport.dynamic_boundary_count,3);
+ assert.deepEqual(new Set(dynamicReport.dynamic_boundary_candidates.map(x=>x.pattern)),new Set(DYNAMIC_LABELS));
+ assert(!JSON.stringify(dynamicReport).includes("private-module"));
+ assert(!JSON.stringify(dynamicReport).includes("private-chunk"));
  const boot='export const __webpack_modules__={Startup:(function(e,t,n){t.a=1})};__webpack_require__("Startup");';
  const source=analyzeJS(boot,4);
  const startup=buildGraph(source,1,0,source.bootstrapCandidates);

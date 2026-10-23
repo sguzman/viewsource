@@ -304,6 +304,33 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_dynamic_import_boundaries_remain_unresolved(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "private-dynamic-fixture.zip"
+            sentinel = "PRIVATE_DYNAMIC_CHUNK_SENTINEL"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("unknown.js",
+                    "export const __webpack_modules__={"
+                    "Candidate:(function(e,t,n){"
+                    "const a=import('private-module');"
+                    "const b=import(t.dynamicName);"
+                    "const c=n.e('" + sentinel + "');"
+                    "return [a,b,c]})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["dynamic_boundary_count"], 3)
+            self.assertTrue(all(x["classification"] == "unresolved_dynamic_boundary"
+                                and not x["target_module_verified"]
+                                and x["source_ref"] == "R-JS-001"
+                                for x in report["dynamic_boundary_candidates"]))
+            for private in ("private-module", sentinel, "dynamicName", "Candidate",
+                            "unknown.js", "private-dynamic-fixture.zip"):
+                self.assertNotIn(private, result.stdout)
+
     def test_colliding_module_keys_yield_candidate_export_shape_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-collision.zip"

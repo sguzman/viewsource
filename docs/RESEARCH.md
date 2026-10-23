@@ -277,3 +277,14 @@ source module. Ambiguous or missing bootstrap keys are deliberately excluded,
 and the output explicitly records `root_source=bootstrap_syntax_candidate`.
 Neither the bootstrap pattern nor any reachable import is verified to have run.
 A report without a unique seed is rejected rather than fabricating one.
+
+### Static dynamic-import boundaries
+
+The same private `--module-trace` pass records three fixed AST lead categories
+on captured module factories: literal `import()`, computed `import()`, and
+recognized bundler chunk-loader calls. It reports only capture-local resource and
+module ordinals and fixed category names. Imported strings, chunk IDs and source
+spelling are suppressed. None of these leads is traversed as a resolved module
+import, since chunk resolution and runtime feature activation require further
+source review. An absent match is not evidence that the application has no lazy
+loading: this parser only recognizes the supported syntax.
