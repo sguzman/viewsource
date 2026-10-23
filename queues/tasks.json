@@ -1912,12 +1912,15 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Trace data to rendered interface paths",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-state-flows",
         "chatgpt-com-v0002-markup"
       ],
-      "notes": "Static implementation trace: Connect state selectors and component props to rendered regions; record boundaries where minification or lazy imports obscure paths."
+      "notes": "Static implementation trace: Connect state selectors and component props to rendered regions; record boundaries where minification or lazy imports obscure paths. Source-level React control consumer identified; wider rendered message component coverage remains unresolved.",
+      "evidence_refs": [
+        "E2-076"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-flow-review",
