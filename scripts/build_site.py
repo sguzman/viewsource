@@ -266,6 +266,22 @@ def build(out: Path) -> dict:
                         "boundary": branch["render_recomputation_link"]["boundary"],
                     },
                 }
+            edit_path = ROOT / (base + "/chat_edit_submission_trace.json")
+            if edit_path.is_file():
+                edit = read(base + "/chat_edit_submission_trace.json")
+                if (edit["specimen_id"] != item["id"] or edit["version"] != number
+                        or edit["edit_request_completed"] is not False):
+                    raise ValueError("Edit source trace evidence boundary mismatch")
+                visuals["chat_edit_submission_trace"] = {
+                    "source_refs": edit["source_refs"],
+                    "source_executed": edit["source_executed"],
+                    "stages": [
+                        {"id": stage["id"],"source_ref": stage["source_ref"],
+                         "kind": stage["kind"],"behavior": stage["behavior"]}
+                        for stage in edit["stages"]
+                    ],
+                    "unverified": edit["unverified"],
+                }
             selection_path = ROOT / (base + "/chat_selection_copy_trace.json")
             if selection_path.is_file():
                 select = read(base + "/chat_selection_copy_trace.json")
