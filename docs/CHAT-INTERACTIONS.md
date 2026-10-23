@@ -427,3 +427,20 @@ independent and remains source-supported. The main chat transcript renderer
 has **not** been recovered from these collectors. Canonical finding E2-074,
 the mutation study, and their Atlas projection have been corrected rather
 than preserving an unsupported interpretation of the code.
+
+## Verified selector consumers (static code only)
+
+A source follow-up identifies two true message-path selectors: the full
+root-to-selected-node ancestry and a recent-turn path that stops at a
+matching user message. These selectors derive from the message mapping and
+current selected node; unlike feature-reference projections, they return
+message objects. A captured React conversation-control component uses a
+scoped subscription to the recent-turn selector when evaluating skip or
+answer-now actions. Composer-related state and other feature selectors
+also read recent-turn or full-ancestry messages. Separate consumers read
+selected-branch user-message identities for eligibility and automation
+references for feature-specific views. These connections are documented in
+[chat_selector_consumers.json](../specimens/chatgpt-com/v0002/chat_selector_consumers.json)
+and canonical finding E2-076. The main rendered transcript and full
+component rendering policy remain open research questions. The source
+research queue is now 7 in progress, 26 queued, none completed.
