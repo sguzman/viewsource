@@ -519,8 +519,11 @@ considered an entrypoint lead after an earlier statement could reassign or
 update the callback's loader parameter. Conditional rebinding is treated
 conservatively: the analyzer does not prove the branch was taken, so the
 subsequent call is excluded rather than mistaken for a loader invocation.
-An earlier direct call can still be reported. Nested function assignments
-are not treated as preceding execution, and no captured code is run.
+An earlier direct call can still be reported. For a direct loader call,
+the callee is evaluated before its arguments: an assignment in a later
+argument invalidates subsequent source calls but does not erase the
+current direct-call candidate. Nested function assignments are not
+treated as preceding execution, and no captured code is run.
 
 ### Whole-module callable assignments
 
