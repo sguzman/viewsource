@@ -232,16 +232,16 @@ test("foreign-registry key collisions are untraversed review leads",()=>{
 test("capture parser-coverage counters must reconcile before emitting frontier",()=>{
  const g=graph();
  g.modules_total=5;
- g.parsed_bundles=1;
+ g.parsed_bundles=2;
  g.failed_bundles=1;
- g.archive_candidate_script_count=3;
+ g.archive_candidate_script_count=4;
  g.archive_oversize_script_count=1;
- g.archive_ast_input_script_count=2;
+ g.archive_ast_input_script_count=3;
  g.archive_all_scripts_parsed=false;
- g.failed_parser_source_refs=["R-JS-002"];
+ g.failed_parser_source_refs=["R-JS-003"];
  const out=frontier(g,["R-JS-001:1"]);
  assert.equal(out.archive_all_scripts_parsed,false);
- assert.deepEqual(out.failed_parser_source_refs,["R-JS-002"]);
+ assert.deepEqual(out.failed_parser_source_refs,["R-JS-003"]);
  assert.equal(out.archive_oversize_script_count,1);
  g.archive_all_scripts_parsed=true;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
