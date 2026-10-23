@@ -266,6 +266,24 @@ def build(out: Path) -> dict:
                         "boundary": branch["render_recomputation_link"]["boundary"],
                     },
                 }
+            module_path = ROOT / (base + "/chat_module_dependency_trace.json")
+            if module_path.is_file():
+                module_graph = read(base + "/chat_module_dependency_trace.json")
+                if (module_graph["specimen_id"] != item["id"]
+                        or module_graph["version"] != number
+                        or module_graph["live_module_load_verified"] is not False):
+                    raise ValueError("Module dependency source evidence boundary mismatch")
+                visuals["chat_module_dependency"] = {
+                    "census": module_graph["census"],
+                    "edges": [
+                        {"from_ref": row["from_ref"],"from_module": row["from_module"],
+                         "to_ref": row["to_ref"],"to_module": row["to_module"],
+                         "role": row["role"].replace("_"," ")}
+                        for row in module_graph["curated_verified_syntax_edges"]
+                    ],
+                    "limitations": module_graph["limits"],
+                    "runtime_verified": module_graph["live_module_load_verified"],
+                }
             accessibility_path = ROOT / (base + "/chat_accessibility_trace.json")
             if accessibility_path.is_file():
                 study = read(base + "/chat_accessibility_trace.json")
