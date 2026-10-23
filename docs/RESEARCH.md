@@ -161,3 +161,15 @@ never by original minified identifiers or raw proprietary source. See
 E2-084 and the standalone viewport study. Actual browser measurements,
 React reconciliation and live accessibility outcomes remain outside
 static proof.
+
+## Intake contract: render ownership includes viewport mechanics
+
+The automatically enqueued `source-render-bindings` investigation now
+explicitly checks **typed item dispatch, virtualization, scroll anchoring,
+retained rows and restore behavior** when captured source contains them.
+Where no such code exists, document the evidence gap rather than
+inventing functionality. The `--viewport-trace` AST mode is a focused
+research instrument available to the queued worker; its fixed labels and
+module ordinals can direct source review but cannot close a task by
+vocabulary counts alone. No runtime access is required to investigate
+the saved client scripts.
