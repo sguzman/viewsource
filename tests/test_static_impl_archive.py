@@ -1253,6 +1253,33 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (target, "PrivateNeverImportZ991", "invented-update-bindings.zip"):
                 self.assertNotIn(private, result.stdout)
 
+    def test_assignment_rhs_preserves_pre_mutation_loader_and_alias_reads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-rhs-evaluation-order.zip"
+            key = "PrivateAssignmentTargetZ983"
+            attr = "PrivateAssignmentSlotZ984"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("first.js", "export const __webpack_modules__={"
+                    "Loader:(function(e,t,n){n=n('" + key + "');"
+                    "n('PrivateAfterAssignmentZ985')}),"
+                    "Alias:(function(e,t,n){let x=n('" + key + "');"
+                    "x=x." + attr + ";x.notOriginal()}),"
+                    + key + ":(function(e,t,n){t." + attr + "=()=>1})};")
+                z.writestr("second.js", "export const __webpack_modules__={"
+                    + key + ":(function(e,t,n){t.other=()=>2})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0, proc.stderr[:120])
+            graph = json.loads(proc.stdout)
+            self.assertEqual(graph["import_candidates"], 2)
+            self.assertEqual(graph["ambiguous_import_candidates"], 2)
+            self.assertEqual(graph["export_shape_candidate_count"], 1)
+            for private in (key, attr, "PrivateAfterAssignmentZ985",
+                            "invented-rhs-evaluation-order.zip"):
+                self.assertNotIn(private, proc.stdout)
+
     def test_pattern_assignments_invalidate_loader_export_and_import_aliases(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-pattern-reassignment.zip"

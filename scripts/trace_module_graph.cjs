@@ -229,7 +229,11 @@ function scanScopedRequiredSlots(fn,requireName,required){
    return;
   }
   if(node.type==="AssignmentExpression"){
-   if(node.left?.type==="Identifier")env.set(node.left.name,null);
+   if(node.left?.type==="Identifier"){
+    walk(node.right,env);
+    env.set(node.left.name,null);
+    return;
+   }
    if(node.left?.type==="MemberExpression"){
     // For a member assignment, only receiver evaluation is a read.
     walk(node.left.object,env);
@@ -240,8 +244,8 @@ function scanScopedRequiredSlots(fn,requireName,required){
    if(["ObjectPattern","ArrayPattern"].includes(node.left?.type)){
     const assigned=new Set();
     bindingNames(node.left,assigned);
-    for(const id of assigned)if(env.has(id))env.set(id,null);
     walk(node.right,env);
+    for(const id of assigned)if(env.has(id))env.set(id,null);
     return;
    }
   }
@@ -390,6 +394,8 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
   if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier")
    neutralize(node.argument,env);
   if(node.type==="AssignmentExpression"){
+   // Evaluate right-hand syntax before mutating the target's identity.
+   scan(node.right,env);
    if(node.left?.type==="MemberExpression"){
     let slot=null,classification=null;
     if(exportName&&env.get(exportName)===exportToken){
@@ -428,6 +434,9 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    }
    if(["Identifier","ObjectPattern","ArrayPattern"].includes(node.left?.type))
     neutralize(node.left,env);
+   if(node.left?.type==="MemberExpression"&&node.left.computed)
+    scan(node.left.property,env);
+   return;
   }
   if(node.type==="CallExpression"&&requireName&&
      env.get(requireName)===loaderToken&&env.get(exportName)===exportToken&&
@@ -708,9 +717,12 @@ function scanScopedModuleCalls(fn,requireName){
   if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"&&
      node.argument.name===requireName)env.set(requireName,null);
   if(node.type==="AssignmentExpression"){
+   walk(node.left,env);
+   walk(node.right,env);
    const assigned=new Set();
    bindingNames(node.left,assigned);
    if(assigned.has(requireName))env.set(requireName,null);
+   return;
   }
   if(node.type==="CallExpression"&&env.get(requireName)===loaderIdentity){
    if(node.callee?.type==="Identifier"&&node.callee.name===requireName&&
@@ -1630,6 +1642,17 @@ function selfTest(){
  assert.equal(nestedOwnersGraph.nested_function_export_site_count,1);
  assert.deepEqual(nestedOwnersGraph.direct_function_export_sites
   .map(x=>x.nested_function_syntax_present),[false,true]);
+ const assignmentOrder=analyzeJS("export const __webpack_modules__={"+
+  "Loader:(function(e,t,n){n=n('Q');n('PrivateAfterMutation')}),"+
+  "Alias:(function(e,t,n){let x=n('Q');x=x.want;x.other()}),"+
+  "Q:(function(e,t,n){t.want=()=>1})};",86);
+ const secondAssignmentTarget=analyzeJS("export const __webpack_modules__={"+
+  "Q:(function(e,t,n){t.other=()=>1})};",87);
+ const orderGraph=buildGraph([...assignmentOrder,...secondAssignmentTarget],2,0);
+ assert.equal(orderGraph.import_candidates,2);
+ assert.equal(orderGraph.ambiguous_import_candidates,2);
+ assert.equal(orderGraph.export_shape_candidate_count,1);
+ assert(!JSON.stringify(orderGraph).includes("PrivateAfterMutation"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

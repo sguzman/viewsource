@@ -810,3 +810,15 @@ are rejected rather than silently treated as complete. Skipped
 nested-only edges are separately counted for reached source modules.
 This is a review filter, **not** a claim of eager loading, executed
 branches, or verified runtime dependencies.
+
+### Right-hand-side evaluation before binding replacement
+
+Assignment expressions evaluate their right-hand values before replacing
+the target identifier. The module-loader and imported-alias scanners
+now retain a candidate import or property read on that right-hand
+side before invalidating the previous binding. The export scanner
+likewise evaluates right-hand syntax before applying export-object
+replacement and avoids scanning it a second time. This prevents
+missing legitimate source leads or recording a later call through
+an already overwritten identity; neither syntax occurrence proves
+runtime execution.
