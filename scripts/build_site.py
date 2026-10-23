@@ -276,6 +276,12 @@ def build(out: Path) -> dict:
                 visuals["chat_virtual_viewport"] = {
                     "runtime_verified": viewport["runtime_viewport_verified"],
                     "source_resources": [row["ref"] for row in viewport["source_resources"]],
+                    "module_anchors": [
+                        {"ref": anchor["source_ref"],
+                         "module_ordinal": anchor["module_ordinal"],
+                         "role": anchor["role"].replace("_"," ")}
+                        for anchor in viewport["module_anchors"]
+                    ],
                     "source_chain": [
                         {"from": edge["from"].replace("_"," "),
                          "to": edge["to"].replace("_"," "),
