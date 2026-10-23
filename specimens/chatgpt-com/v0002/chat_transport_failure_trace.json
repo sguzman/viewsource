@@ -18,7 +18,11 @@
       "id": "resume_retry_eligibility",
       "kind": "conditional_retry_decision",
       "behavior": "Retry consideration combines network-kind failures, an initial resumed-stream state, or the active resume-request identity with an imported retryable-error predicate. Non-eligible failures are routed to ordinary or recoverable-error callbacks.",
-      "boundary": "The imported retryability predicate is not fully reconstructed; these branches do not imply all network/HTTP failures retry."
+      "boundary": "The imported retry predicate was resolved in later saved-source review E2-098 (stream_resume_error_predicates). Classification still depends on token, identity, cancellation and retry guards and does not prove that a live retry occurred.",
+      "superseded_by": [
+        "E2-098",
+        "E2-099"
+      ]
     },
     {
       "id": "bounded_resume_timer",
@@ -60,7 +64,10 @@
       "id": "partial_query_prepare_fallback",
       "kind": "guarded_single_prepare_retry",
       "behavior": "A preparation failure enters a distinct fallback only if the input contains a partial query, the caller permits retry, and an imported error eligibility predicate accepts the failure. After a randomized 250–500 ms delay, retry permission is checked again. One recursive preparation attempt changes dispatch to immediate, suppresses further retry, and revalidates should-prepare before sending.",
-      "boundary": "This is a maximum one-fallback client source branch, not a promise that every eligible failure retries or succeeds. The imported predicate and actual outcomes are unresolved."
+      "boundary": "The imported preparation retry predicate was resolved in later saved-source review E2-097 (preparation_error_eligibility). The branch remains a source-level one-shot fallback with no observed retry or successful server response.",
+      "superseded_by": [
+        "E2-097"
+      ]
     },
     {
       "id": "source_resolved_preparation_retry_eligibility",
@@ -378,5 +385,17 @@
     },
     "downstream_guard": "The imported resume coordinator checks the supplied resume-permission value before permitting an automatic retry, in addition to abort, token, identity and retry-budget conditions.",
     "limits": "This is a captured call-site boolean. It does not establish runtime account policy, that explicit resume is offered for the flagged request, or that a retry ever occurred."
+  },
+  "source_reconciliation": {
+    "method": "Clarify historical limitations after additional source review without changing the initial stage descriptions or claiming runtime execution.",
+    "resolved_at_source_level": [
+      "E2-097",
+      "E2-098",
+      "E2-099"
+    ],
+    "still_unverified": [
+      "No actual preparation fallback or stream resume was observed executing.",
+      "No request outcome, server protocol guarantee or account-specific invocation policy was observed."
+    ]
   }
 }

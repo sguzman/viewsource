@@ -60,6 +60,17 @@ class TransportFailureTraceTests(unittest.TestCase):
                    "history_and_training_disabled_is_exactly_true")
   self.assertIn("shouldAttemptResume=true",wiring["explicit_resume"]["gate"])
   self.assertIn("does not establish",wiring["limits"])
+ def test_historical_predicate_notes_reconcile_later_evidence(self):
+  d=self.d
+  by_id={row["id"]:row for row in d["observations"]}
+  self.assertIn("E2-098",by_id["resume_retry_eligibility"]["superseded_by"])
+  self.assertIn("E2-097",by_id["partial_query_prepare_fallback"]["superseded_by"])
+  evidence={f["evidence"]["evidence_ref"] for f in json.loads(
+   (ROOT/"specimens/chatgpt-com/v0002/record.json").read_text("utf8"))["findings"]}
+  for row in d["observations"]:
+   for ref in row.get("superseded_by",[]):
+    self.assertIn(ref,evidence)
+  self.assertTrue(d["source_reconciliation"]["still_unverified"])
  def test_nonpublication(self):
   s=PATH.read_text("utf8").lower()
   for forbidden in ("http://","https://",".js","session_token","bearer ",

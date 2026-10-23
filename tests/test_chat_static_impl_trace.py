@@ -80,6 +80,19 @@ class ChatImplementationTraceTests(unittest.TestCase):
         self.assertTrue(all(x["link_status"] == "candidate_named_direct_call"
                             for x in doc["candidate_direct_calls"]))
 
+    def test_historical_questions_mark_later_partial_resolution(self):
+        doc = self.data
+        self.assertEqual(len(doc["reviewed_direct_calls"]), 6)
+        self.assertIn("six reviewed", " ".join(doc["module_export_limitations"]))
+        reconciled = doc["reconciliation_with_later_studies"]
+        self.assertTrue(reconciled)
+        self.assertTrue(all(row["status"] == "partially_resolved" and row["remaining"]
+                            for row in reconciled))
+        evidence = {row["evidence"]["evidence_ref"] for row in json.loads(
+            (ROOT / "specimens/chatgpt-com/v0002/record.json").read_text("utf8"))["findings"]}
+        for row in reconciled:
+            self.assertTrue(set(row["later_evidence_refs"]) <= evidence)
+
     def test_report_does_not_publish_source_paths_or_chat_content(self):
         text = DATA.read_text("utf-8").lower()
         for term in ("http://", "https://", ".js", "bundle-", "source-dom",

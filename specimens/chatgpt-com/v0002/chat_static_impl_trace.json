@@ -290,9 +290,9 @@
   ],
   "module_export_limitations": [
     "Module export bindings establish exposure inside captured JavaScript, not whether any caller was executed.",
-    "The importer module and concrete UI call chain remain untraced.",
+    "At the time of this initial module-export scan the UI importer chain was untraced; later E2-078 and E2-091 source reviews resolve selected typed-renderer/component links but not every dynamic feature importer.",
     "Dynamic imports and runtime selection may prevent a captured module from running.",
-    "The four reviewed caller-to-dispatcher edges are lexically direct within one module factory; they do not establish which path actually ran."
+    "The six reviewed caller-to-dispatcher edges are direct calls within one captured module factory; no live dispatch or branch choice was observed."
   ],
   "reviewed_direct_calls": [
     {
@@ -400,5 +400,45 @@
       "link_status": "candidate_named_direct_call"
     }
   ],
-  "unreviewed_direct_call_count": 0
+  "unreviewed_direct_call_count": 0,
+  "reconciliation_with_later_studies": [
+    {
+      "early_question": "selected_ancestry_callers",
+      "later_evidence_refs": [
+        "E2-076",
+        "E2-078"
+      ],
+      "status": "partially_resolved",
+      "remaining": "Not every imported consumer or dynamically loaded component is traced."
+    },
+    {
+      "early_question": "branch_client_return_flow",
+      "later_evidence_refs": [
+        "E2-081",
+        "E2-082"
+      ],
+      "status": "partially_resolved",
+      "remaining": "Observed server acknowledgement and cross-session durability are not established."
+    },
+    {
+      "early_question": "editor_regeneration_abort_retry",
+      "later_evidence_refs": [
+        "E2-089",
+        "E2-095",
+        "E2-097",
+        "E2-098"
+      ],
+      "status": "partially_resolved",
+      "remaining": "Conditional UI paths and runtime outcomes remain unverified."
+    },
+    {
+      "early_question": "ambiguous_module_imports",
+      "later_evidence_refs": [
+        "E2-091",
+        "E2-098"
+      ],
+      "status": "partially_resolved",
+      "remaining": "Other dynamic imports and unresolved aliases remain."
+    }
+  ]
 }
