@@ -17,7 +17,7 @@ class TranscriptRenderTraceTests(unittest.TestCase):
         self.assertFalse(doc["runtime_render_verified"])
         self.assertFalse(doc["server_render_contract_verified"])
         self.assertEqual({x["ref"] for x in doc["source_resources"]},
-                         {"R-JS-018","R-JS-069","R-JS-072"})
+                         {"R-JS-018","R-JS-066","R-JS-069","R-JS-072"})
         self.assertEqual(len(doc["stages"]), 7)
         self.assertEqual(len(doc["reviewed_relationships"]), 16)
         page=doc["page_recomputation"]
@@ -37,6 +37,10 @@ class TranscriptRenderTraceTests(unittest.TestCase):
         self.assertEqual(cross["evidence_class"],"observed_static")
         self.assertTrue(cross["boundary"])
         self.assertTrue(doc["unverified"])
+        viewport=doc["viewport_windowing_followup"]
+        self.assertEqual(viewport["evidence_ref"],"E2-084")
+        self.assertFalse(viewport["runtime_verified"])
+        self.assertEqual(set(viewport["source_refs"]),{"R-JS-066","R-JS-072"})
         self.assertEqual(len(doc["presentation_rules"]),9)
         self.assertEqual(len({rule["id"] for rule in doc["presentation_rules"]}),9)
         self.assertTrue(doc["rule_limitations"])
