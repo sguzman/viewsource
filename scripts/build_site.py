@@ -276,6 +276,13 @@ def build(out: Path) -> dict:
                 visuals["chat_virtual_viewport"] = {
                     "runtime_verified": viewport["runtime_viewport_verified"],
                     "source_resources": [row["ref"] for row in viewport["source_resources"]],
+                    "ast_recheck": {
+                        "module_count": len(viewport["ast_candidate_recheck"]["module_matches"]),
+                        "candidate_count": sum(len(row["patterns"]) for row in
+                                               viewport["ast_candidate_recheck"]["module_matches"]),
+                        "verified_runtime":
+                            viewport["ast_candidate_recheck"]["verified_runtime"],
+                    },
                     "module_anchors": [
                         {"ref": anchor["source_ref"],
                          "module_ordinal": anchor["module_ordinal"],
