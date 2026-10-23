@@ -10870,6 +10870,16 @@
         "evidence_ref": "E2-081",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-082",
+      "statement": "The captured response-version selector derives alternatives from the conversation mapping: it walks from the selected response toward a qualifying prompt ancestor, enumerates that prompt's child branches, filters candidate descendants for selectable variants, and computes an active variant index against the current selected ancestry path. The filtered selectable list can differ from the raw prompt-child count. This is client-side source behavior, not proof of backend persistence.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-082",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
