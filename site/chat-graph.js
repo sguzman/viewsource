@@ -111,6 +111,27 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const clientCache=record.visuals?.chat_persistence_cache;
+    if(clientCache){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Browser-local conversation caches — captured client"));
+      block.append(element("p","graph-caption",
+        "Versioned list/pinned metadata, query-cache updates and snapshot-worker lifecycle. No executed storage write, server durability or cross-tab synchronization verified."));
+      const stages=element("div","chat-cache-stages");
+      clientCache.stages.forEach(stage=>{
+        const panel=element("details","chat-cache-stage");
+        panel.append(element("summary","",stage.id.replaceAll("_"," ")),
+          element("p","",stage.description));
+        stages.append(panel);
+      });
+      block.append(stages);
+      const limits=element("details","chat-cache-limits");
+      limits.append(element("summary","","Cache boundaries and unresolved behavior"),
+        element("p","graph-caption",clientCache.cross_tab_boundary));
+      const items=element("ul","");
+      clientCache.unverified.forEach(line=>items.append(element("li","",line)));
+      limits.append(items);block.append(limits);section.append(block);
+    }
     const branchStudy=record.visuals?.chat_branch_switch;
     if(branchStudy){
       const block=element("div","chat-subsection");
