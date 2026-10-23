@@ -111,6 +111,29 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const recovery=record.visuals?.chat_transport_failure;
+    if(recovery){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Completion failure, retry and recovery implementation"));
+      block.append(element("p","graph-caption",
+        "Seven source-reviewed client paths. No live failures or server recovery outcomes observed."));
+      const observations=element("div","chat-recovery-grid");
+      recovery.observations.forEach(x=>{
+        const row=element("details","chat-recovery-stage");
+        row.append(element("summary","",x.id.replaceAll("_"," ")),
+          element("p","",x.behavior),
+          element("p","graph-caption",x.limits));
+        observations.append(row);
+      });
+      block.append(observations);
+      const defaults=element("details","chat-recovery-defaults");
+      defaults.append(element("summary","","Captured configurable fallback values"));
+      const vals=element("ul","");
+      recovery.default_fallbacks.forEach(x=>
+        vals.append(element("li","",x.label+": "+x.value)));
+      defaults.append(vals,element("p","graph-caption",recovery.fallback_scope));
+      block.append(defaults);section.append(block);
+    }
     const lifecycle=record.visuals?.chat_end_to_end_trace;
     if(lifecycle){
       const block=element("div","chat-subsection");
