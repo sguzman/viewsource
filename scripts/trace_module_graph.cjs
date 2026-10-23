@@ -377,13 +377,21 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
       });
     }
    }
-   if(node.operator==="="&&moduleName&&env.get(moduleName)===moduleToken&&
-      memberOf(node.left,moduleName)==="exports"&&
-      ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
-    directFunctions.push({
-     position:node.start,
-     classification:"module_object_function_assignment_candidate"
-    });
+   if(moduleName&&env.get(moduleName)===moduleToken&&
+      memberOf(node.left,moduleName)==="exports"){
+    // module.exports replacement can detach the factory's original exports
+    // parameter. Earlier property assignments and later writes via that
+    // parameter cannot prove the final public export interface.
+    slots.clear();
+    directFunctions.length=0;
+    if(node.operator==="="&&
+       ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
+     directFunctions.push({
+      position:node.start,
+      classification:"module_object_function_assignment_candidate"
+     });
+    if(exportName)env.set(exportName,null);
+   }
    if(node.left?.type==="Identifier")neutralize(node.left,env);
   }
   if(node.type==="CallExpression"&&requireName&&
@@ -1384,6 +1392,22 @@ function selfTest(){
   "[[103],{901:function(e,t,n){t.a=1}},function(n){"+
   "const deferred=()=>{n=()=>1};n(901)}]);",66);
  assert.equal(unusedMutator.bootstrapCandidates.length,1);
+ const replacedExport=analyzeJS("export const __webpack_modules__={"+
+  "Caller:(function(e,t,n){const x=n('Z');x.obsolete()}),"+
+  "Z:(function(e,t,n){t.obsolete=()=>1;e.exports=function(){return 1};"+
+  "t.later=()=>2})};",67);
+ const duplicateReplacement=analyzeJS("export const __webpack_modules__={"+
+  "Z:(function(e,t,n){t.alternate=()=>3})};",68);
+ const replacedGraph=buildGraph([...replacedExport,...duplicateReplacement],2,0);
+ assert.equal(replacedGraph.ambiguous_import_candidates,1);
+ assert.equal(replacedGraph.export_shape_candidate_count,0);
+ assert.equal(replacedGraph.direct_function_export_site_count,2);
+ assert.equal(replacedGraph.direct_function_export_sites[0].classification,
+  "module_object_function_assignment_candidate");
+ assert(!JSON.stringify(replacedGraph).includes("obsolete"));
+ const beforeOnly=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(e,t,n){t.before=()=>1;e.exports={replaced:1};t.after=()=>2})};",69);
+ assert.equal(buildGraph(beforeOnly,1,0).direct_function_export_site_count,0);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
