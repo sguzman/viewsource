@@ -63,18 +63,28 @@
     },
     {
       "from": "client_conversation_state_writer",
-      "to": "selected_path_projection",
+      "to": "selected_path_automation_scan",
       "kind": "direct_state_helper_call"
     },
     {
-      "from": "selected_path_projection",
-      "to": "visible_message_cache",
+      "from": "selected_path_automation_scan",
+      "to": "automation_reference_cache",
       "kind": "local_state_mutation"
     },
     {
       "from": "client_conversation_state_writer",
       "to": "user_ancestry_projection",
       "kind": "conditional_client_path"
+    },
+    {
+      "from": "client_conversation_state_writer",
+      "to": "selected_path_page_reference_scan",
+      "kind": "direct_state_helper_call"
+    },
+    {
+      "from": "selected_path_page_reference_scan",
+      "to": "page_reference_cache",
+      "kind": "local_state_mutation"
     }
   ],
   "mapping_transformer_inputs": [
@@ -126,12 +136,16 @@
       "observation": "The state writer constructs updated conversation state with the new mapping/current selection, sends it through a local state helper, and returns the message ID, parent ID, previous state and next state."
     },
     {
-      "kind": "visible_message_projection",
-      "observation": "The conversation state commit updates a visible-message projection. For a changed node it attempts an incremental projection update; otherwise it can recompute the visible selected path from the mapping and current node."
+      "kind": "automation_reference_projection",
+      "observation": "The state commit maintains selected-path automation references. The scanner extracts automation identities from message metadata, tool results and supported widgets, with an incremental changed-message optimization or a full ancestry scan. This is not the visible chat transcript."
     },
     {
       "kind": "user_ancestry_projection",
       "observation": "When selected-node or relevant parent information changes, the state commit may walk the current-node parent chain, gather user-author messages in root-to-leaf order, and update a separate user-ancestry projection. The walk guards repeated identities."
+    },
+    {
+      "kind": "page_reference_projection",
+      "observation": "A separate selected-path scanner extracts page references from eligible tool messages and maintains a dedicated page-reference collection. It is not the main chat transcript."
     }
   ],
   "structural_guarantees_visible_in_code": [
@@ -145,7 +159,8 @@
     "No proof that every input graph is valid or that all cases preserve global acyclicity.",
     "No proof of server-side message ancestry implementation or the exact export data format.",
     "No proof that the live client exercised any specific conditional insertion or rotation.",
-    "The final component selectors, render subscriptions and reactivity triggers consuming these projected state fields remain untraced."
+    "The main conversation message-rendering list is not established by the automation/page-reference collectors.",
+    "Which UI components consume these specific selectors remains to be traced."
   ],
   "privacy": "Capture-local semantic roles and original analytic summaries only; no source code, IDs, network endpoints, filenames, routes or user messages.",
   "state_commit_observation": {
@@ -154,14 +169,15 @@
     "projected_state_roles": [
       "message_mapping",
       "selected_current_node",
-      "visible_selected_path_messages",
+      "selected_path_automation_references",
+      "selected_path_page_references",
       "selected_user_message_ancestry",
       "conversation_status",
       "stream_request_identity",
       "error_state",
       "optimistic_local_prompt_state"
     ],
-    "client_behavior": "The scoped conversation commit explicitly updates a message mapping, selected node, selected-path visible-message cache, and conditional user-ancestry list, alongside request status and other client fields.",
-    "verification_boundary": "These are saved client state-set operations; how individual UI components subscribe and render remains a separate source-tracing task."
+    "client_behavior": "The scoped conversation commit updates the message mapping and selected node, maintains separate automation and page-reference collections derived from the selected ancestry path, and conditionally updates user-message ancestry. The automation/page reference collections are not the visible chat transcript.",
+    "verification_boundary": "These are captured client-state updates. Consumers of automation/page references and user ancestry can be traced separately; the main visible chat message list is not established by this routine."
   }
 }
