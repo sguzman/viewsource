@@ -235,6 +235,28 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            cache_path = ROOT / (base + "/chat_persistence_cache_trace.json")
+            if cache_path.is_file():
+                cache = read(base + "/chat_persistence_cache_trace.json")
+                if (cache["specimen_id"] != item["id"]
+                        or cache["version"] != number
+                        or cache["cross_tab_behavior_verified"] is not False):
+                    raise ValueError("Client cache research scope mismatch")
+                visuals["chat_persistence_cache"] = {
+                    "browser_executed": cache["executed_in_browser"],
+                    "stages": [
+                        {"id": stage["id"], "description": stage["description"],
+                         "kind": stage["kind"]}
+                        for stage in cache["stages"]
+                    ],
+                    "relationships": [
+                        {"from": edge["from"],"to": edge["to"],"kind": edge["kind"]}
+                        for edge in cache["source_relationships"]
+                    ],
+                    "conclusions": cache["conclusions"],
+                    "cross_tab_boundary": cache["cross_tab_boundary"]["supported_conclusion"],
+                    "unverified": cache["still_unverified"],
+                }
             switch_path = ROOT / (base + "/chat_branch_switch_trace.json")
             if switch_path.is_file():
                 branch = read(base + "/chat_branch_switch_trace.json")
