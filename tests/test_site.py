@@ -68,12 +68,15 @@ class AtlasTests(unittest.TestCase):
             a11y = current["visuals"]["chat_accessibility_trace"]
             self.assertFalse(a11y["screen_reader_tested"])
             self.assertEqual(len(a11y["mechanisms"]),8)
+            self.assertEqual(len(a11y["module_anchors"]),4)
+            self.assertEqual(len(a11y["verified_import_bindings"]),2)
             self.assertEqual(set(a11y["source_refs"]),{"R-JS-066","R-JS-072"})
             self.assertTrue(a11y["limits"])
             edit = current["visuals"]["chat_edit_submission_trace"]
             self.assertFalse(edit["source_executed"])
             self.assertEqual(set(edit["source_refs"]),{"R-JS-069","R-JS-072"})
             self.assertEqual(len(edit["stages"]),9)
+            self.assertEqual(len(edit["module_anchors"]),2)
             self.assertTrue(edit["unverified"])
             selection = current["visuals"]["chat_selection_copy_trace"]
             self.assertFalse(selection["verified_runtime"])
