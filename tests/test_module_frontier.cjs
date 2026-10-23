@@ -307,6 +307,26 @@ test("whole-module function assignments remain a distinct source candidate",()=>
  assert.equal(out.reachable_direct_function_export_sites[0].runtime_invocation_verified,false);
 });
 
+test("object-literal callable exports survive frontier validation without promotion",()=>{
+ const g=graph();
+ g.direct_function_export_site_count=2;
+ g.nested_function_export_site_count=1;
+ g.direct_function_export_sites=[
+  {source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:1,
+   classification:"module_object_property_function_candidate",
+   nested_function_syntax_present:false,runtime_invocation_verified:false},
+  {source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:2,
+   classification:"module_object_property_function_candidate",
+   nested_function_syntax_present:true,runtime_invocation_verified:false}
+ ];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.reachable_direct_function_export_site_count,2);
+ assert.equal(out.reachable_nested_function_export_site_count,1);
+ assert(out.reachable_direct_function_export_sites.every(x=>
+  x.classification==="module_object_property_function_candidate"&&
+  x.runtime_invocation_verified===false));
+});
+
 test("literal loader calls distinguish repeated syntax from distinct module keys",()=>{
  const g=graph();
  g.import_candidates=6;
