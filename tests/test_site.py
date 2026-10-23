@@ -61,7 +61,8 @@ class AtlasTests(unittest.TestCase):
             branch = current["visuals"]["chat_branch_switch"]
             self.assertFalse(branch["live_selection_verified"])
             self.assertEqual(len(branch["stages"]),7)
-            self.assertEqual(len(branch["relationships"]),8)
+            self.assertEqual(len(branch["relationships"]),10)
+            self.assertEqual(len(branch["variant_derivation"]),5)
             self.assertEqual(set(branch["source_resources"]),{"R-JS-018","R-JS-069"})
             transcript = current["visuals"]["chat_transcript_render_trace"]
             self.assertFalse(transcript["runtime_render_verified"])
@@ -112,7 +113,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 81)
+            self.assertEqual(len(current["findings"]), 82)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
