@@ -143,7 +143,14 @@ try {
   assert.equal(displayedProgress.max,staticTaskCount);
   assert.equal(displayedProgress.value,startedCount);
   assert.ok((await page.locator(".chat-static-progress").evaluate(e=>e.nextElementSibling.textContent)).includes("0% accepted complete"));
+  assert.equal(await page.locator(".chat-static-checks").count(),17);
+  assert.equal(await page.locator(".chat-static-task").filter({hasText:"Status: queued"})
+    .locator(".chat-static-checks").count(),0);
   await page.locator(".chat-static-task").first().locator("summary").click();
+  assert.ok(await page.locator(".chat-static-task").first()
+    .locator(".chat-static-checks li").first().isVisible());
+  assert.ok((await page.locator(".chat-static-task").first().innerText())
+    .includes("Open acceptance checks (not yet verified)"));
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
   await runtimeStudy.locator("summary").click();
   assert.ok((await runtimeStudy.innerText()).includes("Proposed study, not performed"));
