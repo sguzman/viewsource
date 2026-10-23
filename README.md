@@ -154,3 +154,5 @@ still require source review. The archived ChatGPT stream-recovery helper
 (R-JS-018 → R-JS-004) is one reviewed example, while the original
 ambiguous-import counts remain unchanged. No private module keys or source
 assets are published.
+
+Source evidence E2-100 adds a permission distinction: the initial completion path disables automatic stream resume when the request's history-and-training-disabled field is exactly true, whereas the separate explicit-resume handler is constructed with resume permission enabled. Additional state guards still apply. This does **not** establish real account eligibility, actual requests, or successful recovery.
