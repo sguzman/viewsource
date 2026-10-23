@@ -58,6 +58,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(source_queue["task_statuses"]["queued"], 16)
             self.assertEqual(source_queue["task_statuses"]["in_progress"], 17)
             self.assertEqual(len(source_queue["tasks"]), 33)
+            recovery = current["visuals"]["chat_transport_failure"]
+            self.assertFalse(recovery["live_failure_observed"])
+            self.assertEqual(recovery["source_ref"],"R-JS-018")
+            self.assertEqual(len(recovery["observations"]),7)
+            self.assertEqual(len(recovery["default_fallbacks"]),7)
             lifecycle = current["visuals"]["chat_end_to_end_trace"]
             self.assertFalse(lifecycle["live_execution_verified"])
             self.assertEqual(len(lifecycle["stages"]),10)
@@ -168,7 +173,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 94)
+            self.assertEqual(len(current["findings"]), 95)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
