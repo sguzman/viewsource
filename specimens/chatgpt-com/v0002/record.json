@@ -10980,6 +10980,16 @@
         "evidence_ref": "E2-092",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-093",
+      "statement": "A lexical scan of 17 captured CSS files (2,340,628 bytes) found 627 media rules, 504 container rules, 168 reduced-motion references, 493 focus-visible selectors and multiple state/test/role attribute selectors. The exact message-role, message-ID, source-message-ID and turn-key DOM attributes observed in chat JSX had no literal bracketed selectors in saved CSS. Thread-content vocabulary overlaps across scripts and stylesheets, but direct DOM-to-style ownership remains unverified.",
+      "evidence": {
+        "evidence_class": "observed_static_syntax",
+        "confidence": "high",
+        "evidence_ref": "E2-093",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
