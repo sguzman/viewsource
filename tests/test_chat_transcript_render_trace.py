@@ -19,7 +19,11 @@ class TranscriptRenderTraceTests(unittest.TestCase):
         self.assertEqual({x["ref"] for x in doc["source_resources"]},
                          {"R-JS-018","R-JS-069","R-JS-072"})
         self.assertEqual(len(doc["stages"]), 7)
-        self.assertEqual(len(doc["reviewed_relationships"]), 10)
+        self.assertEqual(len(doc["reviewed_relationships"]), 13)
+        self.assertEqual({a["action"] for a in doc["action_bindings"]},
+                         {"edit_user_message","regenerate_response","fork_conversation"})
+        self.assertTrue(all(a["status"]=="observed_static" and a["limits"]
+                            for a in doc["action_bindings"]))
         cross=doc["verified_cross_module_call"]
         self.assertEqual((cross["source_ref"],cross["target_ref"]),("R-JS-072","R-JS-069"))
         self.assertEqual(cross["kind"],"direct_imported_component_call")
