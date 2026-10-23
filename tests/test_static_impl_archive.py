@@ -229,6 +229,34 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                            str(archive), "a.js", "b.js"):
                 self.assertNotIn(secret, result.stdout)
 
+    def test_styles_probe_summarizes_css_without_leaking_rules(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-style-capture.zip"
+            sentinel = "SECRET_SYNTHETIC_STYLE_TOKEN"
+            css = ("@media (prefers-reduced-motion:reduce)"
+                   "{[data-state=open]:focus-visible{opacity:1}}"
+                   "@container (min-width:1px){[data-testid=x] [role=button]{color:red}}"
+                   ".app{max-width:var(--thread-content-max-width)}")
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("style/main.css", css)
+                z.writestr("script/client.js", "const test='thread-content';"
+                           "const privateSentinel='" + sentinel + "';")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--styles-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode,0,"Synthetic styles probe failed")
+            report=json.loads(result.stdout)
+            self.assertEqual(report["stylesheets_scanned"],1)
+            self.assertEqual(report["javascript_bundles_scanned"],1)
+            self.assertEqual(report["stylesheet_bytes"],len(css.encode("utf-8")))
+            self.assertEqual(report["css_lexical_occurrences"]["media_at_rules"],1)
+            self.assertEqual(report["css_lexical_occurrences"]["container_at_rules"],1)
+            self.assertEqual(report["cross_resource_vocabulary"]["thread_content"]["javascript_bundle_count"],1)
+            self.assertTrue(all(x==0 for x in report["exact_css_attribute_selectors"].values()))
+            self.assertNotIn(sentinel,result.stdout)
+            self.assertNotIn(str(archive),result.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
