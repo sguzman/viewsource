@@ -66,6 +66,9 @@ try {
   await page.locator(".chat-viewport-spacer-link summary").click();
   assert.equal(await page.locator(".chat-viewport-spacer-link li").count(),4);
   assert.equal(await page.locator(".chat-branch-stage").count(),7);
+  assert.equal(await page.locator(".chat-cache-stage").count(),9);
+  await page.locator(".chat-cache-limits summary").click();
+  assert.ok((await page.locator(".chat-cache-limits").innerText()).includes("Cross-tab"));
   await page.locator(".chat-branch-caveats summary").click();
   assert.equal(await page.locator(".chat-branch-caveats li").count(),6);
   await page.locator(".chat-branch-derivation summary").click();
@@ -109,7 +112,7 @@ try {
   assert.equal(await page.locator(".chat-research-task").count(),18);
   assert.equal(await page.locator(".chat-static-task").count(),33);
   assert.equal(await page.locator(".chat-static-progress").getAttribute("max"),"33");
-  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"12");
+  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"13");
   assert.ok((await page.locator(".chat-static-progress").evaluate(e=>e.nextElementSibling.textContent)).includes("0% accepted complete"));
   await page.locator(".chat-static-task").first().locator("summary").click();
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
