@@ -27,6 +27,25 @@ class ChatQueueDocumentationTests(unittest.TestCase):
         self.assertIsNotNone(match, "README queue overview missing or stale")
         self.assertEqual((int(match.group(1)), int(match.group(2))), (complete, runtime))
 
+    def test_static_source_queue_summary_matches_canonical_tasks(self):
+        records = json.loads((ROOT / "queues/tasks.json").read_text("utf-8"))["tasks"]
+        tasks = [row for row in records
+                 if row["specimen_id"] == "chatgpt-com" and row["version"] == 2
+                 and "-followup-static-" in row["id"]]
+        active = sum(row["status"] == "in_progress" for row in tasks)
+        queued = sum(row["status"] == "queued" for row in tasks)
+        accepted = sum(row["status"] == "done" for row in tasks)
+        readme = (ROOT / "README.md").read_text("utf-8")
+        summary = re.search(
+            r"source research queue has \\*\\*(\\d+) tasks: (\\d+) in progress, "
+            r"(\\d+) queued, none accepted complete\\*\\*", readme)
+        self.assertIsNotNone(summary)
+        self.assertEqual(tuple(map(int, summary.groups())),
+                         (len(tasks), active, queued))
+        self.assertEqual(accepted, 0)
+        self.assertNotIn("10 in progress, 23 queued", readme)
+        self.assertNotIn("11 active, 22 queued", readme)
+
     def test_runtime_tasks_are_not_labeled_completed_without_evidence(self):
         queue = json.loads((ROOT / "queues/chat_research.json").read_text("utf-8"))
         pending = [x for x in queue["tasks"]
