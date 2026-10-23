@@ -580,3 +580,17 @@ contains eleven individually described source rules and seven linking steps.
 This addresses the previous question of whether a virtualized turn list
 exists while leaving actual browser reconciliation and accessibility
 behavior open.
+
+## Branch selection to virtualized row reconciliation (E2-085)
+
+The source-reviewed optimistic response selector changes a candidate
+selected current node. The conversation page's memoized turn derivation
+reads that selected node and mapping, and the resulting keyed turns feed
+the virtual row window. The window compares new turn keys to prior keys;
+when possible it retains a surviving rendered anchor key/window span and
+compensates distance from the scroll bottom when geometry changes.
+This is a composed **static client call/dataflow path**, not evidence
+that a particular branch switch occurred, an anchor survived, or the
+user saw smooth scrolling. The selection helper may also roll back on
+a failed persistence request. See canonical E2-085 and the four-stage
+`selected_branch_window_reconciliation` entry in the viewport trace.
