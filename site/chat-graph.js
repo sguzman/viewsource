@@ -153,6 +153,13 @@ window.ViewsourceChatGraph = (() => {
       });
       rules.append(ruleList,element("p","graph-caption",transcript.rule_limitations.join(" ")));
       block.append(rules);
+      const actions=element("details","chat-transcript-actions");
+      actions.append(element("summary","","Edit, regenerate and fork callback gates"));
+      const actionList=element("ul","");
+      transcript.action_bindings.forEach(row=>actionList.append(
+        element("li","",row.action.replaceAll("_"," ")+": "+row.gates+" "+row.limits)));
+      actions.append(actionList);
+      block.append(actions);
       const limits=element("details","chat-transcript-limits");
       limits.append(element("summary","","Still unresolved"));
       const questions=element("ul","");
