@@ -95,6 +95,33 @@ function scanScopedRequiredSlots(fn,requireName,required){
    walk(node.body,caught);
    return;
   }
+  if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
+   const loop=new Map(env);
+   if(node.type==="ForStatement"){
+    walk(node.init,loop);
+    walk(node.test,loop);
+    walk(node.update,loop);
+   }else{
+    walk(node.left,loop);
+    walk(node.right,loop);
+   }
+   walk(node.body,loop);
+   return;
+  }
+  if(node.type==="SwitchStatement"){
+   walk(node.discriminant,env);
+   const cases=new Map(env);
+   for(const branch of node.cases){
+    for(const stmt of branch.consequent){
+     if(stmt.type==="VariableDeclaration"){
+      for(const declaration of stmt.declarations)
+       bind(declaration.id,cases,null);
+     }
+    }
+   }
+   for(const branch of node.cases)walk(branch,cases);
+   return;
+  }
   if(node.type==="BlockStatement"){
    const block=new Map(env);
    for(const stmt of node.body){
@@ -172,6 +199,33 @@ function scanScopedExports(fn,requireName,exportName){
    const caught=new Map(env);
    neutralize(node.param,caught);
    scan(node.body,caught);
+   return;
+  }
+  if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
+   const loop=new Map(env);
+   if(node.type==="ForStatement"){
+    scan(node.init,loop);
+    scan(node.test,loop);
+    scan(node.update,loop);
+   }else{
+    scan(node.left,loop);
+    scan(node.right,loop);
+   }
+   scan(node.body,loop);
+   return;
+  }
+  if(node.type==="SwitchStatement"){
+   scan(node.discriminant,env);
+   const cases=new Map(env);
+   for(const branch of node.cases){
+    for(const stmt of branch.consequent){
+     if(stmt.type==="VariableDeclaration"){
+      for(const declaration of stmt.declarations)
+       neutralize(declaration.id,cases,null);
+     }
+    }
+   }
+   for(const branch of node.cases)scan(branch,cases);
    return;
   }
   if(node.type==="BlockStatement"){
@@ -343,6 +397,33 @@ function scanScopedModuleCalls(fn,requireName){
    const caught=new Map(env);
    shadows(node.param,caught);
    walk(node.body,caught);
+   return;
+  }
+  if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
+   const loop=new Map(env);
+   if(node.type==="ForStatement"){
+    walk(node.init,loop);
+    walk(node.test,loop);
+    walk(node.update,loop);
+   }else{
+    walk(node.left,loop);
+    walk(node.right,loop);
+   }
+   walk(node.body,loop);
+   return;
+  }
+  if(node.type==="SwitchStatement"){
+   walk(node.discriminant,env);
+   const cases=new Map(env);
+   for(const branch of node.cases){
+    for(const stmt of branch.consequent){
+     if(stmt.type==="VariableDeclaration"){
+      for(const declaration of stmt.declarations)
+       shadows(declaration.id,cases,null);
+     }
+    }
+   }
+   for(const branch of node.cases)walk(branch,cases);
    return;
   }
   if(node.type==="BlockStatement"){
@@ -838,6 +919,17 @@ function selfTest(){
  const deferredRuntime=analyzeJS("(self.webpackChunkDeferred=self.webpackChunkDeferred||[]).push("+
   "[[51],{901:function(e,t,n){t.a=1}},function(n){const unused=()=>n(901)}]);",24);
  assert.equal(deferredRuntime.bootstrapCandidates.length,0);
+ const loopScopes=analyzeJS("export const __webpack_modules__={"+
+  "Consumer:(function(e,t,n){const a=n('Q');"+
+  "for(let a of [{z:()=>1}]){a.z()}a.x();"+
+  "for(let n of [()=>1]){n('Unrelated')}"+
+  "switch(1){case 1:{const n=()=>1;n('Unrelated')}break}"+
+  "switch(1){case 1:const a={z:()=>1};a.z();break}"+
+  "}),Q:(function(e,t,n){t.x=1})};",36);
+ const loopGraph=buildGraph(loopScopes,1,0);
+ assert.equal(loopGraph.import_candidates,1);
+ assert.equal(loopGraph.unique_resolved_links,1);
+ assert(!JSON.stringify(loopGraph).includes("Unrelated"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

@@ -716,6 +716,31 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for item in ("Caller", "ExptargetFixtureZ9", "synthetic-export-shadow.zip"):
                 self.assertNotIn(item, proc.stdout)
 
+    def test_loop_and_switch_scopes_do_not_leak_module_aliases(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-loop-scope.zip"
+            sentinel = "PrivateScopeKeyZ999"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Consumer:(function(e,t,n){"
+                    "const imported=n('Target');"
+                    "for(let imported of [{z:()=>1}]){imported.z()}"
+                    "imported.x();"
+                    "for(let n of [()=>1]){n('" + sentinel + "')}"
+                    "switch(1){case 1:const n=()=>1;n('" + sentinel + "');break}"
+                    "}),Target:(function(e,t,n){t.x=1})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0)
+            graph = json.loads(result.stdout)
+            self.assertEqual(graph["import_candidates"], 1)
+            self.assertEqual(graph["unique_resolved_links"], 1)
+            self.assertEqual(graph["unresolved_import_candidates"], 0)
+            for private in (sentinel, "Consumer", "Target", "invented-loop-scope.zip"):
+                self.assertNotIn(private, result.stdout)
+
     def test_nested_parameter_shadowing_cannot_create_module_edge(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-shadowed-loader.zip"

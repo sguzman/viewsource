@@ -490,3 +490,12 @@ to **reached modules** and reports a `reachable_unresolved_import_count`
 separately from global unresolved totals. This makes source-review questions
 relevant to the selected dependency path, without implying any missing
 module was requested in a running browser.
+
+### Loop and switch lexical scopes
+
+Candidate import, alias-property and export scans now keep `for`, `for...of`,
+`for...in`, and `switch` declarations in a dedicated conservative scope.
+Bindings local to those control-flow structures no longer overwrite aliases
+in the surrounding module factory. This prevents local shadows from
+creating false import edges or hiding legitimate later alias-property
+reads. Branch control flow and actual execution remain unverified.
