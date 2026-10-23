@@ -608,3 +608,18 @@ No accepted submission, user scroll event, or browser animation was
 executed or observed, and runtime presentation flags can choose a
 different layout. This adds canonical E2-086 without closing ongoing
 source-rendering or state-flow tasks.
+
+## Independent structural AST reproduction of viewport clues
+
+The new viewport AST classifier was rechecked against four named-by-ordinal
+modules in the original private capture: R-JS-066 modules 9 and 14,
+and R-JS-072 modules 13 and 14. The allowlisted scanner reported eleven
+candidate pattern matches (seven, one, one and two respectively),
+covering row layout, overscan, offscreen retention, resize, scroll anchoring,
+history boundaries, spacer control and manual input cancellation.
+
+This is **syntax-level corroboration** only. The independent manual source
+review is the basis for the public algorithm descriptions. The scanner
+reports category counts and module ordinals, not the original asset files,
+minified module names or code. Candidate counts should never be used as a
+surrogate for completed source research or runtime verification.
