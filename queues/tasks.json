@@ -1838,7 +1838,8 @@
         "E2-080",
         "E2-081",
         "E2-087",
-        "E2-088"
+        "E2-088",
+        "E2-089"
       ]
     },
     {
@@ -1861,7 +1862,8 @@
         "E2-084",
         "E2-085",
         "E2-086",
-        "E2-088"
+        "E2-088",
+        "E2-089"
       ]
     },
     {
@@ -1878,7 +1880,8 @@
       ],
       "notes": "Static implementation trace: Locate request builders and response parsers, correlate call sites and data-field usage, distinguish symbolic paths from proven external service behavior. Captured response-version request construction and success/failure branch; wider transport/decoding contracts remain open.",
       "evidence_refs": [
-        "E2-081"
+        "E2-081",
+        "E2-089"
       ]
     },
     {
@@ -1906,12 +1909,15 @@
       "profile": "followup",
       "queue": "network",
       "title": "Trace retries, error handling and cancellation",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-network-contracts",
         "chatgpt-com-v0002-followup-static-source-events"
       ],
-      "notes": "Static implementation trace: Trace caught errors, abort mechanisms, retry gates and UI recovery paths with supported call edges."
+      "notes": "Static implementation trace: Trace caught errors, abort mechanisms, retry gates and UI recovery paths with supported call edges. Source-reviewed edit busy guards, active-stream stop, target revalidation, and error notification; other failure paths remain open.",
+      "evidence_refs": [
+        "E2-089"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-persistence",
@@ -1952,7 +1958,8 @@
         "E2-085",
         "E2-086",
         "E2-087",
-        "E2-088"
+        "E2-088",
+        "E2-089"
       ]
     },
     {
@@ -2003,7 +2010,8 @@
         "E2-080",
         "E2-081",
         "E2-087",
-        "E2-088"
+        "E2-088",
+        "E2-089"
       ]
     },
     {
