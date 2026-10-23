@@ -10970,6 +10970,16 @@
         "evidence_ref": "E2-091",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-092",
+      "statement": "The archived client implements browser-local versioned conversation-list and pinned-list snapshot reads, schema validation and invalid-entry removal, cached metadata lookups, local collection snapshot writes, and in-memory conversation query set/invalidate operations. A guarded asynchronous conversation-snapshot client supports account-scoped invalidation and conditional persisted-snapshot cleanup. These source operations do not establish message-graph durability, actual writes, or cross-tab conversation synchronization.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-092",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
