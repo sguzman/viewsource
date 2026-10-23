@@ -80,19 +80,32 @@ function bindingNames(pattern,result){
    bindingNames(prop.type==="RestElement"?prop.argument:prop.value,result);
  }
 }
+function hoistedFunctionVars(node,names){
+ if(!node||typeof node!=="object")return;
+ if(["FunctionExpression","FunctionDeclaration","ArrowFunctionExpression"].includes(node.type))
+  return;
+ if(node.type==="VariableDeclaration"&&node.kind==="var")
+  for(const decl of node.declarations)bindingNames(decl.id,names);
+ for(const [key,value] of Object.entries(node)){
+  if(["start","end","loc","raw"].includes(key))continue;
+  if(Array.isArray(value)){
+   for(const child of value)hoistedFunctionVars(child,names);
+  }else if(value&&typeof value==="object")hoistedFunctionVars(value,names);
+ }
+}
 function localNamesForScope(node){
  const locals=new Set();
  if(node.type==="CatchClause")bindingNames(node.param,locals);
  if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
   const binding=node.type==="ForStatement"?node.init:node.left;
-  if(binding?.type==="VariableDeclaration"){
+  if(binding?.type==="VariableDeclaration"&&binding.kind!=="var"){
    for(const decl of binding.declarations)bindingNames(decl.id,locals);
   }
  }
  const statements=node.type==="BlockStatement"?node.body:
   node.type==="SwitchStatement"?node.cases.flatMap(x=>x.consequent):[];
  for(const statement of statements){
-  if(statement.type==="VariableDeclaration")
+  if(statement.type==="VariableDeclaration"&&statement.kind!=="var")
    for(const decl of statement.declarations)bindingNames(decl.id,locals);
   if((statement.type==="FunctionDeclaration"||statement.type==="ClassDeclaration")&&
      statement.id)bindingNames(statement.id,locals);
@@ -149,6 +162,12 @@ function scanScopedRequiredSlots(fn,requireName,required){
      walk(node.left,loop);
     walk(node.right,loop);
    }
+   if(node.type!=="ForStatement"&&
+      node.left?.type==="VariableDeclaration"&&node.left.kind==="var"){
+    const assigned=new Set();
+    for(const item of node.left.declarations)bindingNames(item.id,assigned);
+    for(const id of assigned)if(loop.has(id))loop.set(id,null);
+   }
    walk(node.body,loop);
    invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
@@ -158,7 +177,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
    const cases=new Map(env);
    for(const branch of node.cases){
     for(const stmt of branch.consequent){
-     if(stmt.type==="VariableDeclaration"){
+     if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var"){
       for(const declaration of stmt.declarations)
        bind(declaration.id,cases,null);
      }
@@ -171,7 +190,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
   if(node.type==="BlockStatement"){
    const block=new Map(env);
    for(const stmt of node.body){
-    if(stmt.type==="VariableDeclaration")
+    if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var")
      for(const decl of stmt.declarations)bind(decl.id,block,null);
     if((stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")&&stmt.id)
      bind(stmt.id,block,null);
@@ -184,12 +203,16 @@ function scanScopedRequiredSlots(fn,requireName,required){
    const nested=new Map(env);
    if(node.id)bind(node.id,nested,null);
    for(const param of node.params||[])bind(param,nested,null);
+   const hoisted=new Set();
+   hoistedFunctionVars(node.body,hoisted);
+   for(const id of hoisted)if(id===requireName)nested.set(id,null);
    walk(node.body,nested);
    return;
   }
   if(node.type==="VariableDeclaration"){
    for(const decl of node.declarations){
     walk(decl.init,env);
+    if(node.kind==="var"&&!decl.init)continue;
     if(decl.id?.type==="Identifier")
      env.set(decl.id.name,importKey(decl.init,env));
     else bind(decl.id,env,null);
@@ -282,6 +305,12 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
     scan(node.left,loop);
     scan(node.right,loop);
    }
+   if(node.type!=="ForStatement"&&
+      node.left?.type==="VariableDeclaration"&&node.left.kind==="var"){
+    const assigned=new Set();
+    for(const item of node.left.declarations)bindingNames(item.id,assigned);
+    for(const id of assigned)if(loop.has(id))loop.set(id,null);
+   }
    scan(node.body,loop);
    invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
@@ -291,7 +320,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    const cases=new Map(env);
    for(const branch of node.cases){
     for(const stmt of branch.consequent){
-     if(stmt.type==="VariableDeclaration"){
+     if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var"){
       for(const declaration of stmt.declarations)
        neutralize(declaration.id,cases,null);
      }
@@ -304,7 +333,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
   if(node.type==="BlockStatement"){
    const local=new Map(env);
    for(const stmt of node.body){
-    if(stmt.type==="VariableDeclaration")
+    if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var")
      for(const decl of stmt.declarations)neutralize(decl.id,local);
     if((stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")&&stmt.id)
      neutralize(stmt.id,local);
@@ -317,12 +346,16 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    const nested=new Map(env);
    neutralize(node.id,nested);
    for(const param of node.params||[])neutralize(param,nested);
+   const hoisted=new Set();
+   hoistedFunctionVars(node.body,hoisted);
+   for(const id of hoisted)if(id===exportName||id===moduleName||id===requireName)nested.set(id,null);
    scan(node.body,nested);
    return;
   }
   if(node.type==="VariableDeclaration"){
    for(const decl of node.declarations){
     scan(decl.init,env);
+    if(node.kind==="var"&&!decl.init)continue;
     neutralize(decl.id,env);
    }
    return;
@@ -505,6 +538,12 @@ function scanScopedModuleCalls(fn,requireName){
     walk(node.left,loop);
     walk(node.right,loop);
    }
+   if(node.type!=="ForStatement"&&
+      node.left?.type==="VariableDeclaration"&&node.left.kind==="var"){
+    const assigned=new Set();
+    for(const item of node.left.declarations)bindingNames(item.id,assigned);
+    for(const id of assigned)if(loop.has(id))loop.set(id,null);
+   }
    walk(node.body,loop);
    invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
@@ -514,7 +553,7 @@ function scanScopedModuleCalls(fn,requireName){
    const cases=new Map(env);
    for(const branch of node.cases){
     for(const stmt of branch.consequent){
-     if(stmt.type==="VariableDeclaration"){
+     if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var"){
       for(const declaration of stmt.declarations)
        shadows(declaration.id,cases,null);
      }
@@ -527,7 +566,7 @@ function scanScopedModuleCalls(fn,requireName){
   if(node.type==="BlockStatement"){
    const scoped=new Map(env);
    for(const stmt of node.body){
-    if(stmt.type==="VariableDeclaration")
+    if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var")
      for(const decl of stmt.declarations)shadows(decl.id,scoped);
     if((stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")&&stmt.id)
      shadows(stmt.id,scoped);
@@ -541,6 +580,9 @@ function scanScopedModuleCalls(fn,requireName){
    if(node.id)shadows(node.id,nested);
    for(const param of node.params||[])shadows(param,nested);
    nestedFunctionDepth++;
+   const hoisted=new Set();
+   hoistedFunctionVars(node.body,hoisted);
+   for(const id of hoisted)if(id===requireName)nested.set(id,null);
    walk(node.body,nested);
    nestedFunctionDepth--;
    return;
@@ -548,6 +590,7 @@ function scanScopedModuleCalls(fn,requireName){
   if(node.type==="VariableDeclaration"){
    for(const decl of node.declarations){
     walk(decl.init,env);
+    if(node.kind==="var"&&!decl.init)continue;
     shadows(decl.id,env);
    }
    return;
@@ -1263,6 +1306,19 @@ function selfTest(){
   "[[82],{901:function(e,t,n){t.a=1}},function(n){"+
   "if(true){var n=()=>1}n(901)}]);",50);
  assert.equal(varRuntime.bootstrapCandidates.length,0);
+ const varScoped=analyzeJS("export const __webpack_modules__={"+
+  "Assigned:(function(e,t,n){if(t.flag){var n=()=>1}n('Target')}),"+
+  "Redeclared:(function(e,t,n){if(t.flag){var n}n('Target')}),"+
+  "Iterated:(function(e,t,n){for(var n of [()=>1]){}n('Target')}),"+
+  "Target:(function(e,t){t.a=1})};",59);
+ const varReport=buildGraph(varScoped,1,0);
+ assert.equal(varReport.import_candidates,1);
+ assert.equal(varReport.unique_resolved_links,1);
+ assert.equal(varReport.resolved_links[0].from_module,2);
+ const nestedHoist=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(e,t,n){function other(){n('B');if(false){var n}}}),"+
+  "B:(function(e,t){t.a=1})};",60);
+ assert.equal(buildGraph(nestedHoist,1,0).import_candidates,0);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
