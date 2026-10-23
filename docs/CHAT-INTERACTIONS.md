@@ -555,3 +555,28 @@ the response-version state-selection algorithm (E2-081/E2-082) to the
 transcript-rendering stage (E2-078/E2-083). It does not prove that a real
 button click caused a displayed animation or that a server accepted or
 persisted the response selection.
+
+## Captured transcript virtualization and scroll placement (E2-084)
+
+A direct source pass through R-JS-072, R-JS-066 and R-JS-069 identified
+turn-level virtualization **after** the page derives `renderedTurns`.
+The page adapter feeds prepared turn entries and retained turn keys to the
+virtualized window. That window computes row offsets from measured or
+estimated turn heights, locates the visible range via binary search, and
+adds an overscan of two turns. It creates keyed row wrappers positioned
+within a total-height region and separately retains eligible turns outside
+the normal window. Row measurements and viewport resize observations feed
+scroll-distance-from-bottom compensation, history boundary signals, and
+programmatic target-turn positioning.
+
+A distinct page hook and response-spacer controller place selected user
+turns in some voice-conversation conditions, grow/shrink bottom spacing,
+and cancel automated placement after direct user input. The implementation
+includes a reduced-motion path. These are **client algorithms** recovered
+from captured code, not an observed scroll session; the exact installed
+feature settings and server-side history/pagination outcomes remain
+unverified. The [sanitized viewport trace](../specimens/chatgpt-com/v0002/chat_viewport_virtualization_trace.json)
+contains eleven individually described source rules and seven linking steps.
+This addresses the previous question of whether a virtualized turn list
+exists while leaving actual browser reconciliation and accessibility
+behavior open.
