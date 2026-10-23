@@ -798,3 +798,30 @@ a general server status-code guarantee. The stream-resume recovery
 coordinator imports a *different* predicate, which remains a separate
 static investigation. Canonical evidence E2-097 documents this newly
 resolved method dependency and its boundaries.
+
+## Stream-resume retry helper resolved by export interface
+
+The saved completion-stream implementation R-JS-018 imports a short-keyed
+module whose registry key collides between two archived bundles. Rather
+than guessing its identity, source review compared three called exports:
+the resume coordinator, retry eligibility, and recoverable-error
+classification. Only the definition in R-JS-004 matches that interface.
+This verifies a captured static dependency, not that a module executed.
+
+The resolved stream-resume retry predicate allows network errors or typed
+HTTP statuses **408, 409, 425, 429, 502, 504**. A different predicate
+routes network errors or eligible HTTP 4xx (excluding 403 and selected
+terminal conversation codes) to recoverable-error callbacks. The
+preparation predicate in E2-097 does not include 429 in its typed-status
+allowlist and cannot be conflated with stream resume. E2-098 anchors
+these two stream predicates.
+
+The resume coordinator consumes a token-control event into conversation
+identity and resume token, increments an offset for acknowledged data,
+and resets the retry count on success. A retry requires permission-hook
+presence, no cancellation, conversation identity, and token/offset
+compatibility. Automatic retry also requires retry eligibility and budget.
+Manual retry has zero delay but retains state guards. The fallback backoff
+uses 300 ms minimum, factor 1.5, 5,000 ms maximum, and a 0.5–1.0 jitter
+multiplier, subject to dynamic overrides. E2-099 records those static
+rules without claiming observed events, timer firing, or server recovery.
