@@ -1,0 +1,135 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_class": "observed_static",
+  "source_scope": "saved_javascript",
+  "runtime_render_verified": false,
+  "server_render_contract_verified": false,
+  "methodology": "Private static inspection of captured module exports, direct calls, function arguments, and JSX DOM wrappers. Resource references are archive-local ordinals. No captured JavaScript or user data is published.",
+  "source_resources": [
+    {
+      "ref": "R-JS-018",
+      "role": "conversation_message_to_render_turn_derivation"
+    },
+    {
+      "ref": "R-JS-069",
+      "role": "turn_preparation_and_typed_item_renderer"
+    },
+    {
+      "ref": "R-JS-072",
+      "role": "conversation_page_and_branch_preview"
+    }
+  ],
+  "stages": [
+    {
+      "id": "selected_conversation_input",
+      "source_ref": "R-JS-072",
+      "status": "reviewed",
+      "description": "The conversation page reads selected conversation state and invokes the turn preparation layer. A branch-preview path can substitute a selected prompt message identity when requesting a separate rendered-turn derivation."
+    },
+    {
+      "id": "mapping_to_render_turns",
+      "source_ref": "R-JS-018",
+      "status": "reviewed",
+      "description": "A captured render derivation builds turn entries and per-turn item arrays from conversation-message data. Its item classification includes user and assistant text, reasoning groups, tool activity, generated media, and status-sensitive entries. Its output is not a direct DOM tree."
+    },
+    {
+      "id": "pending_user_turn",
+      "source_ref": "R-JS-069",
+      "status": "reviewed",
+      "description": "The turn preparer may append a temporary user-message turn from a pending prompt and attachments. The guard considers active streaming and whether an equivalent pending attachment-bearing turn is already represented."
+    },
+    {
+      "id": "turn_props_and_filters",
+      "source_ref": "R-JS-069",
+      "status": "reviewed",
+      "description": "A turn configuration function maps derived entries to display props, identifies the most recent turn, limits pending/error/feedback props to appropriate turns, applies timestamp separation, and conditionally removes a first user item when hideInitialUserMessage is enabled."
+    },
+    {
+      "id": "page_render_turn_binding",
+      "source_ref": "R-JS-072",
+      "status": "reviewed",
+      "description": "The main conversation page passes renderedTurns and per-turn presentation controls into the exported turn-configuration function. The page also uses the derived conversation representation to manage a local shared conversation state projection."
+    },
+    {
+      "id": "typed_item_dispatch",
+      "source_ref": "R-JS-069",
+      "status": "reviewed",
+      "description": "The exported turn renderer reads turn.items, dispatches item kinds to user, assistant, tool, and media presentation branches, and supplies a wrapper that accepts each rendered item's children."
+    },
+    {
+      "id": "dom_message_identity_wrapper",
+      "source_ref": "R-JS-069",
+      "status": "reviewed",
+      "description": "A nested wrapper emits message-role and source-message identifier attributes for user/assistant/generated-image items. It uses a different lightweight identifier wrapper for other item types and a separate telemetry wrapper."
+    }
+  ],
+  "reviewed_relationships": [
+    {
+      "from": "conversation_page",
+      "to": "turn_preparation",
+      "kind": "direct_exported_function_call"
+    },
+    {
+      "from": "turn_preparation",
+      "to": "render_derivation",
+      "kind": "direct_exported_function_call"
+    },
+    {
+      "from": "render_derivation",
+      "to": "rendered_turn_entries",
+      "kind": "derived_value"
+    },
+    {
+      "from": "turn_preparation",
+      "to": "pending_turn_append",
+      "kind": "conditional_derived_value"
+    },
+    {
+      "from": "conversation_page",
+      "to": "turn_prop_mapper",
+      "kind": "direct_exported_function_call"
+    },
+    {
+      "from": "turn_prop_mapper",
+      "to": "first_user_item_filter",
+      "kind": "conditional_filter"
+    },
+    {
+      "from": "turn_renderer",
+      "to": "typed_item_renderer",
+      "kind": "component_call"
+    },
+    {
+      "from": "typed_item_renderer",
+      "to": "dom_message_identity_wrapper",
+      "kind": "component_call"
+    },
+    {
+      "from": "dom_message_identity_wrapper",
+      "to": "message_role_attributes",
+      "kind": "dom_metadata"
+    }
+  ],
+  "normalized_item_kinds": [
+    "user_message",
+    "assistant_message",
+    "reasoning_group",
+    "tool_activity",
+    "generated_media"
+  ],
+  "visual_semantics": [
+    "The main display model is an ordered set of turns whose items may represent multiple source messages rather than one DOM element per mapping node.",
+    "A temporary pending submission can appear as a user turn before a server-backed message is available.",
+    "The first user item can be hidden by an explicit presentation option without asserting any deletion from the underlying conversation mapping.",
+    "Role and source-message attributes on rendered elements are a DOM identification mechanism, not proof of original message text or storage keys."
+  ],
+  "unverified": [
+    "The complete end-to-end module path from every mapping node to an individual DOM item across dynamic imports has not been exhaustively audited.",
+    "Visibility rules for every item kind, safety presentation, streaming placeholders, and hidden content remain to be enumerated.",
+    "The exact use of React keys, virtualization, scroll anchoring, and hydration has not been reconstructed.",
+    "These source render paths were not executed against a live site or real user data."
+  ],
+  "confidentiality": "No captured source snippets, original filenames, message text, account identities, URLs, tokens or raw event bodies are included."
+}
