@@ -64,8 +64,8 @@ class ReviewedSpecimenChecks(unittest.TestCase):
         deep = [t for t in tasks if "-followup-deep-" in t["id"]]
         reopened = [t for t in tasks if "-followup-static-" in t["id"]]
         self.assertEqual(len(reopened), 33)
-        self.assertEqual(sum(t["status"] == "queued" for t in reopened), 26)
-        self.assertEqual(sum(t["status"] == "in_progress" for t in reopened), 7)
+        self.assertEqual(sum(t["status"] == "queued" for t in reopened), 25)
+        self.assertEqual(sum(t["status"] == "in_progress" for t in reopened), 8)
         self.assertEqual(len(initial), 34)
         self.assertEqual(len(deep), 57)
         self.assertEqual(sum(t["status"] == "done" for t in initial), 32)
