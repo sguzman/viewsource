@@ -409,3 +409,25 @@ test("bound-loader definition counts are consistent with candidate type",()=>{
  g.bound_import_candidates[0].definition_candidates=1;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("bootstrap root provenance includes only capture-local source ordinals",()=>{
+ const g=graph();
+ g.bootstrap_runtime_verified=false;
+ g.bootstrap_candidates=[
+  {classification:"unique_registry_key_candidate",
+   bootstrap_kind:"top_level_literal_call_candidate",
+   callsite_ref:"R-JS-001",target_ref:"R-JS-001",target_module:1,
+   registry_definition_candidates:1,bootstrap_execution_verified:false},
+  {classification:"unique_registry_key_candidate",
+   bootstrap_kind:"chunk_runtime_literal_call_candidate",
+   callsite_ref:"R-JS-002",target_ref:"R-JS-001",target_module:1,
+   registry_definition_candidates:1,bootstrap_execution_verified:false}
+ ];
+ const roots=candidateBootstrapRoots(g);
+ const out=frontier(g,roots,{rootSource:"bootstrap_syntax_candidate"});
+ assert.deepEqual(out.bootstrap_root_provenance[0].static_callsite_resources,
+  ["R-JS-001","R-JS-002"]);
+ assert.equal(out.bootstrap_root_provenance[0].execution_verified,false);
+ g.bootstrap_candidates[0].callsite_ref="PrivateOrigin.js";
+ assert.throws(()=>candidateBootstrapRoots(g));
+});
