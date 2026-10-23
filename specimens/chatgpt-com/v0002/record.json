@@ -10990,6 +10990,16 @@
         "evidence_ref": "E2-093",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-094",
+      "statement": "The captured chat client supports a composed source-level lifecycle from page submission through shared generation dispatch, stream callbacks, decoded message processing, graph mutation, scoped state commit, memoized turn derivation, virtualized rows and typed DOM item rendering. Each of nine connections is classified as a reviewed direct call, callback, state dependency or component/derived-data relationship; alternative edit, regeneration, response-variant, cancellation and browser-cache paths are recorded separately. This is a composition of saved client source, not an observed session or server persistence proof.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-094",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
