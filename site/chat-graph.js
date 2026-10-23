@@ -229,6 +229,10 @@ window.ViewsourceChatGraph = (() => {
         items.append(row);
       });
       block.append(items);
+      const anchors=element("p","graph-caption",
+        "Reviewed module anchors: "+accessibility.module_anchors.map(x=>
+          x.source_ref+" #"+x.module_ordinal+" ("+x.role.replaceAll("_"," ")+")").join("; "));
+      block.append(anchors);
       const limits=element("details","chat-a11y-limits");
       limits.append(element("summary","","Accessibility verification limits"));
       const list=element("ul","");
@@ -252,6 +256,9 @@ window.ViewsourceChatGraph = (() => {
         steps.append(item);
       });
       block.append(steps);
+      block.append(element("p","graph-caption",
+        "Reviewed module anchors: "+editStudy.module_anchors.map(x=>
+          x.source_ref+" #"+x.module_ordinal+" ("+x.role.replaceAll("_"," ")+")").join("; ")));
       const open=element("details","chat-edit-boundaries");
       open.append(element("summary","","Still unverified"));
       const list=element("ul","");
