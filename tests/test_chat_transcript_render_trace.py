@@ -19,7 +19,12 @@ class TranscriptRenderTraceTests(unittest.TestCase):
         self.assertEqual({x["ref"] for x in doc["source_resources"]},
                          {"R-JS-018","R-JS-069","R-JS-072"})
         self.assertEqual(len(doc["stages"]), 7)
-        self.assertEqual(len(doc["reviewed_relationships"]), 9)
+        self.assertEqual(len(doc["reviewed_relationships"]), 10)
+        cross=doc["verified_cross_module_call"]
+        self.assertEqual((cross["source_ref"],cross["target_ref"]),("R-JS-072","R-JS-069"))
+        self.assertEqual(cross["kind"],"direct_imported_component_call")
+        self.assertEqual(cross["evidence_class"],"observed_static")
+        self.assertTrue(cross["boundary"])
         self.assertTrue(doc["unverified"])
         stages = {x["id"] for x in doc["stages"]}
         self.assertIn("dom_message_identity_wrapper", stages)
