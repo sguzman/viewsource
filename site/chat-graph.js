@@ -111,6 +111,37 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const transcript=record.visuals?.chat_transcript_render_trace;
+    if(transcript){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Transcript turn and message rendering — saved source"));
+      block.append(element("p","graph-caption",
+        "Source-backed turn derivation and typed item presentation. The website's actual runtime render was not observed."));
+      const stages=element("div","chat-transcript-stages");
+      transcript.stages.forEach((step,i)=>{
+        const panel=element("details","chat-transcript-stage");
+        panel.append(element("summary","",(i+1)+". "+step.id.replaceAll("_"," ")),
+          element("p","",step.description),
+          element("p","graph-caption","Captured source: "+step.source_ref));
+        stages.append(panel);
+      });
+      block.append(stages);
+      const edges=element("details","chat-transcript-edges");
+      edges.append(element("summary","","Reviewed transcript source relationships"));
+      const list=element("ol","");
+      transcript.relationships.forEach(link=>list.append(element("li","",
+        link.from.replaceAll("_"," ")+" → "+link.to.replaceAll("_"," ")+
+        " ("+link.kind.replaceAll("_"," ")+")")));
+      edges.append(list);
+      block.append(edges);
+      const limits=element("details","chat-transcript-limits");
+      limits.append(element("summary","","Still unresolved"));
+      const questions=element("ul","");
+      transcript.unverified.forEach(note=>questions.append(element("li","",note)));
+      limits.append(questions);
+      block.append(limits);
+      section.append(block);
+    }
     const selectorStudy=record.visuals?.chat_selector_consumers;
     if(selectorStudy){
       const block=element("div","chat-subsection");
