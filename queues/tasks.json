@@ -1888,7 +1888,8 @@
       "notes": "Static implementation trace: Locate request builders and response parsers, correlate call sites and data-field usage, distinguish symbolic paths from proven external service behavior. Captured response-version request construction and success/failure branch; wider transport/decoding contracts remain open.",
       "evidence_refs": [
         "E2-081",
-        "E2-089"
+        "E2-089",
+        "E2-095"
       ]
     },
     {
@@ -1906,7 +1907,8 @@
       "notes": "Static implementation trace: Follow parser/reader callbacks to UI state updates, completion, interruption and cleanup branches; avoid claiming verified server events. Static source evidence started; acceptance requires complete method/data-flow coverage and reviewed evidence before closure.",
       "evidence_refs": [
         "E2-072",
-        "E2-075"
+        "E2-075",
+        "E2-095"
       ]
     },
     {
@@ -1924,7 +1926,8 @@
       "notes": "Static implementation trace: Trace caught errors, abort mechanisms, retry gates and UI recovery paths with supported call edges. Source-reviewed edit busy guards, active-stream stop, target revalidation, and error notification; other failure paths remain open.",
       "evidence_refs": [
         "E2-089",
-        "E2-090"
+        "E2-090",
+        "E2-095"
       ]
     },
     {
@@ -2068,7 +2071,8 @@
       "evidence_refs": [
         "E2-075",
         "E2-092",
-        "E2-094"
+        "E2-094",
+        "E2-095"
       ]
     },
     {
