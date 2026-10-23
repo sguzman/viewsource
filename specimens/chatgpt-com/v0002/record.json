@@ -10880,6 +10880,16 @@
         "evidence_ref": "E2-082",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-083",
+      "statement": "The captured conversation page supplies the active message mapping and selected current node as explicit inputs to a memoized turn-derivation function. Its memo dependency checks include both values, along with streaming and pending-submission context, and the derived rendered turns feed per-turn display. This establishes source-level recomputation wiring following local selected-node state changes; live UI reconciliation and server acknowledgement remain unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-083",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
