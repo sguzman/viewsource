@@ -750,3 +750,17 @@ architecture flow-review and chat feature transport/end-to-end tasks.
 These remain **in progress**, not accepted complete: 17 active and 16
 queued. Runtime observation is optional verification, not a prerequisite
 for further static source study.
+
+## Conditional completion recovery and retry defaults
+
+The [transport failure trace](../specimens/chatgpt-com/v0002/chat_transport_failure_trace.json)
+records the captured client's classification of HTTP, network and other
+failures, a separate imported retryability predicate, delayed resumptions,
+cancellation of obsolete resume requests, WebSocket topic handoff and an
+independent initial-request refresh path. Captured fallback defaults include
+up to 12 resume attempts, 300–5000 ms retry intervals with 1.5 backoff,
+and separate WebSocket idle timeout settings; dynamic configuration may
+override all these values. The source does **not** establish successful
+recovery or current service-level guarantees. Canonical finding E2-095
+anchors these observations to the active streaming, error and network
+research without closing those tasks.
