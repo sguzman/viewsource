@@ -375,3 +375,13 @@ now distinguishes depth-limit and node-limit truncation, and omits a
 depth-limit boundary when every outgoing edge already returns to a
 reached module. Paths are static candidates only, **not** executed call
 stacks, request paths or proven runtime import chains.
+
+### Strict ordinal graph validation
+
+Before showing a private frontier, the reader checks count fields as bounded
+nonnegative integers, reconciles the module census and verifies that supplied
+candidate-count fields match their arrays. It also reconciles the direct
+import partition when present. A malformed graph is rejected without echoing
+the input, preventing private strings from being copied into an ostensibly
+sanitized numeric summary. This check validates consistency, not evidence
+that candidate imports ran.

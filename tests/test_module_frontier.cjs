@@ -65,6 +65,29 @@ test("depth and node limits retain an explicit frontier",()=>{
  assert.equal(two.truncated_by_node_limit,true);
  assert.ok(two.boundary_modules.length>0);
 });
+test("schema count fields are numeric and cannot echo private input",()=>{
+ const g=graph();
+ g.unresolved_import_candidates="PRIVATE_UNTRUSTED_COUNT";
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+ const h=graph();
+ h.ambiguous_import_candidates=NaN;
+ assert.throws(()=>frontier(h,["R-JS-001:1"]));
+ const inconsistent=graph();
+ inconsistent.modules_total=999;
+ assert.throws(()=>frontier(inconsistent,["R-JS-001:1"]));
+ const partition=graph();
+ partition.import_candidates=100;
+ assert.throws(()=>frontier(partition,["R-JS-001:1"]));
+ const dynamic=graph();
+ dynamic.dynamic_boundary_count=1;
+ dynamic.dynamic_boundary_candidates=[];
+ assert.throws(()=>frontier(dynamic,["R-JS-001:1"]));
+ const valid=graph();
+ valid.modules_total=5;
+ valid.unique_resolved_links=3;
+ valid.import_candidates=6;
+ assert.equal(frontier(valid,["R-JS-001:1"]).traversed_static_edges,2);
+});
 test("malformed roots, out-of-scope data, and fake runtime imports are rejected",()=>{
  assert.throws(()=>parseRoot("R-JS-001:0"));
  assert.throws(()=>parseRoot("PRIVATE"));

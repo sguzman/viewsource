@@ -26,6 +26,32 @@ function indexGraph(graph) {
      graph.source_executed!==false||graph.module_runtime_loaded_verified!==false||
      !Array.isArray(graph.module_census)||!Array.isArray(graph.resolved_links)||
      !Array.isArray(graph.export_shape_candidates))throw Error("Invalid graph scope");
+  const safeCount=(value,label)=>{
+    if(!Number.isSafeInteger(value)||value<0||value>250000)
+      throw Error("Invalid "+label);
+    return value;
+  };
+  safeCount(graph.unresolved_import_candidates,"unresolved count");
+  safeCount(graph.ambiguous_import_candidates,"ambiguous count");
+  for(const [field,array] of [
+    ["modules_total",null],
+    ["unique_resolved_links","resolved_links"],
+    ["export_shape_candidate_count","export_shape_candidates"],
+    ["dynamic_boundary_count","dynamic_boundary_candidates"],
+    ["bound_import_candidate_count","bound_import_candidates"],
+    ["bootstrap_call_candidates","bootstrap_candidates"]
+  ]){
+    if(graph[field]===undefined)continue;
+    const value=safeCount(graph[field],field);
+    if(array&&(!Array.isArray(graph[array])||value!==graph[array].length))
+      throw Error("Graph count inconsistent");
+  }
+  if(graph.import_candidates!==undefined){
+    const total=safeCount(graph.import_candidates,"import_candidates");
+    if(total!==graph.resolved_links.length+
+       graph.unresolved_import_candidates+graph.ambiguous_import_candidates)
+      throw Error("Import partition inconsistent");
+  }
   const census=new Map();
   for(const item of graph.module_census){
     if(!REF.test(item.source_ref)||!Number.isSafeInteger(item.count)||
@@ -33,6 +59,9 @@ function indexGraph(graph) {
       throw Error("Invalid module census");
     census.set(item.source_ref,item.count);
   }
+  const censusTotal=[...census.values()].reduce((sum,count)=>sum+count,0);
+  if(censusTotal>NODE_LIMIT||(graph.modules_total!==undefined&&
+      graph.modules_total!==censusTotal))throw Error("Module census inconsistent");
   const known=(ref,n)=>ordinal(ref,n)&&census.has(ref)&&n<=census.get(ref);
   const adjacency=new Map();
   let scanned=0;
