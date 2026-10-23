@@ -49,6 +49,8 @@ try {
   assert.equal(await page.locator(".chat-a11y-mechanism").count(),8);
   assert.deepEqual(await page.locator(".chat-module-stat strong").allInnerTexts(),
                    ["144","10399","50714","517"]);
+  await page.locator(".chat-module-shape-matches summary").click();
+  assert.equal(await page.locator(".chat-module-shape-matches li").count(),1);
   await page.locator(".chat-module-links summary").click();
   assert.equal(await page.locator(".chat-module-links li").count(),4);
   await page.locator(".chat-a11y-limits summary").click();
