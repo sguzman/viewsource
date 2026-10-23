@@ -695,3 +695,16 @@ one-based ordinals. Contradictory evidence is rejected rather than
 converted into an apparently valid frontier. The reader accepts older
 candidate records without optional definition-count fields for
 compatibility; no validation implies observed runtime execution.
+
+### Module exports property functions versus whole-module replacement
+
+The function-export inventory recognizes a direct assignment to a
+property of the factory's current `module.exports` object, such as
+`module.exports.handler = () => ...`. It reports a distinct fixed
+`module_exports_property_function_candidate` category, separate
+from `exports.handler = () => ...` and from whole-module
+`module.exports = function ...` replacement. The module parameter
+must remain unshadowed; earlier whole-module replacement can detach
+the original `exports` alias without invalidating later direct
+writes through `module.exports`. These source-level candidates
+remain unexecuted and do not prove feature ownership.
