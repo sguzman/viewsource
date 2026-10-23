@@ -659,3 +659,16 @@ with a generic error rather than emitting a partial graph or
 captured source when a limit is exceeded. This is a resource
 safety bound, not a claim that a truncated capture has been
 fully analyzed.
+
+### Detached CommonJS export aliases
+
+The scanner distinguishes assignments through the factory's original
+`exports` parameter from replacement of `module.exports`. After
+a whole-module replacement, the original `exports` alias can refer
+to the previous object; neither earlier nor later property writes
+through that alias establish the final public export interface.
+The conservative analyzer drops those candidate export slots and
+function-valued property assignments, while retaining a direct
+whole-module callable assignment if its right-hand side is a function.
+This prevents an obsolete alias from falsely disambiguating duplicate
+module keys; execution and final runtime ownership remain unverified.
