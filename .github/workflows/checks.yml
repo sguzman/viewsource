@@ -25,6 +25,10 @@ jobs:
           node scripts/trace_module_graph.cjs --self-test
           node scripts/trace_style_hooks.cjs --self-test
           python3 -m unittest discover -s tests -p test_static_impl_archive.py -v
+      - name: Audit source-research acceptance gaps
+        run: |
+          node scripts/static_acceptance_audit.mjs --check
+          node --test tests/test_static_acceptance_audit.mjs
       - name: Check atlas JavaScript syntax
         run: |
           node --check site/explorer.js

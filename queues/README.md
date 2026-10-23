@@ -13,3 +13,7 @@ Run `python3 scripts/work_queue.py ready` to show tasks whose dependencies are c
 Completed tasks require evidence references drawn from the version's published, sanitized findings. Validation rejects completed tasks with missing or ungrounded evidence references. A task may remain queued even if partial observations have already been recorded.
 
 Capture intake now also reads `static_profiles.json` to enqueue code-level tracing on every qualifying dump, not just the large-archive deep queue. Candidate feature tasks are data-driven and remain distinct from verified functionality. All work uses the same persistent, dependency-aware `tasks.json` graph.
+
+## Static source-research acceptance handoff
+
+For chatgpt.com v0002, run `node scripts/static_acceptance_audit.mjs` for the current open checks, or add `--json` for a machine-readable continuation report. The [acceptance ledger](../specimens/chatgpt-com/v0002/static_acceptance_gaps.json) identifies the missing source-scoped checks for every active task. It neither replaces the canonical queue nor closes tasks on the strength of partial evidence. CI validates the ledger, canonical finding references and task statuses using independent Node.js regression tests. The started percentage means only the proportion of tasks in progress, never overall completion.
