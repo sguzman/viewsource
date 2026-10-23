@@ -261,6 +261,26 @@ function scanScopedRequiredSlots(fn,requireName,required){
     return;
    }
   }
+  // typeof and optional chaining do not require a property to exist.
+  // Do not promote such probes into export-interface disambiguation.
+  if(node.type==="UnaryExpression"&&node.operator==="typeof"&&
+     node.argument?.type==="MemberExpression"){
+   walk(node.argument.object,env);
+   if(node.argument.computed)walk(node.argument.property,env);
+   return;
+  }
+  if(node.type==="CallExpression"&&node.optional===true&&
+     node.callee?.type==="MemberExpression"){
+   walk(node.callee.object,env);
+   if(node.callee.computed)walk(node.callee.property,env);
+   for(const arg of node.arguments)walk(arg,env);
+   return;
+  }
+  if(node.type==="MemberExpression"&&node.optional===true){
+   walk(node.object,env);
+   if(node.computed)walk(node.property,env);
+   return;
+  }
   if(node.type==="MemberExpression"&&node.object?.type==="Identifier"){
    const id=env.get(node.object.name),slot=literalMember(node);
    if(id&&slot){
@@ -1717,6 +1737,26 @@ function selfTest(){
  assert.equal(deferredGraph.export_shape_candidate_count,1);
  assert.equal(deferredGraph.export_shape_candidates[0].to_module,2);
  assert.equal(deferredGraph.nested_function_export_site_count,1);
+ const optionalReader=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){const x=n('Optional');"+
+  "typeof x.possible;x?.possible;x.possible?.()})};",93);
+ const optionalOwners=analyzeJS("export const __webpack_modules__={"+
+  "Optional:(function(e,t,n){t.possible=()=>1})};",94);
+ const optionalAlternative=analyzeJS("export const __webpack_modules__={"+
+  "Optional:(function(e,t,n){t.other=()=>1})};",95);
+ const optionalGraph=buildGraph([...optionalReader,...optionalOwners,
+   ...optionalAlternative],3,0);
+ assert.equal(optionalGraph.ambiguous_import_candidates,1);
+ assert.equal(optionalGraph.export_shape_candidate_count,0);
+ const requiredReader=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){const x=n('Optional');"+
+  "typeof x.possible;x?.possible;x.possible?.();x.necessary()})};",96);
+ const requiredOwner=analyzeJS("export const __webpack_modules__={"+
+  "Optional:(function(e,t,n){t.necessary=()=>1})};",97);
+ const requiredGraph=buildGraph([...requiredReader,...requiredOwner,
+   ...optionalOwners],3,0);
+ assert.equal(requiredGraph.export_shape_candidate_count,1);
+ assert.equal(requiredGraph.export_shape_candidates[0].to_ref,"R-JS-097");
 
 }
 if(require.main===module){
