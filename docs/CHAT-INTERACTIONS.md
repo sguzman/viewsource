@@ -825,3 +825,16 @@ Manual retry has zero delay but retains state guards. The fallback backoff
 uses 300 ms minimum, factor 1.5, 5,000 ms maximum, and a 0.5–1.0 jitter
 multiplier, subject to dynamic overrides. E2-099 records those static
 rules without claiming observed events, timer firing, or server recovery.
+
+## Initial-stream versus explicit-resume permission gate
+
+Further source review of R-JS-018 resolves one call-site permission gate:
+the initial completion stream passes a true automatic-resume permission
+unless the submitted request's `history_and_training_disabled` field is
+**exactly true**. The separate `resumeCompletionStream` entrypoint
+passes true at handler construction. This is a difference in two captured
+client code paths, not evidence that an explicitly disabled-history
+conversation can invoke or complete the explicit resume operation. The
+recovered coordinator's token, identity, offset, abort and retry-budget
+guards apply afterward in either case. E2-100 records the source fact;
+remaining modality/account-specific availability needs separate study.
