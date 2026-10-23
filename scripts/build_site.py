@@ -235,6 +235,26 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            css_path = ROOT / (base + "/chat_css_hooks_trace.json")
+            if css_path.is_file():
+                css = read(base + "/chat_css_hooks_trace.json")
+                if (css["specimen_id"] != item["id"]
+                        or css["version"] != number):
+                    raise ValueError("CSS hook study scope mismatch")
+                visuals["chat_css_hooks"] = {
+                    "stylesheets": css["stylesheets_scanned"],
+                    "css_bytes": css["css_bytes"],
+                    "metrics": [
+                        {"label": key.replace("_"," "), "count": count}
+                        for key, count in css["css_lexical_occurrences"].items()
+                    ],
+                    "unmatched_attribution": [
+                        {"label": key.replace("_"," "), "count": count}
+                        for key, count in css["exact_css_attribute_selector_absence"].items()
+                    ],
+                    "conclusions": css["reviewed_conclusions"],
+                    "unverified": css["not_verified"],
+                }
             cache_path = ROOT / (base + "/chat_persistence_cache_trace.json")
             if cache_path.is_file():
                 cache = read(base + "/chat_persistence_cache_trace.json")
