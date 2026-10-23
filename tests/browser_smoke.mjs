@@ -46,7 +46,9 @@ try {
   assert.equal(await page.locator(".chat-transcript-stage").count(),7);
   assert.equal(await page.locator(".chat-branch-stage").count(),7);
   await page.locator(".chat-branch-caveats summary").click();
-  assert.equal(await page.locator(".chat-branch-caveats li").count(),5);
+  assert.equal(await page.locator(".chat-branch-caveats li").count(),6);
+  await page.locator(".chat-branch-derivation summary").click();
+  assert.equal(await page.locator(".chat-branch-derivation li").count(),5);
   await page.locator(".chat-transcript-edges summary").click();
   assert.equal(await page.locator(".chat-transcript-edges li").count(),13);
   await page.locator(".chat-transcript-actions summary").click();
