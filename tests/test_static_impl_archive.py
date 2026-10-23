@@ -669,6 +669,35 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                 for private in (token, "ValidFactory", "Caller", "invented-nonfactory.zip"):
                     self.assertNotIn(private, proc.stdout)
 
+    def test_factory_body_only_frontier_excludes_nested_only_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-factory-body-frontier.zip"
+            keys = ("PrivateBodyTargetZ981", "PrivateNestedTargetZ982")
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Root:(function(e,t,n){n('" + keys[0] + "');"
+                    "function delayed(){n('" + keys[1] + "')}}),"
+                    + keys[0] + ":(function(e,t,n){t.a=1}),"
+                    + keys[1] + ":(function(e,t,n){t.b=1})};")
+            base = ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                    "--input", str(archive), "--module-frontier",
+                    "--root", "R-JS-001:1"]
+            for only, expected in ((False, 3), (True, 2)):
+                proc = subprocess.run(
+                    [*base, *(["--factory-body-only"] if only else [])],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=40)
+                self.assertEqual(proc.returncode, 0, proc.stderr[:120])
+                report = json.loads(proc.stdout)
+                self.assertEqual(report["reached_module_count"], expected)
+                self.assertEqual(report["edge_selection"],
+                                 "factory_body_syntax_candidates_only"
+                                 if only else "all_literal_static_candidates")
+                if only:
+                    self.assertEqual(report["skipped_nested_only_static_edges"], 1)
+                for private in (*keys, "synthetic-factory-body-frontier.zip"):
+                    self.assertNotIn(private, proc.stdout)
+
     def test_dependency_edges_distinguish_nested_only_loader_syntax(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-nested-edge-context.zip"

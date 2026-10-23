@@ -33,14 +33,16 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 frontier_roots: list[str] | None = None,
                 frontier_bootstrap: bool = False,
                 frontier_max_depth: int = 6,
-                frontier_max_nodes: int = 2000) -> dict:
+                frontier_max_nodes: int = 2000,
+                frontier_factory_body_only: bool = False) -> dict:
     if sum((chat_trace, transport_trace, selector_trace, transcript_trace,
             viewport_trace, module_trace, styles_trace, feature_trace,
             module_frontier)) > 1:
         raise ValueError("Choose at most one specialized AST analysis")
     if module_frontier and bool(frontier_roots) == frontier_bootstrap:
         raise ValueError("Specify either explicit root ordinals or bootstrap candidates")
-    if not module_frontier and (frontier_roots or frontier_bootstrap):
+    if not module_frontier and (frontier_roots or frontier_bootstrap or
+                                frontier_factory_body_only):
         raise ValueError("Frontier options require the module-frontier mode")
     if not input_file.is_file() or input_file.resolve().is_relative_to(ROOT):
         raise ValueError("Input ZIP must exist outside the public repository")
@@ -103,6 +105,8 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 else:
                     for root in frontier_roots or []:
                         command.extend(["--root", root])
+                if frontier_factory_body_only:
+                    command.append("--factory-body-only")
                 command.extend(["--max-depth", str(frontier_max_depth),
                                 "--max-nodes", str(frontier_max_nodes)])
                 followup = subprocess.run(
@@ -143,6 +147,8 @@ def main() -> int:
                         help="Capture-local source module ordinal, e.g. R-JS-072:13 (repeatable)")
     parser.add_argument("--bootstrap-candidates", action="store_true",
                         help="Seed frontier from uniquely resolved syntactic bootstrap candidates")
+    parser.add_argument("--factory-body-only", action="store_true",
+                        help="Review only imports with literal calls in a module factory body")
     parser.add_argument("--max-depth", type=int, default=6)
     parser.add_argument("--max-nodes", type=int, default=2000)
     args = parser.parse_args()
@@ -159,7 +165,8 @@ def main() -> int:
                              frontier_roots=args.root,
                              frontier_bootstrap=args.bootstrap_candidates,
                              frontier_max_depth=args.max_depth,
-                             frontier_max_nodes=args.max_nodes)
+                             frontier_max_nodes=args.max_nodes,
+                             frontier_factory_body_only=args.factory_body_only)
     except (OSError, ValueError, json.JSONDecodeError, subprocess.TimeoutExpired,
             zipfile.BadZipFile, UnicodeError):
         parser.exit(2, "Static AST analysis rejected (input or parser unavailable)\n")

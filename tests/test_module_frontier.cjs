@@ -500,3 +500,25 @@ test("failed parser resource ordinals reconcile and never overlap parsed sources
  g.failed_parser_source_refs=["R-JS-004"];
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("factory-body-only selection filters nested-only edges without runtime claims",()=>{
+ const g=graph();
+ g.resolved_links[0].factory_body_syntax_present=true;
+ g.resolved_links[0].nested_function_syntax_present=false;
+ g.resolved_links[1].factory_body_syntax_present=false;
+ g.resolved_links[1].nested_function_syntax_present=true;
+ g.resolved_links[2].factory_body_syntax_present=true;
+ g.resolved_links[2].nested_function_syntax_present=false;
+ g.nested_only_resolved_link_count=1;
+ const full=frontier(g,["R-JS-001:1"]);
+ assert.equal(full.reached_module_count,3);
+ assert.equal(full.edge_selection,"all_literal_static_candidates");
+ const selected=frontier(g,["R-JS-001:1"],{factoryBodyOnly:true});
+ assert.equal(selected.reached_module_count,2);
+ assert.equal(selected.edge_selection,"factory_body_syntax_candidates_only");
+ assert.equal(selected.skipped_nested_only_static_edges,1);
+ assert.equal(selected.reached_source_nested_only_links[0].target_in_frontier,false);
+ assert.equal(selected.runtime_module_load_verified,false);
+ const old=graph();
+ assert.throws(()=>frontier(old,["R-JS-001:1"],{factoryBodyOnly:true}));
+});

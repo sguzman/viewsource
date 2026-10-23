@@ -147,7 +147,8 @@ function indexGraph(graph) {
   if(censusTotal>NODE_LIMIT||(graph.modules_total!==undefined&&
       graph.modules_total!==censusTotal))throw Error("Module census inconsistent");
   const known=(ref,n)=>ordinal(ref,n)&&census.has(ref)&&n<=census.get(ref);
-  const adjacency=new Map(),nestedOnlyEdges=[];
+  const adjacency=new Map(),factoryBodyAdjacency=new Map(),nestedOnlyEdges=[];
+  let edgeContextCount=0;
   let scanned=0;
   for(const edge of graph.resolved_links) {
     scanned++;
@@ -162,6 +163,11 @@ function indexGraph(graph) {
         throw Error("Invalid literal import syntax context");
     }
     const a=ordinal(edge.from_ref,edge.from_module),b=ordinal(edge.to_ref,edge.to_module);
+    if(direct===true){
+      if(!factoryBodyAdjacency.has(a))factoryBodyAdjacency.set(a,new Set());
+      factoryBodyAdjacency.get(a).add(b);
+    }
+    if(typeof direct==="boolean"&&typeof nested==="boolean")edgeContextCount++;
     if(nested===true&&direct===false)nestedOnlyEdges.push({source:a,target:b});
     if(!adjacency.has(a))adjacency.set(a,new Set());
     adjacency.get(a).add(b);
@@ -340,8 +346,9 @@ function indexGraph(graph) {
       foreign.set(id,foreign.get(id)+item.foreign_registry_definition_count);
     }
   }
-  return {census,adjacency,ambiguous,dynamic,bound,foreign,
-    unresolvedByModule,directFns,literalCallSites,nestedOnlyEdges};
+  return {census,adjacency,factoryBodyAdjacency,edgeContextCount,
+    ambiguous,dynamic,bound,foreign,unresolvedByModule,directFns,
+    literalCallSites,nestedOnlyEdges};
 }
 const BOOTSTRAP_KINDS=new Set([
  "top_level_literal_call_candidate",
@@ -379,14 +386,20 @@ function candidateBootstrapRoots(graph) {
 }
 function frontier(graph, roots, options={}) {
   const depthLimit=options.depthLimit??6, nodeLimit=options.nodeLimit??2000;
+  const factoryBodyOnly=options.factoryBodyOnly??false;
+  if(typeof factoryBodyOnly!=="boolean")throw Error("Invalid edge selection");
   const provenance=options.rootSource??"explicit_ordinal_selection";
   if(!["explicit_ordinal_selection","bootstrap_syntax_candidate"].includes(provenance))
     throw Error("Invalid root provenance");
   if(!Number.isSafeInteger(depthLimit)||depthLimit<0||depthLimit>30||
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
-  const {census,adjacency,ambiguous,dynamic,bound,foreign,
-    unresolvedByModule,directFns,literalCallSites,nestedOnlyEdges}=indexGraph(graph);
+  const {census,adjacency,factoryBodyAdjacency,edgeContextCount,
+    ambiguous,dynamic,bound,foreign,unresolvedByModule,
+    directFns,literalCallSites,nestedOnlyEdges}=indexGraph(graph);
+  if(factoryBodyOnly&&edgeContextCount!==graph.resolved_links.length)
+    throw Error("Factory-body filter requires explicit syntax context");
+  const selectedAdjacency=factoryBodyOnly?factoryBodyAdjacency:adjacency;
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))].sort();
   if(provenance==="bootstrap_syntax_candidate"){
@@ -417,7 +430,7 @@ function frontier(graph, roots, options={}) {
       if(!ambiguousCandidates.has(id))ambiguousCandidates.set(id,new Set());
       ambiguousCandidates.get(id).add(candidate);
     }
-    const links=[...(adjacency.get(id)||new Set())].sort();
+    const links=[...(selectedAdjacency.get(id)||new Set())].sort();
     if(depth===depthLimit){
       if([...links].some(next=>!visited.has(next)))
         markBoundary(id,"depth_limit");
@@ -512,11 +525,13 @@ function frontier(graph, roots, options={}) {
     .map(([id,depth])=>({...asNode(id),depth,
       reached_via:predecessors.get(id)?asNode(predecessors.get(id)):null,
       incoming_edge_classification:predecessors.get(id)?"static_import_candidate":null,
-      outgoing_unique_static_imports:(adjacency.get(id)||new Set()).size}));
+      outgoing_unique_static_imports:(selectedAdjacency.get(id)||new Set()).size}));
   return {
     format_version:1,scope:"private_static_module_frontier",
     source_executed:false,runtime_module_load_verified:false,
     roots:seeds.map(asNode),root_source:provenance,
+    edge_selection:factoryBodyOnly?
+      "factory_body_syntax_candidates_only":"all_literal_static_candidates",
     bootstrap_root_provenance:bootstrapRoots,
     registry_unresolved_computed_key_count:
       graph.registry_unresolved_computed_key_count??null,
@@ -531,6 +546,8 @@ function frontier(graph, roots, options={}) {
     reached_module_count:nodes.length,traversed_static_edges:traversed,
     examined_static_edges:examined,
     depth_counts:layerCounts,nodes,
+    skipped_nested_only_static_edges:factoryBodyOnly?
+      nestedOnlyFromReached.length:0,
     reached_source_nested_only_link_count:nestedOnlyFromReached.length,
     reached_source_nested_only_links:nestedOnlyFromReached,
     boundary_modules:[...boundary.keys()].sort().map(asNode),
@@ -567,6 +584,7 @@ function frontier(graph, roots, options={}) {
       "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
       "Unresolved import counts cover the entire capture; reachable unresolved import sites are filtered to reached modules.",
       "Repeated literal loader-call syntax is counted separately from distinct target keys per module; neither count proves invocation.",
+      "The factory-body-only filter excludes nested-only syntax and requires complete edge context; it does not prove any selected edge executed.",
       "Nested-only import edges originate in callback syntax; they remain static candidates and do not establish delayed execution.",
       "Nested-function callsite counts identify syntax location, not guaranteed delayed execution.",
       "Nested callable-export syntax may be in a dormant function and is not enough to prove final export ownership.",
@@ -621,13 +639,15 @@ function selfTest() {
 }
 function main(argv) {
   if(argv.length===1&&argv[0]==="--self-test"){selfTest();console.log("Synthetic module frontier passed");return;}
-  let input=null,roots=[],depthLimit=6,nodeLimit=2000,seedBootstrap=false,fromStdin=false;
+  let input=null,roots=[],depthLimit=6,nodeLimit=2000,seedBootstrap=false,
+    factoryBodyOnly=false,fromStdin=false;
   for(let i=0;i<argv.length;i++){
     const arg=argv[i];
     if(arg==="--input")input=argv[++i];
     else if(arg==="--stdin")fromStdin=true;
     else if(arg==="--root")roots.push(argv[++i]);
     else if(arg==="--bootstrap-candidates")seedBootstrap=true;
+    else if(arg==="--factory-body-only")factoryBodyOnly=true;
     else if(arg==="--max-depth")depthLimit=Number(argv[++i]);
     else if(arg==="--max-nodes")nodeLimit=Number(argv[++i]);
     else throw Error("Invalid argument");
@@ -639,7 +659,7 @@ function main(argv) {
   if(Buffer.byteLength(json,"utf8")>MAX_BYTES)throw Error("Graph too large");
   const graph=JSON.parse(json);
   const seeds=seedBootstrap?candidateBootstrapRoots(graph):roots;
-  const output=frontier(graph,seeds,{depthLimit,nodeLimit,
+  const output=frontier(graph,seeds,{depthLimit,nodeLimit,factoryBodyOnly,
     rootSource:seedBootstrap?"bootstrap_syntax_candidate":"explicit_ordinal_selection"});
   process.stdout.write(JSON.stringify(output,null,2)+"\n");
 }

@@ -797,3 +797,16 @@ census or in the parsed-but-unindexed source inventory. These checks
 prevent contradictory coverage metadata from being presented as
 reliable research evidence, without exposing failure source text,
 filenames or parser diagnostics.
+
+### Optional factory-body-only dependency frontier
+
+For private saved-archive source review, the `--module-frontier`
+mode accepts `--factory-body-only` to traverse only unique static
+imports whose module-loader call syntax appears in the factory body.
+The default still traverses all unique literal import candidates,
+including nested-only calls. The filtered mode requires explicit
+per-edge syntax-context fields, so older graphs without that evidence
+are rejected rather than silently treated as complete. Skipped
+nested-only edges are separately counted for reached source modules.
+This is a review filter, **not** a claim of eager loading, executed
+branches, or verified runtime dependencies.
