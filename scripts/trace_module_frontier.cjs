@@ -42,6 +42,7 @@ function indexGraph(graph) {
     ["bootstrap_call_candidates","bootstrap_candidates"],
     ["foreign_registry_key_collision_count","foreign_registry_key_collisions"],
     ["unresolved_import_site_count","unresolved_import_sites"],
+    ["direct_function_export_site_count","direct_function_export_sites"],
     ["archive_candidate_script_count",null],
     ["archive_oversize_script_count",null],
     ["archive_ast_input_script_count",null]
@@ -149,6 +150,22 @@ function indexGraph(graph) {
       });
     }
   }
+  const directFns=new Map();
+  if(graph.direct_function_export_sites!==undefined){
+    if(!Array.isArray(graph.direct_function_export_sites))
+      throw Error("Invalid function export sites");
+    for(const item of graph.direct_function_export_sites){
+      if(item.classification!=="direct_function_export_assignment_candidate"||
+         item.runtime_invocation_verified!==false||
+         !known(item.source_ref,item.module_ordinal)||
+         !Number.isSafeInteger(item.export_function_ordinal)||
+         item.export_function_ordinal<1||item.export_function_ordinal>NODE_LIMIT)
+        throw Error("Invalid function export candidate");
+      const id=ordinal(item.source_ref,item.module_ordinal);
+      if(!directFns.has(id))directFns.set(id,[]);
+      directFns.get(id).push(item.export_function_ordinal);
+    }
+  }
   const unresolvedByModule=new Map();
   if(graph.unresolved_import_sites!==undefined){
     if(!Array.isArray(graph.unresolved_import_sites)||
@@ -199,7 +216,7 @@ function indexGraph(graph) {
       foreign.set(id,foreign.get(id)+item.foreign_registry_definition_count);
     }
   }
-  return {census,adjacency,ambiguous,dynamic,bound,foreign,unresolvedByModule};
+  return {census,adjacency,ambiguous,dynamic,bound,foreign,unresolvedByModule,directFns};
 }
 const BOOTSTRAP_KINDS=new Set([
  "top_level_literal_call_candidate",
@@ -231,7 +248,7 @@ function frontier(graph, roots, options={}) {
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
   const {census,adjacency,ambiguous,dynamic,bound,foreign,
-    unresolvedByModule}=indexGraph(graph);
+    unresolvedByModule,directFns}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))];
   if(provenance==="bootstrap_syntax_candidate"){
@@ -304,6 +321,12 @@ function frontier(graph, roots, options={}) {
       candidate_target:item.target?asNode(item.target):null,
       traversed:false
     })));
+  const localDirectFunctions=[...visited.keys()].sort().flatMap(id=>
+    (directFns.get(id)||[]).map(export_function_ordinal=>({
+      source:asNode(id),export_function_ordinal,
+      classification:"direct_function_export_assignment_candidate",
+      runtime_invocation_verified:false
+    })));
   const localUnresolved=[...visited.keys()].sort().flatMap(id=>
     (unresolvedByModule.get(id)||[]).map(item=>({
       source:asNode(id),classification:item.classification,
@@ -357,6 +380,8 @@ function frontier(graph, roots, options={}) {
     reachable_foreign_registry_collisions:foreignCollisions,
     reachable_unresolved_import_count:localUnresolved.length,
     reachable_unresolved_import_sites:localUnresolved,
+    reachable_direct_function_export_site_count:localDirectFunctions.length,
+    reachable_direct_function_export_sites:localDirectFunctions,
     truncated_by_node_limit:limited,
     total_unresolved_import_candidates:graph.unresolved_import_candidates,
     total_ambiguous_import_candidates:graph.ambiguous_import_candidates,
@@ -367,6 +392,7 @@ function frontier(graph, roots, options={}) {
       "Bound loader callbacks remain future-use candidates and NEVER expand the resolved graph.",
       "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
       "Unresolved import counts cover the entire capture; reachable unresolved import sites are filtered to reached modules.",
+      "Direct function-valued export assignments indicate only static candidates, not verified feature ownership or calls.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",
       "A successful parse is not evidence of feature ownership or complete recognition of bundled source patterns.",

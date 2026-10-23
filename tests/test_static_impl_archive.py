@@ -394,6 +394,35 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_direct_function_exports_exclude_shadowed_and_getter_functions(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-export-ownership.zip"
+            sentinel = "SyntheticHiddenFunctionIdentifier"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Caller:(function(e,t,n){const m=n('Module');m.start()}),"
+                    "Module:(function(e,t,n){"
+                    "t.start=function(){return 1};"
+                    "t.stop=()=>2;"
+                    "function local(t){t." + sentinel + "=()=>3}"
+                    "n.d(t,{wrapped:()=>local})})};")
+            for mode in (["--module-trace"],
+                         ["--module-frontier", "--root", "R-JS-001:1"]):
+                proc = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *mode],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=40)
+                self.assertEqual(proc.returncode, 0)
+                report = json.loads(proc.stdout)
+                count = ("direct_function_export_site_count"
+                         if mode[0] == "--module-trace"
+                         else "reachable_direct_function_export_site_count")
+                self.assertEqual(report[count], 2)
+                for private in (sentinel, "Module", "Caller",
+                                "fictional-export-ownership.zip"):
+                    self.assertNotIn(private, proc.stdout)
+
     def test_unresolved_import_sites_are_ordinal_only_and_frontier_local(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-unresolved-sites.zip"

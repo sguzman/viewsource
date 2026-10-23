@@ -253,3 +253,24 @@ test("reachable unresolved import sites only describe visited nodes",()=>{
  g.unresolved_import_sites[0].classification="private-module-id";
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("direct function-valued exports belong to reached modules only",()=>{
+ const graphData=graph();
+ graphData.direct_function_export_site_count=2;
+ graphData.direct_function_export_sites=[
+  {source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:1,
+   classification:"direct_function_export_assignment_candidate",
+   runtime_invocation_verified:false},
+  {source_ref:"R-JS-002",module_ordinal:2,export_function_ordinal:1,
+   classification:"direct_function_export_assignment_candidate",
+   runtime_invocation_verified:false}
+ ];
+ const shallow=frontier(graphData,["R-JS-001:1"],{depthLimit:1});
+ assert.equal(shallow.reachable_direct_function_export_site_count,1);
+ assert.equal(shallow.reachable_direct_function_export_sites[0].source.module_ordinal,2);
+ const full=frontier(graphData,["R-JS-001:1"]);
+ assert.equal(full.reachable_direct_function_export_site_count,1);
+ assert.equal(full.reachable_direct_function_export_sites[0].runtime_invocation_verified,false);
+ graphData.direct_function_export_sites[0].classification="private-key-name";
+ assert.throws(()=>frontier(graphData,["R-JS-001:1"]));
+});

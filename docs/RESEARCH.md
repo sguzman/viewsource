@@ -499,3 +499,15 @@ Bindings local to those control-flow structures no longer overwrite aliases
 in the surrounding module factory. This prevents local shadows from
 creating false import edges or hiding legitimate later alias-property
 reads. Branch control flow and actual execution remain unverified.
+
+### Direct function-valued export assignment leads
+
+The offline AST module scanner now inventories functions **directly
+assigned** to a recognized module factory's export object, such as
+`exports.handler = function () {...}` or an arrow-function assignment.
+Each published analysis record is only a source reference, module ordinal,
+function-export ordinal and fixed candidate classification. Getter exports
+that wrap other values, aliases and shadowed export parameters are not
+promoted to verified function ownership. The dependency frontier exposes
+only candidates associated with reached modules; neither an exported
+function's invocation nor ownership of a user-visible feature is established.
