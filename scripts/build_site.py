@@ -280,6 +280,13 @@ def build(out: Path) -> dict:
                         "recoverable_excluded_codes": recovery["stream_resume_error_predicates"]["recoverable_callback"]["excluded_error_codes"],
                         "contrast": recovery["stream_resume_error_predicates"]["contrast_to_preparation"],
                     },
+                    "resume_permission_wiring": {
+                        "initial_method": recovery["resume_permission_wiring"]["initial_completion"]["method"],
+                        "initial_gate": recovery["resume_permission_wiring"]["initial_completion"]["gate"],
+                        "explicit_method": recovery["resume_permission_wiring"]["explicit_resume"]["method"],
+                        "explicit_gate": recovery["resume_permission_wiring"]["explicit_resume"]["gate"],
+                        "limits": recovery["resume_permission_wiring"]["limits"],
+                    },
                     "stream_resume_state": {
                         "guards": recovery["stream_resume_state_invariants"]["retry_gates"],
                         "token_behavior": recovery["stream_resume_state_invariants"]["resume_token_event"]["behavior"],
