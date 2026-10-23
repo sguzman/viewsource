@@ -235,6 +235,31 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            lifecycle_path = ROOT / (base + "/chat_end_to_end_trace.json")
+            if lifecycle_path.is_file():
+                lifecycle = read(base + "/chat_end_to_end_trace.json")
+                if (lifecycle["specimen_id"] != item["id"]
+                        or lifecycle["version"] != number
+                        or lifecycle["live_execution_verified"] is not False):
+                    raise ValueError("Source-only lifecycle evidence mismatch")
+                visuals["chat_end_to_end_trace"] = {
+                    "live_execution_verified": lifecycle["live_execution_verified"],
+                    "stages": [
+                        {"id": x["id"],"behavior": x["behavior"],
+                         "source_refs": x["source_refs"],"evidence_refs": x["evidence_refs"]}
+                        for x in lifecycle["stages"]
+                    ],
+                    "connections": [
+                        {"from": x["from"],"to": x["to"],
+                         "kind": x["evidence_kind"],"limits": x["limits"]}
+                        for x in lifecycle["connections"]
+                    ],
+                    "alternatives": [
+                        {"name": x["name"],"behavior": x["behavior"]}
+                        for x in lifecycle["alternative_paths"]
+                    ],
+                    "open_questions": lifecycle["open_static_questions"],
+                }
             css_path = ROOT / (base + "/chat_css_hooks_trace.json")
             if css_path.is_file():
                 css = read(base + "/chat_css_hooks_trace.json")
