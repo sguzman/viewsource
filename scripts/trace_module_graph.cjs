@@ -409,17 +409,42 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
   }
   if(node.type==="SwitchStatement"){
    scan(node.discriminant,env);
-   const cases=new Map(env);
+   const base=new Map(env),variants=[],
+    originalSlots=new Set(slots),originalBody=new Set(factoryBodySlots),
+    originalFunctions=directFunctions.slice(),combinedSlots=new Set(),
+    combinedBody=new Set(),combinedFunctions=new Map();
+   for(const branch of node.cases)for(const stmt of branch.consequent)
+    if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var")
+     for(const decl of stmt.declarations)neutralize(decl.id,base);
+   const reset=()=>{
+    slots.clear();for(const slot of originalSlots)slots.add(slot);
+    factoryBodySlots.clear();for(const slot of originalBody)factoryBodySlots.add(slot);
+    directFunctions.length=0;directFunctions.push(...originalFunctions);
+   };
+   const capture=()=>{
+    for(const slot of slots)combinedSlots.add(slot);
+    for(const slot of factoryBodySlots)combinedBody.add(slot);
+    for(const candidate of directFunctions)
+     combinedFunctions.set(candidate.position+":"+candidate.classification,candidate);
+   };
    for(const branch of node.cases){
-    for(const stmt of branch.consequent){
-     if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var"){
-      for(const declaration of stmt.declarations)
-       neutralize(declaration.id,cases,null);
-     }
-    }
+    reset();
+    const active=new Map(base);
+    for(const stmt of branch.consequent)scan(stmt,active);
+    variants.push(active);
+    capture();
    }
-   for(const branch of node.cases)scan(branch,cases);
-   invalidateOuterBindings(env,cases,localNamesForScope(node));
+   if(!node.cases.some(branch=>branch.test===null)){
+    variants.push(new Map(base));
+    reset();
+    capture();
+   }
+   slots.clear();for(const slot of combinedSlots)slots.add(slot);
+   factoryBodySlots.clear();for(const slot of combinedBody)factoryBodySlots.add(slot);
+   directFunctions.length=0;directFunctions.push(...combinedFunctions.values());
+   const joined=new Map(base);
+   mergePossibleBindings(joined,variants);
+   invalidateOuterBindings(env,joined,localNamesForScope(node));
    return;
   }
   if(node.type==="BlockStatement"){
@@ -1929,6 +1954,23 @@ function selfTest(){
   "Reader:(function(e,t,n){switch(t.flag){case 1:let n=()=>0;break;"+
   "case 2:n('Shadowed');break}n('Goal')}),Goal:(function(e,t){t.ok=1})};",116);
  assert.equal(buildGraph(switchScoped,1,0).import_candidates,1);
+ const switchExport=analyzeJS("export const __webpack_modules__={"+
+  "Owner:(function(e,t,n){t.early=()=>1;switch(t.flag){"+
+  "case 1:t={};break;case 2:t.valid=()=>1;break}t.late=()=>1})};",117);
+ const switchExportGraph=buildGraph(switchExport,1,0);
+ assert.equal(switchExportGraph.direct_function_export_site_count,2);
+ const switchOwnershipReader=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){const x=n('Owner');switch(t.flag){"+
+  "case 1:x={};break;case 2:x.valid();break}x.late()})};",118);
+ const switchOwnershipA=analyzeJS("export const __webpack_modules__={"+
+  "Owner:(function(e,t,n){t.valid=()=>1})};",119);
+ const switchOwnershipB=analyzeJS("export const __webpack_modules__={"+
+  "Owner:(function(e,t,n){t.late=()=>1})};",120);
+ const switchOwnershipGraph=buildGraph([...switchOwnershipReader,
+  ...switchOwnershipA,...switchOwnershipB],3,0);
+ assert.equal(switchOwnershipGraph.ambiguous_import_candidates,1);
+ assert.equal(switchOwnershipGraph.export_shape_candidate_count,1);
+ assert.equal(switchOwnershipGraph.export_shape_candidates[0].to_ref,"R-JS-119");
 
 }
 if(require.main===module){
