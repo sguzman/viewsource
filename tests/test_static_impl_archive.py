@@ -241,6 +241,38 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                            str(archive), "a.js", "b.js"):
                 self.assertNotIn(secret, result.stdout)
 
+    def test_colliding_module_keys_yield_candidate_export_shape_only(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-collision.zip"
+            sentinel = "PRIVATE_COLLISION_SENTINEL_NO_PUBLICATION"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("one.js", "export const __webpack_modules__={"
+                    "Consumer:(function(e,t,n){const recovery=n('Collision');"
+                    "recovery.h();recovery.p()}),"
+                    "Collision:(function(e,t,n){n.d(t,{h:()=>1,p:()=>2})})};")
+                z.writestr("two.js", "export const __webpack_modules__={"
+                    "Collision:(function(e,t){t.a='" + sentinel + "'})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Synthetic shape scan failed")
+            graph=json.loads(result.stdout)
+            self.assertEqual(graph["parsed_bundles"],2)
+            self.assertEqual(graph["ambiguous_import_candidates"],1)
+            self.assertEqual(graph["unique_resolved_links"],0)
+            self.assertEqual(graph["export_shape_candidate_count"],1)
+            candidate=graph["export_shape_candidates"][0]
+            self.assertEqual((candidate["from_ref"],candidate["to_ref"]),
+                             ("R-JS-001","R-JS-001"))
+            self.assertEqual(candidate["required_export_count"],2)
+            self.assertEqual(candidate["classification"],
+                             "candidate_unique_export_interface")
+            self.assertFalse(candidate["runtime_import_verified"])
+            for private in (sentinel,"Collision","Consumer",str(archive),
+                            "one.js","two.js"):
+                self.assertNotIn(private,result.stdout)
+
     def test_styles_probe_summarizes_css_without_leaking_rules(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-style-capture.zip"
