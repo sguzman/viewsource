@@ -323,8 +323,8 @@
       "R-JS-072"
     ],
     "evidence_ref": "E2-084",
-    "study_filename": "chat_viewport_virtualization_trace.json",
     "runtime_verified": false,
-    "relationship": "The conversation page renders derived turns through an imported virtualized turn window. A separate response spacer controls placement and scroll compensation."
+    "relationship": "The conversation page renders derived turns through an imported virtualized turn window. A separate response spacer controls placement and scroll compensation.",
+    "study_ref": "chat_viewport_virtualization_trace"
   }
 }
