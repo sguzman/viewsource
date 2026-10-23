@@ -417,12 +417,13 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    }
    if(moduleName&&env.get(moduleName)===moduleToken&&
       memberOf(node.left,moduleName)==="exports"){
-    // module.exports replacement can detach the factory's original exports
-    // parameter. Earlier property assignments and later writes via that
-    // parameter cannot prove the final public export interface.
-    slots.clear();
-    factoryBodySlots.clear();
-    directFunctions.length=0;
+    // A deferred nested function is not evidence that it replaced the
+    // factory-body interface. Its syntax remains a separate candidate.
+    if(nestedDepth===0){
+     slots.clear();
+     factoryBodySlots.clear();
+     directFunctions.length=0;
+    }
     if(node.operator==="="&&
        ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
      directFunctions.push({
@@ -430,6 +431,32 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
       classification:"module_object_function_assignment_candidate",
       nested_function_syntax_present:nestedDepth>0
      });
+    if(node.operator==="="&&node.right?.type==="ObjectExpression"){
+     const props=node.right.properties;
+     // Computed nonliteral keys and spreads can overwrite named properties.
+     // Publish no interface for an object whose final keys are uncertain.
+     if(props.every(prop=>prop.type==="Property"&&
+         (!prop.computed||moduleKey(prop.key)!==null))){
+      const finalProperties=new Map();
+      for(const prop of props){
+       const key=prop.computed?moduleKey(prop.key):keyName(prop.key);
+       // The special noncomputed __proto__: value sets the prototype.
+       if(!prop.computed&&!prop.method&&prop.kind==="init"&&
+          key==="__proto__")continue;
+       if(key!==null)finalProperties.set(key,prop);
+      }
+      for(const [key,prop] of finalProperties){
+       addSlot(key);
+       if(prop.kind==="init"&&
+          ["FunctionExpression","ArrowFunctionExpression"].includes(prop.value?.type))
+        directFunctions.push({
+         position:prop.start,
+         classification:"module_object_property_function_candidate",
+         nested_function_syntax_present:nestedDepth>0
+        });
+      }
+     }
+    }
     if(exportName)env.set(exportName,null);
    }
    if(["Identifier","ObjectPattern","ArrayPattern"].includes(node.left?.type))
@@ -1661,6 +1688,35 @@ function selfTest(){
  const scoped=buildGraph([...analyzeJS(scopedConsumer,1),...analyzeJS(duplicateK,2)],2,0);
  assert.equal(scoped.ambiguous_import_candidates,1);
  assert.equal(scoped.export_shape_candidate_count,0);
+ const objectOwner=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(m,t,n){const x=n('ObjectOwner');x.ready()}),"+
+  "ObjectOwner:(function(m,t,n){t.obsolete=()=>1;"+
+  "m.exports={ready:()=>2,method(){return 3},value:7,"+
+  "get lazy(){return 4},repeat:()=>5,repeat:6}})};",88);
+ const otherObjectOwner=analyzeJS("export const __webpack_modules__={"+
+  "ObjectOwner:(function(m,t,n){t.unrelated=()=>1})};",89);
+ const objectGraph=buildGraph([...objectOwner,...otherObjectOwner],2,0);
+ assert.equal(objectGraph.ambiguous_import_candidates,1);
+ assert.equal(objectGraph.export_shape_candidate_count,1);
+ assert.equal(objectGraph.export_shape_candidates[0].to_module,2);
+ assert.equal(objectGraph.direct_function_export_sites.filter(x=>
+   x.classification==="module_object_property_function_candidate").length,2);
+ assert.equal(objectGraph.direct_function_export_site_count,3);
+ const uncertainObject=analyzeJS("export const __webpack_modules__={"+
+  "Owner:(function(m,t,n){m.exports={known:()=>1,...{other:2}}})};",90);
+ const uncertainGraph=buildGraph(uncertainObject,1,0);
+ assert.equal(uncertainGraph.direct_function_export_site_count,0);
+ const deferredReplacement=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(m,t,n){const x=n('Deferred');x.stable()}),"+
+  "Deferred:(function(m,t,n){t.stable=()=>1;"+
+  "function later(){m.exports={other:()=>2}}})};",91);
+ const duplicateDeferred=analyzeJS("export const __webpack_modules__={"+
+  "Deferred:(function(m,t,n){t.other=()=>1})};",92);
+ const deferredGraph=buildGraph([...deferredReplacement,...duplicateDeferred],2,0);
+ assert.equal(deferredGraph.ambiguous_import_candidates,1);
+ assert.equal(deferredGraph.export_shape_candidate_count,1);
+ assert.equal(deferredGraph.export_shape_candidates[0].to_module,2);
+ assert.equal(deferredGraph.nested_function_export_site_count,1);
 
 }
 if(require.main===module){
