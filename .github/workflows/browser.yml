@@ -7,7 +7,8 @@ permissions:
   contents: read
 jobs:
   browser-smoke:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    # Playwright 1.56.1 does not recognize the newer ubuntu-26.04 image.
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
