@@ -55,9 +55,14 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
             source_queue = current["visuals"]["static_source_queue"]
             self.assertEqual(source_queue["task_count"], 33)
-            self.assertEqual(source_queue["task_statuses"]["queued"], 20)
-            self.assertEqual(source_queue["task_statuses"]["in_progress"], 13)
+            self.assertEqual(source_queue["task_statuses"]["queued"], 19)
+            self.assertEqual(source_queue["task_statuses"]["in_progress"], 14)
             self.assertEqual(len(source_queue["tasks"]), 33)
+            css = current["visuals"]["chat_css_hooks"]
+            self.assertEqual(css["stylesheets"],17)
+            self.assertEqual(css["css_bytes"],2340628)
+            self.assertEqual(len(css["metrics"]),8)
+            self.assertTrue(all(x["count"]==0 for x in css["unmatched_attribution"]))
             local_cache = current["visuals"]["chat_persistence_cache"]
             self.assertFalse(local_cache["browser_executed"])
             self.assertEqual(len(local_cache["stages"]),9)
@@ -158,7 +163,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 92)
+            self.assertEqual(len(current["findings"]), 93)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
