@@ -79,7 +79,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(transcript["action_bindings"]),3)
             self.assertEqual(len(transcript["presentation_rules"]),9)
             self.assertEqual(transcript["cross_module_call"]["target_ref"],"R-JS-069")
-            self.assertEqual(set(transcript["source_resources"]),{"R-JS-018","R-JS-069","R-JS-072"})
+            self.assertEqual(set(transcript["source_resources"]),{"R-JS-018","R-JS-066","R-JS-069","R-JS-072"})
             selectors = current["visuals"]["chat_selector_consumers"]
             self.assertFalse(selectors["source_executed"])
             self.assertEqual(len(selectors["selectors"]),5)
