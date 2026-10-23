@@ -199,6 +199,36 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertNotIn(sentinel, result.stdout)
             self.assertNotIn(str(archive), result.stdout)
 
+    def test_anonymous_module_graph_from_two_bundle_zip(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-module-imports.zip"
+            sentinel = "PRIVATE_MODULE_SENTINEL_NO_PUBLICATION"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js",
+                    "export const __webpack_modules__={"
+                    "Alpha:(function(e,t,n){const b=n('Beta');t.a=()=>b.a}),"
+                    "Beta:(function(e,t,n){t.a=()=>'" + sentinel + "'})};")
+                z.writestr("b.js",
+                    "export const __webpack_modules__={"
+                    "Gamma:(function(e,t,n){const a=n('Alpha');"
+                    "const missing=n('External');t.a=a})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Synthetic module graph analysis failed")
+            graph = json.loads(result.stdout)
+            self.assertEqual(graph["parsed_bundles"], 2)
+            self.assertEqual(graph["modules_total"], 3)
+            self.assertEqual(graph["unique_resolved_links"], 2)
+            self.assertEqual(graph["unresolved_import_candidates"], 1)
+            self.assertEqual(graph["cross_bundle_links"], 1)
+            self.assertTrue(all(not x["runtime_import_verified"]
+                                for x in graph["resolved_links"]))
+            for secret in (sentinel, "Alpha", "Beta", "Gamma", "External",
+                           str(archive), "a.js", "b.js"):
+                self.assertNotIn(secret, result.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
