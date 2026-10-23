@@ -889,6 +889,16 @@ window.ViewsourceChatGraph = (() => {
             "Area: "+task.queue+" · Status: "+task.status+
             " · Dependencies: "+task.dependency_count+
             " · Evidence findings: "+task.evidence_count));
+        if(task.open_checks?.length){
+          row.append(element("p","chat-static-check-intro",
+            "Open acceptance checks (not yet verified):"));
+          const outstanding=element("ul","chat-static-checks");
+          task.open_checks.forEach(check=>outstanding.append(element("li","",check)));
+          row.append(outstanding);
+        }else if(task.status==="queued"){
+          row.append(element("p","graph-caption",
+            "Investigation queued; no source-backed feature conclusion yet."));
+        }
         grouped.append(row);
       });
       block.append(grouped);section.append(block);

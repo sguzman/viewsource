@@ -64,6 +64,17 @@ class AtlasTests(unittest.TestCase):
             for status in ("queued","in_progress","done","not_observable"):
                 self.assertEqual(source_queue["task_statuses"][status],
                                  sum(t["status"] == status for t in recorded_tasks))
+            ledger = json.loads((ROOT / "specimens/chatgpt-com/v0002/static_acceptance_gaps.json")
+                                .read_text("utf-8"))
+            source_by_id = {t["id"]: t for t in source_queue["tasks"]}
+            self.assertEqual(len(ledger["tasks"]), 17)
+            for gate in ledger["tasks"]:
+                rendered = source_by_id[gate["task_id"]]
+                self.assertEqual(rendered["status"], "in_progress")
+                self.assertEqual(rendered["open_checks"], gate["open_checks"])
+                self.assertTrue(rendered["open_checks"])
+            self.assertTrue(all(not row["open_checks"]
+                                for row in source_queue["tasks"] if row["status"] == "queued"))
             recovery = current["visuals"]["chat_transport_failure"]
             self.assertFalse(recovery["live_failure_observed"])
             self.assertEqual(recovery["source_ref"],"R-JS-018")

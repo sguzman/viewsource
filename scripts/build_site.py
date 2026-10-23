@@ -70,6 +70,31 @@ def build(out: Path) -> dict:
                 and "-followup-static-" in task["id"]
             ]
             if source_tasks:
+                # Only already-cleared original wording from the public acceptance
+                # ledger may reach the Atlas; the private capture stays excluded.
+                gap_path = ROOT / (base + "/static_acceptance_gaps.json")
+                open_checks = {}
+                if gap_path.is_file():
+                    ledger = read(base + "/static_acceptance_gaps.json")
+                    if (ledger.get("format_version") != 1
+                            or ledger.get("specimen_id") != item["id"]
+                            or ledger.get("version") != number
+                            or ledger.get("scope") != "static_source_research_acceptance"):
+                        raise ValueError("Static research acceptance ledger identity mismatch")
+                    task_by_id = {t["id"]: t for t in source_tasks}
+                    evidence_ids = {f["ref"] for f in findings}
+                    for gate in ledger["tasks"]:
+                        task = task_by_id.get(gate["task_id"])
+                        if gate["task_id"] in open_checks or task is None or task["status"] != "in_progress":
+                            raise ValueError("Unmatched or duplicate source acceptance gate")
+                        if not gate["open_checks"] or any(
+                                ref not in evidence_ids or ref not in task.get("evidence_refs", [])
+                                for ref in gate["evidence_refs"]):
+                            raise ValueError("Ungrounded source acceptance gate")
+                        open_checks[gate["task_id"]] = gate["open_checks"]
+                    if any(t["status"] == "in_progress" and t["id"] not in open_checks
+                           for t in source_tasks):
+                        raise ValueError("Unrecorded active source acceptance task")
                 visuals["static_source_queue"] = {
                     "task_count": len(source_tasks),
                     "task_statuses": {
@@ -77,10 +102,11 @@ def build(out: Path) -> dict:
                         for state in ("queued", "in_progress", "done", "not_observable")
                     },
                     "tasks": [
-                        {"title": task["title"], "queue": task["queue"],
+                        {"id": task["id"], "title": task["title"], "queue": task["queue"],
                          "status": task["status"],
                          "dependency_count": len(task["depends_on"]),
-                         "evidence_count": len(task.get("evidence_refs", []))}
+                         "evidence_count": len(task.get("evidence_refs", [])),
+                         "open_checks": open_checks.get(task["id"], [])}
                         for task in source_tasks
                     ],
                 }
