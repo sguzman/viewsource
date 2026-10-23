@@ -321,3 +321,12 @@ reusing an identifier spelling do not contribute each other's required exports.
 Reassigned or unrecognized bindings are treated conservatively. This reduces
 false disambiguation of duplicate minified module keys, but does not turn a
 candidate into a reviewed call edge or prove runtime execution.
+
+### Bound module-loader callbacks
+
+A captured module factory may bind its loader to a literal target key for
+future use. The module analyzer records a conservative loader-bound-call
+signature and emits only anonymous source/module ordinals with a
+unique/ambiguous/missing target classification. Such callbacks never count as
+direct imports or verified module loads. Invocation and ownership must be
+established independently before promoting the candidate to a source finding.
