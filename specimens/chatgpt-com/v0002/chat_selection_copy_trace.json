@@ -1,0 +1,129 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_class": "observed_static",
+  "source_scope": "original_saved_javascript_archive",
+  "source_refs": [
+    "R-JS-072"
+  ],
+  "runtime_interaction_verified": false,
+  "clipboard_write_verified": false,
+  "server_behavior_verified": false,
+  "methodology": "Private static review of client selection DOM guards, selected-message lookup, command registration and code-block resolution. Only authored descriptions and archive-local source ordinals are published.",
+  "selected_text": {
+    "source_ref": "R-JS-072",
+    "entrypoint_role": "conversation_selection_popover",
+    "stages": [
+      {
+        "id": "same_markdown_container",
+        "operation": "The range must be noncollapsed, belong to a connected assistant-message-style Markdown container, and have both ends within that same container.",
+        "kind": "dom_range_guard"
+      },
+      {
+        "id": "conversation_message_attribution",
+        "operation": "The containing wrapper must have a source-message identity and its conversation identity must match the selected conversation.",
+        "kind": "scope_guard"
+      },
+      {
+        "id": "embedded_editors_excluded",
+        "operation": "The selected range must not intersect writing blocks, learning components, contenteditable regions, or nodes marked to exclude Markdown copying.",
+        "kind": "content_exclusion_guard"
+      },
+      {
+        "id": "message_author_lookup",
+        "operation": "The popover looks up the attributed message from scoped conversation mapping; the expanded-details action additionally requires assistant authorship and a valid selected-message record.",
+        "kind": "state_lookup_and_guard"
+      },
+      {
+        "id": "selected_text_dispatch",
+        "operation": "The handler can pass selected text and its source message identity to a supplied callback. An optional source-occurrence index is calculated by comparing the range against matching text nodes.",
+        "kind": "callback_forwarding"
+      },
+      {
+        "id": "side_panel_loading",
+        "operation": "Eligible alternate actions can dynamically import a work-side chat or explanatory side-panel handler with selected text and source message context.",
+        "kind": "lazy_client_action"
+      }
+    ],
+    "limitations": [
+      "The selection range validator applies to this popover path; other copy actions may follow different rules.",
+      "The source shows guarded callbacks and lazy side-panel imports but not observed user selection or side-panel opening.",
+      "The expanded-details eligibility gate does not establish that the ordinary selected-text callback requires the same author or feature flags."
+    ]
+  },
+  "last_code_block_copy": {
+    "source_ref": "R-JS-072",
+    "entrypoint_role": "copy_last_code_block_command",
+    "stages": [
+      {
+        "id": "conversation_scope_guard",
+        "operation": "Command enablement is scoped to an allowed conversation origin and feature/copy flags; unsupported origins return no eligible code block.",
+        "kind": "state_guard"
+      },
+      {
+        "id": "reverse_rendered_turn_search",
+        "operation": "The resolver walks derived turns and their items in reverse display order and considers assistant-message items for code candidates.",
+        "kind": "item_traversal"
+      },
+      {
+        "id": "code_candidate_resolution",
+        "operation": "It scans the assistant item's content for code blocks and structured code references; when available it prefers separately resolved code-block content over basic rendered text.",
+        "kind": "item_content_resolution"
+      },
+      {
+        "id": "code_origin_metadata",
+        "operation": "The chosen content carries a source message identity and a code-block index. For referenced code, it derives the index relative to matching source message identities.",
+        "kind": "attribution"
+      },
+      {
+        "id": "sync_copy_or_async_recovery",
+        "operation": "If code text is already available, the command copies it immediately; otherwise an eligible in-progress remote item may trigger asynchronous history/content loading before a second resolution attempt.",
+        "kind": "conditional_async_resolution"
+      },
+      {
+        "id": "abort_on_context_change",
+        "operation": "The asynchronous request uses an AbortController and watches conversation-origin, selected-node, comparison selection and command configuration changes, cancelling on invalidation.",
+        "kind": "cancellation_guard"
+      },
+      {
+        "id": "clipboard_and_feedback",
+        "operation": "The client delegates text or a promise to a clipboard helper, records a copy-request telemetry event, and can show a success notification after the helper reports completion.",
+        "kind": "client_effect"
+      }
+    ],
+    "limitations": [
+      "It resolves the last eligible assistant code block along derived rendered turns, not an unconditional code block from every stored mapping node.",
+      "Client clipboard helper calls, telemetry and toasts are statically visible; a successful system clipboard write is not observed.",
+      "Asynchronous content loading is guarded by streaming, server-item completeness and current selection; it need not run for every code block."
+    ]
+  },
+  "cross_feature_relationships": [
+    {
+      "from": "rendered_turns",
+      "to": "copy_code_candidate_search",
+      "kind": "derived_data_input"
+    },
+    {
+      "from": "selected_conversation_mapping",
+      "to": "selection_message_lookup",
+      "kind": "scoped_state_read"
+    },
+    {
+      "from": "dom_markdown_range",
+      "to": "selected_text_action",
+      "kind": "validated_range_input"
+    },
+    {
+      "from": "clipboard_code_candidate",
+      "to": "clipboard_helper",
+      "kind": "conditional_client_call"
+    }
+  ],
+  "unverified": [
+    "Actual browser selection or code-copy gesture, popup visibility, clipboard permission and operating-system clipboard result.",
+    "The full implementations of lazy side-panels, separately imported copy helpers, and remote history/content fetching.",
+    "Server storage, current deployment feature flags and behavior of message types other than those inspected."
+  ],
+  "privacy": "No captured HTML, JavaScript snippets, string contents, customer identities, original source filenames, request paths or clipboard payloads are published."
+}
