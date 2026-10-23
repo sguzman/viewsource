@@ -594,3 +594,17 @@ that a particular branch switch occurred, an anchor survived, or the
 user saw smooth scrolling. The selection helper may also roll back on
 a failed persistence request. See canonical E2-085 and the four-stage
 `selected_branch_window_reconciliation` entry in the viewport trace.
+
+## Composer submission to response-spacer lifecycle (E2-086)
+
+The saved conversation composer invokes the response-spacer placement
+routine on accepted submission and clears spacer state on submission
+errors. The virtual transcript adapter forwards the latest turn's measured
+height growth to the spacer's `consumeGrowth` callback. A separate
+spacer-controller path interrupts placement and trims remaining space
+when the user scrolls away. Four explicit client callback relationships
+are recorded in `composer_spacer_wiring` within the viewport study.
+No accepted submission, user scroll event, or browser animation was
+executed or observed, and runtime presentation flags can choose a
+different layout. This adds canonical E2-086 without closing ongoing
+source-rendering or state-flow tasks.
