@@ -266,6 +266,27 @@ def build(out: Path) -> dict:
                         "scope": recovery["preparation_error_eligibility"]["scope"],
                         "limits": recovery["preparation_error_eligibility"]["limit"],
                     },
+                    "stream_resume_module": {
+                        "caller": recovery["stream_resume_module_resolution"]["caller_resource"],
+                        "target": recovery["stream_resume_module_resolution"]["matched_resource"],
+                        "definitions": recovery["stream_resume_module_resolution"]["duplicate_short_registry_ids_in_saved_assets"],
+                        "compatible_exports": recovery["stream_resume_module_resolution"]["compatible_export_interfaces"],
+                        "caveat": recovery["stream_resume_module_resolution"]["caveat"],
+                    },
+                    "stream_resume_predicates": {
+                        "retry_statuses": recovery["stream_resume_error_predicates"]["automatic_retry"]["http_status_allowlist"],
+                        "retry_network_kind": recovery["stream_resume_error_predicates"]["automatic_retry"]["network_kind_eligible"],
+                        "recoverable_excluded_statuses": recovery["stream_resume_error_predicates"]["recoverable_callback"]["excluded_http_statuses"],
+                        "recoverable_excluded_codes": recovery["stream_resume_error_predicates"]["recoverable_callback"]["excluded_error_codes"],
+                        "contrast": recovery["stream_resume_error_predicates"]["contrast_to_preparation"],
+                    },
+                    "stream_resume_state": {
+                        "guards": recovery["stream_resume_state_invariants"]["retry_gates"],
+                        "token_behavior": recovery["stream_resume_state_invariants"]["resume_token_event"]["behavior"],
+                        "offset_behavior": recovery["stream_resume_state_invariants"]["event_acknowledgement"]["behavior"],
+                        "backoff": recovery["stream_resume_state_invariants"]["retry_backoff"],
+                        "limits": recovery["stream_resume_state_invariants"]["boundary"],
+                    },
                     "preparation_fallback": {
                         "method": recovery["preparation_fallback"]["method"],
                         "delay_min_ms": recovery["preparation_fallback"]["minimum_delay_ms"],
