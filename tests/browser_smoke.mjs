@@ -67,6 +67,9 @@ try {
   assert.equal(await page.locator(".chat-viewport-spacer-link li").count(),4);
   assert.equal(await page.locator(".chat-branch-stage").count(),7);
   assert.equal(await page.locator(".chat-cache-stage").count(),9);
+  assert.equal(await page.locator(".chat-css-stat").count(),8);
+  await page.locator(".chat-css-limits summary").click();
+  assert.ok((await page.locator(".chat-css-limits").innerText()).includes("4 exact message/turn"));
   await page.locator(".chat-cache-limits summary").click();
   assert.ok((await page.locator(".chat-cache-limits").innerText()).includes("Cross-tab"));
   await page.locator(".chat-branch-caveats summary").click();
@@ -112,7 +115,7 @@ try {
   assert.equal(await page.locator(".chat-research-task").count(),18);
   assert.equal(await page.locator(".chat-static-task").count(),33);
   assert.equal(await page.locator(".chat-static-progress").getAttribute("max"),"33");
-  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"13");
+  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"14");
   assert.ok((await page.locator(".chat-static-progress").evaluate(e=>e.nextElementSibling.textContent)).includes("0% accepted complete"));
   await page.locator(".chat-static-task").first().locator("summary").click();
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
