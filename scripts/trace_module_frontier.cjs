@@ -314,6 +314,9 @@ function candidateBootstrapRoots(graph) {
   if(item?.bootstrap_execution_verified!==false)throw Error("Invalid candidate execution");
   if(item.bootstrap_kind!==undefined&&!BOOTSTRAP_KINDS.has(item.bootstrap_kind))
    throw Error("Invalid bootstrap provenance");
+  if(item.callsite_ref!==undefined&&
+     (typeof item.callsite_ref!=="string"||!REF.test(item.callsite_ref)))
+   throw Error("Invalid bootstrap source ordinal");
   if(item.registry_definition_candidates!==undefined){
    const n=item.registry_definition_candidates;
    if(!Number.isSafeInteger(n)||n<0||n>NODE_LIMIT||
@@ -449,6 +452,8 @@ function frontier(graph, roots, options={}) {
         candidate_kinds:[...new Set(calls.map(item=>
          item.bootstrap_kind||"legacy_unspecified_candidate"))].sort(),
         matching_static_calls:calls.length,
+        static_callsite_resources:[...new Set(calls.map(item=>item.callsite_ref)
+          .filter(ref=>ref!==undefined))].sort(),
         execution_verified:false
       };
     }):[];
