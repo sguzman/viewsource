@@ -10820,6 +10820,16 @@
         "evidence_ref": "E2-076",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-077",
+      "statement": "A captured React conversation control subscribes to recent-turn messages and renders inline and Escape-dialog buttons with bound click handlers. One guarded path requests answer-now steering; another requests stopping an active response and, upon permitted completion, regeneration with reasoning skipped. Error handling resets pending state. These are inspected client paths, not observed interactions.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-077",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
