@@ -188,5 +188,42 @@
       "link_type": "source_reviewed_module"
     }
   ],
-  "module_ordinal_contract": "Module ordinal is 1-based insertion order inside the saved chunk's module registry. It is capture-local and does not reveal original minified module names."
+  "module_ordinal_contract": "Module ordinal is 1-based insertion order inside the saved chunk's module registry. It is capture-local and does not reveal original minified module names.",
+  "selected_branch_window_reconciliation": {
+    "evidence_class": "observed_static",
+    "runtime_effect_verified": false,
+    "source_refs": [
+      "R-JS-018",
+      "R-JS-072",
+      "R-JS-066"
+    ],
+    "stages": [
+      {
+        "role": "selected_variant_change",
+        "source_ref": "R-JS-018",
+        "behavior": "The client-side variant selector can optimistically update the conversation's selected current node after validating a candidate branch descendant."
+      },
+      {
+        "role": "turn_rederivation",
+        "source_ref": "R-JS-072",
+        "behavior": "The conversation page's memoized turn derivation depends on the active mapping and selected current-node references and feeds the resulting keyed turn entries to the viewport adapter."
+      },
+      {
+        "role": "virtualized_key_reconciliation",
+        "source_ref": "R-JS-066",
+        "behavior": "When entry turn keys differ from the prior layout, the virtual window attempts to preserve an existing rendered anchor key and the previous window span if that key still exists."
+      },
+      {
+        "role": "scroll_distance_compensation",
+        "source_ref": "R-JS-066",
+        "behavior": "When measured geometry changes and a valid anchor exists, the window can compensate distance from the scroll bottom according to old and new row offsets."
+      }
+    ],
+    "limits": [
+      "The client source permits optimistic branch selection before server acknowledgement; failures can roll selection back.",
+      "The virtualizer cannot preserve a previous anchor when the relevant turn key is absent in the new layout.",
+      "No actual branch switch, React reconciliation, or scroll motion was observed, so visual smoothness and scroll position are not verified."
+    ],
+    "interpretation": "This is a composed source-level path connecting the previously reviewed selection helper, memoized turn derivation, and virtual row-window reconciliation. It does not claim the captured page executed a particular branch transition."
+  }
 }
