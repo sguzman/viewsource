@@ -223,6 +223,11 @@ window.ViewsourceChatGraph = (() => {
       const sources=element("p","graph-caption",
         "Source resources: "+viewport.source_resources.join(", "));
       block.append(sources);
+      block.append(element("p","graph-caption",
+        viewport.ast_recheck.candidate_count+
+        " syntax-level viewport signals across "+
+        viewport.ast_recheck.module_count+
+        " reviewed module anchors. These are candidate matches, not runtime proof."));
       const anchors=element("details","chat-viewport-anchors");
       anchors.append(element("summary","","Reviewed capture-local module anchors"));
       const anchorsList=element("ul","");
