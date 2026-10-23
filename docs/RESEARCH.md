@@ -615,3 +615,13 @@ nested count only for reached module ordinals. This identifies a
 review priority for conditional or callback import paths without
 assuming they execute later: immediately invoked nested functions
 can still run synchronously. The scanner does not execute the code.
+
+### Chunk loader rebinding versus lexical shadows
+
+Entrypoint-candidate detection now distinguishes a potential mutation
+of the outer runtime-loader parameter from a block-local declaration
+with the same spelling. Lexically scoped let/const and catch bindings
+do not invalidate a later call through the original parameter.
+An initialized var declaration remains a possible mutation of
+the enclosing function parameter. Neither syntax result proves
+a chunk runtime callback actually executed.

@@ -587,22 +587,53 @@ function scanScopedModuleCalls(fn,requireName){
  * literal, direct call or return statements to the callback parameter
  * are startup syntax candidates. Nested/conditional callbacks are skipped.
  * This callback was not executed by the analyzer or observed in a browser. */
-function runtimeLoaderReassigned(node,name){
+function runtimeLoaderReassigned(node,name,shadowed=false){
  if(!node||typeof node!=="object")return false;
  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type))
   return false;
- if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier"&&
-    node.left.name===name)return true;
- if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"&&
-    node.argument.name===name)return true;
- if(node.type==="VariableDeclarator"&&node.id?.type==="Identifier"&&
-    node.id.name===name&&node.init)return true;
+ const innerShadow=()=>{
+  if(node.type==="CatchClause"){
+   const names=new Set();bindingNames(node.param,names);
+   return shadowed||names.has(name);
+  }
+  if(["ForStatement","ForOfStatement","ForInStatement"].includes(node.type)){
+   const decl=node.type==="ForStatement"?node.init:node.left;
+   if(decl?.type==="VariableDeclaration"&&decl.kind!=="var"){
+    const names=new Set();
+    for(const item of decl.declarations)bindingNames(item.id,names);
+    return shadowed||names.has(name);
+   }
+  }
+  if(node.type==="BlockStatement"||node.type==="SwitchStatement"){
+   const statements=node.type==="BlockStatement"?node.body:
+     node.cases.flatMap(x=>x.consequent);
+   const names=new Set();
+   for(const stmt of statements){
+    if(stmt.type==="VariableDeclaration"&&stmt.kind!=="var")
+     for(const decl of stmt.declarations)bindingNames(decl.id,names);
+    if((stmt.type==="ClassDeclaration"||stmt.type==="FunctionDeclaration")&&stmt.id)
+     bindingNames(stmt.id,names);
+   }
+   return shadowed||names.has(name);
+  }
+  return shadowed;
+ };
+ const childShadow=innerShadow();
+ if(!shadowed){
+  if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier"&&
+     node.left.name===name)return true;
+  if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"&&
+     node.argument.name===name)return true;
+  if(node.type==="VariableDeclaration"&&node.kind==="var"&&
+     node.declarations.some(decl=>decl.id?.type==="Identifier"&&
+       decl.id.name===name&&decl.init))return true;
+ }
  for(const [key,child] of Object.entries(node)){
   if(["start","end","loc","raw"].includes(key))continue;
   if(Array.isArray(child)){
-   if(child.some(item=>runtimeLoaderReassigned(item,name)))return true;
-  }else if(child&&typeof child==="object"&&runtimeLoaderReassigned(child,name))
-   return true;
+   if(child.some(item=>runtimeLoaderReassigned(item,name,childShadow)))return true;
+  }else if(child&&typeof child==="object"&&
+     runtimeLoaderReassigned(child,name,childShadow))return true;
  }
  return false;
 }
@@ -1222,6 +1253,16 @@ function selfTest(){
  assert.equal(branchResult.resolved_links[0].from_module,4);
  assert.equal(branchResult.resolved_links[0].to_module,5);
  assert(!JSON.stringify(branchResult).includes("PrivateCaught"));
+ const locallyShadowedRuntime=analyzeJS(""+
+  "(self.webpackChunkLocalShadow=self.webpackChunkLocalShadow||[]).push("+
+  "[[81],{901:function(e,t,n){t.a=1}},function(n){"+
+  "if(true){const n=()=>1;n(999)}n(901)}]);",49);
+ assert.equal(locallyShadowedRuntime.bootstrapCandidates.length,1);
+ const varRuntime=analyzeJS(""+
+  "(self.webpackChunkVarRebind=self.webpackChunkVarRebind||[]).push("+
+  "[[82],{901:function(e,t,n){t.a=1}},function(n){"+
+  "if(true){var n=()=>1}n(901)}]);",50);
+ assert.equal(varRuntime.bootstrapCandidates.length,0);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

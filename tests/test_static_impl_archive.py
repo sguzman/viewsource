@@ -46,6 +46,27 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (private_key, "source-limited-chunk.zip", "entry.js"):
                 self.assertNotIn(private, proc.stdout)
 
+    def test_block_local_chunk_loader_shadow_preserves_outer_candidate(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-shadowed-chunk-loader.zip"
+            chunk = "webpackChunkShadowedRuntimeZ965"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("chunk.js", "(self." + chunk + "=self." + chunk
+                    + "||[]).push([[1],{100:function(e,t,n){t.a=1}},"
+                    "function(n){if(true){const n=()=>1;n(999)}return n(100)}]);")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["bootstrap_call_candidates"], 1)
+            self.assertEqual(data["bootstrap_candidates"][0]["classification"],
+                             "unique_registry_key_candidate")
+            for private in (chunk, "synthetic-shadowed-chunk-loader.zip"):
+                self.assertNotIn(private, proc.stdout)
+
     def test_reassigned_chunk_runtime_loader_is_not_a_startup_seed(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "reassigned-loader-fiction.zip"
