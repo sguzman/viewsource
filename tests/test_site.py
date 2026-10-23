@@ -55,13 +55,15 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
             source_queue = current["visuals"]["static_source_queue"]
             self.assertEqual(source_queue["task_count"], 33)
-            self.assertEqual(source_queue["task_statuses"]["queued"], 26)
-            self.assertEqual(source_queue["task_statuses"]["in_progress"], 7)
+            self.assertEqual(source_queue["task_statuses"]["queued"], 25)
+            self.assertEqual(source_queue["task_statuses"]["in_progress"], 8)
             self.assertEqual(len(source_queue["tasks"]), 33)
             selectors = current["visuals"]["chat_selector_consumers"]
             self.assertFalse(selectors["source_executed"])
             self.assertEqual(len(selectors["selectors"]),5)
             self.assertEqual(len(selectors["consumers"]),7)
+            self.assertEqual(len(selectors["ui_action"]["paths"]),3)
+            self.assertEqual(selectors["ui_action"]["selector"],"current_turn_path")
             self.assertEqual(selectors["selectors"][0]["id"], "full_selected_path")
             self.assertEqual(selectors["selectors"][1]["id"], "current_turn_path")
             graph_write = current["visuals"]["chat_graph_mutation"]
@@ -97,7 +99,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertEqual(len(current["findings"]), 76)
+            self.assertEqual(len(current["findings"]), 77)
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
             self.assertEqual(current["status"], "researching")
