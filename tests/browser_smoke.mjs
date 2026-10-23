@@ -46,6 +46,8 @@ try {
   assert.equal(await page.locator(".chat-transcript-stage").count(),7);
   await page.locator(".chat-transcript-edges summary").click();
   assert.equal(await page.locator(".chat-transcript-edges li").count(),10);
+  await page.locator(".chat-transcript-rules summary").click();
+  assert.equal(await page.locator(".chat-transcript-rule").count(),9);
   await page.locator(".chat-transcript-import summary").click();
   assert.ok((await page.locator(".chat-transcript-import").innerText()).includes("R-JS-069"));
   await page.locator(".chat-selector-consumers summary").click();
