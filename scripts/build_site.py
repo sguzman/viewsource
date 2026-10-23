@@ -235,6 +235,27 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            transcript_path = ROOT / (base + "/chat_transcript_render_trace.json")
+            if transcript_path.is_file():
+                transcript = read(base + "/chat_transcript_render_trace.json")
+                if (transcript["specimen_id"] != item["id"]
+                        or transcript["version"] != number
+                        or transcript["runtime_render_verified"] is not False):
+                    raise ValueError("Transcript source study identity or evidence boundary mismatch")
+                visuals["chat_transcript_render_trace"] = {
+                    "runtime_render_verified": transcript["runtime_render_verified"],
+                    "source_resources": [r["ref"] for r in transcript["source_resources"]],
+                    "stages": [
+                        {"id": stage["id"],"source_ref": stage["source_ref"],
+                         "description": stage["description"]}
+                        for stage in transcript["stages"]
+                    ],
+                    "relationships": [
+                        {"from": e["from"],"to": e["to"],"kind": e["kind"]}
+                        for e in transcript["reviewed_relationships"]
+                    ],
+                    "unverified": transcript["unverified"],
+                }
             selectors_path = ROOT / (base + "/chat_selector_consumers.json")
             if selectors_path.is_file():
                 selectors = read(base + "/chat_selector_consumers.json")
