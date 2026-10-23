@@ -116,7 +116,7 @@ window.ViewsourceChatGraph = (() => {
       const block=element("div","chat-subsection");
       block.append(element("h3","","Completion failure, retry and recovery implementation"));
       block.append(element("p","graph-caption",
-        "Seven source-reviewed client paths. No live failures or server recovery outcomes observed."));
+        recovery.observations.length+" source-reviewed client paths. No live failures or server recovery outcomes observed."));
       const observations=element("div","chat-recovery-grid");
       recovery.observations.forEach(x=>{
         const row=element("details","chat-recovery-stage");
@@ -132,7 +132,20 @@ window.ViewsourceChatGraph = (() => {
       recovery.default_fallbacks.forEach(x=>
         vals.append(element("li","",x.label+": "+x.value)));
       defaults.append(vals,element("p","graph-caption",recovery.fallback_scope));
-      block.append(defaults);section.append(block);
+      block.append(defaults);
+      const preparation=element("details","chat-recovery-preparation");
+      preparation.append(element("summary","","Guarded one-shot preparation fallback"));
+      const details=element("ul","");
+      details.append(element("li","",
+        "Delay: "+recovery.preparation_fallback.delay_min_ms+
+        " to below "+recovery.preparation_fallback.delay_max_exclusive_ms+
+        " ms (source interval, not a measured retry)."));
+      recovery.preparation_fallback.conditions.forEach(item=>details.append(
+        element("li","","Guard: "+item.replaceAll("_"," "))));
+      recovery.preparation_fallback.changes.forEach(item=>details.append(
+        element("li","","Fallback: "+item.replaceAll("_"," "))));
+      preparation.append(details,element("p","graph-caption",recovery.preparation_fallback.limits));
+      block.append(preparation);section.append(block);
     }
     const lifecycle=record.visuals?.chat_end_to_end_trace;
     if(lifecycle){
