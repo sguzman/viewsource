@@ -669,9 +669,11 @@ to the previous object; neither earlier nor later property writes
 through that alias establish the final public export interface.
 The conservative analyzer drops those candidate export slots and
 function-valued property assignments, while retaining a direct
-whole-module callable assignment if its right-hand side is a function.
-This prevents an obsolete alias from falsely disambiguating duplicate
-module keys; execution and final runtime ownership remain unverified.
+whole-module callable assignment or a fully static object-literal
+replacement interface. Deferred replacements inside nested functions
+do not erase direct factory-body candidates. This prevents obsolete
+aliases from falsely disambiguating duplicate module keys; execution
+and final runtime ownership remain unverified.
 
 ### Scope-aware top-level startup leads
 
@@ -708,6 +710,27 @@ must remain unshadowed; earlier whole-module replacement can detach
 the original `exports` alias without invalidating later direct
 writes through `module.exports`. These source-level candidates
 remain unexecuted and do not prove feature ownership.
+
+### Object-literal CommonJS interfaces and optional property probes
+
+A direct `module.exports = { ... }` assignment can supply a candidate
+export interface if every object property has a statically known key and
+the literal contains no spread. Later definitions of duplicate keys take
+precedence; a function-valued final property is classified as
+`module_object_property_function_candidate`. Accessors may provide a
+named slot, but are not classified as directly exported functions.
+Nonliteral computed keys and spreads make the resulting interface too
+uncertain for export-shape matching. A nested function's replacement
+syntax remains a nested candidate and does not erase a previously
+observed factory-body interface.
+
+When matching an imported alias to duplicate module definitions, a
+direct `typeof alias.member` probe, optional member access, and an
+optional member call do not establish that the property is required.
+These probes are excluded from the required-slot evidence used to
+disambiguate candidates. This intentionally favors unresolved source
+leads over unsupported ownership claims; no such match proves a
+runtime import, export value, or call.
 
 ### Source ordinal provenance for startup-candidate roots
 
