@@ -130,6 +130,21 @@
       "from": "conversation_page",
       "to": "turn_fork_callback",
       "kind": "conditional_prop_forwarding"
+    },
+    {
+      "from": "selected_conversation_mapping",
+      "to": "page_turn_derivation",
+      "kind": "memoized_input"
+    },
+    {
+      "from": "selected_current_node",
+      "to": "page_turn_derivation",
+      "kind": "memoized_input"
+    },
+    {
+      "from": "page_turn_derivation",
+      "to": "rendered_turn_entries",
+      "kind": "memoized_derived_value"
     }
   ],
   "normalized_item_kinds": [
@@ -259,5 +274,43 @@
       "gates": "The renderer forwards a supplied fork callback into its turn-actions layer, which can be independently suppressed for particular presentation states.",
       "limits": "The turn renderer's callback forwarding does not by itself prove the downstream branch request executed."
     }
-  ]
+  ],
+  "page_recomputation": {
+    "source_ref": "R-JS-072",
+    "evidence_class": "observed_static",
+    "source_executed": false,
+    "input_roles": [
+      "conversation_mapping",
+      "selected_current_node",
+      "pending_submission",
+      "streaming_state",
+      "moderation_disclaimers",
+      "response_cache",
+      "stream_ordering",
+      "conversation_context"
+    ],
+    "dependency_roles": [
+      "conversation_mapping",
+      "selected_current_node",
+      "pending_submission",
+      "streaming_state",
+      "conversation_context",
+      "moderation_disclaimers"
+    ],
+    "derived_outputs": [
+      "rendered_conversation",
+      "rendered_turns",
+      "pending_loading_visibility",
+      "is_conversation_empty"
+    ],
+    "observations": [
+      "The page selects the active mapping and current node from either ordinary scoped conversation state or a reviewed/alternate conversation state.",
+      "It constructs memoized turn-derivation arguments with explicit threadMapping and threadCurrentNode fields.",
+      "The memoized calculation dependency checks include the current-node and mapping references, so changing either participates in recomputation.",
+      "The page passes the resulting renderedTurns to its later per-turn display stage.",
+      "A conditional effect sets or clears a separate shared-conversation projection for qualifying work-conversation state."
+    ],
+    "relationship_classification": "direct_page_input_and_recomputation_wiring",
+    "boundary": "Captured React compiler memo-cache comparisons and source assignments are visible; the render timing, component mount, React reconciliation and a user's observed branch-switch effect are not verified."
+  }
 }
