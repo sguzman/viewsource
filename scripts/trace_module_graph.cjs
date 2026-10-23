@@ -166,6 +166,11 @@ function scanScopedRequiredSlots(fn,requireName,required){
      walk(node.left,loop);
     walk(node.right,loop);
    }
+   if(node.type!=="ForStatement"&&node.left?.type!=="VariableDeclaration"){
+    const assigned=new Set();
+    bindingNames(node.left,assigned);
+    for(const id of assigned)if(loop.has(id))loop.set(id,null);
+   }
    if(node.type!=="ForStatement"&&
       node.left?.type==="VariableDeclaration"&&node.left.kind==="var"){
     const assigned=new Set();
@@ -233,8 +238,9 @@ function scanScopedRequiredSlots(fn,requireName,required){
     return;
    }
    if(["ObjectPattern","ArrayPattern"].includes(node.left?.type)){
-    // Destructuring assignments write into targets, even when the
-    // binding pattern contains an imported object member.
+    const assigned=new Set();
+    bindingNames(node.left,assigned);
+    for(const id of assigned)if(env.has(id))env.set(id,null);
     walk(node.right,env);
     return;
    }
@@ -308,6 +314,11 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    }else{
     scan(node.left,loop);
     scan(node.right,loop);
+   }
+   if(node.type!=="ForStatement"&&node.left?.type!=="VariableDeclaration"){
+    const assigned=new Set();
+    bindingNames(node.left,assigned);
+    for(const id of assigned)if(loop.has(id))loop.set(id,null);
    }
    if(node.type!=="ForStatement"&&
       node.left?.type==="VariableDeclaration"&&node.left.kind==="var"){
@@ -398,7 +409,8 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
      });
     if(exportName)env.set(exportName,null);
    }
-   if(node.left?.type==="Identifier")neutralize(node.left,env);
+   if(["Identifier","ObjectPattern","ArrayPattern"].includes(node.left?.type))
+    neutralize(node.left,env);
   }
   if(node.type==="CallExpression"&&requireName&&
      env.get(requireName)===loaderToken&&env.get(exportName)===exportToken&&
@@ -610,6 +622,11 @@ function scanScopedModuleCalls(fn,requireName){
     walk(node.left,loop);
     walk(node.right,loop);
    }
+   if(node.type!=="ForStatement"&&node.left?.type!=="VariableDeclaration"){
+    const assigned=new Set();
+    bindingNames(node.left,assigned);
+    for(const id of assigned)if(loop.has(id))loop.set(id,null);
+   }
    if(node.type!=="ForStatement"&&
       node.left?.type==="VariableDeclaration"&&node.left.kind==="var"){
     const assigned=new Set();
@@ -667,8 +684,11 @@ function scanScopedModuleCalls(fn,requireName){
    }
    return;
   }
-  if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier"&&
-     node.left.name===requireName)env.set(requireName,null);
+  if(node.type==="AssignmentExpression"){
+   const assigned=new Set();
+   bindingNames(node.left,assigned);
+   if(assigned.has(requireName))env.set(requireName,null);
+  }
   if(node.type==="CallExpression"&&env.get(requireName)===loaderIdentity){
    if(node.callee?.type==="Identifier"&&node.callee.name===requireName&&
       node.arguments.length>=1){
@@ -1539,6 +1559,18 @@ function selfTest(){
  assert.equal(byDestination.get(2).nested_function_syntax_present,true);
  assert.equal(byDestination.get(3).factory_body_syntax_present,false);
  assert.equal(byDestination.get(3).nested_function_syntax_present,true);
+ const assignmentTargets=analyzeJS("export const __webpack_modules__={"+
+  "Loader:(function(e,t,n){({next:n}={next:()=>1});n('Unused')}),"+
+  "Iteration:(function(e,t,n){for(n of [()=>1]){}n('Unused')}),"+
+  "Exported:(function(e,t,n){({next:t}={next:{}});t.handler=()=>1}),"+
+  "Alias:(function(e,t,n){let a=n('Target');"+
+  "for(a of [{foo:1}]){}a.foo()}),"+
+  "Target:(function(e,t,n){t.foo=()=>1})};",80);
+ const assignmentGraph=buildGraph(assignmentTargets,1,0);
+ assert.equal(assignmentGraph.import_candidates,1);
+ assert.equal(assignmentGraph.unique_resolved_links,1);
+ assert.equal(assignmentGraph.direct_function_export_site_count,1);
+ assert(!JSON.stringify(assignmentGraph).includes("Unused"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

@@ -743,3 +743,14 @@ the source lacks executable modules or application logic. The frontier
 verifies that those references are distinct from the module census and
 that parsed resource counts reconcile. No source paths or script text
 enter the report.
+
+### Assignment patterns and iterator rebinding
+
+The three AST binding passes now treat assignment-pattern targets and
+`for...of` / `for...in` identifier targets as possible writes to
+inherited loader, exported-object and imported-module alias bindings.
+A loop or destructuring target cannot leave a stale earlier alias
+available to invent an export-interface property or module-loader
+call. Local lexical declarations remain isolated from outer variables.
+The behavior is intentionally conservative: a possible write removes
+a candidate identity without claiming the branch executed.

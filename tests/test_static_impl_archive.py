@@ -1153,6 +1153,36 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (key, "fictional-var-shadow.zip"):
                 self.assertNotIn(private, run.stdout)
 
+    def test_pattern_assignments_invalidate_loader_export_and_import_aliases(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-pattern-reassignment.zip"
+            name = "PrivatePatternTargetZ919"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Loader:(function(e,t,n){({value:n}={value:()=>1});"
+                    "n('PrivateNonModuleZ919')}),"
+                    "Iteration:(function(e,t,n){for(n of [()=>1]){}"
+                    "n('PrivateNonModuleZ919')}),"
+                    "Exported:(function(e,t,n){({value:t}={value:{}});"
+                    "t.handler=()=>1}),"
+                    "Imported:(function(e,t,n){let a=n('" + name + "');"
+                    "for(a of [{foo:1}]){}a.foo()}),"
+                    + name + ":(function(e,t,n){t.foo=()=>1})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, result.stderr[:120])
+            graph = json.loads(result.stdout)
+            self.assertEqual(graph["import_candidates"], 1)
+            self.assertEqual(graph["unique_resolved_links"], 1)
+            self.assertEqual(graph["export_shape_candidate_count"], 0)
+            self.assertEqual(graph["direct_function_export_site_count"], 1)
+            for private in (name, "PrivateNonModuleZ919",
+                            "fictional-pattern-reassignment.zip"):
+                self.assertNotIn(private, result.stdout)
+
     def test_loop_switch_and_catch_outer_rebinding_is_conservative(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-controlflow-rebindings.zip"
