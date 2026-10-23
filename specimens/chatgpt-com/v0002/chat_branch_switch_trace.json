@@ -154,5 +154,11 @@
       "active_variant_index"
     ],
     "limits": "The captured selector computes eligible response versions from a graph, not a guaranteed list of every persisted child. Exact acceptance of each model/tool subtype remains governed by additional predicates."
+  },
+  "render_recomputation_link": {
+    "source_ref": "R-JS-072",
+    "evidence_class": "observed_static",
+    "description": "The conversation page's memoized turn derivation explicitly depends on the active mapping and selected current-node value. The response-variant helper's optimistic current-node selection therefore targets an input used by this render derivation.",
+    "boundary": "This is a composition of reviewed client source state and page dependencies, not a verified observed re-render or server-accepted variant selection."
   }
 }
