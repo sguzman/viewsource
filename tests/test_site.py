@@ -63,11 +63,14 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(branch["stages"]),7)
             self.assertEqual(len(branch["relationships"]),10)
             self.assertEqual(len(branch["variant_derivation"]),5)
+            self.assertEqual(branch["render_recomputation_link"]["source_ref"],"R-JS-072")
             self.assertEqual(set(branch["source_resources"]),{"R-JS-018","R-JS-069"})
             transcript = current["visuals"]["chat_transcript_render_trace"]
             self.assertFalse(transcript["runtime_render_verified"])
             self.assertEqual(len(transcript["stages"]),7)
-            self.assertEqual(len(transcript["relationships"]),13)
+            self.assertEqual(len(transcript["relationships"]),16)
+            self.assertIn("selected_current_node",
+                          transcript["page_recomputation"]["dependency_roles"])
             self.assertEqual(len(transcript["action_bindings"]),3)
             self.assertEqual(len(transcript["presentation_rules"]),9)
             self.assertEqual(transcript["cross_module_call"]["target_ref"],"R-JS-069")
