@@ -331,6 +331,39 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "unknown.js", "private-dynamic-fixture.zip"):
                 self.assertNotIn(private, result.stdout)
 
+    def test_module_frontier_mode_has_no_intermediate_report(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "private-frontier-fixture.zip"
+            sentinel = "PRIVATE_MODULE_FRONTIER_SYNTHETIC_SENTINEL"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("client.js",
+                    "export const __webpack_modules__={"
+                    "Seed:(function(e,t,n){t.a=n('Linked')}),"
+                    "Linked:(function(e,t,n){t.a='" + sentinel + "'})};"
+                    "__webpack_require__('Seed')")
+            call = ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                    "--input", str(archive), "--module-frontier",
+                    "--bootstrap-candidates", "--max-depth", "2"]
+            result = subprocess.run(
+                call, cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, "Private pipeline failed")
+            report = json.loads(result.stdout)
+            self.assertEqual(report["root_source"], "bootstrap_syntax_candidate")
+            self.assertEqual(report["reached_module_count"], 2)
+            self.assertFalse(report["runtime_module_load_verified"])
+            self.assertTrue(all(x["source_ref"] == "R-JS-001"
+                                for x in report["nodes"]))
+            for forbidden in (sentinel, "Seed", "Linked", "client.js",
+                              "private-frontier-fixture.zip"):
+                self.assertNotIn(forbidden, result.stdout)
+            bad = subprocess.run(
+                call + ["--root", "R-JS-001:1"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=20)
+            self.assertNotEqual(bad.returncode, 0)
+            self.assertNotIn("private-frontier-fixture.zip", bad.stderr)
+
     def test_colliding_module_keys_yield_candidate_export_shape_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-collision.zip"

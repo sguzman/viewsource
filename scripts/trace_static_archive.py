@@ -28,10 +28,20 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 viewport_trace: bool = False,
                 module_trace: bool = False,
                 styles_trace: bool = False,
-                feature_trace: bool = False) -> dict:
+                feature_trace: bool = False,
+                module_frontier: bool = False,
+                frontier_roots: list[str] | None = None,
+                frontier_bootstrap: bool = False,
+                frontier_max_depth: int = 6,
+                frontier_max_nodes: int = 2000) -> dict:
     if sum((chat_trace, transport_trace, selector_trace, transcript_trace,
-            viewport_trace, module_trace, styles_trace, feature_trace)) > 1:
+            viewport_trace, module_trace, styles_trace, feature_trace,
+            module_frontier)) > 1:
         raise ValueError("Choose at most one specialized AST analysis")
+    if module_frontier and bool(frontier_roots) == frontier_bootstrap:
+        raise ValueError("Specify either explicit root ordinals or bootstrap candidates")
+    if not module_frontier and (frontier_roots or frontier_bootstrap):
+        raise ValueError("Frontier options require the module-frontier mode")
     if not input_file.is_file() or input_file.resolve().is_relative_to(ROOT):
         raise ValueError("Input ZIP must exist outside the public repository")
     if input_file.stat().st_size > 1024 * 1024 * 1024:
@@ -62,7 +72,7 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 (Path(folder) / f"{stem}-{i:04d}{ext}").write_bytes(archive.read(info))
             script = ("scripts/trace_feature_impl.cjs" if feature_trace else
                       "scripts/trace_style_hooks.cjs" if styles_trace else
-                      "scripts/trace_module_graph.cjs" if module_trace else
+                      "scripts/trace_module_graph.cjs" if (module_trace or module_frontier) else
                       "scripts/trace_viewport_impl.cjs" if viewport_trace else
                       "scripts/trace_transcript_impl.cjs" if transcript_trace else
                       "scripts/trace_selector_impl.cjs" if selector_trace else
@@ -75,6 +85,22 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
             )
             if result.returncode:
                 raise ValueError("Private static AST probe failed")
+            if module_frontier:
+                command = ["node", str(ROOT / "scripts/trace_module_frontier.cjs"), "--stdin"]
+                if frontier_bootstrap:
+                    command.append("--bootstrap-candidates")
+                else:
+                    for root in frontier_roots or []:
+                        command.extend(["--root", root])
+                command.extend(["--max-depth", str(frontier_max_depth),
+                                "--max-nodes", str(frontier_max_nodes)])
+                followup = subprocess.run(
+                    command, input=result.stdout, capture_output=True,
+                    text=True, timeout=90, check=False,
+                )
+                if followup.returncode:
+                    raise ValueError("Private module frontier failed")
+                return json.loads(followup.stdout)
             return json.loads(result.stdout)
 
 
@@ -94,10 +120,18 @@ def main() -> int:
                       help="Emit candidate virtual list, scroll anchor and viewport patterns")
     mode.add_argument("--module-trace", action="store_true",
                       help="Emit anonymous bundle module ordinals and static import candidates")
+    mode.add_argument("--module-frontier", action="store_true",
+                      help="Trace bounded ordinal module dependencies without saving an intermediate report")
     mode.add_argument("--styles-trace", action="store_true",
                       help="Count CSS syntax and script/style vocabulary without source output")
     mode.add_argument("--feature-trace", action="store_true",
                       help="Emit source-ordinal-only feature implementation leads")
+    parser.add_argument("--root", action="append", default=[],
+                        help="Capture-local source module ordinal, e.g. R-JS-072:13 (repeatable)")
+    parser.add_argument("--bootstrap-candidates", action="store_true",
+                        help="Seed frontier from uniquely resolved syntactic bootstrap candidates")
+    parser.add_argument("--max-depth", type=int, default=6)
+    parser.add_argument("--max-nodes", type=int, default=2000)
     args = parser.parse_args()
     try:
         report = inspect_zip(args.input, chat_trace=args.chat_trace,
@@ -107,7 +141,12 @@ def main() -> int:
                              viewport_trace=args.viewport_trace,
                              module_trace=args.module_trace,
                              styles_trace=args.styles_trace,
-                             feature_trace=args.feature_trace)
+                             feature_trace=args.feature_trace,
+                             module_frontier=args.module_frontier,
+                             frontier_roots=args.root,
+                             frontier_bootstrap=args.bootstrap_candidates,
+                             frontier_max_depth=args.max_depth,
+                             frontier_max_nodes=args.max_nodes)
     except (OSError, ValueError, json.JSONDecodeError, subprocess.TimeoutExpired,
             zipfile.BadZipFile, UnicodeError):
         parser.exit(2, "Static AST analysis rejected (input or parser unavailable)\n")

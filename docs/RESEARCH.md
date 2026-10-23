@@ -297,3 +297,18 @@ literal-import-only traversal may be incomplete. Dynamic boundaries **do not**
 expand the traversal or imply the target bundle exists in the saved archive.
 The report shows them separately from ambiguous export-shape candidates and
 uses the same closed, source-limited evidence policy.
+
+### One-step ZIP-to-frontier research
+
+To avoid manually copying intermediate reports, the private ZIP bridge now supports
+`--module-frontier`:
+
+`python3 scripts/trace_static_archive.py --input /private/capture.zip --module-frontier --bootstrap-candidates --max-depth 6`
+
+Alternatively pass one or more `--root R-JS-072:13` values instead of
+`--bootstrap-candidates`. The bridge runs the module scanner and passes
+the ordinal-only report through standard input to the bounded frontier tool;
+no intermediate report file is created and no captured assets or source strings
+are emitted. Both stages only parse private files without executing captured code.
+The resulting frontend is a candidate static dependency graph, **not** proof of
+module activation, page entrypoints or a live client trace.
