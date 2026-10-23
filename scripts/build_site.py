@@ -255,6 +255,11 @@ def build(out: Path) -> dict:
                         for edge in branch["relationships"]
                     ],
                     "caveats": branch["caveats"],
+                    "variant_derivation": [
+                        {"id": step["id"], "behavior": step["behavior"]}
+                        for step in branch["variant_derivation"]["steps"]
+                    ],
+                    "variant_derivation_limits": branch["variant_derivation"]["limits"],
                 }
             transcript_path = ROOT / (base + "/chat_transcript_render_trace.json")
             if transcript_path.is_file():
