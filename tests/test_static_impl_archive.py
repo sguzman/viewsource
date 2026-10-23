@@ -23,6 +23,29 @@ def parser_installed() -> bool:
 
 @unittest.skipUnless(parser_installed(), "Node.js Acorn dependency unavailable")
 class StaticImplementationArchiveTests(unittest.TestCase):
+    def test_top_level_bootstrap_excludes_shadowed_and_rebound_loader(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-top-level-bootstrap-scopes.zip"
+            key = "PrivateBootstrapModuleZ998"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js", "export const __webpack_modules__={"
+                    + key + ":function(){}};"
+                    "{const __webpack_require__=()=>0;"
+                    "__webpack_require__('" + key + "')}"
+                    "if(flag){__webpack_require__=()=>0}"
+                    "__webpack_require__('" + key + "')")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            graph = json.loads(proc.stdout)
+            self.assertEqual(graph["bootstrap_call_candidates"], 0)
+            self.assertEqual(graph["modules_total"], 1)
+            for value in (key, "fictional-top-level-bootstrap-scopes.zip"):
+                self.assertNotIn(value, proc.stdout)
+
     def test_chunk_root_provenance_is_source_limited(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "source-limited-chunk.zip"
