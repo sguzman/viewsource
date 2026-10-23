@@ -11010,6 +11010,16 @@
         "evidence_ref": "E2-095",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-096",
+      "statement": "The captured completion preparation method checks abort and should-prepare guards before and after asynchronous identity/rate-limit preparation. On a failed partial-query preparation, it attempts at most one conditional fallback when caller retry permission and an imported error-eligibility predicate permit it; after a randomized 250–500 ms delay it rechecks permission, changes client preparation dispatch to immediate and disables further preparation fallback. This is separate from completion-stream resume backoff and does not verify an executed retry or server response.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-096",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
