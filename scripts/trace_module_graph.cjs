@@ -150,8 +150,9 @@ function dynamicSyntax(fn,requireName){
      memberOf(n.callee,requireName)==="e")patterns.add(DYNAMIC_LABELS[2]);
   for(const [k,v] of Object.entries(n)){
    if(["start","end","loc","raw"].includes(k))continue;
-   if(Array.isArray(v))for(const item of v)if(item&&typeof item==="object")stack.push(item);
-   else if(v&&typeof v==="object")stack.push(v);
+   if(Array.isArray(v)){
+    for(const item of v)if(item&&typeof item==="object")stack.push(item);
+   }else if(v&&typeof v==="object")stack.push(v);
   }
  }
  return [...patterns];
