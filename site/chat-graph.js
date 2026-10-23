@@ -251,6 +251,15 @@ window.ViewsourceChatGraph = (() => {
       edges.append(paths,element("p","graph-caption",
         "Source imports and DOM preparation paths do not establish runtime scroll outcomes."));
       block.append(edges);
+      const branchLink=element("details","chat-viewport-branch-link");
+      branchLink.append(element("summary","","Response variant → turn window reconciliation"));
+      const stages=element("ol","");
+      viewport.branch_window.stages.forEach(item=>{
+        stages.append(element("li","",item.role+": "+item.behavior+" ("+item.source_ref+")"));
+      });
+      branchLink.append(stages,element("p","graph-caption",
+        "Source-level composition only: an actual branch switch or scroll movement has not been observed."));
+      block.append(branchLink);
       section.append(block);
     }
     const selectorStudy=record.visuals?.chat_selector_consumers;
