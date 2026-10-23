@@ -658,3 +658,20 @@ identity, selected model and replacement content. A finally block clears
 edit-busy state; an outer callback surfaces classified edit errors as a
 toast. This does **not** prove the server performed a destructive edit or
 accepted a new branch. See the [edit submission trace](../specimens/chatgpt-com/v0002/chat_edit_submission_trace.json).
+
+## Source-reviewed accessible transcript controls (E2-090)
+
+The saved viewport module provides a visually hidden focusable
+latest-response heading before the composer. Its focus path calls an
+abortable navigation callback and may focus a returned response target
+without scrolling, or announce that no response is available. Tab-order
+listeners adjust the heading's focusability. The conversation page imports
+this control, exposes an atomic polite-live completion announcement that
+tracks active request identity, and renders a busy page status during load.
+Older-message pagination uses an IntersectionObserver on the scroll root
+and a sentinel with either an accessible loading status or retry control.
+These eight source-backed mechanisms are collected in the
+[accessibility study](../specimens/chatgpt-com/v0002/chat_accessibility_trace.json).
+No keyboard gesture, actual screen-reader speech, successful history fetch,
+or accessibility audit was performed; the client source alone cannot prove
+conformance or the accessibility of unmounted virtual rows.
