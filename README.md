@@ -136,3 +136,5 @@ render-binding research automatically for every qualifying saved site;
 this new mode supplies a reusable source-first tool to investigate it.
 
 The [selection and code-copy study](specimens/chatgpt-com/v0002/chat_selection_copy_trace.json) adds source-level evidence E2-087 and E2-088 for scoped Markdown selection, excluded editable regions, and copy-last-code fallback/cancellation. These are guarded client implementation paths, not observed clipboard writes or live user interactions.
+
+[Edit submission source trace](specimens/chatgpt-com/v0002/chat_edit_submission_trace.json) E2-089 documents user-message edit gating, active-response stop, target revalidation, original-parent continuation and client error cleanup. The evidence is static; a real edited message or backend mutation is not claimed. The source queue has 11 active, 22 queued and 0 accepted complete tasks.
