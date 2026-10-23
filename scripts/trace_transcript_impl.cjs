@@ -10,7 +10,8 @@ const acorn=require("acorn");
 const FUNCTION_KINDS=new Set(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"]);
 const CLASSES=[
  "render_turn_derivation","pending_turn_preparation","first_user_item_filter",
- "typed_turn_renderer","message_dom_identity_wrapper","alternate_selected_render"
+ "typed_turn_renderer","message_dom_identity_wrapper","alternate_selected_render",
+ "response_variant_navigation","response_selection_request"
 ];
 function name(node){
  if(!node)return null;
@@ -36,7 +37,8 @@ function profile(fn){
    const key=member(n);if(key)reads.add(key);
   }
   if(n.type==="Literal"&&typeof n.value==="string"){
-   if(["user-message","assistant-message"].includes(n.value))literals.add(n.value);
+   if(["user-message","assistant-message","Previous response","Next response"].includes(n.value))
+    literals.add(n.value);
   }
   if(n.type==="CallExpression"){
    const key=member(n.callee);if(key)calls.add(key);
@@ -62,6 +64,12 @@ function profile(fn){
   matches.push("message_dom_identity_wrapper");
  if(keys.has("renderedTurns")&&keys.has("hideInitialUserMessage")&&
      reads.has("promptMessageId"))matches.push("alternate_selected_render");
+ if(literals.has("Previous response")&&literals.has("Next response")&&
+    (reads.has("variantIds")||keys.has("variantIds"))&&
+    (reads.has("activeVariantIndex")||keys.has("activeVariantIndex")))
+   matches.push("response_variant_navigation");
+ if(keys.has("current_node_id")&&calls.has("safePatch"))
+   matches.push("response_selection_request");
  return matches;
 }
 function inspect(text,ordinal){
@@ -129,10 +137,12 @@ function selfTest(){
  "function display(e){let{turn,turnId}=e;return turn.items.map(x=>x.type==='user-message'||x.type==='assistant-message')}",
  "function wrapper(x){return {'data-message-id':x.id,'data-message-author-role':'assistant','data-source-message-ids':x.sources}}",
  "function page(e){return {hideInitialUserMessage:e.hideInitialUserMessage,renderedTurns:e.turns.map(x=>x.promptMessageId)}}",
+ "function variants(e){return e.variantIds[e.activeVariantIndex]+'Previous response'+'Next response'}",
+ "function persist(e){return API.safePatch('fictional',{requestBody:{current_node_id:e.id}})}",
  "const privateText='SYNTHETIC_PRIVATE_MESSAGE_DO_NOT_PUBLISH'"
  ].join(";");
  const d=inspect(synthetic,1);
- assert.equal(d.function_nodes,9); // includes the inline callback arrows
+ assert.equal(d.function_nodes,11); // includes the inline callback arrows
  for(const term of CLASSES)
   assert(d.matches.some(x=>x.pattern===term),term);
  assert(!JSON.stringify(d).includes("SYNTHETIC_PRIVATE_MESSAGE"));
