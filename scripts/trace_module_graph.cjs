@@ -95,8 +95,11 @@ function buildGraph(all,scanned,parseFailures){
   unresolved_import_candidates:unresolved,ambiguous_import_candidates:ambiguous,
   cross_bundle_links:links.filter(x=>x.from_ref!==x.to_ref).length,
   same_bundle_links:links.filter(x=>x.from_ref===x.to_ref).length,
-  module_census:Object.entries(Object.groupBy(all,x=>x.sourceOrdinal))
-   .map(([id,items])=>({source_ref:"R-JS-"+String(id).padStart(3,"0"),count:items.length}))
+  module_census:[...all.reduce((map,x)=>{
+    map.set(x.sourceOrdinal,(map.get(x.sourceOrdinal)||0)+1);
+    return map;
+   },new Map())]
+   .map(([id,count])=>({source_ref:"R-JS-"+String(id).padStart(3,"0"),count}))
    .sort((a,b)=>a.source_ref.localeCompare(b.source_ref)),
   resolved_links:links,
   limitations:[
