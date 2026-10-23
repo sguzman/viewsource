@@ -1982,14 +1982,17 @@
       "profile": "followup",
       "queue": "quality",
       "title": "Reconcile feature call chains and unverified edges",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-render-bindings",
         "chatgpt-com-v0002-followup-static-source-streaming",
         "chatgpt-com-v0002-followup-static-source-failures",
         "chatgpt-com-v0002-followup-static-source-persistence"
       ],
-      "notes": "Static implementation trace: Publish an evidence-graded end-to-end client flow with file/function ordinal references, alternative explanations and remaining static analysis tasks; do not close merely after counting indicators."
+      "notes": "Static implementation trace: Publish an evidence-graded end-to-end client flow with file/function ordinal references, alternative explanations and remaining static analysis tasks; do not close merely after counting indicators. Source-composed client lifecycle and explicit proof-type distinctions recorded; complete protocol coverage, all feature gates and runtime outcomes remain outside acceptance.",
+      "evidence_refs": [
+        "E2-094"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-css-hooks",
@@ -2056,12 +2059,17 @@
       "profile": "followup",
       "queue": "network",
       "title": "Chat: Trace feature requests, streams and persistence",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-feature-chat-data-model",
         "chatgpt-com-v0002-followup-static-source-network-contracts"
       ],
-      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Follow feature-specific request serialization, response decoding, streaming and cache effects, if present; distinguish absent code from unknown runtime."
+      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Follow feature-specific request serialization, response decoding, streaming and cache effects, if present; distinguish absent code from unknown runtime. Source-composed client lifecycle and explicit proof-type distinctions recorded; complete protocol coverage, all feature gates and runtime outcomes remain outside acceptance.",
+      "evidence_refs": [
+        "E2-075",
+        "E2-092",
+        "E2-094"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-feature-chat-end-to-end",
@@ -2070,14 +2078,17 @@
       "profile": "followup",
       "queue": "architecture",
       "title": "Chat: Reconstruct evidence-graded feature lifecycle",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-feature-chat-operations",
         "chatgpt-com-v0002-followup-static-feature-chat-data-model",
         "chatgpt-com-v0002-followup-static-feature-chat-transport",
         "chatgpt-com-v0002-followup-static-source-render-bindings"
       ],
-      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Connect captured controls through handlers, state, transports and UI outputs; publish supported call edges, hypotheses, and remaining static questions."
+      "notes": "Candidate feature inferred only from static signal vocabulary. Confirm module ownership before closing. Connect captured controls through handlers, state, transports and UI outputs; publish supported call edges, hypotheses, and remaining static questions. Source-composed client lifecycle and explicit proof-type distinctions recorded; complete protocol coverage, all feature gates and runtime outcomes remain outside acceptance.",
+      "evidence_refs": [
+        "E2-094"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-feature-search-operations",
