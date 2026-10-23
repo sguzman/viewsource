@@ -458,3 +458,9 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-transcript-stage summary,.chat-transcript-edges summary,.chat-transcript-limits summary { cursor:pointer; font-size:12px; font-weight:600; line-height:1.65; }
 .chat-transcript-stage p,.chat-transcript-edges,.chat-transcript-limits { font-size:12px; line-height:1.65; }
 .chat-transcript-edges ol,.chat-transcript-limits ul { padding-left:20px; }
+
+.chat-transcript-rule-list { display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:9px;margin-top:12px; }
+.chat-transcript-rule { border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:12px; }
+.chat-transcript-rule strong { font-size:12px;text-transform:capitalize; }
+.chat-transcript-rule p { font-size:12px;line-height:1.6;margin:8px 0; }
+.chat-transcript-rule small { font-size:11px;color:var(--muted); }
