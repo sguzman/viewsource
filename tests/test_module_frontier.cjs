@@ -232,3 +232,24 @@ test("capture parser-coverage counters must reconcile before emitting frontier",
  g.failed_parser_source_refs=["PRIVATE_SCRIPT_FILENAME"];
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("reachable unresolved import sites only describe visited nodes",()=>{
+ const g=graph();
+ g.unresolved_import_site_count=3;
+ g.unresolved_import_sites=[
+  {source_ref:"R-JS-001",module_ordinal:1,classification:"missing_saved_target",
+   definition_candidates:0,import_resolved:false},
+  {source_ref:"R-JS-002",module_ordinal:1,classification:"missing_saved_target",
+   definition_candidates:0,import_resolved:false},
+  {source_ref:"R-JS-002",module_ordinal:2,classification:"ambiguous_same_registry_target",
+   definition_candidates:2,import_resolved:false}
+ ];
+ const whole=frontier(g,["R-JS-001:1"]);
+ assert.equal(whole.reachable_unresolved_import_count,2);
+ assert.equal(whole.total_unresolved_import_candidates,2);
+ assert.equal(whole.total_ambiguous_import_candidates,1);
+ const shallow=frontier(g,["R-JS-001:1"],{depthLimit:0});
+ assert.equal(shallow.reachable_unresolved_import_count,1);
+ g.unresolved_import_sites[0].classification="private-module-id";
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

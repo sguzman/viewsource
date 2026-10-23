@@ -474,7 +474,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   index.get(domain).get(x.identifier).push(x);
  }
  const resolve=(domain,key)=>index.get(domain||"unscoped")?.get(key)||[];
- const links=[],shapeCandidates=[],boundCandidates=[],foreignRegistryCollisions=[];
+ const links=[],shapeCandidates=[],boundCandidates=[],foreignRegistryCollisions=[],
+  unresolvedSites=[];
  for(const item of all){
   for(const key of item.boundImports||[]){
    const matches=resolve(item.domain,key);
@@ -525,6 +526,12 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    const matches=resolve(item.domain,id);
    if(!matches.length){
     unresolved++;
+    unresolvedSites.push({
+     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+     module_ordinal:item.moduleOrdinal,
+     classification:"missing_saved_target",
+     definition_candidates:0,import_resolved:false
+    });
     const foreignCount=globalKeyCounts.get(id)||0;
     if(foreignCount){
      foreignRegistryCollisions.push({
@@ -539,6 +546,12 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    }
    if(matches.length!==1){
     ambiguous++;
+    unresolvedSites.push({
+     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+     module_ordinal:item.moduleOrdinal,
+     classification:"ambiguous_same_registry_target",
+     definition_candidates:matches.length,import_resolved:false
+    });
     const needed=item.requiredByImport?.[id]||[];
     if(needed.length>0){
      const candidates=matches.filter(target=>
@@ -581,6 +594,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   chunk_runtime_isolation_applied:true,
   foreign_registry_key_collision_count:foreignRegistryCollisions.length,
   foreign_registry_key_collisions:foreignRegistryCollisions,
+  unresolved_import_sites:unresolvedSites,
+  unresolved_import_site_count:unresolvedSites.length,
   bootstrap_call_candidates:bootstrapCandidates.length,
   bootstrap_candidates:bootstrapCandidates,
   bootstrap_runtime_verified:false,
@@ -618,6 +633,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Named webpackChunk registrations are linked only within the same in-memory chunk namespace; namespaces are never published.",
    "Standalone __webpack_modules__ declarations have unknown runtime identity and share an unscoped provisional group.",
    "Foreign registry key collisions are unresolved diagnostics only and do not establish any imported target.",
+   "Unresolved import site ordinals are source-review leads; neither missing nor ambiguous candidate calls are verified at runtime.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
@@ -655,6 +671,9 @@ function selfTest(){
  assert.equal(o.import_candidates,3);
  assert.equal(o.unique_resolved_links,2);
  assert.equal(o.unresolved_import_candidates,1);
+ assert.equal(o.unresolved_import_site_count,1);
+ assert.equal(o.unresolved_import_sites[0].classification,"missing_saved_target");
+ assert.equal(o.unresolved_import_sites[0].module_ordinal,1);
  assert.equal(o.cross_bundle_links,1);
  assert.equal(o.same_bundle_links,1);
  assert.equal(o.resolved_links[0].from_ref,"R-JS-001");

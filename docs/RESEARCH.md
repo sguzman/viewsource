@@ -478,3 +478,15 @@ false` guard. Recognized categories distinguish direct top-level loader
 calls from third-position Webpack chunk runtime callbacks. A proposed
 bootstrap root must actually appear among the input candidate records;
 an arbitrary ordinal cannot be mislabeled as an observed entrypoint.
+
+### Root-local unresolved module import questions
+
+The module graph now retains anonymous per-callsite records for missing and
+ambiguous literal module imports. Each record includes only its importing
+resource/module ordinal, a fixed classification, the number of same-registry
+target definitions and `import_resolved: false`. No source identifier, key,
+specifier or captured text is emitted. The frontier filters these records
+to **reached modules** and reports a `reachable_unresolved_import_count`
+separately from global unresolved totals. This makes source-review questions
+relevant to the selected dependency path, without implying any missing
+module was requested in a running browser.

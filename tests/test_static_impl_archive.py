@@ -394,6 +394,43 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_unresolved_import_sites_are_ordinal_only_and_frontier_local(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-unresolved-sites.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js", "export const __webpack_modules__={"
+                    "Root:(function(e,t,n){const a=n('MissingPrivateTarget');"
+                    "const b=n('DuplicatePrivateTarget')}),"
+                    "DuplicatePrivateTarget:(function(e,t,n){t.a=1})};")
+                z.writestr("b.js", "export const __webpack_modules__={"
+                    "DuplicatePrivateTarget:(function(e,t,n){t.b=1})};")
+            for mode in (["--module-trace"],
+                         ["--module-frontier", "--root", "R-JS-001:1"]):
+                proc = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *mode],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=40)
+                self.assertEqual(proc.returncode, 0)
+                report = json.loads(proc.stdout)
+                if mode[0] == "--module-trace":
+                    self.assertEqual(report["unresolved_import_site_count"], 2)
+                    self.assertEqual(report["unresolved_import_candidates"], 1)
+                    self.assertEqual(report["ambiguous_import_candidates"], 1)
+                    categories = {x["classification"]
+                                  for x in report["unresolved_import_sites"]}
+                else:
+                    self.assertEqual(report["reachable_unresolved_import_count"], 2)
+                    self.assertEqual(report["reached_module_count"], 1)
+                    categories = {x["classification"]
+                                  for x in report["reachable_unresolved_import_sites"]}
+                self.assertEqual(categories,
+                                 {"missing_saved_target",
+                                  "ambiguous_same_registry_target"})
+                for private in ("Root", "MissingPrivateTarget",
+                                "DuplicatePrivateTarget", "invented-unresolved-sites.zip"):
+                    self.assertNotIn(private, proc.stdout)
+
     def test_foreign_chunk_keys_are_diagnostics_not_resolved_edges(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "unrelated-chunk-fixture.zip"

@@ -41,6 +41,7 @@ function indexGraph(graph) {
     ["bound_import_candidate_count","bound_import_candidates"],
     ["bootstrap_call_candidates","bootstrap_candidates"],
     ["foreign_registry_key_collision_count","foreign_registry_key_collisions"],
+    ["unresolved_import_site_count","unresolved_import_sites"],
     ["archive_candidate_script_count",null],
     ["archive_oversize_script_count",null],
     ["archive_ast_input_script_count",null]
@@ -148,6 +149,39 @@ function indexGraph(graph) {
       });
     }
   }
+  const unresolvedByModule=new Map();
+  if(graph.unresolved_import_sites!==undefined){
+    if(!Array.isArray(graph.unresolved_import_sites)||
+       graph.unresolved_import_sites.length!==
+         graph.unresolved_import_candidates+graph.ambiguous_import_candidates)
+      throw Error("Invalid unresolved import partition");
+    let missing=0,ambiguous=0;
+    for(const item of graph.unresolved_import_sites){
+      if(item.import_resolved!==false||
+         !known(item.source_ref,item.module_ordinal)||
+         !Number.isSafeInteger(item.definition_candidates)||
+         item.definition_candidates<0||
+         !["missing_saved_target","ambiguous_same_registry_target"].includes(
+          item.classification))
+        throw Error("Invalid unresolved import site");
+      if(item.classification==="missing_saved_target"){
+       if(item.definition_candidates!==0)throw Error("Invalid missing target");
+       missing++;
+      }else{
+       if(item.definition_candidates<2)throw Error("Invalid ambiguous target");
+       ambiguous++;
+      }
+      const id=ordinal(item.source_ref,item.module_ordinal);
+      if(!unresolvedByModule.has(id))unresolvedByModule.set(id,[]);
+      unresolvedByModule.get(id).push({
+       classification:item.classification,
+       definition_candidates:item.definition_candidates
+      });
+    }
+    if(missing!==graph.unresolved_import_candidates||
+       ambiguous!==graph.ambiguous_import_candidates)
+      throw Error("Inconsistent unresolved type counts");
+  }
   const foreign=new Map();
   if(graph.foreign_registry_key_collisions!==undefined){
     if(!Array.isArray(graph.foreign_registry_key_collisions))
@@ -165,7 +199,7 @@ function indexGraph(graph) {
       foreign.set(id,foreign.get(id)+item.foreign_registry_definition_count);
     }
   }
-  return {census,adjacency,ambiguous,dynamic,bound,foreign};
+  return {census,adjacency,ambiguous,dynamic,bound,foreign,unresolvedByModule};
 }
 const BOOTSTRAP_KINDS=new Set([
  "top_level_literal_call_candidate",
@@ -196,7 +230,8 @@ function frontier(graph, roots, options={}) {
   if(!Number.isSafeInteger(depthLimit)||depthLimit<0||depthLimit>30||
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
-  const {census,adjacency,ambiguous,dynamic,bound,foreign}=indexGraph(graph);
+  const {census,adjacency,ambiguous,dynamic,bound,foreign,
+    unresolvedByModule}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))];
   if(provenance==="bootstrap_syntax_candidate"){
@@ -269,6 +304,11 @@ function frontier(graph, roots, options={}) {
       candidate_target:item.target?asNode(item.target):null,
       traversed:false
     })));
+  const localUnresolved=[...visited.keys()].sort().flatMap(id=>
+    (unresolvedByModule.get(id)||[]).map(item=>({
+      source:asNode(id),classification:item.classification,
+      definition_candidates:item.definition_candidates,traversed:false
+    })));
   const foreignCollisions=[...visited.keys()].sort()
     .filter(id=>foreign.has(id)).map(id=>({
       source:asNode(id),foreign_registry_definition_count:foreign.get(id),
@@ -315,6 +355,8 @@ function frontier(graph, roots, options={}) {
     reachable_bound_import_candidates:unresolvedBound,
     reachable_foreign_registry_collision_count:foreignCollisions.length,
     reachable_foreign_registry_collisions:foreignCollisions,
+    reachable_unresolved_import_count:localUnresolved.length,
+    reachable_unresolved_import_sites:localUnresolved,
     truncated_by_node_limit:limited,
     total_unresolved_import_candidates:graph.unresolved_import_candidates,
     total_ambiguous_import_candidates:graph.ambiguous_import_candidates,
@@ -324,7 +366,7 @@ function frontier(graph, roots, options={}) {
       "Dynamic loading syntax in reached modules is a separate unresolved boundary and is NEVER traversed.",
       "Bound loader callbacks remain future-use candidates and NEVER expand the resolved graph.",
       "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
-      "Unresolved import counts cover the entire capture, not only these roots.",
+      "Unresolved import counts cover the entire capture; reachable unresolved import sites are filtered to reached modules.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",
       "A successful parse is not evidence of feature ownership or complete recognition of bundled source patterns.",
