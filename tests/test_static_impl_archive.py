@@ -1107,6 +1107,30 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                               "synthetic-import-object-write.zip"):
                 self.assertNotIn(forbidden, proc.stdout)
 
+    def test_dormant_nested_export_cannot_disambiguate_registry_key(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-dormant-exports.zip"
+            key = "PrivateDormantExportModuleZ996"
+            prop = "PrivateDormantExportPropertyZ996"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("first.js", "export const __webpack_modules__={"
+                    "Reader:(function(e,t,n){const x=n('" + key + "');x." + prop + "()}),"
+                    + key + ":(function(e,t,n){function unused(){t." + prop
+                    + "=()=>1}})};")
+                z.writestr("second.js", "export const __webpack_modules__={"
+                    + key + ":(function(e,t,n){t.alternate=()=>1})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, result.stderr[:120])
+            graph = json.loads(result.stdout)
+            self.assertEqual(graph["ambiguous_import_candidates"], 1)
+            self.assertEqual(graph["export_shape_candidate_count"], 0)
+            for private in (key, prop, "invented-dormant-exports.zip"):
+                self.assertNotIn(private, result.stdout)
+
     def test_shadowed_export_target_does_not_break_registry_key_ambiguity(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-export-shadow.zip"

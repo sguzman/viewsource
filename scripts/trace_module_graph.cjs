@@ -282,9 +282,15 @@ function scanScopedRequiredSlots(fn,requireName,required){
  * parameter and loader have not been shadowed or reassigned. Computed export
  * keys are excluded unless their property keys are literal constants. */
 function scanScopedExports(fn,requireName,exportName,moduleName){
- const slots=new Set(),directFunctions=[],exportToken=Symbol("factory_exports"),
-  loaderToken=Symbol("factory_require"),moduleToken=Symbol("factory_module");
- if(!exportName&&!moduleName)return {slots,directFunctions};
+ const slots=new Set(),factoryBodySlots=new Set(),directFunctions=[],
+  exportToken=Symbol("factory_exports"),loaderToken=Symbol("factory_require"),
+  moduleToken=Symbol("factory_module");
+ let nestedDepth=0;
+ function addSlot(slot){
+  slots.add(slot);
+  if(nestedDepth===0)factoryBodySlots.add(slot);
+ }
+ if(!exportName&&!moduleName)return {slots,factoryBodySlots,directFunctions};
  function neutralize(pattern,env){
   if(!pattern)return;
   if(pattern.type==="Identifier"){
@@ -368,7 +374,9 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    const hoisted=new Set();
    hoistedFunctionVars(node.body,hoisted);
    for(const id of hoisted)if(id===exportName||id===moduleName||id===requireName)nested.set(id,null);
+   nestedDepth++;
    scan(node.body,nested);
+   nestedDepth--;
    return;
   }
   if(node.type==="VariableDeclaration"){
@@ -394,7 +402,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
      if(slot)classification="module_exports_property_function_candidate";
     }
     if(slot){
-     slots.add(slot);
+     addSlot(slot);
      if(node.operator==="="&&
         ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
       directFunctions.push({position:node.start,classification});
@@ -406,6 +414,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
     // parameter. Earlier property assignments and later writes via that
     // parameter cannot prove the final public export interface.
     slots.clear();
+    factoryBodySlots.clear();
     directFunctions.length=0;
     if(node.operator==="="&&
        ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
@@ -428,7 +437,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
     if(prop.type!=="Property"||(prop.computed&&prop.key?.type!=="Literal"))
      continue;
     const slot=keyName(prop.key);
-    if(slot)slots.add(slot);
+    if(slot)addSlot(slot);
    }
   }
   for(const [k,v] of Object.entries(node)){
@@ -447,13 +456,16 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
  if(moduleName&&fn.params?.[0]?.type==="Identifier"&&fn.params[0].name===moduleName)
   initial.set(moduleName,moduleToken);
  scan(fn.body,initial);
- return {slots,directFunctions:directFunctions.sort((a,b)=>a.position-b.position)};
+ return {slots,factoryBodySlots,
+  directFunctions:directFunctions.sort((a,b)=>a.position-b.position)};
 }
 function scanModuleSignatures(fn,requireName,exportName,moduleName){
- const {slots:exported,directFunctions}=scanScopedExports(fn,requireName,exportName,moduleName),
+ const {slots:exported,factoryBodySlots,directFunctions}=
+   scanScopedExports(fn,requireName,exportName,moduleName),
   required=new Map();
  scanScopedRequiredSlots(fn,requireName,required);
  return {exportedSlots:[...exported],
+  factoryBodyExportedSlots:[...factoryBodySlots],
   directFunctionExports:directFunctions.map(x=>x.classification),
   requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
 }
@@ -873,6 +885,7 @@ function analyzeJS(source,sourceOrdinal){
     eligible:!!requireName,registry_factory_candidate:true,
     unresolved_computed_registry_key:!!unresolvedComputedKey,
     exportedSlots:signatures.exportedSlots,
+    factoryBodyExportedSlots:signatures.factoryBodyExportedSlots,
     directFunctionExports:signatures.directFunctionExports,
     requiredByImport:signatures.requiredByImport,
     dynamic_syntax:dynamicSyntax(fn,requireName,scopeCalls)});
@@ -1010,7 +1023,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
     const needed=item.requiredByImport?.[id]||[];
     if(needed.length>0){
      const candidates=matches.filter(target=>
-       needed.every(slot=>(target.exportedSlots||[]).includes(slot)));
+       needed.every(slot=>(target.factoryBodyExportedSlots||[]).includes(slot)));
      if(candidates.length===1){
       const target=candidates[0];
       shapeCandidates.push({
@@ -1101,6 +1114,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "A resolved bundled module reference is not proof that a module loaded or ran.",
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
    "Export-shape matches are candidate disambiguations only; minified alias shadowing or dead code can create misleading required slots.",
+   "Export-shape candidates require factory-body export syntax; exports appearing only in nested functions are not sufficient for a unique match.",
    "Export-shape candidates do not change unique/ambiguous import counts and require independent source inspection before promotion.",
    "Dynamic imports, computed require arguments and bundler chunk-loader calls are unresolved syntax boundaries, never resolved import edges.",
    "Function-bound module-loader callbacks are future-import candidates, not direct calls or verified loads.",
@@ -1589,6 +1603,18 @@ function selfTest(){
  assert.equal(updateResult.unique_resolved_links,1);
  assert.equal(updateResult.direct_function_export_site_count,1);
  assert(!JSON.stringify(updateResult).includes("'Fake'"));
+ const dormantExport=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){const x=n('Candidate');x.want()}),"+
+  "Candidate:(function(e,t,n){function never(){t.want=()=>1}})};",82);
+ const otherCandidate=analyzeJS("export const __webpack_modules__={"+
+  "Candidate:(function(e,t,n){t.other=()=>1})};",83);
+ const dormantResult=buildGraph([...dormantExport,...otherCandidate],2,0);
+ assert.equal(dormantResult.ambiguous_import_candidates,1);
+ assert.equal(dormantResult.export_shape_candidate_count,0);
+ const bodyExport=analyzeJS("export const __webpack_modules__={"+
+  "Candidate:(function(e,t,n){t.want=()=>1})};",84);
+ const bodyResult=buildGraph([dormantExport[0],...bodyExport,...otherCandidate],3,0);
+ assert.equal(bodyResult.export_shape_candidate_count,1);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

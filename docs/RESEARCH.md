@@ -764,3 +764,15 @@ identifier update, instead of allowing later source syntax to create
 false module imports, required export slots or callable assignments.
 Member-property updates continue to be treated as mutations rather
 than evidence that a module originally exported that property.
+
+### Factory-body requirements for export interface matching
+
+Required export-property disambiguation now distinguishes assignments
+visible in a module factory body from assignments written **only**
+inside nested functions. A dormant nested function declaring
+`exports.handler` no longer supplies sufficient evidence to
+uniquely match an otherwise ambiguous module key. Nested export
+syntax remains an unexecuted source lead, while factory-body
+assignments and eligible loader export registrations may support
+an explicitly unverified interface candidate. This rule does not
+claim a function was never invoked.
