@@ -115,6 +115,21 @@
       "from": "page_turn_entry_component",
       "to": "turn_renderer",
       "kind": "direct_imported_component_call"
+    },
+    {
+      "from": "conversation_page",
+      "to": "turn_user_edit_callback",
+      "kind": "conditional_prop_forwarding"
+    },
+    {
+      "from": "conversation_page",
+      "to": "turn_regenerate_callback",
+      "kind": "conditional_prop_forwarding"
+    },
+    {
+      "from": "conversation_page",
+      "to": "turn_fork_callback",
+      "kind": "conditional_prop_forwarding"
     }
   ],
   "normalized_item_kinds": [
@@ -134,7 +149,8 @@
     "The visible main-page to typed-turn-renderer import is verified; other dynamic subcomponent imports and hidden rendering branches are not exhaustively mapped.",
     "Visibility rules for every item kind, safety presentation, streaming placeholders, and hidden content remain to be enumerated.",
     "The exact use of React keys, virtualization, scroll anchoring, and hydration has not been reconstructed.",
-    "These source render paths were not executed against a live site or real user data."
+    "These source render paths were not executed against a live site or real user data.",
+    "The complete click-to-network action path for each edit/fork/regenerate control remains distinct from these verified renderer callback bindings."
   ],
   "confidentiality": "No captured source snippets, original filenames, message text, account identities, URLs, tokens or raw event bodies are included.",
   "verified_cross_module_call": {
@@ -214,5 +230,34 @@
     "The filter options describe a client rendering choice and do not establish deletion from stored message mapping.",
     "Status-dependent or moderation-dependent code paths may be gated by runtime settings and have not been exercised.",
     "These nine rules are individually inspected examples, not an exhaustive truth table of all possible item types and rendering modes."
+  ],
+  "action_bindings": [
+    {
+      "action": "edit_user_message",
+      "source_ref": "R-JS-069",
+      "target": "user_item_editor",
+      "path": "page_callback_to_turn_renderer_to_user_item",
+      "status": "observed_static",
+      "gates": "Requires a user-message item, the eligible message identity, an available edit callback, and absence of certain targeted-reply or unsupported attachment conditions.",
+      "limits": "An eligible edit callback is source-visible, not an observed edit or persisted rewrite."
+    },
+    {
+      "action": "regenerate_response",
+      "source_ref": "R-JS-069",
+      "target": "turn_actions_and_regeneration_control",
+      "path": "page_callback_to_turn_renderer_to_turn_actions",
+      "status": "observed_static",
+      "gates": "Regeneration callbacks can be disabled by read-only presentation, pending-alternative state, and model-first-landing or other special-turn conditions.",
+      "limits": "This captures callback availability and gating; actual regeneration request construction is researched separately."
+    },
+    {
+      "action": "fork_conversation",
+      "source_ref": "R-JS-069",
+      "target": "turn_action_row",
+      "path": "page_callback_to_turn_renderer_to_action_row",
+      "status": "observed_static",
+      "gates": "The renderer forwards a supplied fork callback into its turn-actions layer, which can be independently suppressed for particular presentation states.",
+      "limits": "The turn renderer's callback forwarding does not by itself prove the downstream branch request executed."
+    }
   ]
 }
