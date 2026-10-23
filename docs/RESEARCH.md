@@ -844,6 +844,25 @@ the possible update remain conservatively invalidated. This preserves
 legitimate syntax leads without asserting that the loop ran or that a
 particular iteration was reached.
 
+### Independent conditional and switch-case source candidates
+
+The scoped source scanners inspect the alternatives of `if` statements
+and ternary expressions using separate binding environments. A mutation
+in one alternative no longer suppresses literal loader calls, startup
+candidates or imported-property reads in the other alternative. At the
+join, differing binding identities become unknown, preventing subsequent
+calls through a possibly reassigned alias from being treated as known.
+
+A `switch` is analyzed with one shared lexical declaration scope and
+separate conservative case-entry environments. Case-local calls and
+callable export evidence are retained as alternatives, rather than
+allowing one case's mutation to erase another case's evidence. A switch
+without a default includes the possibility that no case matches.
+Branches are source-syntax possibilities: **this is not execution
+simulation** and does not establish condition values, case selection,
+fallthrough execution order, or runtime module ownership. Export
+interface matches remain unverified static candidates.
+
 ### Right-hand-side evaluation before binding replacement
 
 Assignment expressions evaluate their right-hand values before replacing
