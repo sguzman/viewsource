@@ -511,3 +511,19 @@ or special-turn states. The fork callback is forwarded to the action row,
 subject to its own display guards. Canonical evidence E2-080 records these
 callback pathways without asserting any click, network request or server
 outcome. Three guarded bindings are visible in the transcript study.
+
+## Response-version selection, optimistic state and rollback
+
+A source-level response-version control uses an ordered variant list,
+active index and previous/next buttons. Selection dispatches a variant
+identity to an imported client helper that looks up a permissible selected
+descendant, changes the local selected-node state immediately, constructs a
+conversation-selection persistence request, and rolls back to the prior
+selection if the request fails while the optimistic selection remains
+current. Its cleanup reconciles conversation state and clears a busy flag.
+The seven-stage [branch switch study](../specimens/chatgpt-com/v0002/chat_branch_switch_trace.json)
+tracks these client relationships across saved resources R-JS-069 and
+R-JS-018. Canonical evidence E2-081 does **not** claim that the server
+accepted a switch or that a selection survived reload. Two more static
+research tasks (client state flows and network request construction) are
+now in progress, bringing the source queue to 10 in progress and 23 queued.
