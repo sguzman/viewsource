@@ -61,6 +61,12 @@
       "kind": "guarded_single_prepare_retry",
       "behavior": "A preparation failure enters a distinct fallback only if the input contains a partial query, the caller permits retry, and an imported error eligibility predicate accepts the failure. After a randomized 250–500 ms delay, retry permission is checked again. One recursive preparation attempt changes dispatch to immediate, suppresses further retry, and revalidates should-prepare before sending.",
       "boundary": "This is a maximum one-fallback client source branch, not a promise that every eligible failure retries or succeeds. The imported predicate and actual outcomes are unresolved."
+    },
+    {
+      "id": "source_resolved_preparation_retry_eligibility",
+      "kind": "typed_client_error_predicate",
+      "behavior": "A uniquely resolved captured module implements the preparation fallback eligibility predicate. It excludes abort/non-Error cases and selected terminal typed request error codes, honors a parsed structured can_retry=false veto, allows network errorKind or typed statuses 408/409/425/502/504, and applies timeout/offline/network-message heuristics to other Error objects.",
+      "boundary": "This predicate belongs to preparation fallback, not the separate stream-resumption retry coordinator. No live error or request retry is observed."
     }
   ],
   "captured_default_fallbacks": {
@@ -123,6 +129,11 @@
       "from": "prepare_request_failure",
       "to": "single_immediate_dispatch_fallback",
       "kind": "conditional_partial_query_retry"
+    },
+    {
+      "from": "prepare_request_failure",
+      "to": "preparation_error_retryability_predicate",
+      "kind": "same_capture_module_import"
     }
   ],
   "open_questions": [
@@ -131,7 +142,7 @@
     "Determine whether config gates allow resumptions for every message modality and every account context.",
     "Check cancellation priority and delivery outcomes only with permitted synthetic runtime observations, if later desired.",
     "Distinguish retry hints used only for display from those that actually schedule a client request.",
-    "Resolve the imported preparation-failure eligibility predicate separately from the completion-stream resume predicate; do not infer HTTP status coverage from the call alone."
+    "The completion-stream resume coordinator has a different imported eligibility predicate; do not reuse the preparation allowlist for it without independent source review."
   ],
   "privacy": "No original source code, endpoint strings, request headers, auth/account values, message content, URL, or extracted bundle filename is published.",
   "preparation_fallback": {
@@ -144,7 +155,7 @@
     "required_conditions": [
       "partial_query_present",
       "caller_retry_allowed_before_delay",
-      "imported_error_eligibility_predicate",
+      "source_verified_preparation_error_predicate",
       "caller_retry_allowed_after_delay",
       "preparation_remains_permitted"
     ],
@@ -157,6 +168,76 @@
       "completion_stream_resume_recovery",
       "request_integrity_header_refresh"
     ],
-    "limit": "The original method's failure catch contains the conditional fallback. Its imported error predicate is not resolved to a unique source implementation; this report does not assert eligible HTTP statuses or an observed network result."
+    "limit": "The guarded fallback uses a uniquely identified same-capture error eligibility module, now documented in preparation_error_eligibility. The method does not guarantee any retry occurs, nor does it establish a live network result."
+  },
+  "preparation_error_eligibility": {
+    "source_ref": "R-JS-018",
+    "evidence_class": "observed_static",
+    "resolved_import": {
+      "caller": "prepareCompletionStream",
+      "target_role": "preparation_error_retryability_predicate",
+      "resolution": "unique_same_capture_module_registry_entry",
+      "definition_matches_in_saved_assets": 1,
+      "source_resource": "R-JS-018",
+      "boundary": "The importer-to-predicate module relationship is source-backed; no runtime import or executed error branch is established."
+    },
+    "decision_order": [
+      {
+        "stage": "error_and_abort_guard",
+        "result": "ineligible",
+        "rule": "Reject non-Error inputs and any Error whose name indicates an aborted request."
+      },
+      {
+        "stage": "typed_client_terminal_codes",
+        "result": "ineligible",
+        "rule": "For a captured typed request error, reject model-cap, work-usage and conversation-not-found/deleted/expired terminal categories."
+      },
+      {
+        "stage": "typed_client_explicit_veto",
+        "result": "ineligible",
+        "rule": "For a typed request error whose message parses into the expected structured shape, an explicit detail.can_retry=false rejects retry."
+      },
+      {
+        "stage": "typed_client_network_or_status",
+        "result": "eligible",
+        "rule": "Otherwise, typed request errors are eligible only for a network errorKind or status in the captured allowlist."
+      },
+      {
+        "stage": "other_error_timeout_or_offline",
+        "result": "eligible",
+        "rule": "For other Error instances, timeout name or browser offline state is enough for eligibility."
+      },
+      {
+        "stage": "other_error_heuristics",
+        "result": "conditional",
+        "rule": "Other Error instances use fetch/network/DNS/connection message heuristics or a TypeError fallback that excludes several known non-retryable user/limits/auth/stale-conversation messages."
+      }
+    ],
+    "typed_status_allowlist": [
+      408,
+      409,
+      425,
+      502,
+      504
+    ],
+    "typed_terminal_error_categories": [
+      "model_cap_exceeded",
+      "work_usage_limit_exceeded",
+      "conversation_deleted",
+      "conversation_not_found",
+      "history_disabled_conversation_not_found",
+      "history_disabled_conversation_expired"
+    ],
+    "explicit_structured_retry_veto": true,
+    "generic_error_signals": [
+      "fetch_failure",
+      "network_failure",
+      "dns_resolution",
+      "connection_failure",
+      "timeout",
+      "offline_browser"
+    ],
+    "scope": "This is the error predicate used by completion preparation's partial-query fallback. The stream-resume recovery's separately imported retryability predicate is not attributed to this module.",
+    "limit": "The code's status field, errorKind and error class refer to captured client error objects. These source checks do not prove a server contract, what error was raised, or whether any retry was executed."
   }
 }
