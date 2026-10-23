@@ -110,6 +110,11 @@
       "from": "dom_message_identity_wrapper",
       "to": "message_role_attributes",
       "kind": "dom_metadata"
+    },
+    {
+      "from": "page_turn_entry_component",
+      "to": "turn_renderer",
+      "kind": "direct_imported_component_call"
     }
   ],
   "normalized_item_kinds": [
@@ -126,10 +131,18 @@
     "Role and source-message attributes on rendered elements are a DOM identification mechanism, not proof of original message text or storage keys."
   ],
   "unverified": [
-    "The complete end-to-end module path from every mapping node to an individual DOM item across dynamic imports has not been exhaustively audited.",
+    "The visible main-page to typed-turn-renderer import is verified; other dynamic subcomponent imports and hidden rendering branches are not exhaustively mapped.",
     "Visibility rules for every item kind, safety presentation, streaming placeholders, and hidden content remain to be enumerated.",
     "The exact use of React keys, virtualization, scroll anchoring, and hydration has not been reconstructed.",
     "These source render paths were not executed against a live site or real user data."
   ],
-  "confidentiality": "No captured source snippets, original filenames, message text, account identities, URLs, tokens or raw event bodies are included."
+  "confidentiality": "No captured source snippets, original filenames, message text, account identities, URLs, tokens or raw event bodies are included.",
+  "verified_cross_module_call": {
+    "source_ref": "R-JS-072",
+    "target_ref": "R-JS-069",
+    "kind": "direct_imported_component_call",
+    "behavior": "A conversation page turn-entry component imports the exported typed turn renderer and passes the configured turn, conversation identity, current-turn flag, presentation flags and action callbacks.",
+    "evidence_class": "observed_static",
+    "boundary": "The imported module and JSX invocation are visible. Page mount conditions, actual loaded chunks, scrolling, and runtime visibility have not been observed."
+  }
 }
