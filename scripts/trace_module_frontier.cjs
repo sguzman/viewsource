@@ -58,8 +58,26 @@ function indexGraph(graph) {
   }
   return {census,adjacency,ambiguous};
 }
+function candidateBootstrapRoots(graph) {
+ if(graph?.bootstrap_runtime_verified!==false||!Array.isArray(graph.bootstrap_candidates))
+  throw Error("Missing candidate bootstrap classification");
+ const roots=[];
+ for(const item of graph.bootstrap_candidates) {
+  if(item?.bootstrap_execution_verified!==false)throw Error("Invalid candidate execution");
+  if(item.classification==="unique_registry_key_candidate") {
+   roots.push(ordinal(item.target_ref,item.target_module));
+  }else if(!["ambiguous_registry_key","missing_saved_module"].includes(item.classification)) {
+   throw Error("Invalid candidate class");
+  }
+ }
+ if(!roots.length)throw Error("No uniquely resolved bootstrap candidates");
+ return [...new Set(roots)];
+}
 function frontier(graph, roots, options={}) {
   const depthLimit=options.depthLimit??6, nodeLimit=options.nodeLimit??2000;
+  const provenance=options.rootSource??"explicit_ordinal_selection";
+  if(!["explicit_ordinal_selection","bootstrap_syntax_candidate"].includes(provenance))
+    throw Error("Invalid root provenance");
   if(!Number.isSafeInteger(depthLimit)||depthLimit<0||depthLimit>30||
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
@@ -116,7 +134,8 @@ function frontier(graph, roots, options={}) {
   return {
     format_version:1,scope:"private_static_module_frontier",
     source_executed:false,runtime_module_load_verified:false,
-    roots:seeds.map(asNode),depth_limit:depthLimit,node_limit:nodeLimit,
+    roots:seeds.map(asNode),root_source:provenance,
+    depth_limit:depthLimit,node_limit:nodeLimit,
     reached_module_count:nodes.length,traversed_static_edges:traversed,
     depth_counts:layerCounts,nodes,
     boundary_modules:[...boundary].sort().map(asNode),
@@ -160,25 +179,39 @@ function selfTest() {
   assert.throws(()=>frontier(graph,["R-JS-001:100"]));
   assert.throws(()=>frontier(graph,["R-JS-001:1"],{depthLimit:-1}));
   assert(!JSON.stringify(result).includes("private-secret"));
+  const seeded={...graph,bootstrap_runtime_verified:false,
+    bootstrap_candidates:[
+      {classification:"unique_registry_key_candidate",target_ref:"R-JS-001",
+       target_module:1,bootstrap_execution_verified:false},
+      {classification:"ambiguous_registry_key",bootstrap_execution_verified:false}
+    ]};
+  assert.deepEqual(candidateBootstrapRoots(seeded),["R-JS-001:1"]);
+  assert.equal(frontier(seeded,candidateBootstrapRoots(seeded),
+    {rootSource:"bootstrap_syntax_candidate"}).root_source,"bootstrap_syntax_candidate");
 }
 function main(argv) {
   if(argv.length===1&&argv[0]==="--self-test"){selfTest();console.log("Synthetic module frontier passed");return;}
-  let input=null,roots=[],depthLimit=6,nodeLimit=2000;
+  let input=null,roots=[],depthLimit=6,nodeLimit=2000,seedBootstrap=false;
   for(let i=0;i<argv.length;i++){
     const arg=argv[i];
     if(arg==="--input")input=argv[++i];
     else if(arg==="--root")roots.push(argv[++i]);
+    else if(arg==="--bootstrap-candidates")seedBootstrap=true;
     else if(arg==="--max-depth")depthLimit=Number(argv[++i]);
     else if(arg==="--max-nodes")nodeLimit=Number(argv[++i]);
     else throw Error("Invalid argument");
   }
-  if(typeof input!=="string"||!input||!roots.length)throw Error("Missing input/roots");
+  if(typeof input!=="string"||!input||(!seedBootstrap&&!roots.length)||
+     (seedBootstrap&&roots.length))throw Error("Missing or conflicting roots");
   if(fs.statSync(input).size>MAX_BYTES)throw Error("Graph too large");
-  const output=frontier(JSON.parse(fs.readFileSync(input,"utf8")),roots,{depthLimit,nodeLimit});
+  const graph=JSON.parse(fs.readFileSync(input,"utf8"));
+  const seeds=seedBootstrap?candidateBootstrapRoots(graph):roots;
+  const output=frontier(graph,seeds,{depthLimit,nodeLimit,
+    rootSource:seedBootstrap?"bootstrap_syntax_candidate":"explicit_ordinal_selection"});
   process.stdout.write(JSON.stringify(output,null,2)+"\n");
 }
 if(require.main===module){
   try{main(process.argv.slice(2));}
   catch(_){process.stderr.write("Module frontier rejected (input or roots invalid; details suppressed)\n");process.exitCode=2;}
 }
-module.exports={frontier,indexGraph,parseRoot,selfTest};
+module.exports={frontier,indexGraph,parseRoot,candidateBootstrapRoots,selfTest};

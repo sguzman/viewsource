@@ -267,3 +267,13 @@ dynamically calculated keys, loading policy and script execution are
 module for manually seeded frontier analysis, never proof of startup or
 browser module execution. Private module keys, filenames and source remain
 unpublished.
+
+### Bootstrap-seeded dependency frontier
+
+Run `node scripts/trace_module_frontier.cjs --input /private/module-report.json --bootstrap-candidates --max-depth 6`
+to seed a bounded import walk from **uniquely matched static bootstrap-call candidates**.
+Unlike `--root R-JS-072:13`, this does not require an individually selected
+source module. Ambiguous or missing bootstrap keys are deliberately excluded,
+and the output explicitly records `root_source=bootstrap_syntax_candidate`.
+Neither the bootstrap pattern nor any reachable import is verified to have run.
+A report without a unique seed is rejected rather than fabricating one.

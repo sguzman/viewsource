@@ -1,6 +1,6 @@
 "use strict";
 const test=require("node:test"),assert=require("node:assert/strict");
-const {frontier,parseRoot}=require("../scripts/trace_module_frontier.cjs");
+const {frontier,parseRoot,candidateBootstrapRoots}=require("../scripts/trace_module_frontier.cjs");
 const graph=()=>({
  format_version:1,scope:"private_saved_javascript_modules",
  source_executed:false,module_runtime_loaded_verified:false,
@@ -51,4 +51,22 @@ test("multiple roots deduplicate, order-independent under fixed limits",()=>{
  assert.equal(a.roots.length,2);
  assert.equal(a.reached_module_count,3);
  assert.equal(a.nodes.filter(x=>x.depth===0).length,2);
+});
+
+test("candidate bootstrap roots use only uniquely matched unexecuted syntax",()=>{
+ const data=graph();
+ data.bootstrap_runtime_verified=false;
+ data.bootstrap_candidates=[
+  {classification:"unique_registry_key_candidate",target_ref:"R-JS-001",
+   target_module:1,bootstrap_execution_verified:false},
+  {classification:"ambiguous_registry_key",bootstrap_execution_verified:false},
+  {classification:"missing_saved_module",bootstrap_execution_verified:false}
+ ];
+ const roots=candidateBootstrapRoots(data);
+ assert.deepEqual(roots,["R-JS-001:1"]);
+ const result=frontier(data,roots,{rootSource:"bootstrap_syntax_candidate"});
+ assert.equal(result.root_source,"bootstrap_syntax_candidate");
+ assert.equal(result.runtime_module_load_verified,false);
+ data.bootstrap_candidates[0].bootstrap_execution_verified=true;
+ assert.throws(()=>candidateBootstrapRoots(data));
 });
