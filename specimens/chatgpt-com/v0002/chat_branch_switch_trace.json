@@ -1,0 +1,114 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_javascript",
+  "evidence_class": "observed_static",
+  "source_executed": false,
+  "live_selection_verified": false,
+  "server_acknowledgement_verified": false,
+  "description": "Static trace from captured previous/next response controls through the imported client selection helper and its optimistic/persist/rollback sequence.",
+  "source_resources": [
+    {
+      "ref": "R-JS-069",
+      "role": "response_variant_navigation_controls"
+    },
+    {
+      "ref": "R-JS-018",
+      "role": "selected_node_state_and_request_helper"
+    }
+  ],
+  "reviewed_stages": [
+    {
+      "id": "variant_lookup",
+      "ref": "R-JS-069",
+      "detail": "The response-version control reads an ordered list of variant message identities and the active variant index from scoped client state."
+    },
+    {
+      "id": "previous_next_button",
+      "ref": "R-JS-069",
+      "detail": "Previous and next buttons are rendered only when multiple variants exist and an active index is available; each is disabled at its respective boundary or while selection is busy."
+    },
+    {
+      "id": "selection_dispatch",
+      "ref": "R-JS-069",
+      "detail": "The click handler resolves the requested variant index to an identity and calls an imported conversation-selection helper. An error notification is shown if that call rejects."
+    },
+    {
+      "id": "selection_validation",
+      "ref": "R-JS-018",
+      "detail": "The selection helper checks that a conversation and requested mapped variant exist, that an incompatible active state is absent, and that a candidate selected descendant can be derived and validated against the graph."
+    },
+    {
+      "id": "optimistic_client_update",
+      "ref": "R-JS-018",
+      "detail": "Before making the persistence request, the helper marks selection busy, changes the locally selected node, updates dependent scoped conversation state, and invalidates relevant cached conversation data."
+    },
+    {
+      "id": "persistence_request",
+      "ref": "R-JS-018",
+      "detail": "The helper constructs a request to update the selected current node for the conversation and treats an unsuccessful response as a selection failure. No actual server response was captured."
+    },
+    {
+      "id": "rollback_and_cleanup",
+      "ref": "R-JS-018",
+      "detail": "On failure, the helper restores the previous selected node if its optimistic selection is still current. In a finalization path it reconciles the mapping/current-node state and clears the selection-busy flag."
+    }
+  ],
+  "relationships": [
+    {
+      "from": "response_variant_navigation",
+      "to": "selected_variant_identity",
+      "kind": "bounded_variant_index_lookup"
+    },
+    {
+      "from": "selected_variant_identity",
+      "to": "selection_client_helper",
+      "kind": "imported_client_call"
+    },
+    {
+      "from": "selection_client_helper",
+      "to": "candidate_descendant_validation",
+      "kind": "client_graph_check"
+    },
+    {
+      "from": "candidate_descendant_validation",
+      "to": "optimistic_selection",
+      "kind": "guarded_client_update"
+    },
+    {
+      "from": "optimistic_selection",
+      "to": "selected_conversation_projection",
+      "kind": "state_write"
+    },
+    {
+      "from": "optimistic_selection",
+      "to": "selection_persistence_request",
+      "kind": "request_construction"
+    },
+    {
+      "from": "selection_persistence_request",
+      "to": "conditional_selection_rollback",
+      "kind": "failure_recovery"
+    },
+    {
+      "from": "selection_persistence_request",
+      "to": "selection_busy_cleanup",
+      "kind": "finalization"
+    }
+  ],
+  "visible_control_roles": [
+    "previous_response",
+    "response_position_count",
+    "next_response"
+  ],
+  "confirmation_scope": "The source establishes a selection request and local optimistic/failure behavior. It does not establish a real persisted backend change or the current deployed contract.",
+  "caveats": [
+    "Some other client paths use direct local selected-node updates rather than this persisted response-version control.",
+    "The mapping lookup may choose a descendant of a response variant; variant identity and final selected current node need not always coincide.",
+    "An optimistic client update can temporarily affect rendering before a server confirms the request.",
+    "Displayed response-version controls are subject to client gates and might not appear for all accounts or conversations.",
+    "This source-level trace does not establish actual button clicks, server acknowledgement, durable persistence or a complete deployed API protocol."
+  ],
+  "privacy": "Only authored summaries, technical operation labels and capture-local resource ordinals are published; no original request path, full source snippet, user message, account token or identity is included."
+}
