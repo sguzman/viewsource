@@ -65,6 +65,8 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertEqual(data["bootstrap_root_provenance"][0]["candidate_kinds"],
                              ["chunk_runtime_literal_call_candidate"])
             self.assertEqual(data["bootstrap_root_provenance"][0]["matching_static_calls"], 1)
+            self.assertEqual(data["bootstrap_root_provenance"][0]["static_callsite_resources"],
+                             ["R-JS-001"])
             self.assertFalse(data["bootstrap_root_provenance"][0]["execution_verified"])
             for private in (private_key, "source-limited-chunk.zip", "entry.js"):
                 self.assertNotIn(private, proc.stdout)
