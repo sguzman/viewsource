@@ -69,7 +69,9 @@ try {
   assert.equal(await page.locator(".chat-cache-stage").count(),9);
   assert.equal(await page.locator(".chat-css-stat").count(),8);
   assert.equal(await page.locator(".chat-lifecycle-stage").count(),10);
-  assert.equal(await page.locator(".chat-recovery-stage").count(),9);
+  assert.equal(await page.locator(".chat-recovery-stage").count(),10);
+  await page.locator(".chat-recovery-predicate summary").click();
+  assert.equal(await page.locator(".chat-recovery-predicate li").count(),6);
   await page.locator(".chat-recovery-preparation summary").click();
   assert.equal(await page.locator(".chat-recovery-preparation li").count(),9);
   await page.locator(".chat-recovery-defaults summary").click();
