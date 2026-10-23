@@ -213,3 +213,24 @@ or assertion that any named component is unstyled. The source-specific
 study and acceptance evidence must still link actual component class/state
 tokens to reviewed style rules. CI uses an invented ZIP and a synthetic
 JavaScript self-test; the real specimen CSS is never committed.
+
+## Ambiguous module IDs: export-shape candidates
+
+The private ZIP's `--module-trace` analyzer now retains an anonymous
+export-shape candidate layer alongside its existing conservative registry
+census. When a short module key resolves to multiple captured definitions,
+it compares statically referenced property slots on an imported module
+alias with the available export slots on each definition. A uniquely
+matching interface yields an **anonymous candidate source/target ordinal
+pair**, not a verified module load or runtime execution. The original
+ambiguous-import total remains unchanged. Reused aliases, lexical
+shadowing, dead code and dynamic access may create false leads; reviewers
+must inspect call sites before promoting candidates to canonical findings.
+
+The ChatGPT completion-resume study supplies an individually reviewed case:
+R-JS-018 imports a three-role recovery interface, and only R-JS-004
+matches that required interface among two duplicate registry definitions.
+That case is documented in `chat_module_dependency_trace.json` and
+`chat_transport_failure_trace.json`. The general-purpose parser's
+synthetic tests intentionally include a colliding-key fixture and verify
+that no private module name or source is published.
