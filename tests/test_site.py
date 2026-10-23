@@ -55,9 +55,15 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(current["visuals"]["source_system"]["lexical_scopes"]["fetch_and_stream"], 5)
             source_queue = current["visuals"]["static_source_queue"]
             self.assertEqual(source_queue["task_count"], 33)
-            self.assertEqual(source_queue["task_statuses"]["queued"], 16)
-            self.assertEqual(source_queue["task_statuses"]["in_progress"], 17)
-            self.assertEqual(len(source_queue["tasks"]), 33)
+            recorded_tasks = [
+                t for t in json.loads((ROOT / "queues/tasks.json").read_text("utf-8"))["tasks"]
+                if t["specimen_id"] == "chatgpt-com" and t["version"] == 2
+                and "-followup-static-" in t["id"]
+            ]
+            self.assertEqual(len(source_queue["tasks"]), len(recorded_tasks))
+            for status in ("queued","in_progress","done","not_observable"):
+                self.assertEqual(source_queue["task_statuses"][status],
+                                 sum(t["status"] == status for t in recorded_tasks))
             recovery = current["visuals"]["chat_transport_failure"]
             self.assertFalse(recovery["live_failure_observed"])
             self.assertEqual(recovery["source_ref"],"R-JS-018")
