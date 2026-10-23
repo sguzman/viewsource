@@ -10960,6 +10960,16 @@
         "evidence_ref": "E2-090",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-091",
+      "statement": "An offline AST pass over all 144 saved JavaScript bundles located 10,399 module-registry entries and 51,285 unique literal import candidates. Of those, 50,714 resolve to a unique captured module, while 517 are ambiguous and 54 unresolved. Four specific import edges connect the conversation page, typed turn renderer, latest-response focus landmark, and older-history loading components by anonymous module ordinals. These are static syntax relationships; module execution and runtime loading remain unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-091",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
