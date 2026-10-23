@@ -312,3 +312,12 @@ no intermediate report file is created and no captured assets or source strings
 are emitted. Both stages only parse private files without executing captured code.
 The resulting frontend is a candidate static dependency graph, **not** proof of
 module activation, page entrypoints or a live client trace.
+
+### Lexically scoped import alias inference
+
+The export-interface candidate matcher resolves imported alias properties within
+the lexical block and function scope that declares the alias. Distinct functions
+reusing an identifier spelling do not contribute each other's required exports.
+Reassigned or unrecognized bindings are treated conservatively. This reduces
+false disambiguation of duplicate minified module keys, but does not turn a
+candidate into a reviewed call edge or prove runtime execution.

@@ -32,8 +32,84 @@ function memberOf(node,base){
  return node?.type==="MemberExpression"&&node.object?.type==="Identifier"
    &&node.object.name===base?literalMember(node):null;
 }
+
+/* Track imported object aliases within lexical function/block scopes, not by
+ * spelling across the entire bundle factory. Unknown/reassigned bindings are
+ * excluded; the resulting export-interface match remains a static candidate. */
+function scanScopedRequiredSlots(fn,requireName,required){
+ function bind(pattern,env,value=null){
+  if(!pattern)return;
+  if(pattern.type==="Identifier"){env.set(pattern.name,value);return;}
+  if(pattern.type==="RestElement")return bind(pattern.argument,env,null);
+  if(pattern.type==="AssignmentPattern")return bind(pattern.left,env,null);
+  if(pattern.type==="ArrayPattern"){
+   for(const p of pattern.elements)bind(p,env,null);
+  }else if(pattern.type==="ObjectPattern"){
+   for(const p of pattern.properties){
+    bind(p.type==="RestElement"?p.argument:p.value,env,null);
+   }
+  }
+ }
+ function importKey(init){
+  if(!requireName||init?.type!=="CallExpression"||
+     init.callee?.type!=="Identifier"||
+     init.callee.name!==requireName||
+     init.arguments[0]?.type!=="Literal"||
+     typeof init.arguments[0].value!=="string")return null;
+  return init.arguments[0].value;
+ }
+ function walk(node,env){
+  if(!node||typeof node!=="object")return;
+  if(node.type==="BlockStatement"){
+   const block=new Map(env);
+   for(const stmt of node.body){
+    if(stmt.type==="VariableDeclaration")
+     for(const decl of stmt.declarations)bind(decl.id,block,null);
+    if((stmt.type==="FunctionDeclaration"||stmt.type==="ClassDeclaration")&&stmt.id)
+     bind(stmt.id,block,null);
+   }
+   for(const stmt of node.body)walk(stmt,block);
+   return;
+  }
+  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type)){
+   const nested=new Map(env);
+   if(node.id)bind(node.id,nested,null);
+   for(const param of node.params||[])bind(param,nested,null);
+   walk(node.body,nested);
+   return;
+  }
+  if(node.type==="VariableDeclaration"){
+   for(const decl of node.declarations){
+    walk(decl.init,env);
+    if(decl.id?.type==="Identifier")
+     env.set(decl.id.name,importKey(decl.init));
+    else bind(decl.id,env,null);
+   }
+   return;
+  }
+  if(node.type==="AssignmentExpression"&&node.left?.type==="Identifier")
+   env.set(node.left.name,null);
+  if(node.type==="MemberExpression"&&node.object?.type==="Identifier"){
+   const id=env.get(node.object.name),slot=literalMember(node);
+   if(id&&slot){
+    if(!required.has(id))required.set(id,new Set());
+    required.get(id).add(slot);
+   }
+  }
+  for(const [k,v] of Object.entries(node)){
+   if(["start","end","loc","raw"].includes(k))continue;
+   if(Array.isArray(v)){
+    for(const child of v)if(child&&typeof child==="object")walk(child,env);
+   }else if(v&&typeof v==="object")walk(v,env);
+  }
+ }
+ const env=new Map();
+ for(const param of fn.params||[])bind(param,env,null);
+ walk(fn.body,env);
+}
+
 function scanModuleSignatures(fn,requireName,exportName){
- const exported=new Set(),aliases=new Map(),required=new Map();
+ const exported=new Set(),required=new Map();
  const stack=[fn.body];
  while(stack.length){
   const n=stack.pop();
@@ -52,13 +128,6 @@ function scanModuleSignatures(fn,requireName,exportName){
     const slot=keyName(prop.key);if(slot)exported.add(slot);
    }
   }
-  if(n.type==="VariableDeclarator"&&n.id?.type==="Identifier"
-      &&n.init?.type==="CallExpression"&&n.init.callee?.type==="Identifier"
-      &&n.init.callee.name===requireName
-      &&n.init.arguments[0]?.type==="Literal"
-      &&typeof n.init.arguments[0].value==="string"){
-   aliases.set(n.id.name,n.init.arguments[0].value);
-  }
   for(const [k,v] of Object.entries(n)){
    if(["start","end","loc","raw"].includes(k))continue;
    if(Array.isArray(v)){
@@ -66,26 +135,7 @@ function scanModuleSignatures(fn,requireName,exportName){
    }else if(v&&typeof v==="object")stack.push(v);
   }
  }
- // Conservative candidate collection. Nested shadowing can cause false
- // positives, so these never become verified imports automatically.
- const usage=[fn.body];
- while(usage.length){
-  const n=usage.pop();
-  if(!n||typeof n!=="object")continue;
-  if(n.type==="MemberExpression"&&n.object?.type==="Identifier"){
-   const id=aliases.get(n.object.name),slot=literalMember(n);
-   if(id&&slot){
-    if(!required.has(id))required.set(id,new Set());
-    required.get(id).add(slot);
-   }
-  }
-  for(const [k,v] of Object.entries(n)){
-   if(["start","end","loc","raw"].includes(k))continue;
-   if(Array.isArray(v)){
-    for(const c of v)if(c&&typeof c==="object")usage.push(c);
-   }else if(v&&typeof v==="object")usage.push(v);
-  }
- }
+ scanScopedRequiredSlots(fn,requireName,required);
  return {exportedSlots:[...exported],
    requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
 }
@@ -377,6 +427,15 @@ function selfTest(){
  assert.equal(resolved.export_shape_candidates[0].required_export_count,2);
  assert(!JSON.stringify(resolved).includes("'K'"));
  assert(!JSON.stringify(resolved).includes("recovery.h"));
+ const scopedConsumer="export const __webpack_modules__={"
+   +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
+   +"function unrelated(){const local={h:()=>1};return local.h()}}),"
+   +"K:(function(e,t,n){n.d(t,{h:()=>1})})};";
+ const duplicateK="export const __webpack_modules__={K:(function(e,t){t.x=1})};";
+ const scoped=buildGraph([...analyzeJS(scopedConsumer,1),...analyzeJS(duplicateK,2)],2,0);
+ assert.equal(scoped.ambiguous_import_candidates,1);
+ assert.equal(scoped.export_shape_candidate_count,0);
+
 }
 if(require.main===module){
  if(process.argv.length===3&&process.argv[2]==="--self-test"){

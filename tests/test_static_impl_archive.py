@@ -396,6 +396,28 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "one.js","two.js"):
                 self.assertNotIn(private,result.stdout)
 
+    def test_shadowed_import_alias_does_not_disambiguate_module(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-scope-collision.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("one.js", "export const __webpack_modules__={"
+                    "Consumer:(function(e,t,n){"
+                    "function left(){const local=n('Collision')}"
+                    "function right(){const local={h:()=>1};return local.h()}}),"
+                    "Collision:(function(e,t,n){n.d(t,{h:()=>1})})};")
+                z.writestr("two.js", "export const __webpack_modules__={"
+                    "Collision:(function(e,t){t.a=1})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["ambiguous_import_candidates"], 1)
+            self.assertEqual(report["export_shape_candidate_count"], 0)
+            for token in ("Consumer", "Collision", "synthetic-scope-collision.zip"):
+                self.assertNotIn(token, result.stdout)
+
     def test_styles_probe_summarizes_css_without_leaking_rules(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-style-capture.zip"
