@@ -10850,6 +10850,16 @@
         "evidence_ref": "E2-079",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-080",
+      "statement": "The captured typed conversation-turn renderer forwards client edit, regeneration and fork callbacks to message or turn action components. User-message editing is gated by item type, eligible identity and attachment/targeted-reply restrictions; regeneration is suppressed for some read-only and special-turn states; fork handling is passed to the action row. These are static callback and presentation conditions, not observed user actions or server outcomes.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-080",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
