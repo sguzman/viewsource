@@ -105,3 +105,9 @@ scope extension, not a claim that older reviewed evidence was invalid.
 ## Offline AST tracing
 
 `scripts/trace_static_archive.py` can inspect the captured scripts in a private temporary directory using `scripts/static_ast_probe.cjs`, which requires the small Acorn development dependency. It walks function scopes, records allowlisted literal field operations and field assignments, and emits only aggregate candidate counts. Parsing performs **no evaluation**. Module/file names, source spans, string values, real request paths, and captured code never enter the report. Function co-occurrence is only a starting point for the new source-level queue; function ownership and calls still require evidence-based tracing, and no runtime claims can be promoted from this probe.
+
+## Candidate selected-ancestry and UI selector scanning
+
+Use `python3 scripts/trace_static_archive.py --input /path/to/private-capture.zip --selector-trace` for a content-free AST scan of captured JavaScript. This mode recognizes separate **candidate** categories for root-to-selected message traversal, user-authored ancestry IDs, automation-reference extraction, and recent-turn control code. The common private ZIP bridge supplies capture-local resource ordinals and never runs downloaded code. It is available alongside `--chat-trace` and `--transport-trace`; only one specialized mode may be used at a time.
+
+The implementation intentionally distinguishes actual selected-message ancestor walks from feature-reference extraction. An ancestry walk alone cannot identify the React component that consumes it. Candidate classifications require source/module export tracing and manual verification before a canonical finding is added. An independent fictional ZIP regression checks the reporting boundary, and the new parser has its own synthetic AST self-test in GitHub Actions.
