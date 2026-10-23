@@ -294,6 +294,17 @@ def build(out: Path) -> dict:
                         for rule in viewport["windowing_rules"]
                     ],
                     "still_unverified": viewport["still_unverified"],
+                    "branch_window": {
+                        "stages": [
+                            {"role": stage["role"].replace("_"," "),
+                             "source_ref": stage["source_ref"],
+                             "behavior": stage["behavior"]}
+                            for stage in viewport["selected_branch_window_reconciliation"]["stages"]
+                        ],
+                        "limitations": viewport["selected_branch_window_reconciliation"]["limits"],
+                        "verified_runtime":
+                            viewport["selected_branch_window_reconciliation"]["runtime_effect_verified"],
+                    },
                 }
             transcript_path = ROOT / (base + "/chat_transcript_render_trace.json")
             if transcript_path.is_file():
