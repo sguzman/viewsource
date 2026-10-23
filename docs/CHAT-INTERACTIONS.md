@@ -719,3 +719,17 @@ different subsystem does not establish **cross-tab conversation sync**.
 Message-graph durability, actual writes and complete snapshot backing
 storage remain unresolved. The associated static persistence task is now
 in progress; the source queue is 13 in progress and 20 queued.
+
+## Source CSS hook census and attribution limits
+
+The captured page includes 17 CSS assets totalling 2,340,628 bytes.
+A content-free lexical scan found 627 media rules, 504 container rules,
+168 reduced-motion mentions, 493 focus-visible selectors, and numerous
+state/role/test selectors. The literal CSS selector spellings of the
+message-identity, message-role, source-message-ID and turn-key data
+attributes from the JSX study occur zero times in captured CSS.
+This **does not mean the transcript is unstyled**; the actual element
+styles can use classes, variables or generated rules. The source study
+[chat_css_hooks_trace.json](../specimens/chatgpt-com/v0002/chat_css_hooks_trace.json)
+and evidence E2-093 document this boundary. The CSS hooks task is active,
+with 14 static tasks in progress and 19 still queued.
