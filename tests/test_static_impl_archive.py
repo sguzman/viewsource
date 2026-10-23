@@ -944,6 +944,31 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for item in ("Caller", "ExptargetFixtureZ9", "synthetic-export-shadow.zip"):
                 self.assertNotIn(item, proc.stdout)
 
+    def test_var_binding_is_function_scoped_not_block_scoped(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-var-shadow.zip"
+            key = "PrivateVarCandidateZ978"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Assigned:(function(e,t,n){if(t.flag){var n=()=>1}"
+                    "n('" + key + "')}),"
+                    "Redeclared:(function(e,t,n){if(t.flag){var n}"
+                    "n('" + key + "')}),"
+                    "Iterated:(function(e,t,n){for(var n of [()=>1]){}"
+                    "n('" + key + "')}),"
+                    + key + ":(function(e,t){t.a=1})};")
+            run = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(run.returncode, 0)
+            report = json.loads(run.stdout)
+            self.assertEqual(report["import_candidates"], 1)
+            self.assertEqual(report["unique_resolved_links"], 1)
+            self.assertEqual(report["resolved_links"][0]["from_module"], 2)
+            for private in (key, "fictional-var-shadow.zip"):
+                self.assertNotIn(private, run.stdout)
+
     def test_loop_switch_and_catch_outer_rebinding_is_conservative(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-controlflow-rebindings.zip"
