@@ -705,3 +705,17 @@ inactive code and never executed, and missing references may belong to
 uncaptured or dynamically loaded assets. Source entrypoint investigation
 is now active on the basis of this index. Current static queue: 12 active,
 21 queued, none complete.
+
+## Browser-local cache state and conditional snapshot-worker lifecycle
+
+The saved JavaScript includes versioned browser-local conversation-list
+metadata and pinned-list fallbacks, schema-checked reads and invalid-entry
+removal, cached conversation lookups, query-client snapshot writes and
+invalidation, plus an account-guarded optional local snapshot worker whose
+cleanup can clear persisted snapshots. These mechanisms are documented in
+[chat_persistence_cache_trace.json](../specimens/chatgpt-com/v0002/chat_persistence_cache_trace.json)
+and canonical finding E2-092. Local storage-event handling observed in a
+different subsystem does not establish **cross-tab conversation sync**.
+Message-graph durability, actual writes and complete snapshot backing
+storage remain unresolved. The associated static persistence task is now
+in progress; the source queue is 13 in progress and 20 queued.
