@@ -121,6 +121,13 @@ function invalidateOuterBindings(outer,inner,localNames){
   if(!localNames.has(name)&&inner.get(name)!==value)outer.set(name,null);
  }
 }
+function mergeConditionalBindings(outer,consequent,alternate){
+ const names=new Set([...outer.keys(),...consequent.keys(),...alternate.keys()]);
+ for(const name of names){
+  const first=consequent.get(name),second=alternate.get(name);
+  outer.set(name,first===second?first:null);
+ }
+}
 function scanScopedRequiredSlots(fn,requireName,required){
  const loaderIdentity=Symbol("factory_require");
  function bind(pattern,env,value=null){
@@ -146,6 +153,14 @@ function scanScopedRequiredSlots(fn,requireName,required){
  }
  function walk(node,env){
   if(!node||typeof node!=="object")return;
+  if(node.type==="IfStatement"){
+   walk(node.test,env);
+   const consequent=new Map(env),alternate=new Map(env);
+   walk(node.consequent,consequent);
+   if(node.alternate)walk(node.alternate,alternate);
+   mergeConditionalBindings(env,consequent,alternate);
+   return;
+  }
   if(node.type==="CatchClause"){
    const caught=new Map(env);
    bind(node.param,caught,null);
@@ -333,6 +348,28 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
  }
  function scan(node,env){
   if(!node||typeof node!=="object")return;
+  if(node.type==="IfStatement"){
+   scan(node.test,env);
+   const originalSlots=new Set(slots),originalBody=new Set(factoryBodySlots),
+    originalFunctions=directFunctions.slice();
+   const consequent=new Map(env),alternate=new Map(env);
+   scan(node.consequent,consequent);
+   const firstSlots=new Set(slots),firstBody=new Set(factoryBodySlots),
+    firstFunctions=directFunctions.slice();
+   slots.clear();for(const slot of originalSlots)slots.add(slot);
+   factoryBodySlots.clear();for(const slot of originalBody)factoryBodySlots.add(slot);
+   directFunctions.length=0;directFunctions.push(...originalFunctions);
+   if(node.alternate)scan(node.alternate,alternate);
+   for(const slot of firstSlots)slots.add(slot);
+   for(const slot of firstBody)factoryBodySlots.add(slot);
+   const seen=new Set(directFunctions.map(x=>x.position+":"+x.classification));
+   for(const candidate of firstFunctions){
+    const key=candidate.position+":"+candidate.classification;
+    if(!seen.has(key)){directFunctions.push(candidate);seen.add(key);}
+   }
+   mergeConditionalBindings(env,consequent,alternate);
+   return;
+  }
   if(node.type==="CatchClause"){
    const caught=new Map(env);
    neutralize(node.param,caught);
@@ -548,6 +585,14 @@ function bootstrapCalls(ast,sourceOrdinal) {
   if(!node||typeof node!=="object")return;
   if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression",
       "ClassDeclaration","ClassExpression"].includes(node.type))return;
+  if(node.type==="IfStatement"){
+   walk(node.test,env);
+   const consequent=new Map(env),alternate=new Map(env);
+   walk(node.consequent,consequent);
+   if(node.alternate)walk(node.alternate,alternate);
+   mergeConditionalBindings(env,consequent,alternate);
+   return;
+  }
   if(node.type==="CatchClause"||node.type==="BlockStatement"||
      node.type==="ForStatement"||node.type==="ForInStatement"||
      node.type==="ForOfStatement"||node.type==="SwitchStatement"){
@@ -683,6 +728,14 @@ function scanScopedModuleCalls(fn,requireName){
  }
  function walk(node,env){
   if(!node||typeof node!=="object")return;
+  if(node.type==="IfStatement"){
+   walk(node.test,env);
+   const consequent=new Map(env),alternate=new Map(env);
+   walk(node.consequent,consequent);
+   if(node.alternate)walk(node.alternate,alternate);
+   mergeConditionalBindings(env,consequent,alternate);
+   return;
+  }
   if(node.type==="CatchClause"){
    const caught=new Map(env);
    shadows(node.param,caught);
@@ -1788,6 +1841,33 @@ function selfTest(){
   "Boot:function(){}};for(let i=0;i<1;__webpack_require__=()=>1){"+
   "__webpack_require__('Boot')}__webpack_require__('After');",101);
  assert.equal(loopBootstrap.bootstrapCandidates.length,1);
+ const alternateImports=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){if(t.flag){n=()=>0}else{n('Choice')}"+
+  "n('Uncertain')}),Choice:(function(e,t){t.a=1})};",102);
+ const alternateGraph=buildGraph(alternateImports,1,0);
+ assert.equal(alternateGraph.import_candidates,1);
+ assert.equal(alternateGraph.unique_resolved_links,1);
+ assert.equal(alternateGraph.literal_module_loader_call_expression_count,1);
+ const alternateExportReader=analyzeJS("export const __webpack_modules__={"+
+  "Reader:(function(e,t,n){let x=n('Choice');"+
+  "if(t.flag){x={}}else{x.ready()}x.uncertain()}),"+
+  "Choice:(function(e,t,n){if(t.flag){t={}}else{t.ready=()=>1}"+
+  "t.uncertain=()=>1})};",103);
+ const alternateExportOther=analyzeJS("export const __webpack_modules__={"+
+  "Choice:(function(e,t,n){t.other=()=>1})};",104);
+ const alternateExportGraph=buildGraph([...alternateExportReader,
+  ...alternateExportOther],2,0);
+ assert.equal(alternateExportGraph.export_shape_candidate_count,1);
+ assert.equal(alternateExportGraph.direct_function_export_site_count,1);
+ const conditionalBootstrap=analyzeJS("export const __webpack_modules__={"+
+  "Boot:function(){}};if(flag){__webpack_require__=()=>0}"+
+  "else{__webpack_require__('Boot')}__webpack_require__('NotValid');",105);
+ assert.equal(conditionalBootstrap.bootstrapCandidates.length,1);
+ const earlyExport=analyzeJS("export const __webpack_modules__={"+
+  "Owner:(function(m,t,n){t.original=()=>1;"+
+  "if(t.flag){m.exports={replacement:()=>2}}else{t.alternate=()=>3}})};",106);
+ const earlyGraph=buildGraph(earlyExport,1,0);
+ assert.equal(earlyGraph.direct_function_export_site_count,3);
 
 }
 if(require.main===module){
