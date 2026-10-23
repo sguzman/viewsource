@@ -397,12 +397,50 @@ function scanScopedModuleCalls(fn,requireName){
  return {imports,boundImports,computedRequire,chunkLoader};
 }
 
+/* A Webpack chunk may include a third-position runtime callback. Only
+ * literal, direct call or return statements to the callback parameter
+ * are startup syntax candidates. Nested/conditional callbacks are skipped.
+ * This callback was not executed by the analyzer or observed in a browser. */
+function chunkRuntimeEntrypoints(ast,sourceOrdinal){
+ const candidates=[];
+ for(const top of ast.body){
+  const expr=top.type==="ExpressionStatement"?top.expression:null;
+  if(expr?.type!=="CallExpression"||literalMember(expr.callee)!=="push")
+   continue;
+  const namespace=webpackChunkReceiver(expr.callee.object);
+  if(!namespace)continue;
+  const chunk=expr.arguments[0];
+  const runtime=chunk?.type==="ArrayExpression"?chunk.elements[2]:null;
+  if(!["FunctionExpression","ArrowFunctionExpression"].includes(runtime?.type))
+   continue;
+  const first=runtime.params?.[0];
+  if(first?.type!=="Identifier")continue;
+  const body=runtime.body?.type==="BlockStatement"?runtime.body.body:[{
+   type:"ReturnStatement",argument:runtime.body
+  }];
+  for(const statement of body){
+   const call=statement?.type==="ExpressionStatement"?statement.expression:
+    statement?.type==="ReturnStatement"?statement.argument:null;
+   if(call?.type!=="CallExpression"||call.callee?.type!=="Identifier"||
+      call.callee.name!==first.name)continue;
+   const key=moduleKey(call.arguments[0]);
+   if(key!==null)candidates.push({
+    key,sourceOrdinal,domain:"chunk:"+namespace,
+    bootstrap_kind:"chunk_runtime_literal_call_candidate"
+   });
+  }
+ }
+ return candidates;
+}
+
 function analyzeJS(source,sourceOrdinal){
  const ast=acorn.parse(source,{ecmaVersion:"latest",sourceType:"module",
    allowReturnOutsideFunction:true,allowImportExportEverywhere:true});
  const entries=registry(ast),result=[];
  Object.defineProperty(result,"bootstrapCandidates",
-   {value:bootstrapCalls(ast,sourceOrdinal),enumerable:false});
+   {value:[...bootstrapCalls(ast,sourceOrdinal).map(x=>({
+      ...x,domain:"unscoped",bootstrap_kind:"top_level_literal_call_candidate"
+    })),...chunkRuntimeEntrypoints(ast,sourceOrdinal)],enumerable:false});
  for(let i=0;i<entries.length;i++){
   const {property,domain}=entries[i],identifier=keyName(property.key),
    fn=property.value;
@@ -465,9 +503,10 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   a.module_ordinal-b.module_ordinal||a.pattern.localeCompare(b.pattern));
  const bootstrapCandidates=[];
  for(const candidate of bootstrap){
-  const matches=resolve("unscoped",candidate.key);
+  const matches=resolve(candidate.domain||"unscoped",candidate.key);
   bootstrapCandidates.push({
    callsite_ref:"R-JS-"+String(candidate.sourceOrdinal).padStart(3,"0"),
+   bootstrap_kind:candidate.bootstrap_kind||"top_level_literal_call_candidate",
    classification:matches.length===1?"unique_registry_key_candidate":
      matches.length>1?"ambiguous_registry_key":"missing_saved_module",
    ...(matches.length===1?{
@@ -568,6 +607,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   limitations:[
    "Bootstrap candidates require direct top-level or immediately-invoked __webpack_require__ literal calls; other startup patterns are not covered.",
    "Candidate bootstrap calls do not show that a browser invoked or loaded a module.",
+   "A chunk runtime callback containing a direct literal require call may be discovered, but chunk registration never proves callback execution.",
    "Static require calls may be conditional, dead, or nested in inactive closures.",
    "A resolved bundled module reference is not proof that a module loaded or ran.",
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
@@ -762,6 +802,23 @@ function selfTest(){
  assert.equal(catchGraph.ambiguous_import_candidates,1);
  assert.equal(catchGraph.export_shape_candidate_count,0);
  assert(!JSON.stringify(catchGraph).includes("Ghost"));
+ const chunkRuntimeSource="(self.webpackChunkPrivateRuntime=self.webpackChunkPrivateRuntime||[]).push("+
+  "[[41],{901:function(e,t,n){const b=n(902)},902:function(e,t,n){t.a=1}},function(n){n(901)}]);";
+ const chunkRuntimeAnalyzed=analyzeJS(chunkRuntimeSource,23);
+ const runtimeGraph=buildGraph(chunkRuntimeAnalyzed,1,0,
+   chunkRuntimeAnalyzed.bootstrapCandidates);
+ assert.equal(runtimeGraph.bootstrap_call_candidates,1);
+ assert.equal(runtimeGraph.bootstrap_candidates[0].bootstrap_kind,
+   "chunk_runtime_literal_call_candidate");
+ assert.equal(runtimeGraph.bootstrap_candidates[0].classification,
+   "unique_registry_key_candidate");
+ assert.equal(runtimeGraph.bootstrap_candidates[0].target_module,1);
+ assert.equal(runtimeGraph.bootstrap_candidates[0].bootstrap_execution_verified,false);
+ assert.equal(runtimeGraph.unique_resolved_links,1);
+ assert(!JSON.stringify(runtimeGraph).includes("webpackChunkPrivateRuntime"));
+ const deferredRuntime=analyzeJS("(self.webpackChunkDeferred=self.webpackChunkDeferred||[]).push("+
+  "[[51],{901:function(e,t,n){t.a=1}},function(n){const unused=()=>n(901)}]);",24);
+ assert.equal(deferredRuntime.bootstrapCandidates.length,0);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

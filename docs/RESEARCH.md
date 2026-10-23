@@ -456,3 +456,15 @@ and `--module-frontier` report `archive_all_scripts_parsed`, which is
 validates these counts before returning the bounded dependency report.
 Even when all captured JavaScript parses, the scanner's selective syntax
 recognition **does not** establish that every feature was analyzed.
+
+### Candidate entrypoints in Webpack chunk runtime callbacks
+
+Some saved chunks include a third-position runtime callback alongside a
+chunk-ID vector and a module table. The module scanner recognizes only a
+literal direct call or return call to the callback's first parameter.
+If that module key is uniquely present in the **same private chunk namespace**,
+the report includes a `chunk_runtime_literal_call_candidate` bootstrap lead.
+That candidate can seed `--module-frontier --bootstrap-candidates`. Deferred
+nested callbacks, conditional branches and computed targets do not qualify.
+Chunk registration and static callback source are not proof of runtime
+invocation, network requests or actual module activation.

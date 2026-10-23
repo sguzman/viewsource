@@ -23,6 +23,40 @@ def parser_installed() -> bool:
 
 @unittest.skipUnless(parser_installed(), "Node.js Acorn dependency unavailable")
 class StaticImplementationArchiveTests(unittest.TestCase):
+    def test_chunk_runtime_callback_seeds_candidate_module_frontier(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-chunk-runtime.zip"
+            private_name = "webpackChunkPrivateStartupFixtureZ"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("chunk.js",
+                    "(self." + private_name + "=self." + private_name
+                    + "||[]).push([[1],{"
+                    "100:function(e,t,n){const b=n(101)},"
+                    "101:function(e,t,n){t.a=1}},"
+                    "function(loader){return loader(100)}]);")
+            for mode in (["--module-trace"],
+                         ["--module-frontier", "--bootstrap-candidates"]):
+                proc = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *mode],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=40)
+                self.assertEqual(proc.returncode, 0, proc.stderr[:100])
+                report = json.loads(proc.stdout)
+                if mode[0] == "--module-trace":
+                    self.assertEqual(report["bootstrap_call_candidates"], 1)
+                    self.assertEqual(report["bootstrap_candidates"][0]["bootstrap_kind"],
+                                     "chunk_runtime_literal_call_candidate")
+                    self.assertEqual(report["unique_resolved_links"], 1)
+                    self.assertFalse(report["bootstrap_candidates"][0][
+                        "bootstrap_execution_verified"])
+                else:
+                    self.assertEqual(report["reached_module_count"], 2)
+                    self.assertEqual(report["root_source"], "bootstrap_syntax_candidate")
+                    self.assertFalse(report["runtime_module_load_verified"])
+                for token in (private_name, "invented-chunk-runtime.zip", "chunk.js"):
+                    self.assertNotIn(token, proc.stdout)
+
     def test_module_coverage_records_parse_failure_and_skipped_large_js(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-coverage-census.zip"
