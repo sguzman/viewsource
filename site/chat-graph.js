@@ -415,6 +415,16 @@ window.ViewsourceChatGraph = (() => {
         sourceQueue.task_count+" tasks generated from captured source: "+
         (count.done||0)+" complete, "+(count.in_progress||0)+" in progress, "+
         (count.queued||0)+" queued. This work uses saved JavaScript, not live account access."));
+      const started=(count.in_progress||0)+(count.done||0);
+      const accepted=count.done||0;
+      const progress=element("progress","chat-static-progress");
+      progress.max=sourceQueue.task_count;
+      progress.value=started;
+      progress.setAttribute("aria-label","Static source research tasks started, not completed");
+      block.append(progress,element("p","graph-caption",
+        Math.round(100*started/sourceQueue.task_count)+"% started · "+
+        Math.round(100*accepted/sourceQueue.task_count)+
+        "% accepted complete. Partial evidence does not close a task."));
       const grouped=element("div","chat-static-task-list");
       sourceQueue.tasks.forEach(task=>{
         const row=element("details","chat-static-task");
