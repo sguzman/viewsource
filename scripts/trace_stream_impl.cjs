@@ -9,7 +9,8 @@ const acorn=require("acorn");
 
 const METHODS=new Set([
   "startCompletionStream","resumeCompletionStream","cancelStream",
-  "getStreamOptions","createCompletionStreamHandlers"
+  "getStreamOptions","createCompletionStreamHandlers",
+  "prepareCompletionStream"
 ]);
 const CALLBACKS=new Set([
   "onComplete","onError","onEvent","onDecodedEvent","onResume",
@@ -19,7 +20,9 @@ const CALLBACKS=new Set([
 const OPERATIONS=new Set([
   "handler_factory","stream_post","topic_start","cancellation_registry",
   "request_cancel","resume_configuration","retry_configuration",
-  "event_decoder","event_callbacks","transport_close","websocket_recovery"
+  "event_decoder","event_callbacks","transport_close","websocket_recovery",
+  "preparation_abort_guard","preparation_request",
+  "partial_query_fallback_candidate","one_shot_fallback_flag"
 ]);
 
 function property(n){
@@ -50,6 +53,8 @@ function visit(root,visitor){
 }
 function inspectMethod(node){
   const operations=new Set(), callbacks=new Set(), calledMethods=new Set();
+  const preparation={partial:false,retryGuard:false,preparationGuard:false,
+    immediate:false,retryDisabled:false,delayed:false};
   visit(node.value.body,n=>{
     if(n.type==="CallExpression"){
       const callee=memberName(n.callee);
@@ -65,11 +70,23 @@ function inspectMethod(node){
       if(callee==="onPotentialMissedMessages"||callee==="onReconnect")
         operations.add("websocket_recovery");
       if(callee==="close")operations.add("transport_close");
+      if(callee==="throwIfAborted")operations.add("preparation_abort_guard");
+      if(callee==="safePost")operations.add("preparation_request");
+      if(n.callee.type==="Identifier"&&n.callee.name==="setTimeout")
+        preparation.delayed=true;
     }
     if(n.type==="MemberExpression" && memberName(n)==="completionCancellations")
       operations.add("cancellation_registry");
+    if(n.type==="MemberExpression"&&memberName(n)==="partial_query")
+      preparation.partial=true;
     if(n.type==="Property"){
       const key=property(n.key);
+      if(key==="shouldRetry")preparation.retryGuard=true;
+      if(key==="shouldPrepare")preparation.preparationGuard=true;
+      if(key==="client_prepare_dispatch"&&n.value?.type==="Literal"
+          &&n.value.value==="immediate")preparation.immediate=true;
+      if(key==="shouldRetry"&&n.value?.type==="UnaryExpression"
+          &&n.value.operator==="void")preparation.retryDisabled=true;
       if(CALLBACKS.has(key))callbacks.add(key);
       if(key==="resumeState"||key==="initialStreamIsResume"||key==="resumeToken")
         operations.add("resume_configuration");
@@ -78,6 +95,12 @@ function inspectMethod(node){
       if(key==="parseEventData")operations.add("event_decoder");
     }
   });
+  if(node.key?.name==="prepareCompletionStream"&&preparation.partial
+      &&preparation.retryGuard&&preparation.preparationGuard
+      &&preparation.delayed&&preparation.immediate&&preparation.retryDisabled){
+    operations.add("partial_query_fallback_candidate");
+    operations.add("one_shot_fallback_flag");
+  }
   if(callbacks.size)operations.add("event_callbacks");
   return {operations:[...operations].sort(),callbacks:[...callbacks].sort(),
     called_methods:[...calledMethods].sort()};
@@ -138,11 +161,12 @@ function selfTest(){
     "cancelStream(id){this.completionCancellations.delete(id);Request.cancelStream(id)}",
     "getStreamOptions(){return {parseEventData:()=>1}}",
     "createCompletionStreamHandlers(e){return {onRecoverableError:e.onRecoverableError,onPrematureTermination:e.onPrematureTermination,retryConfig:{maxRetryCount:3}}}",
+    "async prepareCompletionStream(e,opt={}){let{shouldPrepare,shouldRetry,signal}=opt;signal?.throwIfAborted();if(shouldPrepare?.()===false)return;try{return await Request.safePost('fictional',{})}catch(error){if(e.partial_query&&shouldRetry?.()){await new Promise(resolve=>setTimeout(resolve,250+250*Math.random()));return this.prepareCompletionStream({...e,client_prepare_dispatch:'immediate'},{...opt,shouldRetry:void 0,shouldPrepare:()=>true})}throw error}}",
     "}",
     "const privateText='SECRET_SYNTHETIC_USER_123'"
   ].join("\n");
   const matches=analyzeText(source,1);
-  assert.equal(matches.length,5);
+  assert.equal(matches.length,6);
   const named=Object.fromEntries(matches.map(x=>[x.method,x]));
   assert(named.startCompletionStream.operations.includes("handler_factory"));
   assert(named.startCompletionStream.operations.includes("stream_post"));
@@ -151,9 +175,14 @@ function selfTest(){
   assert(named.cancelStream.operations.includes("cancellation_registry"));
   assert(named.getStreamOptions.operations.includes("event_decoder"));
   assert(named.createCompletionStreamHandlers.operations.includes("retry_configuration"));
+  assert(named.prepareCompletionStream.operations.includes("preparation_abort_guard"));
+  assert(named.prepareCompletionStream.operations.includes("partial_query_fallback_candidate"));
+  assert(named.prepareCompletionStream.operations.includes("one_shot_fallback_flag"));
   assert(!JSON.stringify(matches).includes("SECRET_SYNTHETIC_USER_123"));
   const absent=analyzeText("class Other {x(){return 1}}",2);
   assert.equal(absent.length,0);
+  const ineligible=analyzeText("class T{prepareCompletionStream(x){return x.partial_query}}",3);
+  assert(!ineligible[0].operations.includes("partial_query_fallback_candidate"));
 }
 if(require.main===module){
   if(process.argv.length===3&&process.argv[2]==="--self-test"){
