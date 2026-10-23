@@ -1,0 +1,69 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "private_saved_javascript_module_tables",
+  "evidence_class": "observed_static_syntax",
+  "live_module_load_verified": false,
+  "server_behavior_verified": false,
+  "source_assets_published": false,
+  "method": "Parsed the captured module registries in all 144 JavaScript bundles. Module keys were retained in private memory only to join literal module-import calls, then discarded. Public output uses archive-local bundle and 1-based module ordinals.",
+  "census": {
+    "parsed_bundles": 144,
+    "parse_failures": 0,
+    "module_registry_entries": 10399,
+    "distinct_literal_import_candidates": 51285,
+    "uniquely_resolved_import_candidates": 50714,
+    "ambiguous_import_candidates": 517,
+    "unresolved_import_candidates": 54,
+    "cross_bundle_resolved_candidates": 36330,
+    "same_bundle_resolved_candidates": 14384
+  },
+  "curated_verified_syntax_edges": [
+    {
+      "from_ref": "R-JS-072",
+      "from_module": 13,
+      "to_ref": "R-JS-069",
+      "to_module": 12,
+      "role": "conversation_page_to_typed_turn_renderer",
+      "evidence_class": "observed_static_syntax"
+    },
+    {
+      "from_ref": "R-JS-072",
+      "from_module": 13,
+      "to_ref": "R-JS-066",
+      "to_module": 7,
+      "role": "conversation_page_to_latest_response_focus_landmark",
+      "evidence_class": "observed_static_syntax"
+    },
+    {
+      "from_ref": "R-JS-072",
+      "from_module": 13,
+      "to_ref": "R-JS-072",
+      "to_module": 30,
+      "role": "conversation_page_to_older_history_adapter",
+      "evidence_class": "observed_static_syntax"
+    },
+    {
+      "from_ref": "R-JS-072",
+      "from_module": 30,
+      "to_ref": "R-JS-066",
+      "to_module": 13,
+      "role": "older_history_adapter_to_loading_retry_status",
+      "evidence_class": "observed_static_syntax"
+    }
+  ],
+  "uses": [
+    "The resolved imports corroborate separately reviewed source-level render, keyboard landmark and history-loading relationships.",
+    "The complete capture helps distinguish external or missing module references from references uniquely identifiable within the archived bundles.",
+    "These relationships can seed follow-up caller and component tracing for future dumps without publishing minified module names."
+  ],
+  "limits": [
+    "Static require calls are candidate dependency edges; runtime chunk loading or invocation was not observed.",
+    "An unresolved candidate need not be broken: it may reference a separately loaded module or a dynamic mechanism outside the capture.",
+    "A duplicated module key is deliberately ambiguous; its import edges were not assigned speculative targets.",
+    "Counted import candidates are unique literal module references per factory, not the number of calls executed.",
+    "The source bundles are a single archived snapshot and do not establish current deployed client behavior."
+  ],
+  "privacy": "Only anonymous source ordinals, module ordinals, structural counts and authored roles are published; original identifiers, source file names, URLs, code, payloads and account data remain private."
+}
