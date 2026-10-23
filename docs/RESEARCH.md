@@ -551,3 +551,15 @@ including repeated references to the same key. Root-local frontier
 reports include the latter count only for reached modules. Both are
 AST-source metrics, not executed call counts, feature invocation
 frequencies or observed network requests.
+
+### Inherited bindings after conditional assignments
+
+A conditional block, loop, catch, or switch can change an inherited
+module loader, export object, or imported alias. The static scanner
+now marks these outer identities as uncertain after a potential
+assignment, including when the branch might never execute. A locally
+declared shadow instead remains local and does not invalidate the
+outer binding. Nested function declarations are kept separate because
+their invocation is not established by the saved source. This improves
+the conservative classification of post-branch imports and exports
+without claiming runtime execution.

@@ -64,6 +64,46 @@ function memberOf(node,base){
 /* Track imported object aliases within lexical function/block scopes, not by
  * spelling across the entire bundle factory. Unknown/reassigned bindings are
  * excluded; the resulting export-interface match remains a static candidate. */
+/* Preserve uncertainty from assignments to inherited bindings in conditional
+ * scopes. Local declarations only shadow their enclosing scope and must not
+ * invalidate an inherited identifier after the branch. */
+function bindingNames(pattern,result){
+ if(!pattern)return;
+ if(pattern.type==="Identifier"){result.add(pattern.name);return;}
+ if(pattern.type==="RestElement"||pattern.type==="AssignmentPattern"){
+  bindingNames(pattern.argument||pattern.left,result);return;
+ }
+ if(pattern.type==="ArrayPattern"){
+  for(const item of pattern.elements)bindingNames(item,result);
+ }else if(pattern.type==="ObjectPattern"){
+  for(const prop of pattern.properties)
+   bindingNames(prop.type==="RestElement"?prop.argument:prop.value,result);
+ }
+}
+function localNamesForScope(node){
+ const locals=new Set();
+ if(node.type==="CatchClause")bindingNames(node.param,locals);
+ if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
+  const binding=node.type==="ForStatement"?node.init:node.left;
+  if(binding?.type==="VariableDeclaration"){
+   for(const decl of binding.declarations)bindingNames(decl.id,locals);
+  }
+ }
+ const statements=node.type==="BlockStatement"?node.body:
+  node.type==="SwitchStatement"?node.cases.flatMap(x=>x.consequent):[];
+ for(const statement of statements){
+  if(statement.type==="VariableDeclaration")
+   for(const decl of statement.declarations)bindingNames(decl.id,locals);
+  if((statement.type==="FunctionDeclaration"||statement.type==="ClassDeclaration")&&
+     statement.id)bindingNames(statement.id,locals);
+ }
+ return locals;
+}
+function invalidateOuterBindings(outer,inner,localNames){
+ for(const [name,value] of outer){
+  if(!localNames.has(name)&&inner.get(name)!==value)outer.set(name,null);
+ }
+}
 function scanScopedRequiredSlots(fn,requireName,required){
  const loaderIdentity=Symbol("factory_require");
  function bind(pattern,env,value=null){
@@ -93,6 +133,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
    const caught=new Map(env);
    bind(node.param,caught,null);
    walk(node.body,caught);
+   invalidateOuterBindings(env,caught,localNamesForScope(node));
    return;
   }
   if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
@@ -106,6 +147,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
     walk(node.right,loop);
    }
    walk(node.body,loop);
+   invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
   }
   if(node.type==="SwitchStatement"){
@@ -120,6 +162,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
     }
    }
    for(const branch of node.cases)walk(branch,cases);
+   invalidateOuterBindings(env,cases,localNamesForScope(node));
    return;
   }
   if(node.type==="BlockStatement"){
@@ -131,6 +174,7 @@ function scanScopedRequiredSlots(fn,requireName,required){
      bind(stmt.id,block,null);
    }
    for(const stmt of node.body)walk(stmt,block);
+   invalidateOuterBindings(env,block,localNamesForScope(node));
    return;
   }
   if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type)){
@@ -200,6 +244,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    const caught=new Map(env);
    neutralize(node.param,caught);
    scan(node.body,caught);
+   invalidateOuterBindings(env,caught,localNamesForScope(node));
    return;
   }
   if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
@@ -213,6 +258,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
     scan(node.right,loop);
    }
    scan(node.body,loop);
+   invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
   }
   if(node.type==="SwitchStatement"){
@@ -227,6 +273,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
     }
    }
    for(const branch of node.cases)scan(branch,cases);
+   invalidateOuterBindings(env,cases,localNamesForScope(node));
    return;
   }
   if(node.type==="BlockStatement"){
@@ -238,6 +285,7 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
      neutralize(stmt.id,local);
    }
    for(const stmt of node.body)scan(stmt,local);
+   invalidateOuterBindings(env,local,localNamesForScope(node));
    return;
   }
   if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type)){
@@ -417,6 +465,7 @@ function scanScopedModuleCalls(fn,requireName){
    const caught=new Map(env);
    shadows(node.param,caught);
    walk(node.body,caught);
+   invalidateOuterBindings(env,caught,localNamesForScope(node));
    return;
   }
   if(["ForStatement","ForInStatement","ForOfStatement"].includes(node.type)){
@@ -430,6 +479,7 @@ function scanScopedModuleCalls(fn,requireName){
     walk(node.right,loop);
    }
    walk(node.body,loop);
+   invalidateOuterBindings(env,loop,localNamesForScope(node));
    return;
   }
   if(node.type==="SwitchStatement"){
@@ -444,6 +494,7 @@ function scanScopedModuleCalls(fn,requireName){
     }
    }
    for(const branch of node.cases)walk(branch,cases);
+   invalidateOuterBindings(env,cases,localNamesForScope(node));
    return;
   }
   if(node.type==="BlockStatement"){
@@ -455,6 +506,7 @@ function scanScopedModuleCalls(fn,requireName){
      shadows(stmt.id,scoped);
    }
    for(const stmt of node.body)walk(stmt,scoped);
+   invalidateOuterBindings(env,scoped,localNamesForScope(node));
    return;
   }
   if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type)){
@@ -1045,6 +1097,24 @@ function selfTest(){
  assert.equal(repeatedGraph.literal_module_loader_call_expression_count,3);
  assert.equal(repeatedGraph.literal_module_loader_call_site_counts[0].distinct_literal_targets,2);
  assert(!JSON.stringify(repeatedGraph).includes("'B'"));
+ const possibleMutation=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(e,t,n){if(t.choice){n=()=>1}n('B');"+
+  "const candidate=n('C');if(t.choice){candidate={p:1}}candidate.x();"+
+  "if(t.choice){t={}}t.m=()=>1}),"+
+  "B:(function(e,t,n){t.b=1}),C:(function(e,t,n){t.c=1})};",40);
+ const mutationResult=buildGraph(possibleMutation,1,0);
+ assert.equal(mutationResult.import_candidates,0);
+ assert.equal(mutationResult.direct_function_export_site_count,0);
+ const localShadow=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(e,t,n){if(t.choice){const n=()=>1;n('X')}"+
+  "const candidate=n('B');if(t.choice){const candidate={p:1};candidate.p}"+
+  "candidate.x();if(t.choice){const t={};t.m=()=>1}t.good=()=>1}),"+
+  "B:(function(e,t,n){t.b=1})};",41);
+ const localShadowGraph=buildGraph(localShadow,1,0);
+ assert.equal(localShadowGraph.import_candidates,1);
+ assert.equal(localShadowGraph.unique_resolved_links,1);
+ assert.equal(localShadowGraph.direct_function_export_site_count,1);
+ assert(!JSON.stringify(localShadowGraph).includes("'X'"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

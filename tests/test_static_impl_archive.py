@@ -819,6 +819,31 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for item in ("Caller", "ExptargetFixtureZ9", "synthetic-export-shadow.zip"):
                 self.assertNotIn(item, proc.stdout)
 
+    def test_conditional_outer_reassignment_invalidates_static_candidates(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-branch-invalidation.zip"
+            private_key = "PrivateBranchKeyZ949"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Owner:(function(e,t,n){if(t.flag){n=()=>1}"
+                    "n('" + private_key + "');"
+                    "const imported=n('Another');"
+                    "if(t.flag){imported={x:1}}imported.y();"
+                    "if(t.flag){t={}}t.handler=()=>1}),"
+                    + private_key + ":(function(e,t,n){t.a=1}),"
+                    "Another:(function(e,t,n){t.b=1})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["import_candidates"], 0)
+            self.assertEqual(report["direct_function_export_site_count"], 0)
+            for term in (private_key, "Another", "Owner",
+                         "invented-branch-invalidation.zip"):
+                self.assertNotIn(term, result.stdout)
+
     def test_loop_and_switch_scopes_do_not_leak_module_aliases(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-loop-scope.zip"
