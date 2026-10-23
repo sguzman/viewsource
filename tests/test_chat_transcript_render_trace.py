@@ -26,6 +26,15 @@ class TranscriptRenderTraceTests(unittest.TestCase):
         self.assertEqual(cross["evidence_class"],"observed_static")
         self.assertTrue(cross["boundary"])
         self.assertTrue(doc["unverified"])
+        self.assertEqual(len(doc["presentation_rules"]),9)
+        self.assertEqual(len({rule["id"] for rule in doc["presentation_rules"]}),9)
+        self.assertTrue(doc["rule_limitations"])
+        self.assertTrue({"pending_prompt_guard","first_user_presentation_filter",
+                         "alternate_selected_node_render","message_dom_identity"}
+                         <= {r["id"] for r in doc["presentation_rules"]})
+        for rule in doc["presentation_rules"]:
+            self.assertIn(rule["source_ref"], {x["ref"] for x in doc["source_resources"]})
+            self.assertTrue(rule["description"])
         stages = {x["id"] for x in doc["stages"]}
         self.assertIn("dom_message_identity_wrapper", stages)
         self.assertIn("turn_props_and_filters", stages)
