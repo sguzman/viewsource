@@ -1519,6 +1519,52 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (sentinel, "invented-features.zip", "features.js", "queryText"):
                 self.assertNotIn(private, result.stdout)
 
+    def test_alternative_control_flow_remains_anonymous_across_zip_pipeline(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-control-flow.zip"
+            secret = "SyntheticPrivateModuleMarkerZ112"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("first.js",
+                    "export const __webpack_modules__={"
+                    "IfReader:function(e,t,n){let x=n('Choice');"
+                    "if(e.flag){x={}}else{x.want()}x.unknown()},"
+                    "SwitchReader:function(e,t,n){let x=n('Choice');"
+                    "switch(e.flag){case 1:x={};break;case 2:x.want();break}"
+                    "x.unknown()},"
+                    "TryReader:function(e,t,n){let x=n('Choice');"
+                    "try{if(e.flag)throw 1;x={}}catch(e){x.want()}"
+                    "x.unknown()},"
+                    "Choice:function(e,t,n){t.want=()=>1},"
+                    "Ignored:function(e,t,n){const marker='" + secret + "'}};")
+                z.writestr("second.js", "export const __webpack_modules__={"
+                    "Choice:function(e,t,n){t.other=()=>1}};")
+            base = ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                    "--input", str(archive)]
+            result = subprocess.run(base + ["--module-trace"], cwd=ROOT,
+                                    capture_output=True, text=True, check=False,
+                                    timeout=40)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            graph = json.loads(result.stdout)
+            self.assertEqual(graph["import_candidates"], 3)
+            self.assertEqual(graph["ambiguous_import_candidates"], 3)
+            self.assertEqual(graph["export_shape_candidate_count"], 3)
+            self.assertEqual(graph["unique_resolved_links"], 0)
+            self.assertTrue(all(not x["runtime_import_verified"]
+                                for x in graph["export_shape_candidates"]))
+            for value in (secret, "Choice", "IfReader", "SwitchReader",
+                          "TryReader", "first.js", "second.js", str(archive)):
+                self.assertNotIn(value, result.stdout)
+            frontier = subprocess.run(
+                base + ["--module-frontier", "--root", "R-JS-001:1",
+                        "--max-depth", "3"], cwd=ROOT,
+                capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(frontier.returncode, 0, frontier.stderr)
+            report = json.loads(frontier.stdout)
+            self.assertEqual(report["reached_module_count"], 1)
+            self.assertEqual(len(report["export_shape_ambiguities"]), 1)
+            self.assertFalse(report["export_shape_ambiguities"][0]["traversed"])
+            self.assertNotIn(secret, frontier.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
