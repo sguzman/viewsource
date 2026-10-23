@@ -10900,6 +10900,16 @@
         "evidence_ref": "E2-084",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-085",
+      "statement": "The captured client links response-variant selection to virtualized transcript recomputation: the selected-node/mapping references feed memoized turn derivation, and the virtual row window reconciles changed turn-key lists while attempting to retain a surviving visual anchor and compensate scroll distance. This is a source-level composition; actual branch-switch motion, anchor survival, or server persistence were not observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-085",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
