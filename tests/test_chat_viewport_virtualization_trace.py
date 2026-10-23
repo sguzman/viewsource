@@ -38,6 +38,16 @@ class ViewportTraceTests(unittest.TestCase):
         self.assertEqual([s["source_ref"] for s in spacer["stages"]],
                          ["R-JS-072","R-JS-072","R-JS-072","R-JS-066"])
         self.assertEqual(len(spacer["boundaries"]),3)
+        ast=d["ast_candidate_recheck"]
+        self.assertFalse(ast["verified_runtime"])
+        self.assertFalse(ast["module_ownership_by_ast_only"])
+        self.assertEqual(
+            [(x["source_ref"],x["module_ordinal"],len(x["patterns"]))
+             for x in ast["module_matches"]],
+            [("R-JS-066",9,7),("R-JS-066",14,1),
+             ("R-JS-072",13,1),("R-JS-072",14,2)]
+        )
+        self.assertTrue(ast["limitation"])
         self.assertTrue(d["still_unverified"])
         ids=[row["id"] for row in d["windowing_rules"]]
         self.assertEqual(len(ids),len(set(ids)))
