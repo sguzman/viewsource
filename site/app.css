@@ -515,3 +515,11 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-css-limits { font-size:12px;line-height:1.7; }
 .chat-css-limits summary { cursor:pointer; }
 .chat-css-limits ul { padding-left:20px; }
+
+.chat-lifecycle-stages { display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:10px;list-style:none;margin:12px 0;padding:0; }
+.chat-lifecycle-stage { border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:13px;min-width:0;font-size:12px; }
+.chat-lifecycle-stage strong { font-size:13px;text-transform:capitalize; }
+.chat-lifecycle-stage p,.chat-lifecycle-edges,.chat-lifecycle-alternatives { font-size:12px;line-height:1.65; }
+.chat-lifecycle-stage small { color:var(--muted);font-size:11px; }
+.chat-lifecycle-edges summary,.chat-lifecycle-alternatives summary { cursor:pointer;font-weight:600; }
+.chat-lifecycle-edges ol,.chat-lifecycle-alternatives ul { padding-left:20px; }
