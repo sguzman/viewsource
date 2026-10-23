@@ -266,6 +266,29 @@ def build(out: Path) -> dict:
                         "boundary": branch["render_recomputation_link"]["boundary"],
                     },
                 }
+            viewport_path = ROOT / (base + "/chat_viewport_virtualization_trace.json")
+            if viewport_path.is_file():
+                viewport = read(base + "/chat_viewport_virtualization_trace.json")
+                if (viewport["specimen_id"] != item["id"]
+                        or viewport["version"] != number
+                        or viewport["runtime_viewport_verified"] is not False):
+                    raise ValueError("Virtual transcript study identity or evidence boundary mismatch")
+                visuals["chat_virtual_viewport"] = {
+                    "runtime_verified": viewport["runtime_viewport_verified"],
+                    "source_resources": [row["ref"] for row in viewport["source_resources"]],
+                    "source_chain": [
+                        {"from": edge["from"].replace("_"," "),
+                         "to": edge["to"].replace("_"," "),
+                         "kind": edge["kind"].replace("_"," ")}
+                        for edge in viewport["source_chain"]
+                    ],
+                    "windowing_rules": [
+                        {"id": rule["id"].replace("_"," "), "source_ref": rule["ref"],
+                         "behavior": rule["behavior"], "limits": rule["limits"]}
+                        for rule in viewport["windowing_rules"]
+                    ],
+                    "still_unverified": viewport["still_unverified"],
+                }
             transcript_path = ROOT / (base + "/chat_transcript_render_trace.json")
             if transcript_path.is_file():
                 transcript = read(base + "/chat_transcript_render_trace.json")
