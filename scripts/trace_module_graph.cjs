@@ -1009,14 +1009,14 @@ function selfTest(){
  assert.equal(directBeforeRebind.bootstrapCandidates.length,1);
  const commonjsOwners=analyzeJS("export const __webpack_modules__={"+
   "A:(function(module,exports,require){module.exports=function(){return 1};"+
-  "function shadow(module){module.exports=()=>99}}),"+
+  "function PrivateShadowFnZ937(module){module.exports=()=>99}}),"+
   "B:(function(module,exports,require){exports.fn=()=>2})};",38);
  const commonjsGraph=buildGraph(commonjsOwners,1,0);
  assert.equal(commonjsGraph.direct_function_export_site_count,2);
  assert.deepEqual(commonjsGraph.direct_function_export_sites.map(x=>x.classification),
   ["module_object_function_assignment_candidate",
    "direct_function_export_assignment_candidate"]);
- assert(!JSON.stringify(commonjsGraph).includes("shadow"));
+ assert(!JSON.stringify(commonjsGraph).includes("PrivateShadowFnZ937"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
