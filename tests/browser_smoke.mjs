@@ -46,6 +46,9 @@ try {
   assert.equal(await page.locator(".chat-transcript-stage").count(),7);
   assert.equal(await page.locator(".chat-viewport-rule").count(),11);
   assert.equal(await page.locator(".chat-edit-stage").count(),9);
+  assert.equal(await page.locator(".chat-a11y-mechanism").count(),8);
+  await page.locator(".chat-a11y-limits summary").click();
+  assert.equal(await page.locator(".chat-a11y-limits li").count(),4);
   await page.locator(".chat-edit-boundaries summary").click();
   assert.ok((await page.locator(".chat-edit-boundaries").innerText()).includes("server"));
   await page.locator(".chat-selection-stages summary").click();
