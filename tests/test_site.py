@@ -67,7 +67,11 @@ class AtlasTests(unittest.TestCase):
             recovery = current["visuals"]["chat_transport_failure"]
             self.assertFalse(recovery["live_failure_observed"])
             self.assertEqual(recovery["source_ref"],"R-JS-018")
-            self.assertEqual(len(recovery["observations"]),12)
+            self.assertEqual(len(recovery["observations"]),13)
+            self.assertEqual(recovery["resume_permission_wiring"]["initial_method"],
+                             "startCompletionStream")
+            self.assertEqual(recovery["resume_permission_wiring"]["explicit_method"],
+                             "resumeCompletionStream")
             self.assertEqual(recovery["stream_resume_predicates"]["retry_statuses"],[408,409,425,429,502,504])
             self.assertEqual(recovery["stream_resume_module"]["compatible_exports"],1)
             self.assertEqual(len(recovery["stream_resume_state"]["guards"]),7)
@@ -189,8 +193,10 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(current["visuals"]["css_system"]["token_groups"]), 8)
             self.assertEqual(current["visuals"]["landmarks"]["button_total"], 130)
             self.assertEqual(next(v for v in data["versions"] if v["version"] == 1)["visuals"], {})
-            self.assertGreaterEqual(len(current["findings"]), 96)
+            self.assertGreaterEqual(len(current["findings"]), 100)
             self.assertTrue(any(f["id"]=="F2-096" and f["ref"]=="E2-096"
+                                for f in current["findings"]))
+            self.assertTrue(any(f["id"]=="F2-100" and f["ref"]=="E2-100"
                                 for f in current["findings"]))
             self.assertEqual(len(current["tasks"]), 124)
             self.assertGreaterEqual(len(current["components"]), 270)
