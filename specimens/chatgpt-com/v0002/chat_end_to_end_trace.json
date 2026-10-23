@@ -229,5 +229,103 @@
     "An edge marked state dependency composition does not assert an immediate synchronous callback.",
     "The existing optional runtime research proposals do not block captured JavaScript investigation.",
     "No source snippets, wire URLs, browser storage keys, account identifiers, user prompts or copied vendor code are published."
-  ]
+  ],
+  "stage_anchor_provenance": {
+    "method": "Cross-index previously source-reviewed study anchors with explicit precision limits; no additional private capture examined.",
+    "scope": "saved_static_source_only",
+    "runtime_execution_verified": false,
+    "stages": [
+      {
+        "stage_id": "composer_submission",
+        "source_ref": "R-JS-072",
+        "granularity": "resource_review_only",
+        "source_study": "chat_end_to_end_trace",
+        "scope": "The composer submission is reviewed, but a unique submit-handler ordinal is not yet established.",
+        "next": "Resolve the exact composer submission handler and activation gates."
+      },
+      {
+        "stage_id": "generation_dispatch",
+        "source_ref": "R-JS-018",
+        "granularity": "reviewed_function",
+        "source_study": "chat_static_impl_trace",
+        "function_ordinal": 9032,
+        "scope": "The generation-dispatch function is source-reviewed, not observed executing.",
+        "next": "Resolve remaining conditional callers and branches."
+      },
+      {
+        "stage_id": "completion_transport",
+        "source_ref": "R-JS-018",
+        "granularity": "reviewed_function_callsite",
+        "source_study": "chat_transport_trace",
+        "function_ordinal": 9032,
+        "scope": "The numbered function invokes the stream service; this is the caller, not the callee identity.",
+        "next": "Trace terminal callbacks through cleanup."
+      },
+      {
+        "stage_id": "decoded_event_processing",
+        "source_ref": "R-JS-018",
+        "granularity": "reviewed_function_callback_host",
+        "source_study": "chat_transport_trace",
+        "function_ordinal": 9032,
+        "scope": "The numbered dispatcher wires the event processor callback; the processor's own function identity remains unresolved.",
+        "next": "Identify imported event processor and terminal branches."
+      },
+      {
+        "stage_id": "client_graph_mutation",
+        "source_ref": "R-JS-018",
+        "granularity": "resource_review_only",
+        "source_study": "chat_graph_mutation_trace",
+        "scope": "Graph mutation helper and operations are reviewed without an exact published function ordinal for this stage.",
+        "next": "Identify the exact graph writer function/module."
+      },
+      {
+        "stage_id": "scoped_conversation_commit",
+        "source_ref": "R-JS-018",
+        "granularity": "resource_review_only",
+        "source_study": "chat_graph_mutation_trace",
+        "scope": "Scoped writer and selected-path projections are reviewed, but not localized by function ordinal.",
+        "next": "Locate scoped commit function and projection consumers."
+      },
+      {
+        "stage_id": "page_turn_rederivation",
+        "source_ref": "R-JS-072",
+        "granularity": "reviewed_module_context",
+        "source_study": "chat_viewport_virtualization_trace",
+        "module_ordinal": 13,
+        "scope": "The page adapter module is reviewed; memoized rederivation function itself is not resolved.",
+        "next": "Identify turn derivation function and filtering branches."
+      },
+      {
+        "stage_id": "turn_presentation_mapping",
+        "source_ref": "R-JS-069",
+        "granularity": "resource_review_only",
+        "source_study": "chat_transcript_render_trace",
+        "scope": "Turn-preparation rules are reviewed only at resource granularity, distinct from the renderer module.",
+        "next": "Locate exact preparer function and export."
+      },
+      {
+        "stage_id": "virtualized_turn_window",
+        "source_ref": "R-JS-066",
+        "granularity": "reviewed_module",
+        "source_study": "chat_viewport_virtualization_trace",
+        "module_ordinal": 9,
+        "scope": "The reviewed module implements the virtualized turn window, but no browser measurements are observed.",
+        "next": "Trace conditional row retention and scrolling branches."
+      },
+      {
+        "stage_id": "typed_item_and_dom_render",
+        "source_ref": "R-JS-069",
+        "granularity": "reviewed_module_import",
+        "source_study": "chat_module_dependency_trace",
+        "module_ordinal": 12,
+        "scope": "Reviewed conversation-page module import reaches typed turn renderer; not proof that media subrenderers mounted.",
+        "next": "Resolve conditional hidden-item and media/tool child imports."
+      }
+    ],
+    "limitations": [
+      "Resource-scoped stages have no reviewed stage-specific ordinal.",
+      "A dispatcher call-site ordinal does not identify the imported callee implementation.",
+      "Precise static anchors are not proof of runtime execution, server behavior or complete feature coverage."
+    ]
+  }
 }

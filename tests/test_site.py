@@ -97,6 +97,11 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(len(lifecycle["stages"]),10)
             self.assertEqual(len(lifecycle["connections"]),9)
             self.assertEqual(len(lifecycle["alternatives"]),5)
+            anchors=lifecycle["stage_anchor_provenance"]["stages"]
+            self.assertEqual(len(anchors),10)
+            self.assertEqual([a["stage_id"] for a in anchors],
+                             [x["id"] for x in lifecycle["stages"]])
+            self.assertEqual(sum(a["granularity"]=="resource_review_only" for a in anchors),4)
             css = current["visuals"]["chat_css_hooks"]
             self.assertEqual(css["stylesheets"],17)
             self.assertEqual(css["css_bytes"],2340628)

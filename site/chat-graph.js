@@ -218,6 +218,25 @@ window.ViewsourceChatGraph = (() => {
         stages.append(item);
       });
       block.append(stages);
+      const anchorIndex=lifecycle.stage_anchor_provenance;
+      if(anchorIndex?.stages?.length){
+        const detail=element("details","chat-lifecycle-anchors");
+        detail.append(element("summary","","Source anchors and remaining precise trace gaps"));
+        detail.append(element("p","graph-caption",
+          "Exact function/module ordinals identify reviewed source locations, not observed execution. Resource-only stages have no verified exact ordinal."));
+        const list=element("ol","chat-lifecycle-anchor-list");
+        anchorIndex.stages.forEach(anchor=>{
+          const number=anchor.function_ordinal?"function #"+anchor.function_ordinal:
+            anchor.module_ordinal?"module #"+anchor.module_ordinal:"resource only";
+          const li=element("li","");
+          li.append(element("strong","",anchor.stage_id.replaceAll("_"," ")+" — "+anchor.source_ref+" ("+number+")"),
+            element("p","",anchor.scope),
+            element("p","graph-caption","Unresolved: "+anchor.next));
+          list.append(li);
+        });
+        detail.append(list);
+        block.append(detail);
+      }
       const edges=element("details","chat-lifecycle-edges");
       edges.append(element("summary","","Evidence-graded source connections"));
       const edgeList=element("ol","");

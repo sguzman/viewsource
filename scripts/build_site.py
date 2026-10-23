@@ -355,6 +355,17 @@ def build(out: Path) -> dict:
                         {"name": x["name"],"behavior": x["behavior"]}
                         for x in lifecycle["alternative_paths"]
                     ],
+                    "stage_anchor_provenance": {
+                        "method": lifecycle["stage_anchor_provenance"]["method"],
+                        "stages": [{
+                            "stage_id": a["stage_id"], "granularity": a["granularity"],
+                            "source_ref": a["source_ref"],
+                            "module_ordinal": a.get("module_ordinal"),
+                            "function_ordinal": a.get("function_ordinal"),
+                            "scope": a["scope"], "next": a["next"]
+                        } for a in lifecycle["stage_anchor_provenance"]["stages"]],
+                        "limitations": lifecycle["stage_anchor_provenance"]["limitations"]
+                    },
                     "open_questions": lifecycle["open_static_questions"],
                 }
             css_path = ROOT / (base + "/chat_css_hooks_trace.json")
