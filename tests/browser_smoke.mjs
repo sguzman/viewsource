@@ -45,6 +45,10 @@ try {
   assert.equal(await page.locator(".chat-selector-item").count(),5);
   assert.equal(await page.locator(".chat-transcript-stage").count(),7);
   assert.equal(await page.locator(".chat-viewport-rule").count(),11);
+  await page.locator(".chat-selection-stages summary").click();
+  assert.equal(await page.locator(".chat-selection-stages li").count(),6);
+  await page.locator(".chat-code-copy-stages summary").click();
+  assert.equal(await page.locator(".chat-code-copy-stages li").count(),7);
   await page.locator(".chat-viewport-links summary").click();
   assert.equal(await page.locator(".chat-viewport-links li").count(),7);
   await page.locator(".chat-viewport-branch-link summary").click();
