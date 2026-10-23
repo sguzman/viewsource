@@ -1,0 +1,165 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_javascript_ast_and_private_source_review",
+  "evidence_class": "observed_static",
+  "runtime_viewport_verified": false,
+  "server_scrolling_contract_verified": false,
+  "source_resources": [
+    {
+      "ref": "R-JS-072",
+      "role": "conversation_page_and_virtual_row_adapter"
+    },
+    {
+      "ref": "R-JS-066",
+      "role": "virtual_turn_window_and_response_spacer"
+    },
+    {
+      "ref": "R-JS-069",
+      "role": "typed_turn_rows_and_message_wrappers"
+    }
+  ],
+  "source_chain": [
+    {
+      "from": "conversation_page",
+      "to": "turn_adapter",
+      "kind": "component_call",
+      "ref": "R-JS-072"
+    },
+    {
+      "from": "turn_adapter",
+      "to": "virtual_turn_window",
+      "kind": "imported_component_call",
+      "ref": "R-JS-072"
+    },
+    {
+      "from": "virtual_turn_window",
+      "to": "measured_turn_layout",
+      "kind": "derived_geometry",
+      "ref": "R-JS-066"
+    },
+    {
+      "from": "measured_turn_layout",
+      "to": "visible_turn_window",
+      "kind": "bounded_binary_search",
+      "ref": "R-JS-066"
+    },
+    {
+      "from": "visible_turn_window",
+      "to": "turn_row_wrapper",
+      "kind": "react_component_mapping",
+      "ref": "R-JS-066"
+    },
+    {
+      "from": "turn_row_wrapper",
+      "to": "typed_turn_row",
+      "kind": "prop_forwarding",
+      "ref": "R-JS-066"
+    },
+    {
+      "from": "voice_response_spacer",
+      "to": "turn_positioning",
+      "kind": "conditional_layout_effect",
+      "ref": "R-JS-072"
+    }
+  ],
+  "windowing_rules": [
+    {
+      "id": "measured_estimated_heights",
+      "ref": "R-JS-066",
+      "behavior": "The virtual turn layout uses measured heights when available, falling back to minimum or estimated row heights and gaps, and constructs top and bottom offsets plus keyed turn indices.",
+      "limits": "Initial estimates are not measurements of actual rendered content."
+    },
+    {
+      "id": "viewport_binary_search",
+      "ref": "R-JS-066",
+      "behavior": "It locates the visible interval using binary searches over row offsets and heights, then adds a small surrounding overscan window; the examined component supplies an overscan count of two.",
+      "limits": "The scanned range is a code path, not an observation of which rows were mounted during this capture."
+    },
+    {
+      "id": "retained_offscreen_turns",
+      "ref": "R-JS-072",
+      "behavior": "The page adapter retains selected turn keys outside the normal viewport, including qualifying patch-related turns and the most recent user turn in an enabled voice-autoscroll mode.",
+      "limits": "Retention does not establish that every historical turn is always mounted."
+    },
+    {
+      "id": "row_dom_placement",
+      "ref": "R-JS-066",
+      "behavior": "A total-height outer region holds a translated/margin-offset row window; keyed row wrappers receive per-row height, gap and optional absolute placement for explicitly retained offscreen turns.",
+      "limits": "This identifies intended virtual row positioning, not measured browser paint."
+    },
+    {
+      "id": "measurement_resize_observer",
+      "ref": "R-JS-066",
+      "behavior": "Row measurement and scroll listeners coordinate with ResizeObserver to recalculate height/layout, track viewport size changes and signal when visible content has become ready.",
+      "limits": "Actual resize timing and observer delivery are unknown."
+    },
+    {
+      "id": "scroll_anchor_compensation",
+      "ref": "R-JS-066",
+      "behavior": "When measured heights or row identities change, an eligible visible turn key can act as the anchor; the code adjusts distance from the scroll bottom to compensate layout growth instead of resetting the view.",
+      "limits": "Anchoring depends on feature props and current viewport state; it is not a guarantee against every jump."
+    },
+    {
+      "id": "history_window_boundary",
+      "ref": "R-JS-066",
+      "behavior": "The component can publish an oldest rendered turn identity and a protected in-progress item boundary for retaining or fetching relevant history near the viewport.",
+      "limits": "Server retention, pagination outcomes and actual history requests were not observed."
+    },
+    {
+      "id": "restore_and_targeted_scroll",
+      "ref": "R-JS-066",
+      "behavior": "The virtual window exposes restore state and targeted scroll requests keyed by a turn; it can align a known target near the top or center and report completion to the local request store.",
+      "limits": "No actual scroll position or restoration outcome was observed."
+    },
+    {
+      "id": "voice_spacer_positioning",
+      "ref": "R-JS-072",
+      "behavior": "A page-level voice scroll adapter locates the latest user turn through an escaped data-turn-key and user-bubble selector, then asks a response-spacer controller to place content using measured turn readiness.",
+      "limits": "Voice positioning is guarded by voice state, loading state and feature configuration."
+    },
+    {
+      "id": "spacer_growth_and_reduced_motion",
+      "ref": "R-JS-066",
+      "behavior": "The response-spacer controller changes a bottom spacer's height, consumes turn growth, compensates scroll distance and optionally animates placement; it has a reduced-motion path.",
+      "limits": "The physical scroll animation and user preference were not observed."
+    },
+    {
+      "id": "user_input_cancellation",
+      "ref": "R-JS-072",
+      "behavior": "The temporary voice-scroll placement listens for wheel, touch, pointer and key activity to cancel pending automated placement and releases animation and abort resources.",
+      "limits": "This is the scheduled client listener behavior, not a guarantee of immediate cancellation in every browser."
+    }
+  ],
+  "static_relationships": [
+    {
+      "from": "R-JS-072",
+      "to": "R-JS-066",
+      "kind": "viewport_import"
+    },
+    {
+      "from": "R-JS-072",
+      "to": "R-JS-066",
+      "kind": "response_spacer_import"
+    },
+    {
+      "from": "R-JS-072",
+      "to": "R-JS-069",
+      "kind": "typed_turn_row_link"
+    }
+  ],
+  "review_corrections": [
+    "The renderer does virtualize turn entries; a previous unresolved question about whether turn-level virtualization exists is answered for this saved client.",
+    "Virtualization is keyed by derived turn identities rather than a promise to render one DOM node for every stored mapping message.",
+    "Scrolling, anchored distance-from-bottom compensation, and response-spacer placement are separate client mechanisms and should not be conflated with message ordering or branch persistence."
+  ],
+  "still_unverified": [
+    "Live React mount and the set of virtual rows rendered for a specific viewport.",
+    "Whether a current deployment retains identical code and feature flags.",
+    "All relationships between dynamic markdown/code/media content and row measurement.",
+    "Server-side history paging and scroll restore behavior across reloads.",
+    "Actual user-visible motion and screen-reader navigation through a virtual window."
+  ],
+  "privacy": "Public report contains only capture-local file ordinals, fixed technical labels and independently written summaries; no original asset names, source snippets, identities, tokens, messages, URLs or request bodies."
+}
