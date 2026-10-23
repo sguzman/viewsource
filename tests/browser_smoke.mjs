@@ -122,8 +122,14 @@ try {
   assert.ok((await page.locator(".chat-ast-details").innerText()).includes("Unresolved:"));
   assert.equal(await page.locator(".chat-research-task").count(),18);
   assert.equal(await page.locator(".chat-static-task").count(),33);
-  assert.equal(await page.locator(".chat-static-progress").getAttribute("max"),"33");
-  assert.equal(await page.locator(".chat-static-progress").getAttribute("value"),"17");
+  const staticTaskCount=await page.locator(".chat-static-task").count();
+  const startedCount=await page.locator(".chat-static-task")
+    .filter({hasText:"Status: in_progress"}).count()
+    +await page.locator(".chat-static-task").filter({hasText:"Status: done"}).count();
+  const displayedProgress=await page.locator(".chat-static-progress")
+    .evaluate(el=>({max:Number(el.max),value:Number(el.value)}));
+  assert.equal(displayedProgress.max,staticTaskCount);
+  assert.equal(displayedProgress.value,startedCount);
   assert.ok((await page.locator(".chat-static-progress").evaluate(e=>e.nextElementSibling.textContent)).includes("0% accepted complete"));
   await page.locator(".chat-static-task").first().locator("summary").click();
   const runtimeStudy=page.locator(".chat-research-task").filter({hasText:"Observe streaming and stop"});
