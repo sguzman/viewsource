@@ -396,6 +396,29 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "one.js","two.js"):
                 self.assertNotIn(private,result.stdout)
 
+    def test_bound_imports_are_future_use_candidates_not_direct_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "synthetic-bound-fixture.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("one.js", "export const __webpack_modules__={"
+                    "Source:(function(e,t,n){const later=n.bind(n,'HiddenTarget')}),"
+                    "HiddenTarget:(function(e,t,n){t.a=1})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(result.returncode, 0)
+            report = json.loads(result.stdout)
+            self.assertEqual(report["bound_import_candidate_count"], 1)
+            self.assertEqual(report["unique_resolved_links"], 0)
+            candidate = report["bound_import_candidates"][0]
+            self.assertEqual(candidate["classification"], "bound_import_target_candidate")
+            self.assertEqual(candidate["candidate_target_module"], 2)
+            self.assertFalse(candidate["binding_executed_verified"])
+            self.assertFalse(candidate["target_module_loaded_verified"])
+            for value in ("Source", "HiddenTarget", "synthetic-bound-fixture.zip"):
+                self.assertNotIn(value, result.stdout)
+
     def test_shadowed_import_alias_does_not_disambiguate_module(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-scope-collision.zip"
