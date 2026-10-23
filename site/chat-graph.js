@@ -126,6 +126,11 @@ window.ViewsourceChatGraph = (() => {
         steps.append(row);
       });
       block.append(steps);
+      const link=element("details","chat-branch-render-link");
+      link.append(element("summary","","How selection feeds transcript preparation"),
+        element("p","",branchStudy.render_recomputation_link.description),
+        element("p","graph-caption",branchStudy.render_recomputation_link.boundary));
+      block.append(link);
       const derivation=element("details","chat-branch-derivation");
       derivation.append(element("summary","","How selectable response versions are derived"));
       const derivationList=element("ol","");
@@ -172,6 +177,16 @@ window.ViewsourceChatGraph = (() => {
           transcript.cross_module_call.source_ref+" → "+transcript.cross_module_call.target_ref+
           ". "+transcript.cross_module_call.boundary));
       block.append(moduleCall);
+      const dependencies=element("details","chat-transcript-dependencies");
+      dependencies.append(element("summary","","Selected-node and mapping recomputation"));
+      const depList=element("ul","");
+      transcript.page_recomputation.observations.forEach(item=>{
+        depList.append(element("li","",item));
+      });
+      dependencies.append(depList,element("p","graph-caption",
+        "Memoization inputs: "+transcript.page_recomputation.dependency_roles.join(", ")),
+        element("p","graph-caption",transcript.page_recomputation.boundary));
+      block.append(dependencies);
       const rules=element("details","chat-transcript-rules");
       rules.append(element("summary","","Reviewed presentation and filtering rules"));
       const ruleList=element("div","chat-transcript-rule-list");
