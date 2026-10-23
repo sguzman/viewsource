@@ -863,6 +863,21 @@ simulation** and does not establish condition values, case selection,
 fallthrough execution order, or runtime module ownership. Export
 interface matches remain unverified static candidates.
 
+### Alternative exception and cleanup source paths
+
+The source scanners analyze a `try` body and its `catch` branch
+against independent candidate binding states. This avoids allowing a
+later assignment in the `try` source to hide import, export or startup
+syntax inside a catch handler. A `finally` body is inspected against
+both possible states before they are conservatively joined. The
+fallback is intentionally retained even without a handler because a
+finally block can run after an earlier abrupt completion.
+
+This is a bounded syntactic approximation, not exception-flow execution:
+it does not identify the exact throw point, prove catch reachability,
+simulate returns or guarantee that either state's cleanup code runs.
+The resulting import and export relationships remain unverified leads.
+
 ### Right-hand-side evaluation before binding replacement
 
 Assignment expressions evaluate their right-hand values before replacing
