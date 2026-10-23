@@ -14,11 +14,6 @@
       "ref": "R-JS-018",
       "module_ordinal": 81,
       "role": "conversation_query_snapshot_and_revalidation"
-    },
-    {
-      "ref": "R-JS-018",
-      "module_ordinal": null,
-      "role": "conditional_local_conversation_snapshot_worker"
     }
   ],
   "executed_in_browser": false,
