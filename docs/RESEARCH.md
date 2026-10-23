@@ -140,3 +140,24 @@ variant identities and the selected variant index. It is **not** equivalent
 to finding a user-visible version switcher. Verified client behavior belongs
 in the branch-switch study, while this detection only adds an inspectable
 static lead for new site captures.
+
+## Virtual list and scroll anchor investigation
+
+The specialized offline mode `--viewport-trace` reads captured JavaScript
+from a private ZIP, parses source module ASTs, and reports only fixed
+category labels and numeric source/module ordinals. Its categories include
+measured/estimated layout, overscan range computation, retained rows,
+viewport resize, scroll anchoring, targeted turn restore, response spacer,
+manual input cancellation and history boundary signals. The scanner
+handles both bundled registries and standalone JavaScript modules. As with
+other source detectors, module-wide co-occurrence is **candidate evidence**,
+not proof of ownership, execution or UI behavior; independently inspect
+candidate source before publishing implementation conclusions.
+
+The first reviewed example is the captured chat virtualizer: R-JS-066
+module ordinals 9 and 14 and R-JS-072 ordinals 13 and 14. The public
+report and tests identify these modules only by capture-local ordinals,
+never by original minified identifiers or raw proprietary source. See
+E2-084 and the standalone viewport study. Actual browser measurements,
+React reconciliation and live accessibility outcomes remain outside
+static proof.
