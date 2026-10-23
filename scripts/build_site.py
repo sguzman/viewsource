@@ -282,6 +282,12 @@ def build(out: Path) -> dict:
                         for m in study["mechanisms"]
                     ],
                     "limits": study["limits"],
+                    "module_anchors": [
+                        {"source_ref": x["source_ref"],"module_ordinal": x["module_ordinal"],
+                         "role": x["role"]}
+                        for x in study["module_anchors"]
+                    ],
+                    "verified_import_bindings": study["verified_import_bindings"],
                 }
             edit_path = ROOT / (base + "/chat_edit_submission_trace.json")
             if edit_path.is_file():
@@ -298,6 +304,11 @@ def build(out: Path) -> dict:
                         for stage in edit["stages"]
                     ],
                     "unverified": edit["unverified"],
+                    "module_anchors": [
+                        {"source_ref": x["source_ref"],"module_ordinal": x["module_ordinal"],
+                         "role": x["role"]}
+                        for x in edit["module_anchors"]
+                    ],
                 }
             selection_path = ROOT / (base + "/chat_selection_copy_trace.json")
             if selection_path.is_file():
