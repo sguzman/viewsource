@@ -288,3 +288,12 @@ spelling are suppressed. None of these leads is traversed as a resolved module
 import, since chunk resolution and runtime feature activation require further
 source review. An absent match is not evidence that the application has no lazy
 loading: this parser only recognizes the supported syntax.
+
+### Unresolved boundaries in dependency frontiers
+
+The module frontier report includes dynamic-loading AST categories attached to
+already reachable module ordinals. This allows reviewers to spot areas where a
+literal-import-only traversal may be incomplete. Dynamic boundaries **do not**
+expand the traversal or imply the target bundle exists in the saved archive.
+The report shows them separately from ambiguous export-shape candidates and
+uses the same closed, source-limited evidence policy.

@@ -70,3 +70,21 @@ test("candidate bootstrap roots use only uniquely matched unexecuted syntax",()=
  data.bootstrap_candidates[0].bootstrap_execution_verified=true;
  assert.throws(()=>candidateBootstrapRoots(data));
 });
+
+test("dynamic loading boundaries are visible but never expand reachability",()=>{
+ const data=graph();
+ data.dynamic_boundary_candidates=[{
+  source_ref:"R-JS-002",module_ordinal:1,
+  pattern:"dynamic_import_computed_candidate",
+  classification:"unresolved_dynamic_boundary",target_module_verified:false
+ }];
+ const report=frontier(data,["R-JS-001:1"]);
+ assert.equal(report.reachable_dynamic_boundary_count,1);
+ assert.equal(report.reachable_dynamic_boundaries[0].module.source_ref,"R-JS-002");
+ assert.equal(report.reachable_dynamic_boundaries[0].traversed,false);
+ assert.equal(report.reached_module_count,3);
+ const shallow=frontier(data,["R-JS-001:1"],{depthLimit:1});
+ assert.equal(shallow.reachable_dynamic_boundary_count,0);
+ data.dynamic_boundary_candidates[0].target_module_verified=true;
+ assert.throws(()=>frontier(data,["R-JS-001:1"]));
+});
