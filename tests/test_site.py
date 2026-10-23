@@ -70,6 +70,7 @@ class AtlasTests(unittest.TestCase):
             self.assertEqual(set(viewport["source_resources"]),{"R-JS-066","R-JS-069","R-JS-072"})
             self.assertEqual(len(viewport["windowing_rules"]),11)
             self.assertEqual(len(viewport["source_chain"]),7)
+            self.assertEqual(len(viewport["module_anchors"]),4)
             transcript = current["visuals"]["chat_transcript_render_trace"]
             self.assertFalse(transcript["runtime_render_verified"])
             self.assertEqual(len(transcript["stages"]),7)
