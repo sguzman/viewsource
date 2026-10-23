@@ -647,3 +647,15 @@ function-scoped `var`, or through destructuring assignment patterns.
 A block-local `let` or `const` with the same identifier remains
 separate. This distinction prevents false entrypoint claims; it does
 not verify whether the runtime callback or any mutation ran.
+
+### Bounded static candidate inventories
+
+Private module analysis limits both the module census and the
+high-cardinality diagnostic arrays. Distinct import candidates,
+bound loader callbacks, function-valued export assignments,
+dynamic-loading syntax leads, and startup-call candidates cannot
+grow beyond the fixed candidate budget. The scanner fails closed
+with a generic error rather than emitting a partial graph or
+captured source when a limit is exceeded. This is a resource
+safety bound, not a claim that a truncated capture has been
+fully analyzed.
