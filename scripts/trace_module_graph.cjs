@@ -1858,7 +1858,8 @@ function selfTest(){
  const alternateExportGraph=buildGraph([...alternateExportReader,
   ...alternateExportOther],2,0);
  assert.equal(alternateExportGraph.export_shape_candidate_count,1);
- assert.equal(alternateExportGraph.direct_function_export_site_count,1);
+ // Both duplicate definitions contribute one syntactic callable export.
+ assert.equal(alternateExportGraph.direct_function_export_site_count,2);
  const conditionalBootstrap=analyzeJS("export const __webpack_modules__={"+
   "Boot:function(){}};if(flag){__webpack_require__=()=>0}"+
   "else{__webpack_require__('Boot')}__webpack_require__('NotValid');",105);
