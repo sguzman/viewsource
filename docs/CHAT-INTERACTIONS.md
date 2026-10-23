@@ -781,3 +781,20 @@ is claimed retryable here**. This is a distinct one-shot branch from
 the configurable, multi-attempt completion-stream resume recovery and
 from request-level header refresh. Canonical evidence E2-096 anchors
 this source-level behavior; no network retry was observed.
+
+## Preparation retry predicate resolved within captured JavaScript
+
+Further source investigation found the preparer's imported retryability
+predicate in a uniquely matching saved module definition (R-JS-018).
+It first rejects non-Error and AbortError inputs. For the captured typed
+request-error class, terminal model-cap, work-usage and missing/deleted/
+expired-conversation codes are excluded. An explicitly parsed
+`detail.can_retry=false` vetoes another attempt. Otherwise the typed
+error is eligible only if categorized as a network error or its status
+is one of **408, 409, 425, 502, 504**. Non-typed Error objects have
+separate timeout, offline, network/DNS/connection-message and guarded
+TypeError heuristics. These are captured **client-side error checks**, not
+a general server status-code guarantee. The stream-resume recovery
+coordinator imports a *different* predicate, which remains a separate
+static investigation. Canonical evidence E2-097 documents this newly
+resolved method dependency and its boundaries.
