@@ -15,6 +15,7 @@ const RULES={
   scroll_anchor_compensation:["compensateScrollToDistanceFromBottomPx","distanceFromBottomPx","turnIndexByKey"],
   targeted_turn_restore:["scrollToDistanceFromBottomPx","turnKey","align"],
   response_spacer_placement:["consumeGrowth","prepareThreadEndContent","scrollToBottom"],
+  response_spacer_controller:["consumeGrowth","prepareThreadEndContent","placementTarget"],
   explicit_input_cancellation:["AbortController","wheel","touchstart","pointerdown","keydown"],
   history_render_boundary:["onHistoryRetentionBoundaryChange","firstProtectedItemId"]
 };
@@ -119,7 +120,7 @@ function selfTest(){
     "let distanceFromBottomPx=0;const compensateScrollToDistanceFromBottomPx=()=>{};",
     "const scrollToDistanceFromBottomPx=()=>{},align='top';",
     "},",
-    "beta:function(){const consumeGrowth=()=>{},prepareThreadEndContent=()=>{},scrollToBottom=()=>{};",
+    "beta:function(){const consumeGrowth=()=>{},prepareThreadEndContent=()=>{},scrollToBottom=()=>{},placementTarget=null;",
     "const abort=new AbortController();const types=['wheel','touchstart','pointerdown','keydown'];",
     "const onHistoryRetentionBoundaryChange=()=>{},firstProtectedItemId=null;}",
     "}; const SENSITIVE='SECRET_PRIVATE_SENTINEL';"
@@ -131,6 +132,7 @@ function selfTest(){
   assert(result.matches[0].patterns.includes("scroll_anchor_compensation"));
   assert(result.matches[1].patterns.includes("explicit_input_cancellation"));
   assert(result.matches[1].patterns.includes("response_spacer_placement"));
+  assert(result.matches[1].patterns.includes("response_spacer_controller"));
   assert(result.matches[1].patterns.includes("history_render_boundary"));
   assert(!JSON.stringify(result).includes("SECRET_PRIVATE_SENTINEL"));
   assert.equal(candidates("function unrelated(){return 2}",2).matches.length,0);
