@@ -169,8 +169,9 @@ function bootstrapCalls(ast,sourceOrdinal) {
   }
   for(const [name,value] of Object.entries(node)){
    if(["start","end","loc","raw","callee"].includes(name))continue;
-   if(Array.isArray(value))for(const child of value)visit(child);
-   else if(value&&typeof value==="object")visit(value);
+   if(Array.isArray(value)){
+    for(const child of value)visit(child);
+   }else if(value&&typeof value==="object")visit(value);
   }
  }
  for(const stmt of ast.body){
@@ -441,6 +442,12 @@ function selfTest(){
  assert.equal(startup.bootstrap_candidates[0].bootstrap_execution_verified,false);
  const delayed=analyzeJS('export const __webpack_modules__={A:function(){}};function dormant(){__webpack_require__("A")}',5);
  assert.equal(delayed.bootstrapCandidates.length,0);
+ const withHoles=analyzeJS('export const __webpack_modules__={A:function(){}};'+
+  'const a=[null,,()=>__webpack_require__("A")];',5);
+ assert.equal(withHoles.bootstrapCandidates.length,0);
+ const invokedWithHoles=analyzeJS('export const __webpack_modules__={A:function(){}};'+
+  'const a=[null,,(()=>__webpack_require__("A"))()];',5);
+ assert.equal(invokedWithHoles.bootstrapCandidates.length,1);
  const invoked=analyzeJS('export const __webpack_modules__={A:function(){}};(()=>__webpack_require__("A"))()',5);
  assert.equal(invoked.bootstrapCandidates.length,1);
  assert(!JSON.stringify(startup).includes("Startup"));

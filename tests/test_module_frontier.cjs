@@ -29,6 +29,16 @@ test("BFS resolves cycles without promoting ambiguous candidates",()=>{
  assert.equal(report.total_unresolved_import_candidates,2);
  assert.equal(report.runtime_module_load_verified,false);
 });
+test("frontier edge counts exclude cycles, already reached modules and limited nodes",()=>{
+ const regular=frontier(graph(),["R-JS-001:1"]);
+ assert.equal(regular.traversed_static_edges,2);
+ assert.equal(regular.examined_static_edges,3);
+ const limited=frontier(graph(),["R-JS-001:1"],{nodeLimit:2});
+ assert.equal(limited.traversed_static_edges,1);
+ assert.equal(limited.examined_static_edges,2);
+ assert.equal(limited.truncated_by_node_limit,true);
+ assert.throws(()=>frontier(graph(),["R-JS-001:1","R-JS-001:2"],{nodeLimit:1}));
+});
 test("depth and node limits retain an explicit frontier",()=>{
  const one=frontier(graph(),["R-JS-001:1"],{depthLimit:1});
  assert.equal(one.reached_module_count,2);

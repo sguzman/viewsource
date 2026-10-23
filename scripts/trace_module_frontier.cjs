@@ -123,6 +123,7 @@ function frontier(graph, roots, options={}) {
   const {census,adjacency,ambiguous,dynamic,bound}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))];
+  if(seeds.length>nodeLimit)throw Error("Initial roots exceed node limit");
   for(const id of seeds) {
     const [ref,n]=id.split(":");
     if(!census.has(ref)||Number(n)>census.get(ref))throw Error("Root outside saved module census");
@@ -132,7 +133,7 @@ function frontier(graph, roots, options={}) {
   const counts=new Map([[0,queue.length]]);
   const boundary=new Set();
   const ambiguousCandidates=new Map();
-  let traversed=0,limited=false;
+  let traversed=0,examined=0,limited=false;
   for(let i=0;i<queue.length;i++){
     const {id,depth}=queue[i];
     const candidates=ambiguous.get(id)||new Set();
@@ -146,11 +147,12 @@ function frontier(graph, roots, options={}) {
       continue;
     }
     for(const next of links) {
-      traversed++;
+      examined++;
       if(visited.has(next))continue;
       if(visited.size===nodeLimit) {
         limited=true;boundary.add(id);continue;
       }
+      traversed++;
       visited.set(next,depth+1);
       counts.set(depth+1,(counts.get(depth+1)||0)+1);
       queue.push({id:next,depth:depth+1});
@@ -188,6 +190,7 @@ function frontier(graph, roots, options={}) {
     roots:seeds.map(asNode),root_source:provenance,
     depth_limit:depthLimit,node_limit:nodeLimit,
     reached_module_count:nodes.length,traversed_static_edges:traversed,
+    examined_static_edges:examined,
     depth_counts:layerCounts,nodes,
     boundary_modules:[...boundary].sort().map(asNode),
     export_shape_ambiguities:ambiguities,
