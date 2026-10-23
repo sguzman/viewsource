@@ -637,3 +637,13 @@ may assign the function-scoped binding, so later imports remain
 conservatively unresolved. Nested function bodies hoist their own
 `var` declarations to avoid accidental matches against the factory
 parameter they close over. Synthetic ZIP regressions cover these cases.
+
+### Runtime callback loader writes through assignment patterns
+
+The Webpack chunk-runtime entrypoint detector excludes direct-looking
+literal startup calls after a possible mutation of the callback loader
+through `for...of` or `for...in` iteration targets, including
+function-scoped `var`, or through destructuring assignment patterns.
+A block-local `let` or `const` with the same identifier remains
+separate. This distinction prevents false entrypoint claims; it does
+not verify whether the runtime callback or any mutation ran.
