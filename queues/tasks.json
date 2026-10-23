@@ -1833,7 +1833,8 @@
       "notes": "Static implementation trace: Trace actual handler registration, event dispatch and state effects from captured DOM toward implementation functions; distinguish unreachable handlers. Captured answer-now and skip-reasoning click bindings traced to client actions; broader controls remain open.",
       "evidence_refs": [
         "E2-077",
-        "E2-080"
+        "E2-080",
+        "E2-081"
       ]
     },
     {
@@ -1843,12 +1844,15 @@
       "profile": "followup",
       "queue": "state",
       "title": "Trace state setters, selectors and lifecycle",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-data-shapes",
         "chatgpt-com-v0002-followup-static-source-events"
       ],
-      "notes": "Static implementation trace: Map named candidate state owners, action producers, reducers or updates, selectors and consumers; identify uncertainty around runtime choices."
+      "notes": "Static implementation trace: Map named candidate state owners, action producers, reducers or updates, selectors and consumers; identify uncertainty around runtime choices. Source-reviewed current-node optimistic selection, rollback, and scoped conversation state updates; other reducers remain open.",
+      "evidence_refs": [
+        "E2-081"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-network-contracts",
@@ -1857,12 +1861,15 @@
       "profile": "followup",
       "queue": "network",
       "title": "Trace request construction and response decoding",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-calls",
         "chatgpt-com-v0002-services"
       ],
-      "notes": "Static implementation trace: Locate request builders and response parsers, correlate call sites and data-field usage, distinguish symbolic paths from proven external service behavior."
+      "notes": "Static implementation trace: Locate request builders and response parsers, correlate call sites and data-field usage, distinguish symbolic paths from proven external service behavior. Captured response-version request construction and success/failure branch; wider transport/decoding contracts remain open.",
+      "evidence_refs": [
+        "E2-081"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-streaming",
@@ -1927,7 +1934,8 @@
         "E2-077",
         "E2-078",
         "E2-079",
-        "E2-080"
+        "E2-080",
+        "E2-081"
       ]
     },
     {
@@ -1975,7 +1983,8 @@
       "evidence_refs": [
         "E2-071",
         "E2-072",
-        "E2-080"
+        "E2-080",
+        "E2-081"
       ]
     },
     {
