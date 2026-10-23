@@ -214,6 +214,38 @@ window.ViewsourceChatGraph = (() => {
       block.append(limits);
       section.append(block);
     }
+    const moduleGraph=record.visuals?.chat_module_dependency;
+    if(moduleGraph){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Anonymous saved-module dependency graph"));
+      block.append(element("p","graph-caption",
+        "Module registries and static import candidates across the original JavaScript dump. Module loading and execution were not observed."));
+      const stats=element("div","chat-module-stats");
+      [["Parsed bundles",moduleGraph.census.parsed_bundles],
+       ["Modules",moduleGraph.census.module_registry_entries],
+       ["Resolved import candidates",moduleGraph.census.uniquely_resolved_import_candidates],
+       ["Ambiguous",moduleGraph.census.ambiguous_import_candidates]].forEach(([name,value])=>{
+          const cell=element("div","chat-module-stat");
+          cell.append(element("strong","",String(value)),element("small","",name));
+          stats.append(cell);
+       });
+      block.append(stats);
+      const links=element("details","chat-module-links");
+      links.append(element("summary","","Four reviewed capture-local module links"));
+      const list=element("ul","");
+      moduleGraph.edges.forEach(edge=>list.append(element("li","",
+        edge.from_ref+" #"+edge.from_module+" → "+edge.to_ref+" #"+edge.to_module+
+        " · "+edge.role)));
+      links.append(list);
+      block.append(links);
+      const limits=element("details","chat-module-limits");
+      limits.append(element("summary","","Import graph limitations"));
+      const details=element("ul","");
+      moduleGraph.limitations.forEach(note=>details.append(element("li","",note)));
+      limits.append(details);
+      block.append(limits);
+      section.append(block);
+    }
     const accessibility=record.visuals?.chat_accessibility_trace;
     if(accessibility){
       const block=element("div","chat-subsection");
