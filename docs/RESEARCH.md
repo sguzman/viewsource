@@ -625,3 +625,15 @@ do not invalidate a later call through the original parameter.
 An initialized var declaration remains a possible mutation of
 the enclosing function parameter. Neither syntax result proves
 a chunk runtime callback actually executed.
+
+### Function-scoped var in static module analysis
+
+Module loader, imported-alias, and export-object tracking now separates
+function-scoped `var` declarations from block-scoped `let` and `const`.
+An initialized `var` inside a block can invalidate an outer loader or
+export parameter, while a bare `var` redeclaration does not by itself
+replace a function parameter. For-in/of declarations using `var`
+may assign the function-scoped binding, so later imports remain
+conservatively unresolved. Nested function bodies hoist their own
+`var` declarations to avoid accidental matches against the factory
+parameter they close over. Synthetic ZIP regressions cover these cases.
