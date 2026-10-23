@@ -719,3 +719,14 @@ strings, account information or capture paths. Source-reference
 values are validated before use. Multiple eligible syntactic
 calls may suggest the same module, but none establishes that the
 browser executed that entrypoint.
+
+### Module import evidence by function nesting
+
+Each uniquely matched literal module import now records whether the key
+appears in the module factory body, inside nested functions, or in both.
+Imports appearing **only** in nested functions are inventoried separately
+in an ordinal-only dependency frontier. That inventory is filtered by the
+reached source modules and never promotes an edge to verified execution.
+The full static graph still traverses those candidate edges: nested
+functions can be invoked immediately, later, or never. This distinction
+helps prioritize source review without guessing browser execution order.

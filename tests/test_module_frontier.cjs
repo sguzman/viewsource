@@ -431,3 +431,23 @@ test("bootstrap root provenance includes only capture-local source ordinals",()=
  g.bootstrap_candidates[0].callsite_ref="PrivateOrigin.js";
  assert.throws(()=>candidateBootstrapRoots(g));
 });
+
+test("nested-only dependency edges remain static and root-local",()=>{
+ const g=graph();
+ g.resolved_links[0].factory_body_syntax_present=true;
+ g.resolved_links[0].nested_function_syntax_present=true;
+ g.resolved_links[1].factory_body_syntax_present=false;
+ g.resolved_links[1].nested_function_syntax_present=true;
+ g.resolved_links[2].factory_body_syntax_present=true;
+ g.resolved_links[2].nested_function_syntax_present=false;
+ g.nested_only_resolved_link_count=1;
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.reached_source_nested_only_link_count,1);
+ assert.equal(out.reached_source_nested_only_links[0].classification,
+   "nested_function_only_static_import_candidate");
+ assert.equal(out.reached_source_nested_only_links[0].runtime_import_verified,false);
+ assert.equal(frontier(g,["R-JS-001:1"],{depthLimit:0})
+   .reached_source_nested_only_link_count,0);
+ g.resolved_links[1].factory_body_syntax_present=true;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

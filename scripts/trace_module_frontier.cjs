@@ -48,6 +48,7 @@ function indexGraph(graph) {
   for(const [field,array] of [
     ["modules_total",null],
     ["unique_resolved_links","resolved_links"],
+    ["nested_only_resolved_link_count",null],
     ["export_shape_candidate_count","export_shape_candidates"],
     ["dynamic_boundary_count","dynamic_boundary_candidates"],
     ["bound_import_candidate_count","bound_import_candidates"],
@@ -125,7 +126,7 @@ function indexGraph(graph) {
   if(censusTotal>NODE_LIMIT||(graph.modules_total!==undefined&&
       graph.modules_total!==censusTotal))throw Error("Module census inconsistent");
   const known=(ref,n)=>ordinal(ref,n)&&census.has(ref)&&n<=census.get(ref);
-  const adjacency=new Map();
+  const adjacency=new Map(),nestedOnlyEdges=[];
   let scanned=0;
   for(const edge of graph.resolved_links) {
     scanned++;
@@ -133,10 +134,20 @@ function indexGraph(graph) {
     if(edge.classification!=="static_import_candidate"||edge.runtime_import_verified!==false||
        !known(edge.from_ref,edge.from_module)||!known(edge.to_ref,edge.to_module))
       throw Error("Invalid static edge");
+    const direct=edge.factory_body_syntax_present;
+    const nested=edge.nested_function_syntax_present;
+    if(direct!==undefined||nested!==undefined){
+      if(typeof direct!=="boolean"||typeof nested!=="boolean"||(!direct&&!nested))
+        throw Error("Invalid literal import syntax context");
+    }
     const a=ordinal(edge.from_ref,edge.from_module),b=ordinal(edge.to_ref,edge.to_module);
+    if(nested===true&&direct===false)nestedOnlyEdges.push({source:a,target:b});
     if(!adjacency.has(a))adjacency.set(a,new Set());
     adjacency.get(a).add(b);
   }
+  if(graph.nested_only_resolved_link_count!==undefined&&
+     graph.nested_only_resolved_link_count!==nestedOnlyEdges.length)
+    throw Error("Nested-only resolved link count inconsistent");
   const ambiguous=new Map();
   for(const edge of graph.export_shape_candidates){
     if(edge.classification!=="candidate_unique_export_interface"||
@@ -300,7 +311,7 @@ function indexGraph(graph) {
     }
   }
   return {census,adjacency,ambiguous,dynamic,bound,foreign,
-    unresolvedByModule,directFns,literalCallSites};
+    unresolvedByModule,directFns,literalCallSites,nestedOnlyEdges};
 }
 const BOOTSTRAP_KINDS=new Set([
  "top_level_literal_call_candidate",
@@ -345,7 +356,7 @@ function frontier(graph, roots, options={}) {
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
   const {census,adjacency,ambiguous,dynamic,bound,foreign,
-    unresolvedByModule,directFns,literalCallSites}=indexGraph(graph);
+    unresolvedByModule,directFns,literalCallSites,nestedOnlyEdges}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))].sort();
   if(provenance==="bootstrap_syntax_candidate"){
@@ -437,6 +448,15 @@ function frontier(graph, roots, options={}) {
       source:asNode(id),classification:item.classification,
       definition_candidates:item.definition_candidates,traversed:false
     })));
+  const nestedOnlyFromReached=nestedOnlyEdges
+    .filter(edge=>visited.has(edge.source))
+    .sort((a,b)=>a.source.localeCompare(b.source)||a.target.localeCompare(b.target))
+    .map(edge=>({
+      source:asNode(edge.source),candidate_target:asNode(edge.target),
+      classification:"nested_function_only_static_import_candidate",
+      target_in_frontier:visited.has(edge.target),
+      runtime_import_verified:false
+    }));
   const foreignCollisions=[...visited.keys()].sort()
     .filter(id=>foreign.has(id)).map(id=>({
       source:asNode(id),foreign_registry_definition_count:foreign.get(id),
@@ -478,6 +498,8 @@ function frontier(graph, roots, options={}) {
     reached_module_count:nodes.length,traversed_static_edges:traversed,
     examined_static_edges:examined,
     depth_counts:layerCounts,nodes,
+    reached_source_nested_only_link_count:nestedOnlyFromReached.length,
+    reached_source_nested_only_links:nestedOnlyFromReached,
     boundary_modules:[...boundary.keys()].sort().map(asNode),
     boundary_details:[...boundary].sort(([a],[b])=>a.localeCompare(b))
       .map(([id,reasons])=>({...asNode(id),reasons:[...reasons].sort()})),
@@ -510,6 +532,7 @@ function frontier(graph, roots, options={}) {
       "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
       "Unresolved import counts cover the entire capture; reachable unresolved import sites are filtered to reached modules.",
       "Repeated literal loader-call syntax is counted separately from distinct target keys per module; neither count proves invocation.",
+      "Nested-only import edges originate in callback syntax; they remain static candidates and do not establish delayed execution.",
       "Nested-function callsite counts identify syntax location, not guaranteed delayed execution.",
       "Direct function-valued export assignments indicate only static candidates, not verified feature ownership or calls.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",

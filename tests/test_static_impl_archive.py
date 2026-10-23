@@ -639,6 +639,39 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                 for private in (token, "ValidFactory", "Caller", "invented-nonfactory.zip"):
                     self.assertNotIn(private, proc.stdout)
 
+    def test_dependency_edges_distinguish_nested_only_loader_syntax(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-nested-edge-context.zip"
+            names = ("PrivateFactoryModuleZ71", "PrivateDeferredModuleZ72")
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Entry:(function(e,t,n){n('" + names[0] + "');"
+                    "function later(){n('" + names[1] + "');n('" + names[0] + "')}}),"
+                    + names[0] + ":(function(e,t,n){t.a=1}),"
+                    + names[1] + ":(function(e,t,n){t.b=1})};")
+            for flags in (["--module-trace"],
+                          ["--module-frontier", "--root", "R-JS-001:1"]):
+                result = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *flags],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=40)
+                self.assertEqual(result.returncode, 0, result.stderr[:120])
+                report = json.loads(result.stdout)
+                if flags[0] == "--module-trace":
+                    self.assertEqual(report["nested_only_resolved_link_count"], 1)
+                    targets = {x["to_module"]: x for x in report["resolved_links"]}
+                    self.assertTrue(targets[2]["factory_body_syntax_present"])
+                    self.assertTrue(targets[2]["nested_function_syntax_present"])
+                    self.assertFalse(targets[3]["factory_body_syntax_present"])
+                    self.assertTrue(targets[3]["nested_function_syntax_present"])
+                else:
+                    self.assertEqual(report["reached_source_nested_only_link_count"], 1)
+                    self.assertFalse(report["reached_source_nested_only_links"][0]
+                                     ["runtime_import_verified"])
+                for private in (*names, "fictional-nested-edge-context.zip"):
+                    self.assertNotIn(private, result.stdout)
+
     def test_nested_loader_callsite_syntax_is_reported_separately(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-nested-require.zip"
