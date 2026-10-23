@@ -1,0 +1,47 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "evidence_class": "observed_static_syntax",
+  "source_scope": "saved_stylesheets_and_script_vocabulary",
+  "method": "Private offline lexical census over the 17 captured CSS files and limited matching literal vocabulary in 144 saved JavaScript bundles. Source CSS was not executed, and no raw selectors or rules are published.",
+  "stylesheets_scanned": 17,
+  "css_bytes": 2340628,
+  "javascript_bundles_scanned": 144,
+  "css_lexical_occurrences": {
+    "media_at_rules": 627,
+    "container_at_rules": 504,
+    "prefers_reduced_motion_mentions": 168,
+    "focus_visible_pseudo_classes": 493,
+    "test_id_attribute_selectors": 32,
+    "data_state_attribute_selectors": 254,
+    "role_attribute_selectors": 88,
+    "thread_content_vocabulary_mentions": 129
+  },
+  "exact_css_attribute_selector_absence": {
+    "data_message_id": 0,
+    "data_message_author_role": 0,
+    "data_source_message_ids": 0,
+    "data_turn_key": 0
+  },
+  "cross_resource_vocabulary": {
+    "thread_content": {
+      "javascript_bundle_count": 11,
+      "javascript_occurrences": 37,
+      "css_occurrences": 129,
+      "interpretation": "Common thread-content wording occurs in captured client scripts and stylesheets, including layout-variable references. This is a lexical association, not a reviewed DOM class-to-rule binding."
+    }
+  },
+  "reviewed_conclusions": [
+    "The saved styles contain many responsive and container-query constructs, as well as explicit reduced-motion and keyboard-focus-related syntax.",
+    "DOM message attribution and turn-key attributes previously identified in JSX are absent as literal bracketed attribute selectors from the saved CSS. Other class-based, inherited or generated styling remains possible.",
+    "Shared thread-content vocabulary exists across scripts and CSS, but an exact class or CSS-variable assignment-to-rendered-message edge has not been established by lexical matches alone."
+  ],
+  "not_verified": [
+    "Which specific stylesheet rules apply to the typed transcript renderer and its virtualized row wrappers.",
+    "Whether dynamically generated classes, CSS-in-JS, imported style maps or runtime class toggles supply the missing DOM-to-CSS links.",
+    "Which breakpoint, container or reduced-motion branches a live browser evaluates.",
+    "Current deployed stylesheet coverage and computed styles in any particular account/session."
+  ],
+  "privacy": "Only authored descriptions, aggregate counts and fixed technical syntax labels are published; no captured selectors, source text, original filenames, colors, browser state or private page content is included."
+}
