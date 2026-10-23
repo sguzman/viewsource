@@ -1,0 +1,156 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "method": "Manual static inspection of captured webpack-style modules, their export bindings, scoped selectors and direct consumers. Capture ordinal references identify files; original module names and code are not published.",
+  "evidence_class": "observed_static",
+  "source_executed": false,
+  "ui_runtime_verified": false,
+  "selectors": [
+    {
+      "id": "full_selected_path",
+      "defined_in": "R-JS-013",
+      "exposed_in": "R-JS-018",
+      "kind": "message_ancestry",
+      "algorithm": "Start at current_node, follow mapping parents with repeated-node guard, reverse the path, and return present message objects.",
+      "ui_meaning": "All available messages on one selected ancestry path, not all alternative branches."
+    },
+    {
+      "id": "current_turn_path",
+      "defined_in": "R-JS-013",
+      "exposed_in": "R-JS-018",
+      "kind": "message_ancestry",
+      "algorithm": "Follow parents from the selected node and stop at the latest message satisfying a predicate; the default predicate matches a user-authored message. Reverse the resulting window.",
+      "ui_meaning": "Messages for the selected recent user turn and subsequent steps, not the entire conversation."
+    },
+    {
+      "id": "user_message_ancestry",
+      "defined_in": "R-JS-018",
+      "exposed_in": "R-JS-018",
+      "kind": "derived_state",
+      "algorithm": "Read the current selected node and mapping, follow parents with a cycle guard, gather user-authored message identities and reverse into root-to-leaf order.",
+      "ui_meaning": "User-message identifiers on the currently selected ancestry branch."
+    },
+    {
+      "id": "automation_references",
+      "defined_in": "R-JS-018",
+      "exposed_in": "R-JS-018",
+      "kind": "feature_reference_state",
+      "algorithm": "Scan messages on selected ancestry for automation references in metadata, tool responses and supported widget structures; permit limited incremental updates.",
+      "ui_meaning": "Feature-specific automation references, NOT visible transcript messages."
+    },
+    {
+      "id": "page_references",
+      "defined_in": "R-JS-018",
+      "exposed_in": "R-JS-018",
+      "kind": "feature_reference_state",
+      "algorithm": "Extract eligible page references from selected ancestry tool messages and update a separate page-reference collection.",
+      "ui_meaning": "Page resource references, NOT visible transcript messages."
+    }
+  ],
+  "verified_consumers": [
+    {
+      "selector_id": "current_turn_path",
+      "source_ref": "R-JS-018",
+      "consumer_role": "conversation_answer_now_control",
+      "kind": "react_scoped_selector_subscription",
+      "behavior": "A React conversation-control component subscribes to the current-turn selector, filters assistant and other message roles, and derives whether an answer-now or skip control is eligible. Actual rendered interaction not observed."
+    },
+    {
+      "selector_id": "current_turn_path",
+      "source_ref": "R-JS-018",
+      "consumer_role": "composer_related_state_selectors",
+      "kind": "derived_selector_read",
+      "behavior": "Composer-related selectors consult the current-turn messages to determine last user-message context and related local-input state."
+    },
+    {
+      "selector_id": "full_selected_path",
+      "source_ref": "R-JS-018",
+      "consumer_role": "conversation_message_context",
+      "kind": "derived_selector_read",
+      "behavior": "Derived selectors and local helpers receive the full path as message objects when calculating conversation-level context."
+    },
+    {
+      "selector_id": "full_selected_path",
+      "source_ref": "R-JS-015",
+      "consumer_role": "panel_coordination",
+      "kind": "scoped_state_read",
+      "behavior": "A side-panel coordination path reads the selected conversation message set while synchronizing local panel/turn state."
+    },
+    {
+      "selector_id": "user_message_ancestry",
+      "source_ref": "R-JS-018",
+      "consumer_role": "message_eligibility_policy",
+      "kind": "scoped_state_read",
+      "behavior": "Two policy paths compare the last selected-branch user message identity with the message under evaluation before triggering a potential placement."
+    },
+    {
+      "selector_id": "user_message_ancestry",
+      "source_ref": "R-JS-072",
+      "consumer_role": "latest_user_message_eligibility",
+      "kind": "derived_selector_read",
+      "behavior": "A derived selector takes the final selected-branch user message identity and combines it with response visibility state for eligibility."
+    },
+    {
+      "selector_id": "automation_references",
+      "source_ref": "R-JS-072",
+      "consumer_role": "automation_feature_scopes",
+      "kind": "derived_selector_read",
+      "behavior": "Feature selectors filter selected-path automation references by origin and correlate them with candidate automation records."
+    }
+  ],
+  "relationships": [
+    {
+      "from": "captured_conversation_mapping",
+      "to": "full_selected_path",
+      "kind": "selector_input"
+    },
+    {
+      "from": "captured_selected_current_node",
+      "to": "full_selected_path",
+      "kind": "selector_input"
+    },
+    {
+      "from": "captured_conversation_mapping",
+      "to": "current_turn_path",
+      "kind": "selector_input"
+    },
+    {
+      "from": "captured_selected_current_node",
+      "to": "current_turn_path",
+      "kind": "selector_input"
+    },
+    {
+      "from": "current_turn_path",
+      "to": "conversation_answer_now_control",
+      "kind": "scoped_react_subscription"
+    },
+    {
+      "from": "current_turn_path",
+      "to": "composer_related_state_selectors",
+      "kind": "derived_selector_use"
+    },
+    {
+      "from": "user_message_ancestry",
+      "to": "message_eligibility_policy",
+      "kind": "state_policy_read"
+    },
+    {
+      "from": "user_message_ancestry",
+      "to": "latest_user_message_eligibility",
+      "kind": "derived_selector_use"
+    },
+    {
+      "from": "automation_references",
+      "to": "automation_feature_scopes",
+      "kind": "derived_selector_use"
+    }
+  ],
+  "limitations": [
+    "Static React-hook syntax establishes a component-side subscription path, but a runtime render or user-visible button state has not been observed.",
+    "Selected ancestry and recent-turn selector outputs are not equivalent to rendered message DOM; feature filtering, hidden messages and rendering policies remain to be traced.",
+    "The previously mislabeled automation-reference collector is distinct from both ancestry-message selectors.",
+    "An exported state selector's existence does not establish that all captured consumers are loaded or executed in the same session.",
+    "Only capture-local resource ordinals and authored descriptions are published; no raw JavaScript, original module identifier, message data or network endpoint is included."
+  ]
+}
