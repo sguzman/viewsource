@@ -1934,11 +1934,14 @@
       "profile": "followup",
       "queue": "state",
       "title": "Trace caches, persistence and cross-tab effects",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-followup-static-source-state-flows"
       ],
-      "notes": "Static implementation trace: Follow concrete cache/storage reads, writes and invalidation; separate saved browser state from speculative backend durability."
+      "notes": "Static implementation trace: Follow concrete cache/storage reads, writes and invalidation; separate saved browser state from speculative backend durability. Source-reviewed versioned list cache, pinned fallback, query-cache revalidation, and conditional persisted snapshot worker; full message durability and cross-tab semantics still open.",
+      "evidence_refs": [
+        "E2-092"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-render-bindings",
