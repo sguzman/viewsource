@@ -306,3 +306,23 @@ test("whole-module function assignments remain a distinct source candidate",()=>
   "module_object_function_assignment_candidate");
  assert.equal(out.reachable_direct_function_export_sites[0].runtime_invocation_verified,false);
 });
+
+test("literal loader calls distinguish repeated syntax from distinct module keys",()=>{
+ const g=graph();
+ g.import_candidates=6;
+ g.literal_module_loader_call_expression_count=8;
+ g.literal_module_loader_call_site_counts=[
+  {source_ref:"R-JS-001",module_ordinal:1,literal_call_expressions:5,
+   distinct_literal_targets:3,classification:"static_literal_loader_calls",
+   runtime_invocation_verified:false},
+  {source_ref:"R-JS-002",module_ordinal:2,literal_call_expressions:3,
+   distinct_literal_targets:3,classification:"static_literal_loader_calls",
+   runtime_invocation_verified:false}
+ ];
+ const full=frontier(g,["R-JS-001:1"]);
+ assert.equal(full.reachable_literal_module_loader_call_expression_count,5);
+ assert.equal(full.reachable_literal_module_loader_call_sites.length,1);
+ assert.equal(full.reachable_literal_module_loader_call_sites[0].runtime_invocation_verified,false);
+ g.literal_module_loader_call_site_counts[0].literal_call_expressions="PrivateCallText";
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

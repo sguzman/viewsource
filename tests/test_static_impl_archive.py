@@ -441,6 +441,33 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for item in ("One", "Two", sentinel, "invented-commonjs-exports.zip"):
                 self.assertNotIn(item, proc.stdout)
 
+    def test_literal_module_calls_count_repeated_syntax_separately(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-literal-calls.zip"
+            secret = "PrivateLiteralModuleKeyZ938"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Caller:(function(e,t,n){n('" + secret + "');n('" + secret + "')"
+                    "}),"
+                    + secret + ":(function(e,t,n){t.a=1})};")
+            for mode in (["--module-trace"],
+                         ["--module-frontier", "--root", "R-JS-001:1"]):
+                proc = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *mode],
+                    cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+                self.assertEqual(proc.returncode, 0)
+                report = json.loads(proc.stdout)
+                if mode[0] == "--module-trace":
+                    self.assertEqual(report["import_candidates"], 1)
+                    self.assertEqual(report["literal_module_loader_call_expression_count"], 2)
+                else:
+                    self.assertEqual(
+                        report["reachable_literal_module_loader_call_expression_count"], 2)
+                    self.assertEqual(report["reached_module_count"], 2)
+                for private in (secret, "invented-literal-calls.zip", "Caller"):
+                    self.assertNotIn(private, proc.stdout)
+
     def test_direct_function_exports_exclude_shadowed_and_getter_functions(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-export-ownership.zip"

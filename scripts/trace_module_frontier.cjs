@@ -71,6 +71,17 @@ function indexGraph(graph) {
     if(graph.parsed_bundles+graph.failed_bundles!==inputs)
       throw Error("Incomplete parser coverage census");
   }
+  if(graph.literal_module_loader_call_expression_count!==undefined){
+    safeCount(graph.literal_module_loader_call_expression_count,
+      "literal call expression count");
+    if(!Array.isArray(graph.literal_module_loader_call_site_counts))
+      throw Error("Invalid module callsite summary");
+    const summed=graph.literal_module_loader_call_site_counts.reduce((n,item)=>
+      n+(Number.isSafeInteger(item.literal_call_expressions)?
+        item.literal_call_expressions:0),0);
+    if(summed!==graph.literal_module_loader_call_expression_count)
+      throw Error("Callsite count inconsistent");
+  }
   if(graph.import_candidates!==undefined){
     const total=safeCount(graph.import_candidates,"import_candidates");
     if(total!==graph.resolved_links.length+
@@ -150,6 +161,29 @@ function indexGraph(graph) {
       });
     }
   }
+  const literalCallSites=new Map();
+  if(graph.literal_module_loader_call_site_counts!==undefined){
+    if(!Array.isArray(graph.literal_module_loader_call_site_counts))
+      throw Error("Invalid callsite records");
+    let distinct=0;
+    for(const item of graph.literal_module_loader_call_site_counts){
+      if(item.classification!=="static_literal_loader_calls"||
+         item.runtime_invocation_verified!==false||
+         !known(item.source_ref,item.module_ordinal)||
+         !Number.isSafeInteger(item.literal_call_expressions)||
+         item.literal_call_expressions<1||
+         !Number.isSafeInteger(item.distinct_literal_targets)||
+         item.distinct_literal_targets<1||
+         item.distinct_literal_targets>item.literal_call_expressions)
+       throw Error("Invalid literal callsite");
+      const id=ordinal(item.source_ref,item.module_ordinal);
+      if(literalCallSites.has(id))throw Error("Duplicate callsite record");
+      literalCallSites.set(id,item.literal_call_expressions);
+      distinct+=item.distinct_literal_targets;
+    }
+    if(graph.import_candidates!==undefined&&distinct!==graph.import_candidates)
+      throw Error("Distinct import count inconsistent");
+  }
   const directFns=new Map();
   if(graph.direct_function_export_sites!==undefined){
     if(!Array.isArray(graph.direct_function_export_sites))
@@ -220,7 +254,8 @@ function indexGraph(graph) {
       foreign.set(id,foreign.get(id)+item.foreign_registry_definition_count);
     }
   }
-  return {census,adjacency,ambiguous,dynamic,bound,foreign,unresolvedByModule,directFns};
+  return {census,adjacency,ambiguous,dynamic,bound,foreign,
+    unresolvedByModule,directFns,literalCallSites};
 }
 const BOOTSTRAP_KINDS=new Set([
  "top_level_literal_call_candidate",
@@ -252,7 +287,7 @@ function frontier(graph, roots, options={}) {
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
   const {census,adjacency,ambiguous,dynamic,bound,foreign,
-    unresolvedByModule,directFns}=indexGraph(graph);
+    unresolvedByModule,directFns,literalCallSites}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))].sort();
   if(provenance==="bootstrap_syntax_candidate"){
@@ -325,6 +360,13 @@ function frontier(graph, roots, options={}) {
       candidate_target:item.target?asNode(item.target):null,
       traversed:false
     })));
+  const localLiteralCalls=[...visited.keys()].sort()
+    .filter(id=>literalCallSites.has(id))
+    .map(id=>({source:asNode(id),
+      literal_call_expressions:literalCallSites.get(id),
+      classification:"static_literal_loader_calls",
+      runtime_invocation_verified:false
+    }));
   const localDirectFunctions=[...visited.keys()].sort().flatMap(id=>
     (directFns.get(id)||[]).map(item=>({
       source:asNode(id),export_function_ordinal:item.export_function_ordinal,
@@ -386,6 +428,9 @@ function frontier(graph, roots, options={}) {
     reachable_unresolved_import_sites:localUnresolved,
     reachable_direct_function_export_site_count:localDirectFunctions.length,
     reachable_direct_function_export_sites:localDirectFunctions,
+    reachable_literal_module_loader_call_expression_count:
+      localLiteralCalls.reduce((n,item)=>n+item.literal_call_expressions,0),
+    reachable_literal_module_loader_call_sites:localLiteralCalls,
     truncated_by_node_limit:limited,
     total_unresolved_import_candidates:graph.unresolved_import_candidates,
     total_ambiguous_import_candidates:graph.ambiguous_import_candidates,
@@ -397,6 +442,7 @@ function frontier(graph, roots, options={}) {
       "Bound loader callbacks remain future-use candidates and NEVER expand the resolved graph.",
       "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
       "Unresolved import counts cover the entire capture; reachable unresolved import sites are filtered to reached modules.",
+      "Repeated literal loader-call syntax is counted separately from distinct target keys per module; neither count proves invocation.",
       "Direct function-valued export assignments indicate only static candidates, not verified feature ownership or calls.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",

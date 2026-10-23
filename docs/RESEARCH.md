@@ -541,3 +541,13 @@ exploration. Predecessor paths, output node order and node-limit
 truncation therefore no longer depend on input JSON edge order or the
 order in which roots were supplied. This improves reproducible review;
 it does not imply a browser's import or execution order.
+
+### Distinct module imports versus repeated literal call syntax
+
+Module dependency reports distinguish *distinct literal module keys
+referenced per module factory* (`import_candidates`) from the number
+of literal factory-loader call expressions found in captured source,
+including repeated references to the same key. Root-local frontier
+reports include the latter count only for reached modules. Both are
+AST-source metrics, not executed call counts, feature invocation
+frequencies or observed network requests.

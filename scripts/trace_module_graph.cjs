@@ -392,10 +392,10 @@ function dynamicSyntax(fn,requireName,scopeCalls){
  * candidate edges are emitted only for references to the original parameter. */
 function scanScopedModuleCalls(fn,requireName){
  const imports=new Set(),boundImports=new Set(),loaderIdentity=Symbol("factory_require");
- let computedRequire=false,chunkLoader=false;
+ let computedRequire=false,chunkLoader=false,literalCallCount=0;
  if(!requireName||fn.params?.[2]?.type!=="Identifier"||
     fn.params[2].name!==requireName)
-     return {imports,boundImports,computedRequire,chunkLoader};
+     return {imports,boundImports,computedRequire,chunkLoader,literalCallCount};
  function shadows(pattern,env){
   if(!pattern)return;
   if(pattern.type==="Identifier"){
@@ -477,8 +477,10 @@ function scanScopedModuleCalls(fn,requireName){
    if(node.callee?.type==="Identifier"&&node.callee.name===requireName&&
       node.arguments.length>=1){
     const key=moduleKey(node.arguments[0]);
-    if(key!==null)imports.add(key);
-    else computedRequire=true;
+    if(key!==null){
+     literalCallCount++;
+     imports.add(key);
+    }else computedRequire=true;
    }
    if(memberOf(node.callee,requireName)==="e")chunkLoader=true;
    if(memberOf(node.callee,requireName)==="bind"&&
@@ -495,7 +497,7 @@ function scanScopedModuleCalls(fn,requireName){
   }
  }
  walk(fn.body,new Map([[requireName,loaderIdentity]]));
- return {imports,boundImports,computedRequire,chunkLoader};
+ return {imports,boundImports,computedRequire,chunkLoader,literalCallCount};
 }
 
 /* A Webpack chunk may include a third-position runtime callback. Only
@@ -569,7 +571,7 @@ function analyzeJS(source,sourceOrdinal){
    fn=property.value;
   if(!identifier||!["FunctionExpression","ArrowFunctionExpression"].includes(fn?.type)){
    result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,
-    imports:[],eligible:false});continue;
+    imports:[],literalCallExpressions:0,eligible:false});continue;
   }
   const requireParam=fn.params?.[2];
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
@@ -578,7 +580,8 @@ function analyzeJS(source,sourceOrdinal){
   const signatures=scanModuleSignatures(fn,requireName,exportName,moduleName);
   const scopeCalls=scanScopedModuleCalls(fn,requireName);
   const {imports,boundImports}=scopeCalls;
-  result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
+  result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,
+    literalCallExpressions:scopeCalls.literalCallCount,imports:[...imports],
     boundImports:[...boundImports],
     eligible:!!requireName,exportedSlots:signatures.exportedSlots,
     directFunctionExports:signatures.directFunctionExports,
@@ -602,6 +605,19 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
  const links=[],shapeCandidates=[],boundCandidates=[],foreignRegistryCollisions=[],
   unresolvedSites=[];
  const directFunctionSites=[];
+ const literalCallSiteCounts=[];
+ for(const item of all){
+  if((item.literalCallExpressions||0)>0){
+   literalCallSiteCounts.push({
+    source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+    module_ordinal:item.moduleOrdinal,
+    literal_call_expressions:item.literalCallExpressions,
+    distinct_literal_targets:item.imports.length,
+    classification:"static_literal_loader_calls",
+    runtime_invocation_verified:false
+   });
+  }
+ }
  for(const item of all){
   for(const [i,classification] of (item.directFunctionExports||[]).entries())
    directFunctionSites.push({
@@ -745,6 +761,9 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   modules_total:all.length,
   modules_with_import_parameter:all.filter(x=>x.eligible).length,
   import_candidates:candidateCalls,unique_resolved_links:links.length,
+  literal_module_loader_call_expression_count:
+    literalCallSiteCounts.reduce((n,item)=>n+item.literal_call_expressions,0),
+  literal_module_loader_call_site_counts:literalCallSiteCounts,
   unresolved_import_candidates:unresolved,ambiguous_import_candidates:ambiguous,
   cross_bundle_links:links.filter(x=>x.from_ref!==x.to_ref).length,
   same_bundle_links:links.filter(x=>x.from_ref===x.to_ref).length,
@@ -761,6 +780,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Bootstrap candidates require direct top-level or immediately-invoked __webpack_require__ literal calls; other startup patterns are not covered.",
    "Candidate bootstrap calls do not show that a browser invoked or loaded a module.",
    "A chunk runtime callback containing a direct literal require call may be discovered, but chunk registration never proves callback execution.",
+   "Literal loader-call expression counts include repeated syntax, while import_candidates counts distinct keys per module.",
    "Static require calls may be conditional, dead, or nested in inactive closures.",
    "A resolved bundled module reference is not proof that a module loaded or ran.",
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
@@ -1017,6 +1037,14 @@ function selfTest(){
   ["module_object_function_assignment_candidate",
    "direct_function_export_assignment_candidate"]);
  assert(!JSON.stringify(commonjsGraph).includes("PrivateShadowFnZ937"));
+ const repeated=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(e,t,n){n('B');n('B');const a=n('C')}),"+
+  "B:(function(e,t,n){t.a=1}),C:(function(e,t,n){t.c=1})};",39);
+ const repeatedGraph=buildGraph(repeated,1,0);
+ assert.equal(repeatedGraph.import_candidates,2);
+ assert.equal(repeatedGraph.literal_module_loader_call_expression_count,3);
+ assert.equal(repeatedGraph.literal_module_loader_call_site_counts[0].distinct_literal_targets,2);
+ assert(!JSON.stringify(repeatedGraph).includes("'B'"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
