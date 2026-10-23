@@ -422,3 +422,14 @@ separate from named chunk registrations. Neither a shared chunk name nor a
 unique module key proves that the browser executed a module. The emitted
 `registry_runtime_scope_count` counts in-memory resolution partitions,
 not confirmed independent running runtimes.
+
+### Unresolved imports with foreign-registry key collisions
+
+An import can remain unresolved in its own Webpack chunk namespace even when
+a module with the same key appears in a **different** namespace. Such cases are
+reported separately as `foreign_registry_key_collision` diagnostics with
+only the importing module's capture-local ordinal and the number of foreign
+definitions. The cross-runtime definition is **not** emitted as a target,
+and frontiers do not traverse these cases. The unresolved-import total
+continues to include them; the diagnostic count is a subset, not a
+new category of resolved imports.

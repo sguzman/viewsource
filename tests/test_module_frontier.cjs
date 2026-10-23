@@ -169,3 +169,21 @@ test("computed module-key candidates remain an untraversed dynamic boundary",()=
  assert.equal(out.reachable_dynamic_boundaries[0].traversed,false);
  assert.equal(out.reached_module_count,3);
 });
+
+test("foreign-registry key collisions are untraversed review leads",()=>{
+ const g=graph();
+ g.foreign_registry_key_collision_count=1;
+ g.foreign_registry_key_collisions=[{
+  source_ref:"R-JS-001",module_ordinal:2,
+  foreign_registry_definition_count:1,
+  classification:"foreign_registry_key_collision",import_resolved:false
+ }];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.reachable_foreign_registry_collision_count,1);
+ assert.equal(out.reachable_foreign_registry_collisions[0].traversed,false);
+ assert.equal(out.reached_module_count,3);
+ assert.equal(frontier(g,["R-JS-001:1"],{depthLimit:0})
+  .reachable_foreign_registry_collision_count,0);
+ g.foreign_registry_key_collisions[0].import_resolved=true;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

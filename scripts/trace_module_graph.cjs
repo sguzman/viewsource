@@ -408,16 +408,17 @@ function analyzeJS(source,sourceOrdinal){
 }
 function buildGraph(all,scanned,parseFailures,bootstrap=[]){
  if(all.length>MAX_MODULES)throw Error("Too many modules");
- const index=new Map();
+ const index=new Map(),globalKeyCounts=new Map();
  for(const x of all){
   if(!x.identifier)continue;
+  globalKeyCounts.set(x.identifier,(globalKeyCounts.get(x.identifier)||0)+1);
   const domain=x.domain||"unscoped";
   if(!index.has(domain))index.set(domain,new Map());
   if(!index.get(domain).has(x.identifier))index.get(domain).set(x.identifier,[]);
   index.get(domain).get(x.identifier).push(x);
  }
  const resolve=(domain,key)=>index.get(domain||"unscoped")?.get(key)||[];
- const links=[],shapeCandidates=[],boundCandidates=[];
+ const links=[],shapeCandidates=[],boundCandidates=[],foreignRegistryCollisions=[];
  for(const item of all){
   for(const key of item.boundImports||[]){
    const matches=resolve(item.domain,key);
@@ -465,7 +466,20 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    candidateCalls++;
    if(candidateCalls>MAX_CANDIDATES)throw Error("Too many import candidates");
    const matches=resolve(item.domain,id);
-   if(!matches.length){unresolved++;continue;}
+   if(!matches.length){
+    unresolved++;
+    const foreignCount=globalKeyCounts.get(id)||0;
+    if(foreignCount){
+     foreignRegistryCollisions.push({
+      source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
+      module_ordinal:item.moduleOrdinal,
+      foreign_registry_definition_count:foreignCount,
+      classification:"foreign_registry_key_collision",
+      import_resolved:false
+     });
+    }
+    continue;
+   }
    if(matches.length!==1){
     ambiguous++;
     const needed=item.requiredByImport?.[id]||[];
@@ -508,6 +522,8 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   parsed_bundles:scanned,failed_bundles:parseFailures,
   registry_runtime_scope_count:index.size,
   chunk_runtime_isolation_applied:true,
+  foreign_registry_key_collision_count:foreignRegistryCollisions.length,
+  foreign_registry_key_collisions:foreignRegistryCollisions,
   bootstrap_call_candidates:bootstrapCandidates.length,
   bootstrap_candidates:bootstrapCandidates,
   bootstrap_runtime_verified:false,
@@ -543,6 +559,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Function-bound module-loader callbacks are future-import candidates, not direct calls or verified loads.",
    "Named webpackChunk registrations are linked only within the same in-memory chunk namespace; namespaces are never published.",
    "Standalone __webpack_modules__ declarations have unknown runtime identity and share an unscoped provisional group.",
+   "Foreign registry key collisions are unresolved diagnostics only and do not establish any imported target.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
@@ -706,6 +723,10 @@ function selfTest(){
  assert.equal(isolated.unresolved_import_candidates,1);
  assert.equal(isolated.ambiguous_import_candidates,0);
  assert.equal(isolated.cross_bundle_links,1);
+ assert.equal(isolated.foreign_registry_key_collision_count,1);
+ assert.equal(isolated.foreign_registry_key_collisions[0].classification,
+   "foreign_registry_key_collision");
+ assert.equal(isolated.foreign_registry_key_collisions[0].import_resolved,false);
  assert(!JSON.stringify(isolated).includes("webpackChunkPrivateAlpha"));
  assert(!JSON.stringify(isolated).includes("webpackChunkPrivateBeta"));
  const scopedConsumer="export const __webpack_modules__={"

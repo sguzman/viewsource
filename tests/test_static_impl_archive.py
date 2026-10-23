@@ -304,6 +304,31 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_foreign_chunk_keys_are_diagnostics_not_resolved_edges(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "unrelated-chunk-fixture.zip"
+            chunk_a = "webpackChunkPrivateOne"
+            chunk_b = "webpackChunkPrivateTwo"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js",
+                    "(self." + chunk_a + "=self." + chunk_a + "||[]).push([[1],{"
+                    "100:function(e,t,n){const x=n(200)}}]);")
+                z.writestr("b.js",
+                    "(self." + chunk_b + "=self." + chunk_b + "||[]).push([[2],{"
+                    "200:function(e,t,n){t.a=1}}]);")
+            graph_run = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(graph_run.returncode, 0)
+            graph = json.loads(graph_run.stdout)
+            self.assertEqual(graph["unresolved_import_candidates"], 1)
+            self.assertEqual(graph["unique_resolved_links"], 0)
+            self.assertEqual(graph["foreign_registry_key_collision_count"], 1)
+            self.assertFalse(graph["foreign_registry_key_collisions"][0]["import_resolved"])
+            for private in (chunk_a, chunk_b, "unrelated-chunk-fixture.zip"):
+                self.assertNotIn(private, graph_run.stdout)
+
     def test_chunk_runtime_namespace_separates_reused_module_ids(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-cross-runtime.zip"

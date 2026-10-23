@@ -39,7 +39,8 @@ function indexGraph(graph) {
     ["export_shape_candidate_count","export_shape_candidates"],
     ["dynamic_boundary_count","dynamic_boundary_candidates"],
     ["bound_import_candidate_count","bound_import_candidates"],
-    ["bootstrap_call_candidates","bootstrap_candidates"]
+    ["bootstrap_call_candidates","bootstrap_candidates"],
+    ["foreign_registry_key_collision_count","foreign_registry_key_collisions"]
   ]){
     if(graph[field]===undefined)continue;
     const value=safeCount(graph[field],field);
@@ -125,7 +126,24 @@ function indexGraph(graph) {
       });
     }
   }
-  return {census,adjacency,ambiguous,dynamic,bound};
+  const foreign=new Map();
+  if(graph.foreign_registry_key_collisions!==undefined){
+    if(!Array.isArray(graph.foreign_registry_key_collisions))
+      throw Error("Invalid foreign registry collision report");
+    for(const item of graph.foreign_registry_key_collisions){
+      if(item.classification!=="foreign_registry_key_collision"||
+         item.import_resolved!==false||
+         !known(item.source_ref,item.module_ordinal)||
+         !Number.isSafeInteger(item.foreign_registry_definition_count)||
+         item.foreign_registry_definition_count<1||
+         item.foreign_registry_definition_count>NODE_LIMIT)
+        throw Error("Invalid foreign registry collision");
+      const id=ordinal(item.source_ref,item.module_ordinal);
+      if(!foreign.has(id))foreign.set(id,0);
+      foreign.set(id,foreign.get(id)+item.foreign_registry_definition_count);
+    }
+  }
+  return {census,adjacency,ambiguous,dynamic,bound,foreign};
 }
 function candidateBootstrapRoots(graph) {
  if(graph?.bootstrap_runtime_verified!==false||!Array.isArray(graph.bootstrap_candidates))
@@ -150,7 +168,7 @@ function frontier(graph, roots, options={}) {
   if(!Number.isSafeInteger(depthLimit)||depthLimit<0||depthLimit>30||
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
-  const {census,adjacency,ambiguous,dynamic,bound}=indexGraph(graph);
+  const {census,adjacency,ambiguous,dynamic,bound,foreign}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))];
   if(seeds.length>nodeLimit)throw Error("Initial roots exceed node limit");
@@ -218,6 +236,11 @@ function frontier(graph, roots, options={}) {
       candidate_target:item.target?asNode(item.target):null,
       traversed:false
     })));
+  const foreignCollisions=[...visited.keys()].sort()
+    .filter(id=>foreign.has(id)).map(id=>({
+      source:asNode(id),foreign_registry_definition_count:foreign.get(id),
+      classification:"foreign_registry_key_collision",traversed:false
+    }));
   const nodes=[...visited].sort((a,b)=>a[1]-b[1]||a[0].localeCompare(b[0]))
     .map(([id,depth])=>({...asNode(id),depth,
       reached_via:predecessors.get(id)?asNode(predecessors.get(id)):null,
@@ -239,6 +262,8 @@ function frontier(graph, roots, options={}) {
     reachable_dynamic_boundaries:unresolvedDynamic,
     reachable_bound_import_count:unresolvedBound.length,
     reachable_bound_import_candidates:unresolvedBound,
+    reachable_foreign_registry_collision_count:foreignCollisions.length,
+    reachable_foreign_registry_collisions:foreignCollisions,
     truncated_by_node_limit:limited,
     total_unresolved_import_candidates:graph.unresolved_import_candidates,
     total_ambiguous_import_candidates:graph.ambiguous_import_candidates,
@@ -247,6 +272,7 @@ function frontier(graph, roots, options={}) {
       "Export-shape matches are shown separately and are NEVER traversed as verified edges.",
       "Dynamic loading syntax in reached modules is a separate unresolved boundary and is NEVER traversed.",
       "Bound loader callbacks remain future-use candidates and NEVER expand the resolved graph.",
+      "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
       "Unresolved import counts cover the entire capture, not only these roots.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted."
