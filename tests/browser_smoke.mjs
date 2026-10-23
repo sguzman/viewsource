@@ -71,6 +71,14 @@ try {
   assert.equal(await page.locator(".chat-cache-stage").count(),9);
   assert.equal(await page.locator(".chat-css-stat").count(),8);
   assert.equal(await page.locator(".chat-lifecycle-stage").count(),10);
+  await page.locator(".chat-lifecycle-anchors summary").click();
+  assert.equal(await page.locator(".chat-lifecycle-anchor-list li").count(),10);
+  assert.equal(await page.locator(".chat-lifecycle-anchor-list li")
+    .filter({hasText:"resource only"}).count(),4);
+  assert.ok((await page.locator(".chat-lifecycle-anchors").innerText())
+    .includes("not observed execution"));
+  assert.ok((await page.locator(".chat-lifecycle-anchors").innerText())
+    .includes("Unresolved:"));
   assert.equal(await page.locator(".chat-recovery-stage").count(),13);
   await page.locator(".chat-recovery-permission summary").click();
   assert.ok((await page.locator(".chat-recovery-permission").innerText()).includes("history_and_training_disabled"));
