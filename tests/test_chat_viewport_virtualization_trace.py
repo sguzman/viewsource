@@ -32,6 +32,12 @@ class ViewportTraceTests(unittest.TestCase):
                          ["R-JS-018","R-JS-072","R-JS-066","R-JS-066"])
         self.assertFalse(reconciliation["runtime_effect_verified"])
         self.assertEqual(len(reconciliation["limits"]),3)
+        spacer=d["composer_spacer_wiring"]
+        self.assertFalse(spacer["live_scroll_verified"])
+        self.assertEqual(len(spacer["stages"]),4)
+        self.assertEqual([s["source_ref"] for s in spacer["stages"]],
+                         ["R-JS-072","R-JS-072","R-JS-072","R-JS-066"])
+        self.assertEqual(len(spacer["boundaries"]),3)
         self.assertTrue(d["still_unverified"])
         ids=[row["id"] for row in d["windowing_rules"]]
         self.assertEqual(len(ids),len(set(ids)))
