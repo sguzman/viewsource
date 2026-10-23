@@ -134,6 +134,13 @@ window.ViewsourceChatGraph = (() => {
         " ("+link.kind.replaceAll("_"," ")+")")));
       edges.append(list);
       block.append(edges);
+      const moduleCall=element("details","chat-transcript-import");
+      moduleCall.append(element("summary","","Verified turn renderer import"),
+        element("p","",transcript.cross_module_call.behavior),
+        element("p","graph-caption",
+          transcript.cross_module_call.source_ref+" → "+transcript.cross_module_call.target_ref+
+          ". "+transcript.cross_module_call.boundary));
+      block.append(moduleCall);
       const limits=element("details","chat-transcript-limits");
       limits.append(element("summary","","Still unresolved"));
       const questions=element("ul","");
