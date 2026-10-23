@@ -834,6 +834,16 @@ nested-only edges are separately counted for reached source modules.
 This is a review filter, **not** a claim of eager loading, executed
 branches, or verified runtime dependencies.
 
+### For-loop evaluation order in source tracing
+
+The scoped import, export, imported-property and top-level bootstrap
+passes inspect a `for` statement in the order initializer, condition,
+body, and update. A binding rewritten by an update expression does not
+erase a source candidate in the first body evaluation. Later calls after
+the possible update remain conservatively invalidated. This preserves
+legitimate syntax leads without asserting that the loop ran or that a
+particular iteration was reached.
+
 ### Right-hand-side evaluation before binding replacement
 
 Assignment expressions evaluate their right-hand values before replacing
