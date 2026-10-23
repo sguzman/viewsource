@@ -1153,6 +1153,29 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (key, "fictional-var-shadow.zip"):
                 self.assertNotIn(private, run.stdout)
 
+    def test_update_expressions_invalidate_module_binding_identities(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-update-bindings.zip"
+            target = "PrivateUpdateTargetZ991"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "Loader:(function(e,t,n){n++;n('PrivateNeverImportZ991')}),"
+                    "Export:(function(e,t,n){t++;t.fake=()=>1}),"
+                    "Alias:(function(e,t,n){let a=n('" + target + "');a++;a.ok()}),"
+                    + target + ":(function(e,t,n){t.ok=()=>1})};")
+            result = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(result.returncode, 0, result.stderr[:120])
+            data = json.loads(result.stdout)
+            self.assertEqual(data["import_candidates"], 1)
+            self.assertEqual(data["unique_resolved_links"], 1)
+            self.assertEqual(data["direct_function_export_site_count"], 1)
+            for private in (target, "PrivateNeverImportZ991", "invented-update-bindings.zip"):
+                self.assertNotIn(private, result.stdout)
+
     def test_pattern_assignments_invalidate_loader_export_and_import_aliases(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-pattern-reassignment.zip"

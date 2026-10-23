@@ -754,3 +754,13 @@ available to invent an export-interface property or module-loader
 call. Local lexical declarations remain isolated from outer variables.
 The behavior is intentionally conservative: a possible write removes
 a candidate identity without claiming the branch executed.
+
+### Identifier update expressions invalidate module bindings
+
+Increment and decrement on an imported-module alias, loader parameter
+or export object identifier may replace the original binding value.
+The static scanner now invalidates those identities after a direct
+identifier update, instead of allowing later source syntax to create
+false module imports, required export slots or callable assignments.
+Member-property updates continue to be treated as mutations rather
+than evidence that a module originally exported that property.

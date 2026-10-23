@@ -245,6 +245,10 @@ function scanScopedRequiredSlots(fn,requireName,required){
     return;
    }
   }
+  if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"){
+   if(env.has(node.argument.name))env.set(node.argument.name,null);
+   return;
+  }
   if(node.type==="UpdateExpression"||node.type==="UnaryExpression"&&
      node.operator==="delete"){
    if(node.argument?.type==="MemberExpression"){
@@ -375,6 +379,8 @@ function scanScopedExports(fn,requireName,exportName,moduleName){
    }
    return;
   }
+  if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier")
+   neutralize(node.argument,env);
   if(node.type==="AssignmentExpression"){
    if(node.left?.type==="MemberExpression"){
     let slot=null,classification=null;
@@ -684,6 +690,8 @@ function scanScopedModuleCalls(fn,requireName){
    }
    return;
   }
+  if(node.type==="UpdateExpression"&&node.argument?.type==="Identifier"&&
+     node.argument.name===requireName)env.set(requireName,null);
   if(node.type==="AssignmentExpression"){
    const assigned=new Set();
    bindingNames(node.left,assigned);
@@ -1571,6 +1579,16 @@ function selfTest(){
  assert.equal(assignmentGraph.unique_resolved_links,1);
  assert.equal(assignmentGraph.direct_function_export_site_count,1);
  assert(!JSON.stringify(assignmentGraph).includes("Unused"));
+ const updatedBindings=analyzeJS("export const __webpack_modules__={"+
+  "Loader:(function(e,t,n){n++;n('Fake')}),"+
+  "Export:(function(e,t,n){t++;t.fake=()=>1}),"+
+  "Alias:(function(e,t,n){let a=n('Target');a++;a.ok()}),"+
+  "Target:(function(e,t,n){t.ok=()=>1})};",81);
+ const updateResult=buildGraph(updatedBindings,1,0);
+ assert.equal(updateResult.import_candidates,1);
+ assert.equal(updateResult.unique_resolved_links,1);
+ assert.equal(updateResult.direct_function_export_site_count,1);
+ assert(!JSON.stringify(updateResult).includes("'Fake'"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
