@@ -401,10 +401,10 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             archive = Path(tmp) / "synthetic-export-shadow.zip"
             with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
                 z.writestr("a.js", "export const __webpack_modules__={"
-                    "Caller:(function(e,t,n){const x=n('Duplicate');x.h()}),"
-                    "Duplicate:(function(e,t,n){function fake(t){t.h=1}t.x=1})};")
+                    "Caller:(function(e,t,n){const x=n('ExptargetFixtureZ9');x.h()}),"
+                    "ExptargetFixtureZ9:(function(e,t,n){function fake(t){t.h=1}t.x=1})};")
                 z.writestr("b.js", "export const __webpack_modules__={"
-                    "Duplicate:(function(e,t,n){t.y=1})};")
+                    "ExptargetFixtureZ9:(function(e,t,n){t.y=1})};")
             proc = subprocess.run(
                 ["python3", str(ROOT / "scripts/trace_static_archive.py"),
                  "--input", str(archive), "--module-trace"],
@@ -414,7 +414,7 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             data = json.loads(proc.stdout)
             self.assertEqual(data["ambiguous_import_candidates"], 1)
             self.assertEqual(data["export_shape_candidate_count"], 0)
-            for item in ("Caller", "Duplicate", "synthetic-export-shadow.zip"):
+            for item in ("Caller", "ExptargetFixtureZ9", "synthetic-export-shadow.zip"):
                 self.assertNotIn(item, proc.stdout)
 
     def test_nested_parameter_shadowing_cannot_create_module_edge(self):
