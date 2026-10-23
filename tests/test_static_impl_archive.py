@@ -833,7 +833,8 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
                 z.writestr("one.js", "export const __webpack_modules__={"
                     "Reader:(function(e,t,n){const x=n('" + identifier + "');"
-                    "x.key=1;x.key++;delete x.key}),"
+                    "x.key=1;x.key++;delete x.key;"
+                    "for(x.key of [1]){};({p:x.key}={p:2})}),"
                     + identifier + ":(function(e,t,n){t.key=()=>1})};")
                 z.writestr("two.js", "export const __webpack_modules__={"
                     + identifier + ":(function(e,t,n){t.other=1})};")

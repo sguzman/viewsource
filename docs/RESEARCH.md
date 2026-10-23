@@ -584,3 +584,12 @@ a module loader is not evidence that the original module exported that
 property. Actual member reads and calls remain syntax candidates. These
 restrictions reduce false unique matches when multiple saved registries
 reuse a module key; they do not establish runtime module identity.
+
+### Assignment targets in loops and destructuring
+
+Required export-interface slot inference also omits imported-object
+properties on the left side of `for...of`, `for...in`, and
+destructuring assignments. These are write targets, not evidence
+that the imported module originally defined those properties.
+The AST analyzer deliberately prefers an unresolved candidate
+over an incorrect unique registry-key match.

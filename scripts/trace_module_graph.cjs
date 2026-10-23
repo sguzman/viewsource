@@ -143,7 +143,10 @@ function scanScopedRequiredSlots(fn,requireName,required){
     walk(node.test,loop);
     walk(node.update,loop);
    }else{
-    walk(node.left,loop);
+    // for...of/in assigns to its left-hand target. A mutation of
+    // imported.foo cannot establish foo as an original export.
+    if(!["MemberExpression","ObjectPattern","ArrayPattern"].includes(node.left?.type))
+     walk(node.left,loop);
     walk(node.right,loop);
    }
    walk(node.body,loop);
@@ -196,10 +199,15 @@ function scanScopedRequiredSlots(fn,requireName,required){
   if(node.type==="AssignmentExpression"){
    if(node.left?.type==="Identifier")env.set(node.left.name,null);
    if(node.left?.type==="MemberExpression"){
-    // Assignment to imported.foo is a mutation, not proof that foo
-    // exists on the imported module's original export interface.
+    // For a member assignment, only receiver evaluation is a read.
     walk(node.left.object,env);
     if(node.left.computed)walk(node.left.property,env);
+    walk(node.right,env);
+    return;
+   }
+   if(["ObjectPattern","ArrayPattern"].includes(node.left?.type)){
+    // Destructuring assignments write into targets, even when the
+    // binding pattern contains an imported object member.
     walk(node.right,env);
     return;
    }
@@ -1148,7 +1156,8 @@ function selfTest(){
  assert.equal(nonfactoryGraph.unresolved_import_candidates,1);
  assert.equal(nonfactoryGraph.resolved_links[0].to_module,3);
  const writesOnly=analyzeJS("export const __webpack_modules__={"+
-  "Reader:(function(e,t,n){const x=n('Q');x.foo=1;x.foo++;delete x.foo}),"+
+  "Reader:(function(e,t,n){const x=n('Q');x.foo=1;x.foo++;"+
+  "delete x.foo;for(x.foo of [1]){};({p:x.foo}={p:2})}),"+
   "Q:(function(e,t,n){t.foo=1})};",43);
  const otherQ=analyzeJS("export const __webpack_modules__={"+
   "Q:(function(e,t,n){t.bar=1})};",44);
