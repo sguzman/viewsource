@@ -46,6 +46,24 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             for private in (private_key, "source-limited-chunk.zip", "entry.js"):
                 self.assertNotIn(private, proc.stdout)
 
+    def test_chunk_loader_reassigned_by_iteration_or_destructuring(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "fictional-chunk-assignments.zip"
+            base = "webpackChunkPrivateIterationZ985"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("chunk.js", "(self." + base + "=self." + base
+                    + "||[]).push([[1],{100:function(e,t,n){t.a=1}},"
+                    "function(n){for(var n of [()=>1]){}n(100)}]);")
+            run = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(run.returncode, 0)
+            data = json.loads(run.stdout)
+            self.assertEqual(data["bootstrap_call_candidates"], 0)
+            for private in (base, "fictional-chunk-assignments.zip"):
+                self.assertNotIn(private, run.stdout)
+
     def test_block_local_chunk_loader_shadow_preserves_outer_candidate(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "synthetic-shadowed-chunk-loader.zip"
