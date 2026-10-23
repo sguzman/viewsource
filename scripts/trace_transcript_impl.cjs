@@ -53,7 +53,8 @@ function profile(fn){
  if(has(keys,"renderedTurns","messages","turns"))matches.push("render_turn_derivation");
  if(has(keys,"renderedConversation","renderedTurns","showPendingLoadingMessage"))
   matches.push("pending_turn_preparation");
- if(keys.has("hideInitialUserMessage")&&reads.has("items")&&calls.has("filter"))
+ if((keys.has("hideInitialUserMessage")||reads.has("hideInitialUserMessage"))&&
+    reads.has("items")&&calls.has("filter"))
   matches.push("first_user_item_filter");
  if(has(keys,"turn","turnId")&&reads.has("items")&&
      has(literals,"user-message","assistant-message"))matches.push("typed_turn_renderer");
