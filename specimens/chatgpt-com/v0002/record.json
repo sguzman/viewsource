@@ -10860,6 +10860,16 @@
         "evidence_ref": "E2-080",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-081",
+      "statement": "The saved client renders previous/next response-version controls from an ordered variant list and selected index. Choosing a variant calls an imported selection helper that validates a mapped selected descendant, updates the current node optimistically, constructs a persistence request, and restores the prior selection after failure while clearing busy state. These are captured client operations; no live click, server acknowledgement or durable outcome is verified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-081",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
