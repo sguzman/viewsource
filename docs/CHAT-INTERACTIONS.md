@@ -687,3 +687,21 @@ record only 1-based module ordinals, source resource references and reviewed
 relationships, never source symbols, original filenames, or site code.
 Module placement is valid for this exact saved capture only; it does not
 verify a current deployment or runtime mount of the component.
+
+## Full saved-bundle dependency census (E2-091)
+
+The anonymous static module scanner was applied across every one of the
+original 144 saved JavaScript bundles. It extracted 10,399 module-registry
+entries and 51,285 unique literal import references: 50,714 resolved to
+one saved module, 517 had ambiguous registry keys, and 54 had no saved
+match. Of the resolved references, 36,330 cross bundle boundaries and
+14,384 remain inside a bundle. Four curated links, identified only by
+capture-local module ordinals, independently match the previously reviewed
+conversation page/typed renderer, focus landmark, and older-history
+loading paths. See the [module dependency report](../specimens/chatgpt-com/v0002/chat_module_dependency_trace.json).
+
+The candidate graph is not a runtime trace: a module may be imported in
+inactive code and never executed, and missing references may belong to
+uncaptured or dynamically loaded assets. Source entrypoint investigation
+is now active on the basis of this index. Current static queue: 12 active,
+21 queued, none complete.
