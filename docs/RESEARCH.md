@@ -111,3 +111,18 @@ scope extension, not a claim that older reviewed evidence was invalid.
 Use `python3 scripts/trace_static_archive.py --input /path/to/private-capture.zip --selector-trace` for a content-free AST scan of captured JavaScript. This mode recognizes separate **candidate** categories for root-to-selected message traversal, user-authored ancestry IDs, automation-reference extraction, and recent-turn control code. The common private ZIP bridge supplies capture-local resource ordinals and never runs downloaded code. It is available alongside `--chat-trace` and `--transport-trace`; only one specialized mode may be used at a time.
 
 The implementation intentionally distinguishes actual selected-message ancestor walks from feature-reference extraction. An ancestry walk alone cannot identify the React component that consumes it. Candidate classifications require source/module export tracing and manual verification before a canonical finding is added. An independent fictional ZIP regression checks the reporting boundary, and the new parser has its own synthetic AST self-test in GitHub Actions.
+
+## Capture-driven transcript implementation candidates
+
+The optional offline `--transcript-trace` archive mode runs
+`scripts/trace_transcript_impl.cjs` to find six **candidate** AST patterns:
+render-turn derivation, pending-turn preparation, first-user-item display
+filtering, typed turn rendering, DOM message identity wrappers, and
+alternate selected-message derivation. It emits only resource/function
+ordinals and fixed pattern labels. Function lexical scans include nested
+callback properties, so an individual hit does **not** prove ownership,
+execution, or a complete call path. These leads inform the automatically
+queued source-rendering tasks for each new dump; manual cross-module call
+review and explicit evidence limitations are still required before an
+observed-static finding is created. The test suite uses synthetic inputs
+only and never commits captured JavaScript.
