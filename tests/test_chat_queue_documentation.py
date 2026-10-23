@@ -37,8 +37,8 @@ class ChatQueueDocumentationTests(unittest.TestCase):
         accepted = sum(row["status"] == "done" for row in tasks)
         readme = (ROOT / "README.md").read_text("utf-8")
         summary = re.search(
-            r"source research queue has \\*\\*(\\d+) tasks: (\\d+) in progress, "
-            r"(\\d+) queued, none accepted complete\\*\\*", readme)
+            r"source research queue has \*\*(\d+) tasks: (\d+) in progress, "
+            r"(\d+) queued, none accepted complete\*\*", readme)
         self.assertIsNotNone(summary)
         self.assertEqual(tuple(map(int, summary.groups())),
                          (len(tasks), active, queued))
