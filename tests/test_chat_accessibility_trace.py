@@ -19,6 +19,12 @@ class AccessibleTranscriptTraceTests(unittest.TestCase):
         for key in ("captured_app_executed","screen_reader_tested","accessibility_outcome_verified"):
             self.assertFalse(d[key])
         self.assertEqual(len(d["mechanisms"]),8)
+        self.assertEqual([(x["source_ref"],x["module_ordinal"])
+                          for x in d["module_anchors"]],
+                         [("R-JS-066",7),("R-JS-066",13),
+                          ("R-JS-072",13),("R-JS-072",30)])
+        self.assertEqual(len(d["verified_import_bindings"]),2)
+        self.assertTrue(d["module_ordinal_contract"])
         self.assertEqual(len(d["source_relationships"]),7)
         self.assertIn("request_scoped_completion_announcement",
             {m["id"] for m in d["mechanisms"]})
