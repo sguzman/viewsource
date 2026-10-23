@@ -10920,6 +10920,26 @@
         "evidence_ref": "E2-086",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-087",
+      "statement": "The captured conversation selected-text popover validates a noncollapsed range in a single connected Markdown message, checks source-message and conversation identity, and rejects intersections with writing blocks, learning components, editable regions or explicitly excluded copy content. Depending on client gates, the attributed selection is forwarded to text callbacks or dynamically imported side-panel actions. No actual browser selection or side-panel launch was observed.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-087",
+        "source_scope": "saved_archive"
+      }
+    },
+    {
+      "id": "F2-088",
+      "statement": "The captured copy-last-code command searches derived rendered turns in reverse for an eligible assistant code block or structured reference, resolves source message/block attribution, and copies directly when content is available. For eligible incomplete content it can load asynchronously with an AbortController that is invalidated by conversation/selection changes; a copy helper handles telemetry and possible success feedback. This does not verify an operating-system clipboard write or server content load.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-088",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
