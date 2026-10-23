@@ -49,6 +49,8 @@ try {
   assert.equal(await page.locator(".chat-viewport-links li").count(),7);
   await page.locator(".chat-viewport-branch-link summary").click();
   assert.equal(await page.locator(".chat-viewport-branch-link li").count(),4);
+  await page.locator(".chat-viewport-spacer-link summary").click();
+  assert.equal(await page.locator(".chat-viewport-spacer-link li").count(),4);
   assert.equal(await page.locator(".chat-branch-stage").count(),7);
   await page.locator(".chat-branch-caveats summary").click();
   assert.equal(await page.locator(".chat-branch-caveats li").count(),6);
