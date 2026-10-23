@@ -1759,11 +1759,14 @@
       "profile": "followup",
       "queue": "scripts",
       "title": "Trace captured script entrypoints to loaded modules",
-      "status": "queued",
+      "status": "in_progress",
       "depends_on": [
         "chatgpt-com-v0002-scripts"
       ],
-      "notes": "Static implementation trace: Locate concrete entrypoint functions and imports, distinguishing executed wiring candidates from generic library presence; provide a sanitized structural graph or an explicit evidence gap."
+      "notes": "Static implementation trace: Locate concrete entrypoint functions and imports, distinguishing executed wiring candidates from generic library presence; provide a sanitized structural graph or an explicit evidence gap. Anonymous full-capture module index and literal import candidate graph now available; entrypoint ownership and dynamic loading still require trace verification.",
+      "evidence_refs": [
+        "E2-091"
+      ]
     },
     {
       "id": "chatgpt-com-v0002-followup-static-source-functions",
@@ -1779,7 +1782,8 @@
       "notes": "Static implementation trace: Parse functions and exported symbols; group by responsibility, inspect handlers and type/property usage; identify testable call chains, not only string counts.",
       "evidence_refs": [
         "E2-071",
-        "E2-072"
+        "E2-072",
+        "E2-091"
       ]
     },
     {
@@ -1799,7 +1803,8 @@
         "E2-072",
         "E2-073",
         "E2-074",
-        "E2-083"
+        "E2-083",
+        "E2-091"
       ]
     },
     {
@@ -1963,7 +1968,8 @@
         "E2-087",
         "E2-088",
         "E2-089",
-        "E2-090"
+        "E2-090",
+        "E2-091"
       ]
     },
     {
