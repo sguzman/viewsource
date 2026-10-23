@@ -75,6 +75,14 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                     "getStreamOptions(){return {parseEventData:x=>x}}"
                     "createCompletionStreamHandlers(x){return {"
                     "onPrematureTermination:x.onPrematureTermination,retryConfig:{maxRetryCount:3}}}"
+                    "async prepareCompletionStream(e,opt={}){let{shouldPrepare,"
+                    "shouldRetry,signal}=opt;signal?.throwIfAborted();"
+                    "if(shouldPrepare?.()===false)return;try{return await "
+                    "Request.safePost('fictional',{})}catch(err){if(e.partial_query"
+                    "&&shouldRetry?.()){await new Promise(done=>setTimeout(done,"
+                    "250+250*Math.random()));return this.prepareCompletionStream("
+                    "{...e,client_prepare_dispatch:'immediate'},"
+                    "{...opt,shouldRetry:void 0,shouldPrepare:()=>true})}throw err}}"
                     "};const unused='" + sentinel + "';")
             result = subprocess.run(
                 ["python3", str(ROOT / "scripts/trace_static_archive.py"),
@@ -84,7 +92,7 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             report = json.loads(result.stdout)
             self.assertEqual(report["parsed_bundles"], 1)
             self.assertEqual(report["failed_bundles"], 0)
-            self.assertEqual(len(report["method_records"]), 5)
+            self.assertEqual(len(report["method_records"]), 6)
             methods = {m["method"]: m for m in report["method_records"]}
             self.assertIn("stream_post", methods["startCompletionStream"]["operations"])
             self.assertIn("topic_start", methods["resumeCompletionStream"]["operations"])
@@ -92,6 +100,10 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertIn("event_decoder", methods["getStreamOptions"]["operations"])
             self.assertIn("retry_configuration",
                           methods["createCompletionStreamHandlers"]["operations"])
+            self.assertIn("partial_query_fallback_candidate",
+                          methods["prepareCompletionStream"]["operations"])
+            self.assertIn("one_shot_fallback_flag",
+                          methods["prepareCompletionStream"]["operations"])
             self.assertNotIn(sentinel, result.stdout)
             self.assertNotIn(str(archive), result.stdout)
 
