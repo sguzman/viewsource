@@ -67,7 +67,10 @@ class AtlasTests(unittest.TestCase):
             recovery = current["visuals"]["chat_transport_failure"]
             self.assertFalse(recovery["live_failure_observed"])
             self.assertEqual(recovery["source_ref"],"R-JS-018")
-            self.assertEqual(len(recovery["observations"]),10)
+            self.assertEqual(len(recovery["observations"]),12)
+            self.assertEqual(recovery["stream_resume_predicates"]["retry_statuses"],[408,409,425,429,502,504])
+            self.assertEqual(recovery["stream_resume_module"]["compatible_exports"],1)
+            self.assertEqual(len(recovery["stream_resume_state"]["guards"]),7)
             self.assertEqual(recovery["preparation_error_eligibility"]["statuses"],[408,409,425,502,504])
             self.assertEqual(recovery["preparation_error_eligibility"]["definition_matches"],1)
             fallback = recovery["preparation_fallback"]
