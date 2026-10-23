@@ -1839,7 +1839,8 @@
         "E2-081",
         "E2-087",
         "E2-088",
-        "E2-089"
+        "E2-089",
+        "E2-090"
       ]
     },
     {
@@ -1863,7 +1864,8 @@
         "E2-085",
         "E2-086",
         "E2-088",
-        "E2-089"
+        "E2-089",
+        "E2-090"
       ]
     },
     {
@@ -1916,7 +1918,8 @@
       ],
       "notes": "Static implementation trace: Trace caught errors, abort mechanisms, retry gates and UI recovery paths with supported call edges. Source-reviewed edit busy guards, active-stream stop, target revalidation, and error notification; other failure paths remain open.",
       "evidence_refs": [
-        "E2-089"
+        "E2-089",
+        "E2-090"
       ]
     },
     {
@@ -1959,7 +1962,8 @@
         "E2-086",
         "E2-087",
         "E2-088",
-        "E2-089"
+        "E2-089",
+        "E2-090"
       ]
     },
     {
