@@ -187,3 +187,24 @@ test("foreign-registry key collisions are untraversed review leads",()=>{
  g.foreign_registry_key_collisions[0].import_resolved=true;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("capture parser-coverage counters must reconcile before emitting frontier",()=>{
+ const g=graph();
+ g.modules_total=5;
+ g.parsed_bundles=1;
+ g.failed_bundles=1;
+ g.archive_candidate_script_count=3;
+ g.archive_oversize_script_count=1;
+ g.archive_ast_input_script_count=2;
+ g.archive_all_scripts_parsed=false;
+ g.failed_parser_source_refs=["R-JS-002"];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.archive_all_scripts_parsed,false);
+ assert.deepEqual(out.failed_parser_source_refs,["R-JS-002"]);
+ assert.equal(out.archive_oversize_script_count,1);
+ g.archive_all_scripts_parsed=true;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+ g.archive_all_scripts_parsed=false;
+ g.failed_parser_source_refs=["PRIVATE_SCRIPT_FILENAME"];
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});

@@ -53,6 +53,7 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
         if len(infos) > MAX_SCRIPTS:
             raise ValueError("Too many JavaScript files")
         total = 0
+        skipped_oversize = 0
         with tempfile.TemporaryDirectory(prefix="viewsource-ast-private-") as folder:
             for i, info in enumerate(sorted(infos, key=lambda item: item.filename), 1):
                 # Captured member names never enter the output or file system.
@@ -64,6 +65,7 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 if total > MAX_TOTAL:
                     raise ValueError("Uncompressed source exceeds safety limit")
                 if info.file_size > 8 * 1024 * 1024:
+                    skipped_oversize += 1
                     continue
                 if info.file_size / max(info.compress_size, 1) > 1000:
                     raise ValueError("Unsafe compression ratio")
@@ -85,6 +87,15 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
             )
             if result.returncode:
                 raise ValueError("Private static AST probe failed")
+            if module_trace or module_frontier:
+                module_report = json.loads(result.stdout)
+                module_report["archive_candidate_script_count"] = len(infos)
+                module_report["archive_oversize_script_count"] = skipped_oversize
+                module_report["archive_ast_input_script_count"] = len(infos) - skipped_oversize
+                module_report["archive_all_scripts_parsed"] = (
+                    skipped_oversize == 0 and module_report["failed_bundles"] == 0
+                )
+                result_report = module_report
             if module_frontier:
                 command = ["node", str(ROOT / "scripts/trace_module_frontier.cjs"), "--stdin"]
                 if frontier_bootstrap:
@@ -95,12 +106,14 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 command.extend(["--max-depth", str(frontier_max_depth),
                                 "--max-nodes", str(frontier_max_nodes)])
                 followup = subprocess.run(
-                    command, input=result.stdout, capture_output=True,
+                    command, input=json.dumps(result_report), capture_output=True,
                     text=True, timeout=90, check=False,
                 )
                 if followup.returncode:
                     raise ValueError("Private module frontier failed")
                 return json.loads(followup.stdout)
+            if module_trace:
+                return result_report
             return json.loads(result.stdout)
 
 

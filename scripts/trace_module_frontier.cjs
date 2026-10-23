@@ -40,12 +40,34 @@ function indexGraph(graph) {
     ["dynamic_boundary_count","dynamic_boundary_candidates"],
     ["bound_import_candidate_count","bound_import_candidates"],
     ["bootstrap_call_candidates","bootstrap_candidates"],
-    ["foreign_registry_key_collision_count","foreign_registry_key_collisions"]
+    ["foreign_registry_key_collision_count","foreign_registry_key_collisions"],
+    ["archive_candidate_script_count",null],
+    ["archive_oversize_script_count",null],
+    ["archive_ast_input_script_count",null]
   ]){
     if(graph[field]===undefined)continue;
     const value=safeCount(graph[field],field);
     if(array&&(!Array.isArray(graph[array])||value!==graph[array].length))
       throw Error("Graph count inconsistent");
+  }
+  if(graph.failed_parser_source_refs!==undefined){
+    if(!Array.isArray(graph.failed_parser_source_refs)||
+       graph.failed_parser_source_refs.length>NODE_LIMIT||
+       graph.failed_parser_source_refs.some(ref=>typeof ref!=="string"||!REF.test(ref)))
+      throw Error("Invalid failed parser resource ordinals");
+  }
+  if(graph.archive_candidate_script_count!==undefined){
+    const total=graph.archive_candidate_script_count;
+    const excluded=graph.archive_oversize_script_count;
+    const inputs=graph.archive_ast_input_script_count;
+    if(typeof graph.archive_all_scripts_parsed!=="boolean"||
+       !Number.isSafeInteger(excluded)||excluded<0||
+       !Number.isSafeInteger(inputs)||inputs<0||
+       total!==inputs+excluded||
+       graph.archive_all_scripts_parsed!==(excluded===0&&graph.failed_bundles===0))
+      throw Error("Invalid capture coverage census");
+    if(graph.parsed_bundles+graph.failed_bundles!==inputs)
+      throw Error("Incomplete parser coverage census");
   }
   if(graph.import_candidates!==undefined){
     const total=safeCount(graph.import_candidates,"import_candidates");
@@ -250,6 +272,10 @@ function frontier(graph, roots, options={}) {
     format_version:1,scope:"private_static_module_frontier",
     source_executed:false,runtime_module_load_verified:false,
     roots:seeds.map(asNode),root_source:provenance,
+    archive_candidate_script_count:graph.archive_candidate_script_count??null,
+    archive_oversize_script_count:graph.archive_oversize_script_count??null,
+    archive_all_scripts_parsed:graph.archive_all_scripts_parsed??null,
+    failed_parser_source_refs:graph.failed_parser_source_refs||[],
     depth_limit:depthLimit,node_limit:nodeLimit,
     reached_module_count:nodes.length,traversed_static_edges:traversed,
     examined_static_edges:examined,
@@ -275,7 +301,8 @@ function frontier(graph, roots, options={}) {
       "Registry keys seen exclusively in other named runtime namespaces remain unresolved and are NEVER imported.",
       "Unresolved import counts cover the entire capture, not only these roots.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
-      "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted."
+      "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted.",
+      "A successful parse is not evidence of feature ownership or complete recognition of bundled source patterns."
     ]
   };
 }

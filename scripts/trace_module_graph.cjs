@@ -587,21 +587,24 @@ function scan(directory){
  const entries=fs.readdirSync(directory).filter(x=>/^bundle-[0-9]{3,4}\.js$/.test(x)).sort();
  if(entries.length>MAX_FILES)throw Error("Too many bundles");
  let parsed=0,failed=0;
- const modules=[],bootstrap=[];
+ const failedOrdinals=[],modules=[],bootstrap=[];
  for(const entry of entries){
   const full=path.join(directory,entry),stat=fs.lstatSync(full);
   if(!stat.isFile()||stat.isSymbolicLink())throw Error("Unsupported file");
-  if(stat.size>8*1024*1024){failed++;continue;}
   const ordinal=Number(entry.match(/^bundle-([0-9]+)\.js$/)[1]);
+  if(stat.size>8*1024*1024){failed++;failedOrdinals.push(ordinal);continue;}
   try{
    const report=analyzeJS(fs.readFileSync(full,"utf8"),ordinal);
    modules.push(...report);
    bootstrap.push(...report.bootstrapCandidates);
    parsed++;
   }
-  catch(_){failed++;}
+  catch(_){failed++;failedOrdinals.push(ordinal);}
  }
- return buildGraph(modules,parsed,failed,bootstrap);
+ const report=buildGraph(modules,parsed,failed,bootstrap);
+ report.failed_parser_source_refs=failedOrdinals.map(id=>
+   "R-JS-"+String(id).padStart(3,"0"));
+ return report;
 }
 function selfTest(){
  const s1="export const __webpack_modules__={A:(function(e,t,n){const b=n('B');t.a=()=>b.a}),B:(function(e,t,n){t.a=()=>1})};";

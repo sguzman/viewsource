@@ -23,6 +23,39 @@ def parser_installed() -> bool:
 
 @unittest.skipUnless(parser_installed(), "Node.js Acorn dependency unavailable")
 class StaticImplementationArchiveTests(unittest.TestCase):
+    def test_module_coverage_records_parse_failure_and_skipped_large_js(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-coverage-census.zip"
+            sentinel = "SYNTHETIC_CAPTURE_SECRETS_EXCLUDED"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("a.js", "export const __webpack_modules__={"
+                    "A:(function(e,t,n){t.x=1})};"
+                    "__webpack_require__('A')")
+                z.writestr("b.js", "const malformedPrivate = ; " + sentinel)
+                z.writestr("c.js", " " * (8 * 1024 * 1024 + 1))
+            for option in (["--module-trace"],
+                           ["--module-frontier", "--bootstrap-candidates"]):
+                proc = subprocess.run(
+                    ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                     "--input", str(archive), *option],
+                    cwd=ROOT, capture_output=True, text=True,
+                    check=False, timeout=50)
+                self.assertEqual(proc.returncode, 0, proc.stderr[:100])
+                report = json.loads(proc.stdout)
+                self.assertEqual(report["archive_candidate_script_count"], 3)
+                self.assertEqual(report["archive_oversize_script_count"], 1)
+                self.assertFalse(report["archive_all_scripts_parsed"])
+                self.assertEqual(report["failed_parser_source_refs"], ["R-JS-002"])
+                if option[0] == "--module-trace":
+                    self.assertEqual(report["parsed_bundles"], 1)
+                    self.assertEqual(report["failed_bundles"], 1)
+                    self.assertEqual(report["archive_ast_input_script_count"], 2)
+                else:
+                    self.assertEqual(report["reached_module_count"], 1)
+                for term in (sentinel, "invented-coverage-census.zip",
+                             "a.js", "b.js", "c.js"):
+                    self.assertNotIn(term, proc.stdout)
+
     def test_private_zip_traces_are_ordinals_only(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-capture.zip"

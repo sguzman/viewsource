@@ -443,3 +443,16 @@ edge, bound-loader callback or export-interface signature through a
 shadowed name. The test suite includes duplicate-key ambiguity and
 source-nonpublication regressions. These are conservative static candidates
 and do not imply execution.
+
+### Explicit offline JavaScript parse coverage
+
+The ZIP-to-module scanner distinguishes the number of candidate JavaScript
+resources, the number excluded for the per-script size limit, the number sent
+to the parser, and the number that failed parsing. Failed parse resource
+references are expressed solely as capture-local `R-JS-NNN` ordinals; source
+paths, error details, and raw code are never returned. Both `--module-trace`
+and `--module-frontier` report `archive_all_scripts_parsed`, which is
+**false** whenever any script was skipped or failed parsing. The frontier
+validates these counts before returning the bounded dependency report.
+Even when all captured JavaScript parses, the scanner's selective syntax
+recognition **does not** establish that every feature was analyzed.
