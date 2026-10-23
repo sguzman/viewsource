@@ -477,3 +477,12 @@ and canonical evidence E2-078. The trace demonstrates a client rendering
 implementation, not a reproduced page, current backend behavior, or all
 dynamic-import edges. The earlier automation/page-reference collector
 correction remains in force: those collections are **not** the transcript.
+
+A subsequent source check verified the previously missing direct module
+relationship: the page-level turn-entry component in R-JS-072 imports the
+exported typed turn renderer from R-JS-069 and supplies the configured
+turn, conversation context, display flags and callbacks. The public trace
+now contains ten reviewed relationships, including this imported-component
+edge. This confirms the main page-to-typed-renderer *source wiring*;
+dynamically imported subrenderers and actual runtime visibility remain
+unverified.
