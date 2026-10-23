@@ -223,6 +223,16 @@ window.ViewsourceChatGraph = (() => {
       const sources=element("p","graph-caption",
         "Source resources: "+viewport.source_resources.join(", "));
       block.append(sources);
+      const anchors=element("details","chat-viewport-anchors");
+      anchors.append(element("summary","","Reviewed capture-local module anchors"));
+      const anchorsList=element("ul","");
+      viewport.module_anchors.forEach(module=>{
+        anchorsList.append(element("li","",module.ref+
+          " · module "+module.module_ordinal+" · "+module.role));
+      });
+      anchors.append(anchorsList,element("p","graph-caption",
+        "Module ordinals are stable only within this saved capture and are not runtime IDs."));
+      block.append(anchors);
       const rules=element("div","chat-viewport-rule-grid");
       viewport.windowing_rules.forEach(rule=>{
         const card=element("details","chat-viewport-rule");
