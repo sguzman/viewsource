@@ -10,7 +10,8 @@ const MAX_FILES=2000,MAX_MODULES=50000,MAX_CANDIDATES=250000;
 function registry(ast){
  const found=[];
  for(const top of ast.body){
-  const vars=top.declaration?.declarations||[];
+  const declaration=top.type==="VariableDeclaration"?top:top.declaration;
+  const vars=declaration?.declarations||[];
   for(const decl of vars){
    if(decl.id?.type==="Identifier"&&decl.id.name==="__webpack_modules__"&&
       decl.init?.type==="ObjectExpression")found.push(...decl.init.properties);
@@ -646,6 +647,10 @@ function selfTest(){
  assert.equal(numericGraph.dynamic_boundary_count,0);
  assert(!JSON.stringify(numericGraph).includes("871997334455"));
  assert(!JSON.stringify(numericGraph).includes("871997334456"));
+ const plainVar=analyzeJS("var __webpack_modules__={"+
+  "A:function(e,t,n){t.a=n('B')},B:function(e,t,n){t.a=1}};",13);
+ assert.equal(plainVar.length,2);
+ assert.equal(buildGraph(plainVar,1,0).unique_resolved_links,1);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

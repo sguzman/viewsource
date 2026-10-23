@@ -304,6 +304,25 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_ordinary_top_level_registry_declaration_is_analyzed(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-declarations.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "var __webpack_modules__={"
+                    "Alpha:function(e,t,n){const x=n('Beta')},"
+                    "Beta:function(e,t,n){t.a=1}};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["modules_total"], 2)
+            self.assertEqual(data["unique_resolved_links"], 1)
+            for item in ("Alpha", "Beta", "bundle.js", "invented-declarations.zip"):
+                self.assertNotIn(item, proc.stdout)
+
     def test_integer_registry_keys_resolve_without_publishing_numbers(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "integer-module-specimen.zip"

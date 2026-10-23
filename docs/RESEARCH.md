@@ -385,3 +385,12 @@ import partition when present. A malformed graph is rejected without echoing
 the input, preventing private strings from being copied into an ostensibly
 sanitized numeric summary. This check validates consistency, not evidence
 that candidate imports ran.
+
+### Ordinary top-level webpack module tables
+
+The anonymous module parser accepts both ordinary top-level `var`,
+`let` or `const __webpack_modules__ = {...}` declarations and
+equivalent exported declarations. This improves static registry coverage,
+but only the recognized syntax contributes to candidate dependency counts.
+Other bundler formats remain outside the recognition boundary until
+independently reviewed. The parser does not execute registered factories.
