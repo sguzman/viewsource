@@ -48,8 +48,9 @@ function check(fn){
   }
   for(const [k,v] of Object.entries(n)){
    if(["start","end","loc","raw"].includes(k))continue;
-   if(Array.isArray(v))for(const x of v)if(x&&typeof x==="object")stack.push(x);
-   else if(v&&typeof v==="object")stack.push(v);
+   if(Array.isArray(v)) {
+   for(const x of v) if(x&&typeof x==="object") stack.push(x);
+  } else if(v&&typeof v==="object") stack.push(v);
   }
  }
  return vocab.filter(pattern=>categories[pattern].every(group=>group.some(k=>names.has(k))));
@@ -73,8 +74,9 @@ function analyze(source,ordinal){
   }
   for(const [k,v] of Object.entries(n)){
    if(["start","end","loc","raw"].includes(k))continue;
-   if(Array.isArray(v))for(const x of v)walk(x,parent);
-   else if(v&&typeof v==="object")walk(v,parent);
+   if(Array.isArray(v)) {
+   for(const x of v) walk(x,parent);
+  } else if(v&&typeof v==="object") walk(v,parent);
   }
  }
  walk(ast,null);
