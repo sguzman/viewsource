@@ -541,3 +541,17 @@ client-side branch-index derivation is documented with five explicit
 steps and canonical evidence E2-082, separately from the optimistic
 selection/persistence pathway in E2-081. No actual server response was
 observed.
+
+## Selected-branch changes as inputs to transcript derivation
+
+The main conversation page's saved JSX and memo-cache checks explicitly
+include both its active `threadCurrentNode` and `threadMapping` inputs
+when deriving the rendered conversation and turn list. Those input
+references are compared as memoization dependencies alongside pending
+prompt, streaming, moderation and conversation context. The resulting
+`renderedTurns` then feed the previously verified page-to-turn-renderer
+import. This creates a concrete **source-level dependency connection** from
+the response-version state-selection algorithm (E2-081/E2-082) to the
+transcript-rendering stage (E2-078/E2-083). It does not prove that a real
+button click caused a displayed animation or that a server accepted or
+persisted the response selection.
