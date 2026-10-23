@@ -390,7 +390,7 @@ function frontier(graph, roots, options={}) {
     total_unresolved_import_candidates:graph.unresolved_import_candidates,
     total_ambiguous_import_candidates:graph.ambiguous_import_candidates,
     limitations:[
-      "Roots and candidate edges are traversed in ordinal order for deterministic review, not observed execution order.",
+      "Input candidates and dependency edges use ordinal traversal order for deterministic review, not observed execution order.",
       "Reachability follows only statically resolved literal imports; it is not runtime module execution.",
       "Export-shape matches are shown separately and are NEVER traversed as verified edges.",
       "Dynamic loading syntax in reached modules is a separate unresolved boundary and is NEVER traversed.",
