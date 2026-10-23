@@ -260,5 +260,50 @@
       "Feature settings and presentation mode can suppress the spacer or select different scroll behavior.",
       "A browser's actual layout and scroll timing cannot be inferred from static callback wiring."
     ]
+  },
+  "ast_candidate_recheck": {
+    "evidence_class": "observed_static_syntax",
+    "module_ownership_by_ast_only": false,
+    "source_scope": "original_private_saved_javascript",
+    "method": "Allowlisted AST vocabulary scan applied independently to four manually source-reviewed module functions; categories below are lexical cues, not conclusions about execution.",
+    "module_matches": [
+      {
+        "source_ref": "R-JS-066",
+        "module_ordinal": 9,
+        "patterns": [
+          "measured_estimated_layout",
+          "viewport_overscan_range",
+          "retained_outside_window",
+          "viewport_resize_tracking",
+          "scroll_anchor_compensation",
+          "targeted_turn_restore",
+          "history_render_boundary"
+        ]
+      },
+      {
+        "source_ref": "R-JS-066",
+        "module_ordinal": 14,
+        "patterns": [
+          "response_spacer_controller"
+        ]
+      },
+      {
+        "source_ref": "R-JS-072",
+        "module_ordinal": 13,
+        "patterns": [
+          "targeted_turn_restore"
+        ]
+      },
+      {
+        "source_ref": "R-JS-072",
+        "module_ordinal": 14,
+        "patterns": [
+          "response_spacer_placement",
+          "explicit_input_cancellation"
+        ]
+      }
+    ],
+    "verified_runtime": false,
+    "limitation": "This lexical recheck can select irrelevant modules or miss equivalent minified code. The separate manually reviewed report supplies semantic meaning, while this candidate output provides reproducibility."
   }
 }
