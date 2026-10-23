@@ -72,7 +72,30 @@ function indexGraph(graph) {
       dynamic.get(id).add(edge.pattern);
     }
   }
-  return {census,adjacency,ambiguous,dynamic};
+  const bound=new Map();
+  if(graph.bound_import_candidates!==undefined){
+    if(!Array.isArray(graph.bound_import_candidates))
+      throw Error("Invalid bound loader candidate list");
+    for(const item of graph.bound_import_candidates){
+      if(!["bound_import_target_candidate","ambiguous_bound_import",
+            "missing_bound_import_target"].includes(item.classification)||
+         item.binding_executed_verified!==false||
+         item.target_module_loaded_verified!==false||
+         !known(item.source_ref,item.module_ordinal))
+        throw Error("Invalid bound loader candidate");
+      if(item.classification==="bound_import_target_candidate"&&
+         !known(item.candidate_target_ref,item.candidate_target_module))
+        throw Error("Invalid bound target");
+      const from=ordinal(item.source_ref,item.module_ordinal);
+      if(!bound.has(from))bound.set(from,[]);
+      bound.get(from).push({
+        classification:item.classification,
+        target:item.classification==="bound_import_target_candidate"?
+          ordinal(item.candidate_target_ref,item.candidate_target_module):null
+      });
+    }
+  }
+  return {census,adjacency,ambiguous,dynamic,bound};
 }
 function candidateBootstrapRoots(graph) {
  if(graph?.bootstrap_runtime_verified!==false||!Array.isArray(graph.bootstrap_candidates))
@@ -97,7 +120,7 @@ function frontier(graph, roots, options={}) {
   if(!Number.isSafeInteger(depthLimit)||depthLimit<0||depthLimit>30||
      !Number.isSafeInteger(nodeLimit)||nodeLimit<1||nodeLimit>LIMIT)
     throw Error("Invalid traversal limit");
-  const {census,adjacency,ambiguous,dynamic}=indexGraph(graph);
+  const {census,adjacency,ambiguous,dynamic,bound}=indexGraph(graph);
   if(!Array.isArray(roots)||!roots.length||roots.length>20)throw Error("Invalid roots");
   const seeds=[...new Set(roots.map(parseRoot))];
   for(const id of seeds) {
@@ -149,6 +172,13 @@ function frontier(graph, roots, options={}) {
       module:asNode(id),pattern,
       classification:"unresolved_dynamic_boundary",traversed:false
     })));
+  const unresolvedBound=[...visited.keys()].sort().flatMap(id=>
+    (bound.get(id)||[]).map(item=>({
+      source:asNode(id),
+      classification:item.classification,
+      candidate_target:item.target?asNode(item.target):null,
+      traversed:false
+    })));
   const nodes=[...visited].sort((a,b)=>a[1]-b[1]||a[0].localeCompare(b[0]))
     .map(([id,depth])=>({...asNode(id),depth,
       outgoing_unique_static_imports:(adjacency.get(id)||new Set()).size}));
@@ -163,6 +193,8 @@ function frontier(graph, roots, options={}) {
     export_shape_ambiguities:ambiguities,
     reachable_dynamic_boundary_count:unresolvedDynamic.length,
     reachable_dynamic_boundaries:unresolvedDynamic,
+    reachable_bound_import_count:unresolvedBound.length,
+    reachable_bound_import_candidates:unresolvedBound,
     truncated_by_node_limit:limited,
     total_unresolved_import_candidates:graph.unresolved_import_candidates,
     total_ambiguous_import_candidates:graph.ambiguous_import_candidates,
@@ -170,6 +202,7 @@ function frontier(graph, roots, options={}) {
       "Reachability follows only statically resolved literal imports; it is not runtime module execution.",
       "Export-shape matches are shown separately and are NEVER traversed as verified edges.",
       "Dynamic loading syntax in reached modules is a separate unresolved boundary and is NEVER traversed.",
+      "Bound loader callbacks remain future-use candidates and NEVER expand the resolved graph.",
       "Unresolved import counts cover the entire capture, not only these roots.",
       "Conditional imports, lazy chunks, dynamic keys, and unarchived modules can hide branches.",
       "Source and module ordinals are specific to one capture; no source keys, paths or code are emitted."

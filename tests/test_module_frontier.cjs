@@ -88,3 +88,20 @@ test("dynamic loading boundaries are visible but never expand reachability",()=>
  data.dynamic_boundary_candidates[0].target_module_verified=true;
  assert.throws(()=>frontier(data,["R-JS-001:1"]));
 });
+
+test("bound loader callback candidates are visible but not traversed",()=>{
+ const g=graph();
+ g.bound_import_candidates=[{
+   source_ref:"R-JS-002",module_ordinal:1,
+   classification:"bound_import_target_candidate",
+   candidate_target_ref:"R-JS-002",candidate_target_module:2,
+   binding_executed_verified:false,target_module_loaded_verified:false
+ }];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.reachable_bound_import_count,1);
+ assert.equal(out.reachable_bound_import_candidates[0].candidate_target.module_ordinal,2);
+ assert.equal(out.reachable_bound_import_candidates[0].traversed,false);
+ assert.equal(out.reached_module_count,3);
+ g.bound_import_candidates[0].binding_executed_verified=true;
+ assert.throws(()=>frontier(g,["R-JS-001:1"]));
+});
