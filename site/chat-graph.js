@@ -135,6 +135,17 @@ window.ViewsourceChatGraph = (() => {
       links.append(list,element("p","graph-caption",
         "UI subscriptions are source-confirmed; their runtime conditions and rendered results were not observed."));
       block.append(links);
+      const actions=element("details","chat-selector-actions");
+      actions.append(element("summary","","Captured React click dispatch"));
+      actions.append(element("p","graph-caption",
+        "Surfaces: "+selectorStudy.ui_action.surfaces.join(", ")+
+        "; selector: "+selectorStudy.ui_action.selector));
+      const routes=element("ul","");
+      selectorStudy.ui_action.paths.forEach(route=>routes.append(
+        element("li","",route.name.replaceAll("_"," ")+": "+route.behavior)));
+      actions.append(routes,element("p","graph-caption",
+        selectorStudy.ui_action.verification_boundary));
+      block.append(actions);
       section.append(block);
     }
     const graphWrite=record.visuals?.chat_graph_mutation;
