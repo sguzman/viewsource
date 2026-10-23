@@ -1,0 +1,109 @@
+{
+  "format_version": 1,
+  "specimen_id": "chatgpt-com",
+  "version": 2,
+  "source_scope": "saved_client_javascript",
+  "evidence_class": "observed_static",
+  "source_refs": [
+    "R-JS-066",
+    "R-JS-072"
+  ],
+  "captured_app_executed": false,
+  "screen_reader_tested": false,
+  "accessibility_outcome_verified": false,
+  "methodology": "Private static review of saved keyboard focus hooks, accessible status elements, pagination observers and page-level request completion announcements. Publishes only capture-local file ordinals and authored analysis.",
+  "mechanisms": [
+    {
+      "id": "latest_response_focus_landmark",
+      "source_ref": "R-JS-066",
+      "kind": "keyboard_landmark",
+      "description": "An exported client component places a visually hidden focusable heading immediately before the composer with an accessible latest-response label; a matching page import supplies its navigate callback."
+    },
+    {
+      "id": "tab_order_and_focus_recovery",
+      "source_ref": "R-JS-066",
+      "kind": "focus_management",
+      "description": "A document keydown listener and footer focusin listener adjust the landmark's tabIndex to avoid trapping normal tab movement, while allowing focus to become available after footer navigation."
+    },
+    {
+      "id": "abortable_target_navigation",
+      "source_ref": "R-JS-066",
+      "kind": "async_focus_transition",
+      "description": "Focusing the heading aborts any earlier navigation, calls the provided async target resolver and, if the heading remains focused and a target exists, focuses that target without scrolling."
+    },
+    {
+      "id": "navigation_failure_feedback",
+      "source_ref": "R-JS-066",
+      "kind": "accessible_status",
+      "description": "When the target resolver reports no available response, the component publishes a screen-reader-only status explaining that no latest response is available."
+    },
+    {
+      "id": "older_history_intersection_watch",
+      "source_ref": "R-JS-072",
+      "kind": "conditional_history_trigger",
+      "description": "The conversation's older-message sentinel uses IntersectionObserver against the thread scroll root and can request older content when the sentinel intersects; a loaded or exhausted history state suppresses it."
+    },
+    {
+      "id": "older_history_loading_and_retry",
+      "source_ref": "R-JS-066",
+      "kind": "accessible_loading_and_retry",
+      "description": "The older-message sentinel renders a retry control when loading failed; otherwise it renders a loading spinner with a screen-reader-only loading label inside a status role."
+    },
+    {
+      "id": "request_scoped_completion_announcement",
+      "source_ref": "R-JS-072",
+      "kind": "polite_live_region",
+      "description": "A page-level hook keeps a visually hidden, atomic polite-live status in a portal. It records active request identity while streaming, clears the announcement during a response, and reports completion only when matching request state is complete and not otherwise suppressed."
+    },
+    {
+      "id": "page_loading_busy_state",
+      "source_ref": "R-JS-072",
+      "kind": "accessible_page_status",
+      "description": "A conversation loading surface exposes an aria-busy status region with an accessible label while the relevant page view is waiting for conversation data."
+    }
+  ],
+  "source_relationships": [
+    {
+      "from": "conversation_page",
+      "to": "latest_response_focus_landmark",
+      "kind": "imported_component"
+    },
+    {
+      "from": "latest_response_focus_landmark",
+      "to": "async_target_navigation",
+      "kind": "focus_event_callback"
+    },
+    {
+      "from": "async_target_navigation",
+      "to": "focus_or_unavailable_status",
+      "kind": "conditional_result"
+    },
+    {
+      "from": "older_message_sentinel",
+      "to": "intersection_fetch_trigger",
+      "kind": "viewport_event_callback"
+    },
+    {
+      "from": "older_message_sentinel",
+      "to": "loading_or_retry_status",
+      "kind": "conditional_status_render"
+    },
+    {
+      "from": "conversation_streaming_state",
+      "to": "completion_live_region",
+      "kind": "scoped_state_effect"
+    },
+    {
+      "from": "conversation_page_loading",
+      "to": "busy_status_region",
+      "kind": "conditional_status_render"
+    }
+  ],
+  "limits": [
+    "A source-level aria-live or role attribute is not evidence that a specific assistive technology spoke the text.",
+    "A focus-navigation callback can be aborted, fail to find a target or depend on virtual row materialization; successful keyboard navigation was not observed.",
+    "History fetching and pagination are conditional on cursor, errors, viewport state and network; no real request was observed.",
+    "The study does not assess WCAG conformance, focus restoration quality, screen-reader traversal of unmounted turns, or live behavior in a deployed browser."
+  ],
+  "privacy": "No user text, account identifiers, original archive resource names, JavaScript snippets, network endpoints or runtime session state published."
+}
