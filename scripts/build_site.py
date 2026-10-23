@@ -260,6 +260,11 @@ def build(out: Path) -> dict:
                         for step in branch["variant_derivation"]["steps"]
                     ],
                     "variant_derivation_limits": branch["variant_derivation"]["limits"],
+                    "render_recomputation_link": {
+                        "source_ref": branch["render_recomputation_link"]["source_ref"],
+                        "description": branch["render_recomputation_link"]["description"],
+                        "boundary": branch["render_recomputation_link"]["boundary"],
+                    },
                 }
             transcript_path = ROOT / (base + "/chat_transcript_render_trace.json")
             if transcript_path.is_file():
@@ -293,6 +298,14 @@ def build(out: Path) -> dict:
                          "gates": row["gates"],"limits": row["limits"]}
                         for row in transcript["action_bindings"]
                     ],
+                    "page_recomputation": {
+                        "source_ref": transcript["page_recomputation"]["source_ref"],
+                        "input_roles": transcript["page_recomputation"]["input_roles"],
+                        "dependency_roles": transcript["page_recomputation"]["dependency_roles"],
+                        "derived_outputs": transcript["page_recomputation"]["derived_outputs"],
+                        "observations": transcript["page_recomputation"]["observations"],
+                        "boundary": transcript["page_recomputation"]["boundary"],
+                    },
                     "cross_module_call": {
                         "source_ref": transcript["verified_cross_module_call"]["source_ref"],
                         "target_ref": transcript["verified_cross_module_call"]["target_ref"],
