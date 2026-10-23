@@ -13,8 +13,8 @@ class TransportFailureTraceTests(unittest.TestCase):
   self.assertEqual((d["specimen_id"],d["version"]),("chatgpt-com",2))
   self.assertFalse(d["live_failure_observed"])
   self.assertFalse(d["server_retry_semantics_verified"])
-  self.assertEqual(len(d["observations"]),9)
-  self.assertEqual(len(d["reviewed_relationships"]),10)
+  self.assertEqual(len(d["observations"]),10)
+  self.assertEqual(len(d["reviewed_relationships"]),11)
   self.assertEqual(d["captured_default_fallbacks"]["max_resume_retry_count"],12)
   self.assertEqual(d["captured_default_fallbacks"]["min_resume_retry_delay_ms"],300)
   self.assertEqual(d["captured_default_fallbacks"]["max_resume_retry_delay_ms"],5000)
@@ -30,7 +30,15 @@ class TransportFailureTraceTests(unittest.TestCase):
   self.assertEqual(len(fallback["required_conditions"]),5)
   self.assertIn("additional_retry_disabled",fallback["fallback_changes"])
   self.assertIn("completion_stream_resume_recovery",fallback["distinguished_from"])
-  self.assertIn("imported error predicate",fallback["limit"])
+  self.assertIn("source",fallback["limit"])
+  predicate=d["preparation_error_eligibility"]
+  self.assertEqual(predicate["source_ref"],"R-JS-018")
+  self.assertEqual(predicate["resolved_import"]["definition_matches_in_saved_assets"],1)
+  self.assertEqual(predicate["typed_status_allowlist"],[408,409,425,502,504])
+  self.assertTrue(predicate["explicit_structured_retry_veto"])
+  self.assertEqual(len(predicate["decision_order"]),6)
+  self.assertFalse(d["live_failure_observed"])
+  self.assertIn("separately",predicate["scope"])
  def test_nonpublication(self):
   s=PATH.read_text("utf8").lower()
   for forbidden in ("http://","https://",".js","session_token","bearer ",
