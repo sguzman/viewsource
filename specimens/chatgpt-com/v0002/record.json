@@ -10830,6 +10830,16 @@
         "evidence_ref": "E2-077",
         "source_scope": "saved_archive"
       }
+    },
+    {
+      "id": "F2-078",
+      "statement": "The captured client has a source-backed transcript rendering pipeline: conversation mapping/current selection drive derived turn entries with typed items; a turn-preparation stage may add a pending user item and suppress the first user item for particular presentation modes; the conversation page passes prepared turns to an exported turn configurator; an item renderer branches by message/tool/media kind and attaches role, source-message and test identifiers to DOM wrappers. Exact runtime visibility and dynamic-import behavior remain unverified.",
+      "evidence": {
+        "evidence_class": "observed_static",
+        "confidence": "high",
+        "evidence_ref": "E2-078",
+        "source_scope": "saved_archive"
+      }
     }
   ],
   "limitations": [
