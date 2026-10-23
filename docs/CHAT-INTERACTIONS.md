@@ -394,14 +394,14 @@ remain unchanged.
 
 The next saved-source function in the same capture takes the updated
 conversation state and writes the mapping and current node into a scoped
-client store. It also maintains two derived projections: a visible-message
-list reconstructed from the selected ancestry path (with an incremental
-changed-message optimization), and a separate root-to-leaf user-message
-ancestry list updated after relevant selection/parent changes. The
-user-message traversal protects against revisiting a node. This is
-source-backed evidence of the client-side representation used to support
-conversation rendering, **not** proof that a particular UI component
-subscribes to each field. Concrete render selectors remain an active
+client store. It also maintains separate selected-path automation-reference and
+page-reference collections, and a root-to-leaf user-message ancestry list
+updated after relevant selection/parent changes. The automation scanner
+extracts references from metadata, supported widgets and tool results;
+the page scanner extracts eligible page resources. **Neither is the main
+visible-message transcript.** The
+user-message traversal protects against revisiting a node. These are source-backed client projections with distinct purposes.
+Their consumer components must be traced before making UI-rendering claims. Concrete render selectors remain an active
 research question.
 
 ## Canonical evidence references for partially completed static tasks
@@ -415,3 +415,15 @@ still refuses to close a task at 100% without valid evidence. Queued and
 not-observable tasks cannot carry evidence references. The Atlas displays
 the number of grounded findings associated with each static task without
 publishing source code or private identifiers.
+
+## Correction: selected-path projections are feature references, not transcript
+
+Follow-up inspection of the exact selected-path collector implementation
+established that the collector previously labeled `visible-message`
+actually extracts **automation references** from message metadata, tool
+results and widget data. A separate collector scans the selected ancestry
+for eligible page references. The **user-message ancestry** projection is
+independent and remains source-supported. The main chat transcript renderer
+has **not** been recovered from these collectors. Canonical finding E2-074,
+the mutation study, and their Atlas projection have been corrected rather
+than preserving an unsupported interpretation of the code.
