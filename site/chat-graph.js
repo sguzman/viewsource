@@ -214,6 +214,31 @@ window.ViewsourceChatGraph = (() => {
       block.append(limits);
       section.append(block);
     }
+    const selectionCopy=record.visuals?.chat_selection_copy_trace;
+    if(selectionCopy){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Selected text and last code block — source actions"));
+      block.append(element("p","graph-caption",
+        "Archived client source validates selected Markdown ranges and supports a guarded last-code-block command. No live clipboard operation was observed."));
+      function addPath(label,klass,steps){
+        const details=element("details",klass);
+        details.append(element("summary","",label));
+        const list=element("ol","");
+        steps.forEach(step=>list.append(element("li","",step.id.replaceAll("_"," ")+
+          ": "+step.operation)));
+        details.append(list);
+        block.append(details);
+      }
+      addPath("Selected text validation and dispatch","chat-selection-stages",selectionCopy.selected_text);
+      addPath("Last code block resolution and copy","chat-code-copy-stages",selectionCopy.last_code_block);
+      const caveats=element("details","chat-selection-boundaries");
+      caveats.append(element("summary","","Remaining verification boundaries"));
+      const lines=element("ul","");
+      selectionCopy.limitations.forEach(x=>lines.append(element("li","",x)));
+      caveats.append(lines);
+      block.append(caveats);
+      section.append(block);
+    }
     const viewport=record.visuals?.chat_virtual_viewport;
     if(viewport){
       const block=element("div","chat-subsection");
