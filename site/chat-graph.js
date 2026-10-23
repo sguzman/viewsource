@@ -111,6 +111,29 @@ window.ViewsourceChatGraph = (() => {
       });
       block.append(list);section.append(block);
     }
+    const branchStudy=record.visuals?.chat_branch_switch;
+    if(branchStudy){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Response version switching — client source"));
+      block.append(element("p","graph-caption",
+        "Previous/next controls, optimistic selected-node updates and failure rollback. A real server response was not observed."));
+      const steps=element("div","chat-branch-stages");
+      branchStudy.stages.forEach((stage,index)=>{
+        const row=element("details","chat-branch-stage");
+        row.append(element("summary","",(index+1)+". "+stage.id.replaceAll("_"," ")),
+          element("p","",stage.description),
+          element("p","graph-caption","Captured source: "+stage.source_ref));
+        steps.append(row);
+      });
+      block.append(steps);
+      const caveats=element("details","chat-branch-caveats");
+      caveats.append(element("summary","","Selection and persistence limits"));
+      const list=element("ul","");
+      branchStudy.caveats.forEach(item=>list.append(element("li","",item)));
+      caveats.append(list);
+      block.append(caveats);
+      section.append(block);
+    }
     const transcript=record.visuals?.chat_transcript_render_trace;
     if(transcript){
       const block=element("div","chat-subsection");
