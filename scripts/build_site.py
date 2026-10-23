@@ -235,6 +235,29 @@ def build(out: Path) -> dict:
                         "next_experiment": x["next_experiment"]
                     } for x in matrix["capabilities"]]
                 }
+            selectors_path = ROOT / (base + "/chat_selector_consumers.json")
+            if selectors_path.is_file():
+                selectors = read(base + "/chat_selector_consumers.json")
+                if (selectors["specimen_id"] != item["id"]
+                        or selectors["version"] != number
+                        or selectors["ui_runtime_verified"] is not False):
+                    raise ValueError("Chat selector study identity or evidence boundary mismatch")
+                visuals["chat_selector_consumers"] = {
+                    "source_executed": selectors["source_executed"],
+                    "selectors": [
+                        {"id": row["id"], "kind": row["kind"].replace("_"," "),
+                         "behavior": row["algorithm"], "purpose": row["ui_meaning"]}
+                        for row in selectors["selectors"]
+                    ],
+                    "consumers": [
+                        {"selector_id": row["selector_id"], "source_ref": row["source_ref"],
+                         "role": row["consumer_role"].replace("_"," "),
+                         "kind": row["kind"].replace("_"," "),
+                         "behavior": row["behavior"]}
+                        for row in selectors["verified_consumers"]
+                    ],
+                    "limitations": selectors["limitations"],
+                }
             mutation_path = ROOT / (base + "/chat_graph_mutation_trace.json")
             if mutation_path.is_file():
                 graph_mutation = read(base + "/chat_graph_mutation_trace.json")
