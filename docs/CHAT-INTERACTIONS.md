@@ -457,3 +457,23 @@ recorded in canonical finding E2-077 and the selector-consumer study. The
 captured JSX and client calls establish implementation wiring, **not**
 that a real user saw or exercised either action or that the server accepted
 it. Wider component-rendering and event paths remain active work.
+
+## Main transcript turn and message renderer (source-backed)
+
+The saved archive now supports a seven-stage rendering path across captured
+resources R-JS-018, R-JS-069 and R-JS-072. A conversation page prepares
+`renderedTurns` from the mapping/current selection; the core derivation
+builds typed turn items (user and assistant messages, reasoning, tool
+activity and media). A preparer can append a temporary pending user item.
+The per-turn prop mapper applies a presentation-only option to hide the
+first user item, sets last-turn-only status and pending controls, and
+computes display timestamps. The page passes prepared turns into the turn
+configurator. A turn renderer dispatches items by kind; a nested JSX wrapper
+adds message role, source-message IDs and a test selector to rendered elements.
+
+These details are recorded in
+[chat_transcript_render_trace.json](../specimens/chatgpt-com/v0002/chat_transcript_render_trace.json)
+and canonical evidence E2-078. The trace demonstrates a client rendering
+implementation, not a reproduced page, current backend behavior, or all
+dynamic-import edges. The earlier automation/page-reference collector
+correction remains in force: those collections are **not** the transcript.
