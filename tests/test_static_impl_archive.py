@@ -304,6 +304,29 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_web_pack_chunk_registration_yields_only_anonymous_modules(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-chunk-fixture.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("chunk.js",
+                    "(self['webpackChunkFixtureSecret']=" 
+                    "self['webpackChunkFixtureSecret']||[]).push([[7],{"
+                    "901234:function(e,t,n){const x=n(901235)},"
+                    "901235:function(e,t,n){t.a=1}}]);")
+            run = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(run.returncode, 0)
+            report = json.loads(run.stdout)
+            self.assertEqual(report["modules_total"], 2)
+            self.assertEqual(report["unique_resolved_links"], 1)
+            self.assertFalse(report["module_runtime_loaded_verified"])
+            for token in ("webpackChunkFixtureSecret", "901234", "901235",
+                          "invented-chunk-fixture.zip", "chunk.js"):
+                self.assertNotIn(token, run.stdout)
+
     def test_ordinary_top_level_registry_declaration_is_analyzed(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "invented-declarations.zip"

@@ -7,6 +7,15 @@
 const fs=require("node:fs"),path=require("node:path"),assert=require("node:assert/strict");
 const acorn=require("acorn");
 const MAX_FILES=2000,MAX_MODULES=50000,MAX_CANDIDATES=250000;
+function webpackChunkReceiver(node){
+ if(node?.type==="AssignmentExpression"&&node.operator==="=")
+  return webpackChunkReceiver(node.left);
+ if(node?.type!=="MemberExpression")return false;
+ const slot=literalMember(node);
+ return typeof slot==="string"&&slot.startsWith("webpackChunk")&&
+   node.object?.type==="Identifier"&&
+   ["self","window","globalThis"].includes(node.object.name);
+}
 function registry(ast){
  const found=[];
  for(const top of ast.body){
@@ -16,6 +25,14 @@ function registry(ast){
    if(decl.id?.type==="Identifier"&&decl.id.name==="__webpack_modules__"&&
       decl.init?.type==="ObjectExpression")found.push(...decl.init.properties);
   }
+  // Recognize the registration syntax only. A queued chunk is not a
+  // browser-confirmed module load or runtime execution.
+  const expr=top.type==="ExpressionStatement"?top.expression:null;
+  if(expr?.type!=="CallExpression"||literalMember(expr.callee)!=="push"||
+     !webpackChunkReceiver(expr.callee.object))continue;
+  const batch=expr.arguments[0];
+  const table=batch?.type==="ArrayExpression"?batch.elements[1]:null;
+  if(table?.type==="ObjectExpression")found.push(...table.properties);
  }
  return found;
 }
@@ -651,6 +668,16 @@ function selfTest(){
   "A:function(e,t,n){t.a=n('B')},B:function(e,t,n){t.a=1}};",13);
  assert.equal(plainVar.length,2);
  assert.equal(buildGraph(plainVar,1,0).unique_resolved_links,1);
+ const chunkScript="(self['webpackChunkPrivateScope']=self['webpackChunkPrivateScope']||[]).push("+
+  "[[73],{9001:function(e,t,n){const x=n(9002)},9002:function(e,t,n){t.a=1}}]);";
+ const chunkModules=analyzeJS(chunkScript,14);
+ const chunkReport=buildGraph(chunkModules,1,0);
+ assert.equal(chunkReport.modules_total,2);
+ assert.equal(chunkReport.unique_resolved_links,1);
+ assert(!JSON.stringify(chunkReport).includes("webpackChunkPrivateScope"));
+ const unrecognized=analyzeJS("self.notWebpackChunk.push([[73],"+
+  "{9001:function(e,t,n){t.a=1}}]);",14);
+ assert.equal(unrecognized.length,0);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

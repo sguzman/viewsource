@@ -394,3 +394,13 @@ equivalent exported declarations. This improves static registry coverage,
 but only the recognized syntax contributes to candidate dependency counts.
 Other bundler formats remain outside the recognition boundary until
 independently reviewed. The parser does not execute registered factories.
+
+### Bundler chunk registration tables
+
+The anonymous dependency scanner recognizes a narrowly scoped Webpack
+chunk registration expression: `self`, `window` or `globalThis` property
+starting with `webpackChunk`, followed by `.push([chunk_ids, module_table])`.
+It reads only object-literal module-factory entries and does not publish
+private chunk names, IDs or implementations. This detects possible
+source modules in saved lazy-loading bundles, not an observed network
+download, active chunk or executed module.
