@@ -733,3 +733,20 @@ styles can use classes, variables or generated rules. The source study
 [chat_css_hooks_trace.json](../specimens/chatgpt-com/v0002/chat_css_hooks_trace.json)
 and evidence E2-093 document this boundary. The CSS hooks task is active,
 with 14 static tasks in progress and 19 still queued.
+
+## Composed end-to-end source lifecycle and proof types
+
+The [saved client lifecycle trace](../specimens/chatgpt-com/v0002/chat_end_to_end_trace.json)
+now connects ten stages: accepted composer submission, shared generation
+dispatch, completion transport, decoded update classification, graph
+mutation, scoped state commit, memoized turn derivation, presentation
+mapping, virtual turn-window placement and typed DOM item rendering.
+Each of nine links is labeled as a directly reviewed call, callback,
+state-dependent composition, or component/derived-data relationship.
+Five alternate paths cover regeneration, user editing, branch selection,
+response cancellation and auxiliary browser caches, without attributing
+backend durability to the client. Canonical evidence E2-094 opens the
+architecture flow-review and chat feature transport/end-to-end tasks.
+These remain **in progress**, not accepted complete: 17 active and 16
+queued. Runtime observation is optional verification, not a prerequisite
+for further static source study.
