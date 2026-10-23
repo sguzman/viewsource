@@ -115,3 +115,16 @@ test("bound loader callback candidates are visible but not traversed",()=>{
  g.bound_import_candidates[0].binding_executed_verified=true;
  assert.throws(()=>frontier(g,["R-JS-001:1"]));
 });
+
+test("computed module-key candidates remain an untraversed dynamic boundary",()=>{
+ const g=graph();
+ g.dynamic_boundary_candidates=[{
+   source_ref:"R-JS-001",module_ordinal:2,
+   pattern:"computed_module_require_candidate",
+   classification:"unresolved_dynamic_boundary",target_module_verified:false
+ }];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.reachable_dynamic_boundary_count,1);
+ assert.equal(out.reachable_dynamic_boundaries[0].traversed,false);
+ assert.equal(out.reached_module_count,3);
+});

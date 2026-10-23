@@ -248,10 +248,13 @@ function bootstrapCalls(ast,sourceOrdinal) {
 const DYNAMIC_LABELS=[
  "dynamic_import_literal_candidate",
  "dynamic_import_computed_candidate",
- "bundler_chunk_loader_candidate"
+ "bundler_chunk_loader_candidate",
+ "computed_module_require_candidate"
 ];
-function dynamicSyntax(fn,requireName){
+function dynamicSyntax(fn,requireName,scopeCalls){
  const patterns=new Set(),stack=[fn.body];
+ if(scopeCalls.computedRequire)patterns.add(DYNAMIC_LABELS[3]);
+ if(scopeCalls.chunkLoader)patterns.add(DYNAMIC_LABELS[2]);
  while(stack.length){
   const n=stack.pop();
   if(!n||typeof n!=="object")continue;
@@ -260,8 +263,6 @@ function dynamicSyntax(fn,requireName){
    patterns.add(arg?.type==="Literal"&&typeof arg.value==="string"?
       DYNAMIC_LABELS[0]:DYNAMIC_LABELS[1]);
   }
-  if(requireName&&n.type==="CallExpression"&&
-     memberOf(n.callee,requireName)==="e")patterns.add(DYNAMIC_LABELS[2]);
   for(const [k,v] of Object.entries(n)){
    if(["start","end","loc","raw"].includes(k))continue;
    if(Array.isArray(v)){
@@ -278,8 +279,10 @@ function dynamicSyntax(fn,requireName){
  * candidate edges are emitted only for references to the original parameter. */
 function scanScopedModuleCalls(fn,requireName){
  const imports=new Set(),boundImports=new Set(),loaderIdentity=Symbol("factory_require");
+ let computedRequire=false,chunkLoader=false;
  if(!requireName||fn.params?.[2]?.type!=="Identifier"||
-    fn.params[2].name!==requireName)return {imports,boundImports};
+    fn.params[2].name!==requireName)
+     return {imports,boundImports,computedRequire,chunkLoader};
  function shadows(pattern,env){
   if(!pattern)return;
   if(pattern.type==="Identifier"){
@@ -326,9 +329,12 @@ function scanScopedModuleCalls(fn,requireName){
      node.left.name===requireName)env.set(requireName,null);
   if(node.type==="CallExpression"&&env.get(requireName)===loaderIdentity){
    if(node.callee?.type==="Identifier"&&node.callee.name===requireName&&
-      node.arguments[0]?.type==="Literal"&&
-      typeof node.arguments[0].value==="string")
-    imports.add(node.arguments[0].value);
+      node.arguments.length>=1){
+    if(node.arguments[0]?.type==="Literal"&&
+       typeof node.arguments[0].value==="string")imports.add(node.arguments[0].value);
+    else computedRequire=true;
+   }
+   if(memberOf(node.callee,requireName)==="e")chunkLoader=true;
    if(memberOf(node.callee,requireName)==="bind"&&
       node.arguments[0]?.type==="Identifier"&&
       node.arguments[0].name===requireName&&
@@ -344,7 +350,7 @@ function scanScopedModuleCalls(fn,requireName){
   }
  }
  walk(fn.body,new Map([[requireName,loaderIdentity]]));
- return {imports,boundImports};
+ return {imports,boundImports,computedRequire,chunkLoader};
 }
 
 function analyzeJS(source,sourceOrdinal){
@@ -362,12 +368,13 @@ function analyzeJS(source,sourceOrdinal){
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
   const exportName=fn.params?.[1]?.type==="Identifier"?fn.params[1].name:null;
   const signatures=scanModuleSignatures(fn,requireName,exportName);
-  const {imports,boundImports}=scanScopedModuleCalls(fn,requireName);
+  const scopeCalls=scanScopedModuleCalls(fn,requireName);
+  const {imports,boundImports}=scopeCalls;
   result.push({identifier,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
     boundImports:[...boundImports],
     eligible:!!requireName,exportedSlots:signatures.exportedSlots,
     requiredByImport:signatures.requiredByImport,
-    dynamic_syntax:dynamicSyntax(fn,requireName)});
+    dynamic_syntax:dynamicSyntax(fn,requireName,scopeCalls)});
  }
  return result;
 }
@@ -499,7 +506,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Duplicate module-key candidates are deliberately ambiguous and excluded from resolved links.",
    "Export-shape matches are candidate disambiguations only; minified alias shadowing or dead code can create misleading required slots.",
    "Export-shape candidates do not change unique/ambiguous import counts and require independent source inspection before promotion.",
-   "Dynamic import expressions and bundler chunk-loader calls are recorded as unresolved boundary syntax, never followed as import edges.",
+   "Dynamic imports, computed require arguments and bundler chunk-loader calls are unresolved syntax boundaries, never resolved import edges.",
    "Function-bound module-loader callbacks are future-import candidates, not direct calls or verified loads.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
@@ -548,6 +555,15 @@ function selfTest(){
  assert.deepEqual(new Set(dynamicReport.dynamic_boundary_candidates.map(x=>x.pattern)),new Set(DYNAMIC_LABELS));
  assert(!JSON.stringify(dynamicReport).includes("private-module"));
  assert(!JSON.stringify(dynamicReport).includes("private-chunk"));
+ const computed=analyzeJS("export const __webpack_modules__={"+
+   "A:(function(e,t,n){const lazy=n(t.privateDynamicKey);"+
+   "function unrelated(n){n(t.otherKey);n.e('shadowed')}})};",10);
+ const computedOutput=buildGraph(computed,1,0);
+ assert.equal(computedOutput.import_candidates,0);
+ assert.equal(computedOutput.dynamic_boundary_count,1);
+ assert.equal(computedOutput.dynamic_boundary_candidates[0].pattern,
+    "computed_module_require_candidate");
+ assert(!JSON.stringify(computedOutput).includes("privateDynamicKey"));
  const boot='export const __webpack_modules__={Startup:(function(e,t,n){t.a=1})};__webpack_require__("Startup");';
  const source=analyzeJS(boot,4);
  const startup=buildGraph(source,1,0,source.bootstrapCandidates);

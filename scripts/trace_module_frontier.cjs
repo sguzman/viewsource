@@ -58,7 +58,8 @@ function indexGraph(graph) {
   }
   const dynamic=new Map();
   const vocabulary=new Set(["dynamic_import_literal_candidate",
-    "dynamic_import_computed_candidate","bundler_chunk_loader_candidate"]);
+    "dynamic_import_computed_candidate","bundler_chunk_loader_candidate",
+    "computed_module_require_candidate"]);
   if(graph.dynamic_boundary_candidates!==undefined){
     if(!Array.isArray(graph.dynamic_boundary_candidates))
       throw Error("Invalid dynamic boundaries");

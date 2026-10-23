@@ -280,7 +280,7 @@ A report without a unique seed is rejected rather than fabricating one.
 
 ### Static dynamic-import boundaries
 
-The same private `--module-trace` pass records three fixed AST lead categories
+The same private `--module-trace` pass records four fixed AST lead categories
 on captured module factories: literal `import()`, computed `import()`, and
 recognized bundler chunk-loader calls. It reports only capture-local resource and
 module ordinals and fixed category names. Imported strings, chunk IDs and source
@@ -346,3 +346,13 @@ slots only as an unverified lead. Export inference now excludes assignments
 and helper registrations that refer to a shadowed or reassigned factory export
 parameter, and ignores nonliteral computed export keys. A unique candidate
 does not change ambiguity counters or become evidence of module execution.
+
+### Computed bundled module keys
+
+The ordinal-only module probe now reports a separate
+`computed_module_require_candidate` boundary for a factory loader invoked
+with a nonliteral key. Calls through unrelated shadowed parameters are
+excluded. No string representation of the key or its source expression is
+emitted, and computed keys never count as uniquely resolved dependency
+edges. The dependency-frontier report exposes the category only at reached
+module ordinals.

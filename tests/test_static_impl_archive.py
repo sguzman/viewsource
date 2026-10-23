@@ -304,6 +304,27 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_computed_module_keys_cannot_be_mistaken_for_resolved_imports(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-dynamic-require.zip"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("script.js", "export const __webpack_modules__={"
+                    "Main:(function(e,t,n){const x=n(t.privateKey);"
+                    "function unrelated(n){n(t.otherKey);n.e('unused')}})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            data = json.loads(proc.stdout)
+            self.assertEqual(data["import_candidates"], 0)
+            self.assertEqual(data["dynamic_boundary_count"], 1)
+            self.assertEqual(data["dynamic_boundary_candidates"][0]["pattern"],
+                             "computed_module_require_candidate")
+            self.assertNotIn("privateKey", proc.stdout)
+            self.assertNotIn("invented-dynamic-require.zip", proc.stdout)
+
     def test_dynamic_import_boundaries_remain_unresolved(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "private-dynamic-fixture.zip"
