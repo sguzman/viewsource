@@ -95,6 +95,31 @@ class StaticImplementationArchiveTests(unittest.TestCase):
             self.assertNotIn(sentinel, result.stdout)
             self.assertNotIn(str(archive), result.stdout)
 
+    def test_selector_probe_avoids_publishing_private_message_text(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            source = Path(tmp) / "fictional-selected-messages.zip"
+            sentinel = "SYNTHETIC_PRIVATE_SELECTOR_SENTINEL"
+            with zipfile.ZipFile(source, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("app.js",
+                    "function messages(x){let p=x.current_node,a=[];"
+                    "while(p){let n=x.mapping[p];a.push(n.message);p=n.parent}"
+                    "return a.reverse().map(String)}"
+                    "function refs(x){return x.metadata.automation_id?["
+                    "{automationId:x.id,messageId:x.id,source:'metadata'}]:[]}"
+                    "const privateText='" + sentinel + "';")
+            test = subprocess.run(
+                ["python3", str(ROOT/"scripts/trace_static_archive.py"),
+                 "--input", str(source), "--selector-trace"],
+                cwd=ROOT, capture_output=True, text=True, check=False, timeout=40)
+            self.assertEqual(test.returncode,0, "Synthetic selector archive failed")
+            result=json.loads(test.stdout)
+            self.assertEqual(result["parsed_bundles"],1)
+            self.assertEqual(result["failed_bundles"],0)
+            self.assertEqual(result["pattern_counts"]["selected_ancestry_message_walk"],1)
+            self.assertEqual(result["pattern_counts"]["automation_reference_extraction"],1)
+            self.assertNotIn(sentinel,test.stdout)
+            self.assertNotIn(str(source),test.stdout)
+
     def test_non_zip_input_is_rejected_without_dumping_path(self):
         with tempfile.TemporaryDirectory() as tmp:
             original = Path(tmp) / "private-secret-invalid.zip"
