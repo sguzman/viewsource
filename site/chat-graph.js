@@ -214,6 +214,29 @@ window.ViewsourceChatGraph = (() => {
       block.append(limits);
       section.append(block);
     }
+    const accessibility=record.visuals?.chat_accessibility_trace;
+    if(accessibility){
+      const block=element("div","chat-subsection");
+      block.append(element("h3","","Accessible conversation navigation — client source"));
+      block.append(element("p","graph-caption",
+        "Screen-reader-only landmark, abortable focus navigation, pagination status and polite completion announcement; no assistive-technology behavior tested."));
+      const items=element("div","chat-a11y-grid");
+      accessibility.mechanisms.forEach((m,i)=>{
+        const row=element("details","chat-a11y-mechanism");
+        row.append(element("summary","",(i+1)+". "+m.id.replaceAll("_"," ")),
+          element("p","",m.description),
+          element("p","graph-caption",m.source_ref+" · "+m.kind.replaceAll("_"," ")));
+        items.append(row);
+      });
+      block.append(items);
+      const limits=element("details","chat-a11y-limits");
+      limits.append(element("summary","","Accessibility verification limits"));
+      const list=element("ul","");
+      accessibility.limits.forEach(note=>list.append(element("li","",note)));
+      limits.append(list);
+      block.append(limits);
+      section.append(block);
+    }
     const editStudy=record.visuals?.chat_edit_submission_trace;
     if(editStudy){
       const block=element("div","chat-subsection");
