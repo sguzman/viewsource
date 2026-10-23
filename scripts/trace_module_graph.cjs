@@ -808,7 +808,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   }
  }
  for(const item of all){
-  for(const [i,classification] of (item.directFunctionExports||[]).entries())
+  for(const [i,classification] of (item.directFunctionExports||[]).entries()){
    assertCandidateCapacity(directFunctionSites.length+1);
    directFunctionSites.push({
     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
@@ -817,6 +817,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
     classification,
     runtime_invocation_verified:false
    });
+  }
  }
  for(const item of all){
   for(const key of item.boundImports||[]){
