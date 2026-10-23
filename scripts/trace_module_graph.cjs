@@ -634,6 +634,14 @@ function runtimeLoaderReassigned(node,name,shadowed=false){
  if(!node||typeof node!=="object")return false;
  if(["FunctionDeclaration","FunctionExpression","ArrowFunctionExpression"].includes(node.type))
   return false;
+ if(node.type==="CallExpression"&&
+    ["FunctionExpression","ArrowFunctionExpression"].includes(node.callee?.type)){
+  const fn=node.callee,names=new Set();
+  for(const param of fn.params||[])bindingNames(param,names);
+  hoistedFunctionVars(fn.body,names);
+  if(runtimeLoaderReassigned(fn.body,name,shadowed||names.has(name)))
+   return true;
+ }
  const innerShadow=()=>{
   if(node.type==="CatchClause"){
    const names=new Set();bindingNames(node.param,names);
@@ -1345,6 +1353,21 @@ function selfTest(){
   "[[93],{901:function(e,t,n){t.a=1}},function(n){"+
   "for(let n of [()=>1]){}n(901)}]);",63);
  assert.equal(lexicalRuntime.bootstrapCandidates.length,1);
+ const invokedMutator=analyzeJS(""+
+  "(self.webpackChunkInvokedMutator=self.webpackChunkInvokedMutator||[]).push("+
+  "[[101],{901:function(e,t,n){t.a=1}},function(n){"+
+  "(()=>{n=()=>1})();n(901)}]);",64);
+ assert.equal(invokedMutator.bootstrapCandidates.length,0);
+ const invokedShadow=analyzeJS(""+
+  "(self.webpackChunkInvokedShadow=self.webpackChunkInvokedShadow||[]).push("+
+  "[[102],{901:function(e,t,n){t.a=1}},function(n){"+
+  "((n)=>{n=()=>1})(()=>1);n(901)}]);",65);
+ assert.equal(invokedShadow.bootstrapCandidates.length,1);
+ const unusedMutator=analyzeJS(""+
+  "(self.webpackChunkDeferredMutator=self.webpackChunkDeferredMutator||[]).push("+
+  "[[103],{901:function(e,t,n){t.a=1}},function(n){"+
+  "const deferred=()=>{n=()=>1};n(901)}]);",66);
+ assert.equal(unusedMutator.bootstrapCandidates.length,1);
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"
