@@ -257,6 +257,17 @@ def build(out: Path) -> dict:
                         for row in selectors["verified_consumers"]
                     ],
                     "limitations": selectors["limitations"],
+                    "ui_action": {
+                        "surfaces": selectors["reviewed_ui_action"]["rendered_surfaces"],
+                        "selector": selectors["reviewed_ui_action"]["bound_selector"],
+                        "guard_roles": selectors["reviewed_ui_action"]["guard_roles"],
+                        "paths": [
+                            {"name": item["name"],"behavior": item["behavior"]}
+                            for item in selectors["reviewed_ui_action"]["paths"]
+                        ],
+                        "verification_boundary":
+                            selectors["reviewed_ui_action"]["verification_boundary"],
+                    },
                 }
             mutation_path = ROOT / (base + "/chat_graph_mutation_trace.json")
             if mutation_path.is_file():
