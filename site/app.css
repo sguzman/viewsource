@@ -493,3 +493,11 @@ button:disabled { cursor: not-allowed; opacity: .6; }
 .chat-a11y-mechanism summary,.chat-a11y-limits summary { cursor:pointer;font-size:12px;font-weight:600;line-height:1.65; }
 .chat-a11y-mechanism p,.chat-a11y-limits { font-size:12px;line-height:1.65; }
 .chat-a11y-limits ul { padding-left:20px; }
+
+.chat-module-stats { display:grid;grid-template-columns:repeat(auto-fit,minmax(135px,1fr));gap:9px;margin:12px 0; }
+.chat-module-stat { display:flex;flex-direction:column;border:1px solid var(--line);background:var(--panel-2);border-radius:8px;padding:12px;gap:4px; }
+.chat-module-stat strong { font-size:22px;font-weight:600;font-variant-numeric:tabular-nums; }
+.chat-module-stat small { font-size:11px;color:var(--muted); }
+.chat-module-links,.chat-module-limits { font-size:12px;line-height:1.65; }
+.chat-module-links summary,.chat-module-limits summary { cursor:pointer;font-weight:600; }
+.chat-module-links ul,.chat-module-limits ul { padding-left:20px; }
