@@ -414,6 +414,33 @@ class StaticImplementationArchiveTests(unittest.TestCase):
                             "private-ordinal-graph.json"):
                 self.assertNotIn(private, analyzed.stdout)
 
+    def test_module_exports_function_candidate_is_not_shadowed_function(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            archive = Path(tmp) / "invented-commonjs-exports.zip"
+            sentinel = "PrivateFunctionOwner999"
+            with zipfile.ZipFile(archive, "w", zipfile.ZIP_DEFLATED) as z:
+                z.writestr("bundle.js", "export const __webpack_modules__={"
+                    "One:(function(module,exports,require){"
+                    "module.exports=function(){return 1};"
+                    "function unused(module){module.exports=()=>99}"
+                    "}),"
+                    "Two:(function(module,exports,require){"
+                    "exports." + sentinel + "=()=>2})};")
+            proc = subprocess.run(
+                ["python3", str(ROOT / "scripts/trace_static_archive.py"),
+                 "--input", str(archive), "--module-trace"],
+                cwd=ROOT, capture_output=True, text=True,
+                check=False, timeout=40)
+            self.assertEqual(proc.returncode, 0)
+            report = json.loads(proc.stdout)
+            self.assertEqual(report["direct_function_export_site_count"], 2)
+            self.assertEqual(
+                [x["classification"] for x in report["direct_function_export_sites"]],
+                ["module_object_function_assignment_candidate",
+                 "direct_function_export_assignment_candidate"])
+            for item in ("One", "Two", sentinel, "invented-commonjs-exports.zip"):
+                self.assertNotIn(item, proc.stdout)
+
     def test_direct_function_exports_exclude_shadowed_and_getter_functions(self):
         with tempfile.TemporaryDirectory() as tmp:
             archive = Path(tmp) / "fictional-export-ownership.zip"

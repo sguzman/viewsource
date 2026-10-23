@@ -175,14 +175,15 @@ function scanScopedRequiredSlots(fn,requireName,required){
 /* Export signatures are inferred only where the bundle factory export
  * parameter and loader have not been shadowed or reassigned. Computed export
  * keys are excluded unless their property keys are literal constants. */
-function scanScopedExports(fn,requireName,exportName){
+function scanScopedExports(fn,requireName,exportName,moduleName){
  const slots=new Set(),directFunctions=[],exportToken=Symbol("factory_exports"),
-  loaderToken=Symbol("factory_require");
- if(!exportName)return {slots,directFunctions};
+  loaderToken=Symbol("factory_require"),moduleToken=Symbol("factory_module");
+ if(!exportName&&!moduleName)return {slots,directFunctions};
  function neutralize(pattern,env){
   if(!pattern)return;
   if(pattern.type==="Identifier"){
-   if(pattern.name===exportName||pattern.name===requireName)
+   if(pattern.name===exportName||pattern.name===requireName||
+      pattern.name===moduleName)
     env.set(pattern.name,null);
   }else if(pattern.type==="RestElement"||pattern.type==="AssignmentPattern"){
    neutralize(pattern.argument||pattern.left,env);
@@ -260,9 +261,19 @@ function scanScopedExports(fn,requireName,exportName){
      slots.add(slot);
      if(node.operator==="="&&
         ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
-      directFunctions.push(node.start);
+      directFunctions.push({
+       position:node.start,
+       classification:"direct_function_export_assignment_candidate"
+      });
     }
    }
+   if(node.operator==="="&&moduleName&&env.get(moduleName)===moduleToken&&
+      memberOf(node.left,moduleName)==="exports"&&
+      ["FunctionExpression","ArrowFunctionExpression"].includes(node.right?.type))
+    directFunctions.push({
+     position:node.start,
+     classification:"module_object_function_assignment_candidate"
+    });
    if(node.left?.type==="Identifier")neutralize(node.left,env);
   }
   if(node.type==="CallExpression"&&requireName&&
@@ -291,14 +302,17 @@ function scanScopedExports(fn,requireName,exportName){
   initial.set(exportName,exportToken);
  if(requireName&&fn.params?.[2]?.type==="Identifier"&&fn.params[2].name===requireName)
   initial.set(requireName,loaderToken);
+ if(moduleName&&fn.params?.[0]?.type==="Identifier"&&fn.params[0].name===moduleName)
+  initial.set(moduleName,moduleToken);
  scan(fn.body,initial);
- return {slots,directFunctions:directFunctions.sort((a,b)=>a-b)};
+ return {slots,directFunctions:directFunctions.sort((a,b)=>a.position-b.position)};
 }
-function scanModuleSignatures(fn,requireName,exportName){
- const {slots:exported,directFunctions}=scanScopedExports(fn,requireName,exportName),
+function scanModuleSignatures(fn,requireName,exportName,moduleName){
+ const {slots:exported,directFunctions}=scanScopedExports(fn,requireName,exportName,moduleName),
   required=new Map();
  scanScopedRequiredSlots(fn,requireName,required);
- return {exportedSlots:[...exported],directFunctionExports:directFunctions.length,
+ return {exportedSlots:[...exported],
+  directFunctionExports:directFunctions.map(x=>x.classification),
   requiredByImport:Object.fromEntries([...required].map(([id,slots])=>[id,[...slots]]))};
 }
 
@@ -560,7 +574,8 @@ function analyzeJS(source,sourceOrdinal){
   const requireParam=fn.params?.[2];
   const requireName=requireParam?.type==="Identifier"?requireParam.name:null;
   const exportName=fn.params?.[1]?.type==="Identifier"?fn.params[1].name:null;
-  const signatures=scanModuleSignatures(fn,requireName,exportName);
+  const moduleName=fn.params?.[0]?.type==="Identifier"?fn.params[0].name:null;
+  const signatures=scanModuleSignatures(fn,requireName,exportName,moduleName);
   const scopeCalls=scanScopedModuleCalls(fn,requireName);
   const {imports,boundImports}=scopeCalls;
   result.push({identifier,domain,sourceOrdinal,moduleOrdinal:i+1,imports:[...imports],
@@ -588,12 +603,12 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
   unresolvedSites=[];
  const directFunctionSites=[];
  for(const item of all){
-  for(let i=0;i<(item.directFunctionExports||0);i++)
+  for(const [i,classification] of (item.directFunctionExports||[]).entries())
    directFunctionSites.push({
     source_ref:"R-JS-"+String(item.sourceOrdinal).padStart(3,"0"),
     module_ordinal:item.moduleOrdinal,
     export_function_ordinal:i+1,
-    classification:"direct_function_export_assignment_candidate",
+    classification,
     runtime_invocation_verified:false
    });
  }
@@ -758,7 +773,7 @@ function buildGraph(all,scanned,parseFailures,bootstrap=[]){
    "Foreign registry key collisions are unresolved diagnostics only and do not establish any imported target.",
    "Unresolved import site ordinals are source-review leads; neither missing nor ambiguous candidate calls are verified at runtime.",
    "Only literal require arguments are considered; dynamic module keys are unresolved.",
-   "Direct function-valued export assignments are source syntax candidates; getter and alias ownership remain unresolved.",
+   "Direct functions on export objects or module.exports assignments are source syntax candidates; getter and alias ownership remain unresolved.",
    "No private module keys, source bytes, URLs, filenames or account data are emitted."
   ]
  };
@@ -992,6 +1007,16 @@ function selfTest(){
   "[[62],{901:function(e,t,n){t.a=1}},function(n){"+
   "n(901);n=()=>1;n(901)}]);",26);
  assert.equal(directBeforeRebind.bootstrapCandidates.length,1);
+ const commonjsOwners=analyzeJS("export const __webpack_modules__={"+
+  "A:(function(module,exports,require){module.exports=function(){return 1};"+
+  "function shadow(module){module.exports=()=>99}}),"+
+  "B:(function(module,exports,require){exports.fn=()=>2})};",38);
+ const commonjsGraph=buildGraph(commonjsOwners,1,0);
+ assert.equal(commonjsGraph.direct_function_export_site_count,2);
+ assert.deepEqual(commonjsGraph.direct_function_export_sites.map(x=>x.classification),
+  ["module_object_function_assignment_candidate",
+   "direct_function_export_assignment_candidate"]);
+ assert(!JSON.stringify(commonjsGraph).includes("shadow"));
  const scopedConsumer="export const __webpack_modules__={"
    +"Outer:(function(e,t,n){function owner(){const local=n('K')}"
    +"function unrelated(){const local={h:()=>1};return local.h()}}),"

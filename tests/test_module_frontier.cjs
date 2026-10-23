@@ -274,3 +274,18 @@ test("direct function-valued exports belong to reached modules only",()=>{
  graphData.direct_function_export_sites[0].classification="private-key-name";
  assert.throws(()=>frontier(graphData,["R-JS-001:1"]));
 });
+
+test("whole-module function assignments remain a distinct source candidate",()=>{
+ const g=graph();
+ g.direct_function_export_site_count=1;
+ g.direct_function_export_sites=[{
+  source_ref:"R-JS-001",module_ordinal:2,export_function_ordinal:1,
+  classification:"module_object_function_assignment_candidate",
+  runtime_invocation_verified:false
+ }];
+ const out=frontier(g,["R-JS-001:1"]);
+ assert.equal(out.reachable_direct_function_export_site_count,1);
+ assert.equal(out.reachable_direct_function_export_sites[0].classification,
+  "module_object_function_assignment_candidate");
+ assert.equal(out.reachable_direct_function_export_sites[0].runtime_invocation_verified,false);
+});

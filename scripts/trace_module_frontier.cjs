@@ -155,7 +155,8 @@ function indexGraph(graph) {
     if(!Array.isArray(graph.direct_function_export_sites))
       throw Error("Invalid function export sites");
     for(const item of graph.direct_function_export_sites){
-      if(item.classification!=="direct_function_export_assignment_candidate"||
+      if(!["direct_function_export_assignment_candidate",
+           "module_object_function_assignment_candidate"].includes(item.classification)||
          item.runtime_invocation_verified!==false||
          !known(item.source_ref,item.module_ordinal)||
          !Number.isSafeInteger(item.export_function_ordinal)||
@@ -163,7 +164,10 @@ function indexGraph(graph) {
         throw Error("Invalid function export candidate");
       const id=ordinal(item.source_ref,item.module_ordinal);
       if(!directFns.has(id))directFns.set(id,[]);
-      directFns.get(id).push(item.export_function_ordinal);
+      directFns.get(id).push({
+       export_function_ordinal:item.export_function_ordinal,
+       classification:item.classification
+      });
     }
   }
   const unresolvedByModule=new Map();
@@ -322,9 +326,9 @@ function frontier(graph, roots, options={}) {
       traversed:false
     })));
   const localDirectFunctions=[...visited.keys()].sort().flatMap(id=>
-    (directFns.get(id)||[]).map(export_function_ordinal=>({
-      source:asNode(id),export_function_ordinal,
-      classification:"direct_function_export_assignment_candidate",
+    (directFns.get(id)||[]).map(item=>({
+      source:asNode(id),export_function_ordinal:item.export_function_ordinal,
+      classification:item.classification,
       runtime_invocation_verified:false
     })));
   const localUnresolved=[...visited.keys()].sort().flatMap(id=>

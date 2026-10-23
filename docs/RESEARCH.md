@@ -521,3 +521,14 @@ conservatively: the analyzer does not prove the branch was taken, so the
 subsequent call is excluded rather than mistaken for a loader invocation.
 An earlier direct call can still be reported. Nested function assignments
 are not treated as preceding execution, and no captured code is run.
+
+### Whole-module callable assignments
+
+When a module factory assigns a function expression directly to its
+first parameter's `exports` property (for example
+`module.exports = function () {}`), the analyzer records a
+`module_object_function_assignment_candidate`. It remains distinct
+from an `exports.handler = () => {}` function-valued property
+assignment. Shadowed nested `module` parameters are excluded.
+Neither category establishes that the exported callable was invoked,
+or that its enclosing module belongs to a specific UI feature.
