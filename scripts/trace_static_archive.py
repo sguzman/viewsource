@@ -23,8 +23,9 @@ ROOT = Path(__file__).resolve().parents[1]
 
 def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 transport_trace: bool = False,
-                selector_trace: bool = False) -> dict:
-    if sum((chat_trace, transport_trace, selector_trace)) > 1:
+                selector_trace: bool = False,
+                transcript_trace: bool = False) -> dict:
+    if sum((chat_trace, transport_trace, selector_trace, transcript_trace)) > 1:
         raise ValueError("Choose at most one specialized AST analysis")
     if not input_file.is_file() or input_file.resolve().is_relative_to(ROOT):
         raise ValueError("Input ZIP must exist outside the public repository")
@@ -51,7 +52,8 @@ def inspect_zip(input_file: Path, *, chat_trace: bool = False,
                 if info.file_size / max(info.compress_size, 1) > 1000:
                     raise ValueError("Unsafe compression ratio")
                 (Path(folder) / f"bundle-{i:04d}.js").write_bytes(archive.read(info))
-            script = ("scripts/trace_selector_impl.cjs" if selector_trace else
+            script = ("scripts/trace_transcript_impl.cjs" if transcript_trace else
+                      "scripts/trace_selector_impl.cjs" if selector_trace else
                       "scripts/trace_stream_impl.cjs" if transport_trace else
                       "scripts/trace_chat_impl.cjs" if chat_trace else
                       "scripts/static_ast_probe.cjs")
@@ -74,11 +76,14 @@ def main() -> int:
                       help="Emit allowlisted transport callback and handler AST observations")
     mode.add_argument("--selector-trace", action="store_true",
                       help="Emit candidate selected ancestry and feature reference AST patterns")
+    mode.add_argument("--transcript-trace", action="store_true",
+                      help="Emit candidate turn derivation and message component patterns")
     args = parser.parse_args()
     try:
         report = inspect_zip(args.input, chat_trace=args.chat_trace,
                              transport_trace=args.transport_trace,
-                             selector_trace=args.selector_trace)
+                             selector_trace=args.selector_trace,
+                             transcript_trace=args.transcript_trace)
     except (OSError, ValueError, json.JSONDecodeError, subprocess.TimeoutExpired,
             zipfile.BadZipFile, UnicodeError):
         parser.exit(2, "Static AST analysis rejected (input or parser unavailable)\n")
